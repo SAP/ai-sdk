@@ -1,0 +1,63 @@
+{
+  "name": "sap-ai-sdk-documentation",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "lint": "eslint . && prettier . --config .prettierrc -c",
+    "lint:fix": "eslint . --fix --quiet && prettier . --config .prettierrc -w --log-level error",
+    "style": "npm run prettier && vale ."
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.7.0",
+    "@docusaurus/plugin-client-redirects": "^3.7.0",
+    "@docusaurus/plugin-content-docs": "^3.7.0",
+    "@docusaurus/preset-classic": "^3.7.0",
+    "@docusaurus/theme-common": "^3.2.1",
+    "buffer": "^6.0.3",
+    "clsx": "^2.1.1",
+    "events": "^3.3.0",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.3",
+    "react-table": "^7.8.0",
+    "remark-emoji": "^5.0.1",
+    "remark-gfm": "^4.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "assert": "^2.1.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-react": "^7.37.4",
+    "prettier": "^3.4.2",
+    "prettier-plugin-java": "^2.6.6",
+    "process": "^0.11.10"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
