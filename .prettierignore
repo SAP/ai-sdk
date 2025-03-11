@@ -1,0 +1,9 @@
+.docusaurus/
+.github/
+node_modules/
+build/
+static/
+styles/
+LICENSES
+CONTRIBUTING.md
+.*rc
