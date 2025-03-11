@@ -1,3 +1,8 @@
+> [!warning]
+> 🚧 Work in Progress: Documentation Portal 🚧
+> 
+> We are actively working on the documentation portal. Expect frequent updates and changes.
+
 # SAP Cloud SDK for AI documentation portal
 
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk)](https://api.reuse.software/info/github.com/SAP/ai-sdk)
