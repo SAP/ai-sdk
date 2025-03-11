@@ -1,3 +1,0 @@
-paths-ignore:
-  - node_modules
-  - static/api/**
