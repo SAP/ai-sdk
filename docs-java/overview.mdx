@@ -1,0 +1,70 @@
+---
+id: overview-cloud-sdk-for-ai-java
+title: Java SDK Overview
+hide_title: false
+hide_table_of_contents: false
+sidebar_label: Overview
+description: The SAP Cloud SDK for AI Java significantly simplifies extending and developing an application with SAP Business Technology Platform
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+---
+
+import JavaFeatureTable from '@site/src/components/JavaFeatureTable';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ThemedImage from '@theme/ThemedImage';
+
+[![Maven Central Version](https://img.shields.io/maven-central/v/com.sap.ai.sdk/core?color=dark-green)](https://central.sonatype.com/search?smo=true&namespace=com.sap.ai.sdk)
+
+## Quick Start
+
+For a quick start check out the [getting started](getting-started) section.
+
+## Why the SAP Cloud SDK for AI?
+
+This SDK enables developers to seamlessly integrate AI capabilities, such as chat completion, into their Java-based business applications using SAP's Generative AI Hub.
+Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications.
+The SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
+
+## General Requirements
+
+To use the SDK in a Java application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
+
+- Java 17 or higher.
+- Access to an **SAP AI Core Service** instance.
+
+Please refer to [this documentation on **how to connect the SDK to AI Core**](guides/connecting-to-ai-core).
+
+The following table lists the required versions, based on the latest release:
+
+| Dependency             | Minimum Version | Recommended Version |
+| ---------------------- | --------------- | ------------------- |
+| JDK                    | 17 (LTS)        | 21 (LTS)            |
+| SAP Cloud SDK for AI   | 5.6.0           | latest              |
+| (optional) CAP Java    | 3.0.0           | latest              |
+| (optional) Spring Boot | 3.0             | latest              |
+
+See [an example `pom.xml` in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml).
+
+## Contribute, Support and Feedback
+
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues).
+Contribution and feedback are encouraged and always welcome.
+For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-java/blob/main/CONTRIBUTING.md).
+
+## Security / Disclosure
+
+If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk-java/security/policy) on how to report it.
+Please do not create GitHub issues for security-related doubts or problems.
+
+## Code of Conduct
+
+We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone.
+By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
+
+## Licensing
+
+Copyright 2024 SAP SE or an SAP affiliate company and ai-sdk-java contributors. Please see our [LICENSE](https://github.com/SAP/ai-sdk-java/blob/main/LICENSE) for copyright and license information.
+Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk-java).
