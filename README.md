@@ -16,15 +16,12 @@ Find it here:
 - [Javascript/Typescript](https://github.com/SAP/ai-sdk-js).
 - [Java](https://github.com/SAP/ai-sdk/issues).
 
-## Prerequisites
+## Requirements and Setup
 
 - [Node.js](https://nodejs.org/en/download/).
   We recommend the latest LTS version of node.js.
   Check your version with `node -v`.
   You can use [`nvm`](https://github.com/nvm-sh/nvm) for managing multiple Node versions on a single machine.
-
-## Hosting the Documentation Locally
-
 - Run `npm install`
 - Run `npm start`
 - The SAP Cloud SDK for AI documentation portal should open in a new browser window
