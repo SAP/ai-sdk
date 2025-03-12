@@ -148,10 +148,7 @@ module.exports = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.5,
-          ignorePatterns: [
-            '/ai-sdk/api/**',
-            '/ai-sdk/components/**',
-          ]
+          ignorePatterns: ['/ai-sdk/api/**', '/ai-sdk/components/**']
         }
       }
     ]

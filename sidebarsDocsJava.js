@@ -10,7 +10,8 @@ module.exports = {
         'guides/ai-core-deployment',
         'guides/openai-chat-completion',
         'guides/orchestration-chat-completion',
-        'guides/spring-ai-integration'
+        'guides/spring-ai-integration',
+        'guides/document-grounding'
       ]
     },
     'release-notes',

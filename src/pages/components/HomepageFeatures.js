@@ -18,9 +18,10 @@ const FeatureList = [
     description: (
       <div data-nosnippet>
         <b>
-        🚧 Work in Progress: Documentation Portal 🚧
-        <br />
-        We are actively working on the documentation portal. Expect frequent updates and changes.
+          🚧 Work in Progress: Documentation Portal 🚧
+          <br />
+          We are actively working on the documentation portal. Expect frequent
+          updates and changes.
         </b>
         <br />
         <a href="docs/java/getting-started">
@@ -42,9 +43,10 @@ const FeatureList = [
     description: (
       <div data-nosnippet>
         <b>
-        🚧 Work in Progress: Documentation Portal 🚧
-        <br />
-        We are actively working on the documentation portal. Expect frequent updates and changes.
+          🚧 Work in Progress: Documentation Portal 🚧
+          <br />
+          We are actively working on the documentation portal. Expect frequent
+          updates and changes.
         </b>
         <br />
         <a href="docs/js/getting-started">
