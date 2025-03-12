@@ -36,8 +36,8 @@ module.exports = {
       darkTheme: require('prism-react-renderer').themes.dracula
     },
     algolia: {
-      apiKey: '441c57554e5a0ca9338cc9f047fb10c8',
-      indexName: 'sap_cloud-sdk', // should be dynamic based on the URL, contextualSearch?, searchParameters?
+      apiKey: '3f42112ce11e616fc801a5276d6f8778',
+      indexName: 'ai-sdk',
       appId: 'E4A268JVO0',
       algoliaOptions: {} // Optional, if provided by Algolia
     },
