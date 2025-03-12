@@ -17,8 +17,8 @@ class ESMPolyfillWrapper {
 module.exports = {
   title: 'SAP Cloud SDK for AI',
   tagline: 'The one-stop shop for integrating AI into SAP Cloud applications.',
-  url: 'https://literate-bassoon-jn3vmzp.pages.github.io/',
-  baseUrl: '/',
+  url: 'https://sap.github.io/',
+  baseUrl: '/ai-sdk/',
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/AI-SDK-Logo.svg',
