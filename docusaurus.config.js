@@ -46,7 +46,7 @@ module.exports = {
       logo: {
         alt: 'SAP Cloud SDK for AI',
         src: 'img/AI-SDK-Logo.svg',
-        srcDark: 'img/logo-dark.svg'
+        srcDark: 'img/AI-SDK-Logo.svg'
       },
       items: [
         {
