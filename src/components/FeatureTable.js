@@ -27,7 +27,8 @@ export default function FeatureTable() {
       <br />
       <ReactMarkdown remarkPlugins={[gfm, emoji]}>
         **Legend:** :white_check_mark: - Generally Available, :x: - Not
-        Available, :wrench: - WIP/limited support, :date: - Planned, :warning: - Deprecated
+        Available, :wrench: - WIP/limited support, :date: - Planned, :warning: -
+        Deprecated
       </ReactMarkdown>
       <Table columns={columns} data={data} />
     </>
