@@ -18,10 +18,6 @@ export const mainFeatureTableLayout = [
       {
         Header: 'Docs',
         accessor: 'java.docsLink'
-      },
-      {
-        Header: 'Notes',
-        accessor: 'java.note'
       }
     ]
   },
@@ -35,10 +31,6 @@ export const mainFeatureTableLayout = [
       {
         Header: 'Docs',
         accessor: 'js.docsLink'
-      },
-      {
-        Header: 'Notes',
-        accessor: 'js.note'
       }
     ]
   }
