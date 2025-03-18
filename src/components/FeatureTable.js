@@ -17,9 +17,17 @@ export default function FeatureTable() {
 
   return (
     <>
+      <b>
+        🚧 Work in Progress: Documentation Portal 🚧
+        <br />
+        We are actively working on the documentation portal. Expect frequent
+        updates and changes.
+      </b>
+      <br />
+      <br />
       <ReactMarkdown remarkPlugins={[gfm, emoji]}>
-        **Legend:** :heavy_check_mark: - Generally Available, :x: - Not
-        Available, :gear: - Beta, :date: - Planned, :warning: - Deprecated
+        **Legend:** :white_check_mark: - Generally Available, :x: - Not
+        Available, :wrench: - WIP/limited support, :date: - Planned, :warning: - Deprecated
       </ReactMarkdown>
       <Table columns={columns} data={data} />
     </>

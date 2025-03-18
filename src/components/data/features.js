@@ -1,9 +1,9 @@
 const baseUrl = '/ai-sdk/docs';
-const YES = ':heavy_check_mark:';
+const YES = ':white_check_mark:';
 const NO = ':x:';
 const PLANNED = ':date:';
 const DEPRECATED = ':warning:';
-const BETA = ':gear:';
+const WIP = ':wrench:';
 const FEATURE_REQUEST =
   '[Request this feature](https://github.com/SAP/ai-sdk/issues/new?assignees=&labels=feature+request&template=feature_request.md&title=)';
 /**
@@ -11,16 +11,211 @@ const FEATURE_REQUEST =
  */
 export const features = [
   {
-    name: '[SOAP](https://help.sap.com/saphelp_snc700_ehp01/helpdata/en/bb/ddb33d2ae46b3be10000000a114084/content.htm?no_cache=true)',
+    name: 'Orchestration: [Harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api?locale=en-US)',
     java: {
-      status: NO,
+      status: YES,
       docsLink: ``,
-      note: 'Out of scope. Deprecated since 4.13.0'
+      note: ''
     },
     js: {
-      status: NO,
+      status: YES,
       docsLink: ``,
-      note: 'Take a look at the [node-soap](https://github.com/vpulim/node-soap) library'
+      note: ''
+    }
+  },
+  {
+    name: 'Orchestration: [Templating](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Orchestration: [Input Image Support](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating?locale=en-US#input-image-support)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Orchestration: [Streaming](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Orchestration: [Input Filter](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Orchestration: [Output Filter](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Orchestration: [Data Masking](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Orchestration: [Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Orchestration: [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: '[AI Core API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/about-ai-api?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: '[Document Grounding API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: '[Prompt Registry API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Foundation Model: OpenAI Chat Completion',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Foundation Model: OpenAI Streaming',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Foundation Model: OpenAI Embedding',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    }
+  },
+  {
+    name: 'Framework Integration: LangChain/Spring AI',
+    java: {
+      status: YES,
+      docsLink: ``,
+      note: ''
+    },
+    js: {
+      status: YES,
+      docsLink: ``,
+      note: ''
     }
   }
 ];
