@@ -178,7 +178,7 @@ export const features = [
     name: 'Foundation Model: OpenAI Embedding',
     java: {
       status: YES,
-      docsLink: ``,
+      docsLink: ``
     },
     js: {
       status: YES,
