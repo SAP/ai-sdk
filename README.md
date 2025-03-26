@@ -22,6 +22,8 @@ Find it here:
   We recommend the latest LTS version of node.js.
   Check your version with `node -v`.
   You can use [`nvm`](https://github.com/nvm-sh/nvm) for managing multiple Node versions on a single machine.
+- _Optional: Create a `.env` file and write `ALGOLIA_API_KEY='<insert_key_here>'`._
+  _The key can be found in the team KeePassXC._
 - Run `npm install`
 - Run `npm start`
 - The SAP Cloud SDK for AI documentation portal should open in a new browser window
