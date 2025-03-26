@@ -1,3 +1,39 @@
+## 1.5.0 - March 13, 2025
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.5.0)
+
+### ✨ New Functionality
+
+- [Orchestration] [Add Spring AI Chat Memory support](/docs/java/guides/spring-ai-integration#chat-memory)
+- [Orchestration] [Prompt templates can be consumed from registry.](/docs/java/guides/orchestration-chat-completion#templating)
+- [Orchestration] [Masking is now available on grounding.](/docs/java/guides/orchestration-chat-completion#mask-grounding)
+- [Orchestration] [Grounding via _help.sap.com_ is enabled.](/docs/java/guides/orchestration-chat-completion#grounding-via-helpsapcom)
+- [OpenAI] [Spring AI integration for embedding calls.](/docs/java/guides/spring-ai-integration#embedding)
+
+## 1.4.0 - February 28, 2025
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.4.0)
+
+### 🔧 Compatibility Notes
+
+- [Orchestration] The constructors `UserMessage(MessageContent)` and `SystemMessage(MessageContent)` are removed. Use `Message.user(String)`, `Message.user(ImageItem)`, or `Message.system(String)` instead.
+- Deprecate `getCustomField(String)` in favor of `toMap()` on generated model classes.
+  - `com.sap.ai.sdk.core.model.*`
+  - `com.sap.ai.sdk.orchestration.model.*`
+
+### ✨ New Functionality
+
+- [Orchestration] [Add Spring AI tool calling](/docs/java/guides/spring-ai-integration#tool-calling).
+- [Orchestration] [Add new convenient methods to set the response format for Orchestration.](/docs/java/guides/orchestration-chat-completion#response-format)
+- [Document Grounding] [Add Document Grounding Client](guides/document-grounding)
+  - `com.sap.ai.sdk:document-grounding:1.4.0`
+- [OpenAI] New generated model classes introduced for _AzureOpenAI_ specification dated 2024-10-21.
+- [OpenAI] Introducing [new user interface](/docs/java/guides/openai-chat-completion#new-user-interface-v140) for chat completion wrapping the generated model classes.
+  - `OpenAiChatCompletionRequest` and `OpenAiChatCompletionResponse`' for high level request and response handling.
+  - `OpenAiUserMessage`, `OpenAiSystemMessage`, `OpenAiAssistantMessage` and `OpenAiToolMessage` for message creation for different content types.
+  - `OpenAiToolChoice` for configuring chat completion requests with tool selection strategy.
+- [OpenAI] Introducing new user interface for embedding calls using `OpenAiEmbeddingRequest` and `OpenAiEmbeddingResponse`.
+
 ## 1.3.0 - February 13, 2025
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.3.0)
@@ -10,9 +46,9 @@
 
 - Upgrade to release 2502a of AI Core.
 - Orchestration:
-  - [Add `LlamaGuardFilter`](guides/orchestration-chat-completion#chat-completion-filter).
-  - [Convenient methods to create messages containing images and multiple text inputs](guides/orchestration-chat-completion#add-images-and-multiple-text-inputs-to-a-message)
-  - [Enable setting the response format](guides/orchestration-chat-completion#set-a-response-format)
+  - [Add `LlamaGuardFilter`](guides/orchestration-chat-completion#filtering.
+  - [Convenient methods to create messages containing images and multiple text inputs](guides/orchestration-chat-completion#using-images)
+  - [Enable setting the response format](guides/orchestration-chat-completion#response-format)
 
 ## 1.2.0 - January 30, 2025
 

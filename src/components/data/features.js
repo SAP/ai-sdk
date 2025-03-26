@@ -1,9 +1,9 @@
 const baseUrl = '/ai-sdk/docs';
-const YES = ':heavy_check_mark:';
+const YES = ':white_check_mark:';
 const NO = ':x:';
 const PLANNED = ':date:';
 const DEPRECATED = ':warning:';
-const BETA = ':gear:';
+const WIP = ':wrench:';
 const FEATURE_REQUEST =
   '[Request this feature](https://github.com/SAP/ai-sdk/issues/new?assignees=&labels=feature+request&template=feature_request.md&title=)';
 /**
@@ -11,470 +11,178 @@ const FEATURE_REQUEST =
  */
 export const features = [
   {
-    name: '[SOAP](https://help.sap.com/saphelp_snc700_ehp01/helpdata/en/bb/ddb33d2ae46b3be10000000a114084/content.htm?no_cache=true)',
-    category: 'Legacy',
+    name: 'Orchestration: [Harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api?locale=en-US)',
     java: {
-      status: NO,
-      docsLink: ``,
-      note: 'Out of scope. Deprecated since 4.13.0'
+      status: YES
     },
     js: {
-      status: NO,
-      docsLink: ``,
-      note: 'Take a look at the [node-soap](https://github.com/vpulim/node-soap) library'
+      status: YES,
+      docsLink: ``
     }
   },
   {
-    name: '[BAPI](https://help.sap.com/doc/saphelp_nw73/7.3.16/en-US/4d/c89000ebfc5a9ee10000000a42189b/frameset.htm)',
-    category: 'Legacy',
+    name: 'Orchestration: [Templating](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating?locale=en-US)',
     java: {
-      status: DEPRECATED,
-      docsLink: `[docs](${baseUrl}/java/features/bapi-and-rfc/overview)`,
-      note: 'Deprecated since 4.13.0'
+      status: YES,
+      docsLink: ``
     },
     js: {
-      status: NO,
-      docsLink: ``,
-      note: 'Take a look at the [SAP NetWeaver RFC SDK client bindings for Node.js](https://github.com/SAP/node-rfc)'
+      status: YES,
+      docsLink: ``
     }
   },
   {
-    name: '[RFC](https://help.sap.com/doc/saphelp_nw73/7.3.16/en-US/48/9f1952a81417cee10000000a421937/frameset.htm)',
-    category: 'Legacy',
+    name: 'Orchestration: [Input Image Support](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating?locale=en-US#input-image-support)',
     java: {
-      status: DEPRECATED,
-      docsLink: `[docs](${baseUrl}/java/features/bapi-and-rfc/overview)`,
-      note: 'Deprecated since 4.13.0'
+      status: YES,
+      docsLink: ``
     },
     js: {
-      status: NO,
-      docsLink: ``,
-      note: 'Take a look at the [SAP NetWeaver RFC SDK client bindings for Node.js](https://github.com/SAP/node-rfc)'
+      status: YES,
+      docsLink: ``
     }
   },
   {
-    name: '[OData v2 typed client](https://www.odata.org/documentation/odata-version-2-0/)',
-    category: 'OData',
+    name: 'Orchestration: [Streaming](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming?locale=en-US)',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/odata/v2-vdm-client)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/odata/use-odata-v2-type-safe-client-for-javascript-typescript)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: '[OData v4 typed client](https://www.odata.org/documentation/)',
-    category: 'OData',
+    name: 'Orchestration: [Input Filter](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering?locale=en-US)',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/odata/v4-vdm-client)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/odata/use-odata-v4-type-safe-client-for-javascript-typescript)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: 'Generic not typed OData client',
-    category: 'OData',
+    name: 'Orchestration: [Output Filter](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering?locale=en-US)',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/odata/generic-untyped-odata-client)`,
-      note: ''
+      docsLink: ``
     },
     js: {
-      status: NO,
-      docsLink: ``,
-      note: `We expose [generic HTTP client](${baseUrl}/js/features/connectivity/generic-http-client) aware of connectivity abstractions`
+      status: YES,
+      docsLink: ``
     }
   },
   {
-    name: '[OData code generator](https://www.odata.org/documentation/)',
-    category: 'OData',
+    name: 'Orchestration: [Data Masking](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking?locale=en-US)',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/odata/vdm-generator)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/odata/generate-odata-client)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: 'OpenAPI 2.0 typed client',
-    category: 'OpenAPI',
+    name: 'Orchestration: [Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding?locale=en-US)',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/rest/overview)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/openapi/execute-openapi-request)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: 'OpenAPI 3.0 typed client',
-    category: 'OpenAPI',
+    name: 'Orchestration: [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry?locale=en-US)',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/rest/overview)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/openapi/execute-openapi-request)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: 'OpenAPI code generator',
-    category: 'OpenAPI',
+    name: '[AI Core API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/about-ai-api?locale=en-US)',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/rest/generate-rest-client)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/openapi/generate-openapi-client)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: 'Enterprise messaging',
-    category: 'Messaging',
+    name: '[Document Grounding API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding?locale=en-US)',
     java: {
-      status: NO,
-      docsLink: ``,
-      note: ''
+      status: YES,
+      docsLink: ``
     },
     js: {
-      status: NO,
-      docsLink: ``,
-      note: ''
+      status: YES,
+      docsLink: ``
     }
   },
   {
-    name: 'Resilience pattern',
-    category: 'Advanced',
+    name: '[Prompt Registry API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry?locale=en-US)',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/resilience)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/guides/resilience)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: 'Caching pattern',
-    category: 'Advanced',
+    name: 'Framework Integration: LangChain/Spring AI',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/resilience)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/destination-cache)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: '[BTP Cloud Foundry Environment](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/9c7092c7b7ae4d49bc8ae35fdd0e0b18.html)',
-    category: 'Environment',
+    name: 'Foundation Model: OpenAI Chat Completion',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/environments/cloud-foundry)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/getting-started#deploy-the-project-on-sap-btp-cloud-foundry)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: '[Kubernetes with SAP Gardener](https://gardener.cloud/)',
-    category: 'Environment',
+    name: 'Foundation Model: OpenAI Streaming',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/environments/kubernetes-gardener)`,
-      note: ''
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/guides/migrate-sdk-application-from-btp-cf-to-kubernetes)`,
-      note: ''
+      docsLink: ``
     }
   },
   {
-    name: '[BTP Kyma Environment](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/468c2f3c3ca24c2c8497ef9f83154c44.html)',
-    category: 'Environment',
+    name: 'Foundation Model: OpenAI Embedding',
     java: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/java/environments/kubernetes-kyma)`,
-      note: `[Kyma Open Source project](https://kyma-project.io/)`
+      docsLink: ``
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/getting-started#deploy-the-project-on-sap-btp-cloud-foundry)`,
-      note: ''
-    }
-  },
-  {
-    name: 'Deploy with Confidence (DwC)',
-    category: 'Environment',
-    java: {
-      status: YES,
-      docsLink: ``,
-      note: `Internal only or allow listed`
-    },
-    js: {
-      status: NO,
-      docsLink: ``,
-      note: ''
-    }
-  },
-  {
-    name: '[BTP Neo Environment](https://help.sap.com/viewer/ea72206b834e4ace9cd834feed6c0e09/Cloud/en-US)',
-    category: 'Environment',
-    java: {
-      status: NO,
-      docsLink: ``,
-      note: 'Out of scope. Deprecated since 4.17.0'
-    },
-    js: {
-      status: NO,
-      docsLink: ``,
-      note: 'Out of scope.'
-    }
-  },
-  {
-    name: '[SAP BTP ABAP Environent](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/11d62652aa2b4600a0fa136de0789648.html)',
-    category: 'Environment',
-    java: {
-      status: NO,
-      docsLink: '',
-      note: 'Out of scope'
-    },
-    js: {
-      status: NO,
-      docsLink: '',
-      note: 'Out of scope'
-    }
-  },
-  {
-    name: '[BTP CF Connectivity Service](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/313b215066a8400db461b311e01bd99b.html)',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/connectivity/destination-service)`,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/destination)`,
-      note: ''
-    }
-  },
-  {
-    name: '[BTP CF Destination Service](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/7e306250e08340f89d6c103e28840f30.html)',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/connectivity/destination-service)`,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/destination)`,
-      note: ''
-    }
-  },
-  {
-    name: '[BTP CF XSUAA Service](https://sap.github.io/cloud-sdk/docs/java/guides/cloud-foundry-xsuaa-service)',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/connectivity/destination-service)`,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/destination)`,
-      note: ''
-    }
-  },
-  {
-    name: '[BTP CF Service Bindings](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/bb8009dbb7814a2a94e42983fbaa9bae.html)',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: ``,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: ``,
-      note: ''
-    }
-  },
-  {
-    name: 'Authentication',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: ``,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/destination#authentication-and-json-web-token-retrievjal)`,
-      note: ''
-    }
-  },
-  {
-    name: 'Multi-tenancy',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/multi-tenancy/thread-context)`,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/destination#multi-tenancy)`,
-      note: ''
-    }
-  },
-  {
-    name: 'Proxy',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/connectivity/destination-service)`,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/destination#multi-tenancy)`,
-      note: ''
-    }
-  },
-  {
-    name: 'HTTP Client wrapper',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/connectivity/http-client)`,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/generic-http-client)`,
-      note: ''
-    }
-  },
-  {
-    name: '[Principal propagation](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/e2cbb48def4342048362039cc157b12e.html?q=principal)',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: ``,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/on-premise#principal-propagation)`,
-      note: ''
-    }
-  },
-  {
-    name: '[Cloud Connector](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/e6c7616abb5710148cfcf3e75d96d596.html?q=cloud%20connector)',
-    category: 'Connectivity',
-    java: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/java/features/connectivity/destination-service#connect-to-sap-s4hana-on-premise)`,
-      note: ''
-    },
-    js: {
-      status: YES,
-      docsLink: `[docs](${baseUrl}/js/features/connectivity/on-premise)`,
-      note: ''
-    }
-  },
-  {
-    name: 'MDI',
-    category: 'MDI',
-    java: {
-      status: NO,
-      docsLink: ``,
-      note: 'Out of scope. Deprecated since 4.23.0'
-    },
-    js: {
-      status: NO,
-      docsLink: ``,
-      note: ''
-    }
-  }
-];
-
-/**
- * List of OData feauters supported or planned to be supported by SDK
- */
-export const ODataFeatures = [
-  {
-    name: 'Get an Entity by Key',
-    type: 'CRUD',
-    java: {
-      v2: {
-        status: YES,
-        docs: ''
-      },
-      v4: {
-        status: YES,
-        docs: ''
-      }
-    },
-    js: {
-      v2: {
-        status: YES,
-        docs: ''
-      },
-      v4: {
-        status: YES,
-        docs: ''
-      }
-    }
-  }
-];
-
-/**
- * List of OpenAPI features supported or planned to be supported by SDK
- */
-export const OpenAPIFeatures = [];
-
-/**
- * List of releases or planned extensions
- */
-export const extensions = [
-  {
-    name: 'Currency conversion library',
-    js: {
-      status: PLANNED
+      docsLink: ``
     }
   }
 ];

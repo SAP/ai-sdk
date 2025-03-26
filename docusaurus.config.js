@@ -17,8 +17,8 @@ class ESMPolyfillWrapper {
 module.exports = {
   title: 'SAP Cloud SDK for AI',
   tagline: 'The one-stop shop for integrating AI into SAP Cloud applications.',
-  url: 'https://literate-bassoon-jn3vmzp.pages.github.io/',
-  baseUrl: '/',
+  url: 'https://sap.github.io/',
+  baseUrl: '/ai-sdk/',
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/AI-SDK-Logo.svg',
@@ -37,7 +37,7 @@ module.exports = {
     },
     algolia: {
       apiKey: '441c57554e5a0ca9338cc9f047fb10c8',
-      indexName: 'sap_cloud-sdk', // should be dynamic based on the URL, contextualSearch?, searchParameters?
+      indexName: 'sap_cloud-sdk-ai',
       appId: 'E4A268JVO0',
       algoliaOptions: {} // Optional, if provided by Algolia
     },
@@ -46,7 +46,7 @@ module.exports = {
       logo: {
         alt: 'SAP Cloud SDK for AI',
         src: 'img/AI-SDK-Logo.svg',
-        srcDark: 'img/logo-dark.svg'
+        srcDark: 'img/AI-SDK-Logo.svg'
       },
       items: [
         {
@@ -148,10 +148,7 @@ module.exports = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.5,
-          ignorePatterns: [
-            '/ai-sdk/api/**',
-            '/ai-sdk/components/**',
-          ]
+          ignorePatterns: ['/ai-sdk/api/**', '/ai-sdk/components/**']
         }
       }
     ]
