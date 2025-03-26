@@ -25,7 +25,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Spring AI',
-      items: ['spring-ai/openai', 'spring-ai/orchestration']
+      items: ['spring-ai/orchestration', 'spring-ai/openai']
     },
     {
       type: 'category',
