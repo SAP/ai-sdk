@@ -236,7 +236,7 @@ module.exports = {
           {
             from: '/docs/java/guides/connecting-to-ai-core',
             to: '/docs/java/connecting-to-ai-core'
-          },
+          }
         ]
       }
     ],

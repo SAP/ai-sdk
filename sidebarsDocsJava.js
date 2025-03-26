@@ -6,9 +6,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Orchestration',
-      items: [
-        'orchestration/chat-completion'
-      ]
+      items: ['orchestration/chat-completion']
     },
     {
       type: 'category',
@@ -27,18 +25,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Spring AI',
-      items: [
-        'spring-ai/openai',
-        'spring-ai/orchestration'
-      ]
+      items: ['spring-ai/openai', 'spring-ai/orchestration']
     },
     {
       type: 'category',
       label: 'AI Core Services',
-      items: [
-        'ai-core/ai-core-deployment',
-        'ai-core/document-grounding'
-      ]
+      items: ['ai-core/ai-core-deployment', 'ai-core/document-grounding']
     },
     'release-notes',
     'frequently-asked-questions',

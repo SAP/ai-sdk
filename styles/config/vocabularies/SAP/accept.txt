@@ -1,4 +1,7 @@
 SAP S/4HANA
+SAP AI SDK
+AI Core
+SAP Generative AI Hub
 SAP Cloud SDK
 Cloud Foundry
 Fieldglass
