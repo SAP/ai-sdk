@@ -209,6 +209,37 @@ module.exports = {
         ignorePatterns: ['**/docs/js/**']
       }
     ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: '/docs/java/guides/ai-core-deployment',
+            to: '/docs/java/ai-core/ai-core-deployment'
+          },
+          {
+            from: '/docs/java/guides/document-grounding',
+            to: '/docs/java/ai-core/document-grounding'
+          },
+          {
+            from: '/docs/java/guides/openai-chat-completion',
+            to: '/docs/java/foundation-models/openai/chat-completion'
+          },
+          {
+            from: '/docs/java/guides/orchestration-chat-completion',
+            to: '/docs/java/orchestration/chat-completion'
+          },
+          {
+            from: '/docs/java/guides/spring-ai-integration',
+            to: '/docs/java/spring-ai/orchestration'
+          },
+          {
+            from: '/docs/java/guides/connecting-to-ai-core',
+            to: '/docs/java/connecting-to-ai-core'
+          }
+        ]
+      }
+    ],
     function nodeWebpackPolyfillPlugin(context, options) {
       return {
         name: 'nodeWebpackPolyfill',
