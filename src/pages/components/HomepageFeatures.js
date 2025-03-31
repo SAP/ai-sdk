@@ -25,7 +25,7 @@ const FeatureList = [
         </b>
         <br />
         <a href="docs/java/getting-started">
-          Get started with the SDK for Java.
+          Get started with the SAP AI SDK for Java.
         </a>
       </div>
     )
@@ -50,7 +50,7 @@ const FeatureList = [
         </b>
         <br />
         <a href="docs/js/getting-started">
-          Get started with the SDK for JavaScript
+          Get started with the SAP AI SDK for JavaScript
         </a>
       </div>
     )

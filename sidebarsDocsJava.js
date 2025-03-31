@@ -2,17 +2,35 @@ module.exports = {
   docsJavaSidebar: [
     'overview-cloud-sdk-for-ai-java',
     'getting-started',
+    'connecting-to-ai-core',
     {
       type: 'category',
-      label: 'Guides',
+      label: 'Orchestration',
+      items: ['orchestration/chat-completion']
+    },
+    {
+      type: 'category',
+      label: 'Foundation Models',
       items: [
-        'guides/connecting-to-ai-core',
-        'guides/ai-core-deployment',
-        'guides/openai-chat-completion',
-        'guides/orchestration-chat-completion',
-        'guides/spring-ai-integration',
-        'guides/document-grounding'
+        {
+          type: 'category',
+          label: 'OpenAI',
+          items: [
+            'foundation-models/openai/chat-completion',
+            'foundation-models/openai/embedding'
+          ]
+        }
       ]
+    },
+    {
+      type: 'category',
+      label: 'Spring AI',
+      items: ['spring-ai/orchestration', 'spring-ai/openai']
+    },
+    {
+      type: 'category',
+      label: 'AI Core Services',
+      items: ['ai-core/ai-core-deployment', 'ai-core/document-grounding']
     },
     'release-notes',
     'frequently-asked-questions',

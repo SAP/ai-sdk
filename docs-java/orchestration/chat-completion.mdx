@@ -1,6 +1,6 @@
 ---
-id: orchestration-chat-completion
-title: Orchestration Service
+id: chat-completion
+title: Chat Completion
 hide_title: false
 hide_table_of_contents: false
 description: How to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
@@ -146,7 +146,8 @@ var prompt = new OrchestrationPrompt(inputParams);
 var result = client.chatCompletion(prompt, configWithTemplate);
 ```
 
-A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version. For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
+A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version.
+For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 You can find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating using templates from Prompt Registry.
 
@@ -226,7 +227,7 @@ var configWithMasking = config.withMaskingConfig(maskingConfig);
 
 var systemMessage = Message.system("Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
 var userMessage = Message.user("""
-                 I think the SDK is good, but could use some further enhancements.
+                 I think the SAP AI SDK is good, but could use some further enhancements.
                  My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                  """);
 
@@ -244,7 +245,8 @@ Use the [**grounding module**](https://help.sap.com/docs/sap-ai-core/sap-ai-core
 
 ### Vector Data Repository
 
-One way to provide grounding is by using a vector data repository. This can be done as follows.
+One way to provide grounding is by using a vector data repository.
+This can be done as follows.
 
 ```java
 // optional filter for collections
@@ -271,7 +273,8 @@ In this example, the AI model is provided with additional context in the form of
 
 ### Grounding via _help.sap.com_
 
-You can also use grounding based on _help.sap.com_ for convenient SAP specific grounding. This can be achieved as follows.
+You can also use grounding based on _help.sap.com_ for convenient SAP specific grounding.
+This can be achieved as follows.
 
 ```java
 var groundingHelpSapCom =
@@ -284,7 +287,7 @@ var prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
 var response = client.chatCompletion(prompt, configWithGrounding);
 ```
 
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
 ### Mask Grounding
 
@@ -346,7 +349,8 @@ You can also construct a message with an image directly, using the `ImageItem` c
 var message = Message.user(new ImageItem("https://url.to/image.jpg"));
 ```
 
-Some AI models, like GPT 4o, support additionally setting the detail level with which the image is read. This can be set via the `DetailLevel` parameter.
+Some AI models, like GPT 4o, support additionally setting the detail level with which the image is read.
+This can be set via the `DetailLevel` parameter.
 
 ```java
 var newMessage = message.withImage("https://url.to/image.jpg", ImageItem.DetailLevel.LOW);
@@ -356,7 +360,9 @@ Note, that currently only user messages are supported for image attachments.
 
 ### Add Multiple Text Inputs to a Message
 
-It's also possible to add multiple text inputs to a message. This can be useful for providing additional context to the AI model. You can add additional text inputs as follows.
+It's also possible to add multiple text inputs to a message.
+This can be useful for providing additional context to the AI model.
+You can add additional text inputs as follows.
 
 ```java
 var message = Message.user("What is chess about?");
@@ -369,11 +375,13 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 
 ## Response Format
 
-It is possible to set the response format for the chat completion. Available options are using `JSON_OBJECT`, `JSON_SCHEMA`, and `TEXT`, where `TEXT` is the default behavior.
+It is possible to set the response format for the chat completion.
+Available options are using `JSON_OBJECT`, `JSON_SCHEMA`, and `TEXT`, where `TEXT` is the default behavior.
 
 ### JSON_OBJECT
 
-Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON. This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
+Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON.
+This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
 
 ```java
 var config = new OrchestrationModuleConfig()
@@ -387,11 +395,13 @@ var prompt =
 var response = client.chatCompletion(prompt, configWithJsonResponse).getContent();
 ```
 
-Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt. The result might not adhere exactly to the given JSON format, but it will be a JSON object.
+Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt.
+The result might not adhere exactly to the given JSON format, but it will be a JSON object.
 
 ### JSON_SCHEMA
 
-If you want the response to not only consist of valid JSON but additionally adhere to a specific JSON schema, you can use `JSON_SCHEMA`. in order to do that, add a JSON schema to the configuration as shown below and the response will adhere to the given schema.
+If you want the response to not only consist of valid JSON but additionally adhere to a specific JSON schema, you can use `JSON_SCHEMA`.
+In order to do that, add a JSON schema to the configuration as shown below and the response will adhere to the given schema.
 
 ```java
 static class TestClass {
@@ -415,9 +425,12 @@ var prompt = new OrchestrationPrompt(Message.user("Some message."));
 var response = client.chatCompletion(prompt, configWithTemplate).getContent();
 ```
 
-Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`. Not all schemas are possible for OpenAI in strict mode. See [here](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) for more information.
+Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`.
+Not all schemas are possible for OpenAI in strict mode.
+See [here](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) for more information.
 
-There is also a way to generate the schema from a map of key-value pairs. This can be done as follows:
+There is also a way to generate the schema from a map of key-value pairs.
+This can be done as follows:
 
 <details>
 <summary>Click to expand code</summary>

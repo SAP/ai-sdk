@@ -4,11 +4,11 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] [Add Spring AI Chat Memory support](/docs/java/guides/spring-ai-integration#chat-memory)
-- [Orchestration] [Prompt templates can be consumed from registry.](/docs/java/guides/orchestration-chat-completion#templating)
-- [Orchestration] [Masking is now available on grounding.](/docs/java/guides/orchestration-chat-completion#mask-grounding)
-- [Orchestration] [Grounding via _help.sap.com_ is enabled.](/docs/java/guides/orchestration-chat-completion#grounding-via-helpsapcom)
-- [OpenAI] [Spring AI integration for embedding calls.](/docs/java/guides/spring-ai-integration#embedding)
+- [Orchestration] [Add Spring AI Chat Memory support](spring-ai/orchestration#chat-memory)
+- [Orchestration] [Prompt templates can be consumed from registry.](orchestration/chat-completion#templating)
+- [Orchestration] [Masking is now available on grounding.](orchestration/chat-completion#mask-grounding)
+- [Orchestration] [Grounding via _help.sap.com_ is enabled.](orchestration/chat-completion#grounding-via-helpsapcom)
+- [OpenAI] [Spring AI integration for embedding calls.](spring-ai/openai#embedding)
 
 ## 1.4.0 - February 28, 2025
 
@@ -16,19 +16,20 @@
 
 ### 🔧 Compatibility Notes
 
-- [Orchestration] The constructors `UserMessage(MessageContent)` and `SystemMessage(MessageContent)` are removed. Use `Message.user(String)`, `Message.user(ImageItem)`, or `Message.system(String)` instead.
+- [Orchestration] The constructors `UserMessage(MessageContent)` and `SystemMessage(MessageContent)` are removed.
+  Use `Message.user(String)`, `Message.user(ImageItem)`, or `Message.system(String)` instead.
 - Deprecate `getCustomField(String)` in favor of `toMap()` on generated model classes.
   - `com.sap.ai.sdk.core.model.*`
   - `com.sap.ai.sdk.orchestration.model.*`
 
 ### ✨ New Functionality
 
-- [Orchestration] [Add Spring AI tool calling](/docs/java/guides/spring-ai-integration#tool-calling).
-- [Orchestration] [Add new convenient methods to set the response format for Orchestration.](/docs/java/guides/orchestration-chat-completion#response-format)
-- [Document Grounding] [Add Document Grounding Client](guides/document-grounding)
+- [Orchestration] [Add Spring AI tool calling](spring-ai/orchestration#tool-calling).
+- [Orchestration] [Add new convenient methods to set the response format for Orchestration.](orchestration/chat-completion#response-format)
+- [Document Grounding] [Add Document Grounding Client](ai-core/document-grounding)
   - `com.sap.ai.sdk:document-grounding:1.4.0`
 - [OpenAI] New generated model classes introduced for _AzureOpenAI_ specification dated 2024-10-21.
-- [OpenAI] Introducing [new user interface](/docs/java/guides/openai-chat-completion#new-user-interface-v140) for chat completion wrapping the generated model classes.
+- [OpenAI] Introducing [new user interface](foundation-models/openai/chat-completion#new-user-interface-v140) for chat completion wrapping the generated model classes.
   - `OpenAiChatCompletionRequest` and `OpenAiChatCompletionResponse`' for high level request and response handling.
   - `OpenAiUserMessage`, `OpenAiSystemMessage`, `OpenAiAssistantMessage` and `OpenAiToolMessage` for message creation for different content types.
   - `OpenAiToolChoice` for configuring chat completion requests with tool selection strategy.
@@ -46,9 +47,9 @@
 
 - Upgrade to release 2502a of AI Core.
 - Orchestration:
-  - [Add `LlamaGuardFilter`](guides/orchestration-chat-completion#filtering.
-  - [Convenient methods to create messages containing images and multiple text inputs](guides/orchestration-chat-completion#using-images)
-  - [Enable setting the response format](guides/orchestration-chat-completion#response-format)
+  - [Add `LlamaGuardFilter`](orchestration/chat-completion#filtering).
+  - [Convenient methods to create messages containing images and multiple text inputs](orchestration/chat-completion#using-images)
+  - [Enable setting the response format](orchestration/chat-completion#response-format)
 
 ## 1.2.0 - January 30, 2025
 
@@ -63,8 +64,8 @@
 ### ✨ New Functionality
 
 - New Orchestration features:
-  - [Spring AI integration](guides/spring-ai-integration)
-  - [Add Grounding configuration convenience](guides/orchestration-chat-completion#grounding)
+  - [Spring AI integration](spring-ai/orchestration)
+  - [Add Grounding configuration convenience](orchestration/chat-completion#grounding)
   - Images are now supported as input in newly introduced `MultiChatMessage`.
   - `MultiChatMessage` also allows for multiple content items (text or image) in one object.
   - Grounding input can be masked with `DPIConfig`.
