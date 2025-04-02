@@ -294,7 +294,8 @@ Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the
 
 **Since v1.6.0**
 
-You can pass tool definitions to the model to enable tool calling. Below is an example of a tool named `WeatherMethod`, which calculates a response based on the location and temperature unit provided.
+You can pass tool definitions to the model to enable tool calling.
+Below is an example of a tool named `WeatherMethod`, which calculates a response based on the location and temperature unit provided.
 
 ```java
 var question = "What's the weather in Berlin in Celsius";
@@ -329,4 +330,6 @@ messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()))
 var finalResponse = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
 ```
 
-The first call lets the LLM extract structured arguments from natural language. You can use this directly in your application. The second call is optional and lets the LLM turn the tool’s result into a user-friendly response.
+The first call lets the LLM extract structured arguments from natural language.
+You can use this directly in your application.
+The second call is optional and lets the LLM turn the tool’s result into a user-friendly response.
