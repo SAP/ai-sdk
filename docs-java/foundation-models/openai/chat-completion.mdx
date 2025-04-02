@@ -289,3 +289,44 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 </details>
+
+## Chat completion with tool calls
+
+**Since v1.6.0**
+
+You can pass tool definitions to the model to enable tool calling. Below is an example of a tool named `WeatherMethod`, which calculates a response based on the location and temperature unit provided.
+
+```java
+var question = "What's the weather in Berlin in Celsius";
+
+// create a function tool
+var schemaMap = generateSchema(WeatherMethod.Request.class);
+var function = new FunctionObject()
+  .name("weather")
+  .description("Get the weather for the given location")
+  .parameters(schemaMap);
+var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+
+var messages = new ArrayList<OpenAiMessage>();
+messages.add(OpenAiMessage.user("What's the weather in Berlin in Celsius"));
+
+var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
+var response = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request); // initial request
+
+var assistantMessage = response.getMessage();
+messages.add(assistantMessage);
+
+var toolCall = response.getToolCalls().get(0);
+if (!(toolCall instanceof OpenAiFunctionCall functionCall)) {
+throw new IllegalArgumentException(
+    "Expected a function call, but got: %s".formatted(assistantMessage));
+}
+
+var arguments = parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
+var weatherMethod = new WeatherMethod().getCurrentWeather(arguments); // tool execution
+messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()));
+
+var finalResponse = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
+```
+
+The first call lets the LLM extract structured arguments from natural language. You can use this directly in your application. The second call is optional and lets the LLM turn the tool’s result into a user-friendly response.
