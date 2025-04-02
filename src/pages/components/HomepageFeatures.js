@@ -17,12 +17,15 @@ const FeatureList = [
     ),
     description: (
       <div data-nosnippet>
-        The SAP Cloud SDK for AI Java allows you to develop, extend, and
-        communicate with SAP solutions SAP S/4HANA Cloud, SAP SuccessFactors,
-        and many others.
+        <b>
+          🚧 Work in Progress: Documentation Portal 🚧
+          <br />
+          We are actively working on the documentation portal. Expect frequent
+          updates and changes.
+        </b>
         <br />
         <a href="docs/java/getting-started">
-          Get started with the SDK for Java.
+          Get started with the SAP AI SDK for Java.
         </a>
       </div>
     )
@@ -39,12 +42,15 @@ const FeatureList = [
     ),
     description: (
       <div data-nosnippet>
-        The SAP Cloud SDK for AI JavaScript helps you build cloud-based apps and
-        extensions to SAP solutions using the power and flexibility of Node.js
-        and its ecosystem.
+        <b>
+          🚧 Work in Progress: Documentation Portal 🚧
+          <br />
+          We are actively working on the documentation portal. Expect frequent
+          updates and changes.
+        </b>
         <br />
         <a href="docs/js/getting-started">
-          Get started with the SDK for JavaScript
+          Get started with the SAP AI SDK for JavaScript
         </a>
       </div>
     )

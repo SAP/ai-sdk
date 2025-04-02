@@ -1,9 +1,9 @@
 ---
-id: spring-ai-integration
-title: Spring AI Integration
+id: orchestration
+title: Orchestration Integration
 hide_title: false
 hide_table_of_contents: false
-description: How to use our Spring AI integration with our clients in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
+description: How to use our Spring AI integration with our Orchestration client in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
 keywords:
   - sap
   - cloud
@@ -11,17 +11,9 @@ keywords:
   - ai
 ---
 
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Orchestration Chat Completion](#orchestration-chat-completion)
-- [Orchestration Masking](#orchestration-masking)
-- [Stream chat completion](#stream-chat-completion)
-- [Tool Calling](#tool-calling)
-
 ## Introduction
 
-This guide provides examples of how to use our Spring AI integration with our clients in SAP AI Core
+This guide provides examples of how to use our Spring AI integration with our Orchestration client in SAP AI Core
 for chat completion tasks using the SAP AI SDK for Java.
 
 First, add the Spring AI dependency to your `pom.xml`:
@@ -45,18 +37,18 @@ First, add the Spring AI dependency to your `pom.xml`:
 
 :::note Spring AI Milestone Version
 Note that currently no stable version of Spring AI exists just yet.
-The AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
+The SAP AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
 
-Please be aware that future versions of the AI SDK may increase the Spring AI version.
+Please be aware that future versions of the SAP AI SDK may increase the Spring AI version.
 :::
 
-## Orchestration Chat Completion
+## Chat Completion
 
 The Orchestration client is integrated in Spring AI classes:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt = new Prompt("What is the capital of France?", opts);
@@ -65,13 +57,13 @@ ChatResponse response = client.call(prompt);
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-## Orchestration Masking
+## Masking
 
 Configure Orchestration modules withing Spring AI:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
 val masking =
     DpiMasking.anonymization()
@@ -96,7 +88,7 @@ to the frontend in real-time.
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt =
@@ -135,7 +127,7 @@ Then add your tool to the options:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
@@ -145,6 +137,30 @@ options.setInternalToolExecutionEnabled(false);// tool execution is not yet avai
 Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
 ChatResponse response = client.call(prompt);
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
+## Chat Memory
+
+Create a Spring AI `ChatClient` from our `OrchestrationChatModel` and add a chat memory advisor like so:
+
+```java
+ChatModel client = new OrchestrationChatModel();
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
+
+val memory = new InMemoryChatMemory();
+val advisor = new MessageChatMemoryAdvisor(memory);
+val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+
+Prompt prompt1 = new Prompt("What is the capital of France?", defaultOptions);
+String content1 = cl.prompt(prompt1).call().content();
+// content1 is "Paris"
+
+Prompt prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
+String content2 = cl.prompt(prompt2).call().content();
+// chat memory will remember that the user is inquiring about France.
 ```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
