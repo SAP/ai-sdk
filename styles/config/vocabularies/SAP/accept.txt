@@ -1,5 +1,5 @@
 SAP S/4HANA
-SAP AI SDK
+SAP Cloud SDK for AI
 AI Core
 SAP Generative AI Hub
 SAP Cloud SDK

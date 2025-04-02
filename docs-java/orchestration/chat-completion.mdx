@@ -3,7 +3,7 @@ id: chat-completion
 title: Chat Completion
 hide_title: false
 hide_table_of_contents: false
-description: How to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
+description: How to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP Cloud SDK for AI for Java.
 keywords:
   - sap
   - cloud
@@ -13,7 +13,7 @@ keywords:
 
 ## Introduction
 
-This guide provides examples of how to use the [Orchestration service in SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) for chat completion tasks using the SAP AI SDK for Java.
+This guide provides examples of how to use the [Orchestration service in SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) for chat completion tasks using the SAP Cloud SDK for AI for Java.
 
 For detailed information on the individual capabilities of the Orchestration service, please refer to the [official documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
 
@@ -227,7 +227,7 @@ var configWithMasking = config.withMaskingConfig(maskingConfig);
 
 var systemMessage = Message.system("Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
 var userMessage = Message.user("""
-                 I think the SAP AI SDK is good, but could use some further enhancements.
+                 I think the SAP Cloud SDK for AI is good, but could use some further enhancements.
                  My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                  """);
 

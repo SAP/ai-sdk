@@ -1,0 +1,28 @@
+---
+id: embedding
+title: Embedding
+hide_title: false
+hide_table_of_contents: false
+description: How to use the SAP Cloud SDK for AI to perform embedding tasks using Azure OpenAI models through SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+---
+
+Initialize the `AzureOpenAiEmbeddingClient` by following the instructions in the [Client Initialization](../../foundation-models#client-initialization) section.
+
+Currently, the client sends request with Azure OpenAI API version `2024-10-21`.
+We are continuously updating the client to match the latest API specification.
+You can overwrite the API version by setting the `api-version` parameter in the `CustomRequestConfig` object.
+Refer to the [Custom Request Configuration](../../foundation-models#custom-request-configuration) section for more details.
+
+## Making Requests
+
+```ts
+const response = await client.run({
+  input: 'AI is fascinating'
+});
+const embedding = response.getEmbedding();
+```

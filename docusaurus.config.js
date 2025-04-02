@@ -65,7 +65,7 @@ module.exports = {
         },
         {
           label: '🚀 JavaScript',
-          to: 'docs/js/overview',
+          to: 'docs/js/overview-cloud-sdk-for-ai-js',
           position: 'left',
           docsPluginId: 'docs-js',
           activeBasePath: 'docs/js',
@@ -119,7 +119,7 @@ module.exports = {
               href: 'https://github.com/SAP/ai-sdk-js'
             },
             {
-              label: 'Sample repository',
+              label: 'Sample Code',
               href: 'https://github.com/SAP/ai-sdk-js/tree/main/sample-code'
             },
             {

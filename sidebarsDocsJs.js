@@ -1,3 +1,34 @@
 module.exports = {
-  docsJsSidebar: ['overview', 'getting-started']
+  docsJsSidebar: [
+    'overview-cloud-sdk-for-ai-js', 
+    'getting-started',
+    'connecting-to-ai-core',
+    {
+      type: 'category',
+      label: 'Foundation Models',
+      link: {
+        type: 'doc',
+        id: 'foundation-models/foundation-models'
+      },
+      items: [
+        {
+          type: 'category',
+          label: 'OpenAI',
+          items: [
+            'foundation-models/openai/chat-completion', 
+            'foundation-models/openai/embedding'
+          ]
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'AI Core Services',
+      items: [
+        'ai-core/ai-api', 
+        'ai-core/document-grounding'
+      ]
+    },
+    'error-handling'
+  ]
 };

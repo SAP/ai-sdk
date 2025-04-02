@@ -3,8 +3,7 @@ id: getting-started
 title: Getting Started
 hide_title: false
 hide_table_of_contents: false
-sidebar_label: Getting Started
-description: Get up to speed with the SAP Cloud SDK for JavaScript in no time
+description: Get up to speed with SAP Cloud SDK for AI in no time
 keywords:
   - sap
   - cloud
@@ -12,8 +11,68 @@ keywords:
   - ai
 ---
 
-:::warning
-🚧 Work in Progress: Documentation Portal 🚧
+### What You'll Build
 
-We are actively working on the documentation portal. Expect frequent updates and changes.
-:::
+In this quickstart, you'll use the OpenAI GPT-4o model through the [Orchestration Service of AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) for generating text.
+The application will send a prompt to the AI model and display the generated response.
+
+### Prerequisites
+
+This quickstart assumes you are using the `default` resource group of your AI Core instance.
+If you want or need to [use a different resource group](orchestration/chat-completion#create-a-client), please ensure that resource group has an [orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) available.
+
+### Add the SAP Cloud SDK for AI as a Dependency
+
+Install `@sap-ai-sdk/orchestration` package with your package manager, e.g., npm.
+
+```bash
+npm install @sap-ai-sdk/orchestration
+```
+
+### Use the Orchestration API
+
+Initialize an orchestration client with an LLM model and a prompt template.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o'
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'Answer the question: {{?question}}' }
+    ]
+  }
+});
+```
+
+Next, we send a chat completion request with a value defined for the input parameter `question`.
+The value replaces the `{{?question}}` placeholder in the template.
+
+```ts
+const response = await orchestrationClient.chatCompletion({
+  inputParams: {
+    question: 'Why is the phrase "Hello world!" so famous?'
+  }
+});
+console.log(response.getContent());
+```
+
+Use `getContent()` method to get the generated text.
+
+### Run the Application Locally
+
+Create a `.env` file with the following content to define the `AICORE_SERVICE_KEY` environment variable storing the service key of your AI Core service instance.
+
+```txt
+AICORE_SERVICE_KEY='{
+  "clientid": "...",
+  ...
+}'
+```
+
+Load the `.env` file by using [dotenv](https://www.npmjs.com/package/dotenv) or running `node --env-file=.env ...`.
+
+Please refer to [Providing a Service Binding Locally](connecting-to-ai-core#providing-a-service-binding-locally) section for more information.

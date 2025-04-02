@@ -11,17 +11,17 @@ keywords:
   - ai
 ---
 
-The SAP AI SDK uses the [`Destination` concept of the SAP Cloud SDK](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/destination-service) to connect to AI Core.
+The SAP Cloud SDK for AI uses the [`Destination` concept of the SAP Cloud SDK](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/destination-service) to connect to AI Core.
 This allows for a seamless integration in BTP and offers a wide variety of managing the credentials for the connection.
 
 ## Using a Service Binding
 
-By default, the SAP AI SDK will look for an `aicore` service binding in the environment of the application.
+By default, the SAP Cloud SDK for AI will look for an `aicore` service binding in the environment of the application.
 
 When running on SAP BTP, [create an instance of the AI Core service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-service-instance) and bind it to your application.
-The SAP AI SDK will automatically detect the service binding and use it to connect to AI Core.
+The SAP Cloud SDK for AI will automatically detect the service binding and use it to connect to AI Core.
 
-If no service binding could be found (and no other destination has been given), the SAP AI SDK will throw an exception:
+If no service binding could be found (and no other destination has been given), the SAP Cloud SDK for AI will throw an exception:
 
 > Could not find any matching service bindings for service identifier 'aicore'
 
@@ -116,18 +116,18 @@ You can define a destination in the BTP Destination Service and use that to conn
 
 2. Create a new Destination in the SAP BTP Cockpit with the following properties:
 
-- **Name**: `my-aicore`
-- **Type**: `HTTP`
-- **URL**: `[serviceurls.AI_API_URL]`
-- **Proxy Type**: `Internet`
-- **Authentication**: `OAuth2ClientCredentials`
-- **Client ID**: `[clientid]`
-- **Client Secret**: `[clientsecret]`
-- **Token Service URL Type**: `Dedicated`
-- **Token Service URL**: `[url]/oauth/token`
+    - **Name**: `my-aicore`
+    - **Type**: `HTTP`
+    - **URL**: `[serviceurls.AI_API_URL]`
+    - **Proxy Type**: `Internet`
+    - **Authentication**: `OAuth2ClientCredentials`
+    - **Client ID**: `[clientid]`
+    - **Client Secret**: `[clientsecret]`
+    - **Token Service URL Type**: `Dedicated`
+    - **Token Service URL**: `[url]/oauth/token`
 
-  Fill in the values for URL, client ID, client secret, and token service URL from the service key JSON.
-  Make sure to add `/oauth/token` in the token service URL.
+    Fill in the values for URL, client ID, client secret, and token service URL from the service key JSON.
+    Make sure to add `/oauth/token` in the token service URL.
 
 </details>
 
