@@ -304,7 +304,7 @@ class WeatherMethod {
   record Request(String location, Unit unit) {}
   record Response(double temp, Unit unit) {}
 
-  Response getCurrentWeather(Request request) {
+  static Response getCurrentWeather(Request request) {
     int temperature = request.location.hashCode() % 30;
     return new Response(temperature, request.unit);
   }
