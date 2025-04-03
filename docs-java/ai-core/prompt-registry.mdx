@@ -45,7 +45,7 @@ See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sd
 You can create a reusable prompt for a specific use case, including placeholders that are filled later.
 
 ```java
-var client = new PromptClient();
+PromptClient client = new PromptClient();
 
 var spec =
     PromptTemplateSpec.create()
@@ -91,7 +91,7 @@ You can retrieve a prompt template by ID, or by the combination of name, scenari
 Prompt templates can also be retrieved and consumed in orchestration. For more information, see [Templating](../orchestration/chat-completion#templating).
 
 ```java
-var client = new PromptClient();
+PromptClient client = new PromptClient();
 
 PromptTemplateListResponse templates = client.listPromptTemplates();
 ```
@@ -103,7 +103,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 You can list the history of edits to prompt templates, for imperatively managed prompt templates only.
 
 ```java
-var client = new PromptClient();
+PromptClient client = new PromptClient();
 
 PromptTemplateListResponse history = client.listPromptTemplateHistory("categorization", "0.0.1", NAME);
 ```
@@ -115,7 +115,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 You can fill a prompt template by ID, or by the combination of name, scenario, and version.
 
 ```java
-var client = new PromptClient();
+PromptClient client = new PromptClient();
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
     "212a9b9b-a532-4c1c-8852-bf75de853d74",
@@ -131,7 +131,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 You can import a declarative prompt template as a single file export in yaml format.
 
 ```java
-var client = new PromptClient();
+PromptClient client = new PromptClient();
 
 Resource template = new ClassPathResource("prompt-template.yaml");
 PromptTemplatePostResponse response = client.importPromptTemplate(template.getFile());
@@ -152,7 +152,7 @@ Currently not working
 Delete a specific version of the prompt template, for imperatively managed prompt templates only.
 
 ```java
-var client = new PromptClient();
+PromptClient client = new PromptClient();
 
 PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId())
 ```
