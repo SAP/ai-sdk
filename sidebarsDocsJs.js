@@ -40,7 +40,8 @@ module.exports = {
       label: 'AI Core Services',
       items: [
         'ai-core/ai-api', 
-        'ai-core/document-grounding'
+        'ai-core/document-grounding',
+        'ai-core/prompt-registry'
       ]
     },
     'error-handling'

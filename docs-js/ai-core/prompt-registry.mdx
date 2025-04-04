@@ -1,0 +1,63 @@
+---
+id: prompt-registry
+title: Prompt Registry
+hide_title: false
+hide_table_of_contents: false
+description: How to use SAP Cloud SDK for AI to interact with the prompt registry service.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - prompt
+  - registry
+---
+
+The `@sap-ai-sdk/prompt-registry` package incorporates generative AI prompt registry capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+## Installation
+
+```
+$ npm install @sap-ai-sdk/prompt-registry
+```
+
+:::warning
+This package contains generated code.
+Updates to this package may include breaking changes.
+
+To ensure compatibility and manage updates effectively, we strongly recommend using the tilde (`~`) version range in your project instead of the caret (`^`).
+This approach will allow patch-level updates while preventing potentially breaking minor version changes.
+:::
+
+## Usage
+
+The example below demonstrate a sample usage of APIs in SAP AI Core prompt registry service.
+In addition, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/prompt-registry.ts).
+
+### List Prompt Templates
+
+```ts
+const response: PromptTemplateListResponse =
+  await PromptTemplatesApi.listPromptTemplates({
+    scenario: 'test'
+  }).execute();
+```
+
+### Custom Destination
+
+When calling the `execute()` method, it is possible to provide a custom destination for your SAP AI Core instance.
+For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const response: PromptTemplateListResponse =
+  await PromptTemplatesApi.listPromptTemplates({
+    scenario: 'test'
+  }).execute({
+    destinationName: 'my-destination'
+  });
+```
+
+By default, the fetched destination is cached.
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
+
+For more information about configuring a destination, refer to the [Using a Destination](connecting-to-ai-core#using-a-destination) section.

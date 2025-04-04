@@ -248,6 +248,10 @@ module.exports = {
             to: '/docs/js/ai-core/document-grounding'
           },
           {
+            from: '/docs/js/guides/prompt-registry',
+            to: '/docs/js/ai-core/prompt-registry'
+          },
+          {
             from: '/docs/js/guides/openai-chat-completion',
             to: '/docs/js/foundation-models/openai/chat-completion'
           },
