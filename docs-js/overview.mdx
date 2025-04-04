@@ -30,9 +30,27 @@ The SAP Cloud SDK for AI simplifies the setup and interaction with SAP AI Core, 
 To use the SAP Cloud SDK for AI in a JavaScript/TypeScript application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
 
 - Node.js v20 or higher.
+- Your project supports ESM.
 - Access to an **SAP AI Core Service** instance.
 
 Please refer to [Connecting to AI Core](connecting-to-ai-core) section for **how to connect the SAP Cloud SDK for AI to AI Core**.
+
+## Availability of Generative AI Models
+
+For a detailed list of available models, refer to the SAP note [Availability of Generative AI Models](https://me.sap.com/notes/3437766).
+
+### Deprecated Models
+
+The following models are deprecated in SAP Cloud SDK for AI and should not be used.
+Replace them with the recommended alternatives.
+
+| Model Name                  | Replacement                                        |
+| --------------------------- | -------------------------------------------------- |
+| `text-embedding-ada-002`    | `text-embedding-3-small`, `text-embedding-3-large` |
+| `meta--llama3-70b-instruct` | `meta--llama3.1-70b-instruct`                      |
+| `gpt-35-turbo`              | `gpt-4o-mini`                                      |
+| `gpt-35-turbo-16k`          | `gpt-4o-mini`                                      |
+| `gpt-4-32k`                 | `gpt-4o`                                           |
 
 ## Contribute, Support and Feedback
 

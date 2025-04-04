@@ -5,6 +5,11 @@ module.exports = {
     'connecting-to-ai-core',
     {
       type: 'category',
+      label: 'Orchestration',
+      items: ['orchestration/chat-completion']
+    },
+    {
+      type: 'category',
       label: 'Foundation Models',
       link: {
         type: 'doc',
@@ -20,6 +25,15 @@ module.exports = {
           ]
         }
       ]
+    },
+    {
+      type: 'category',
+      label: 'LangChain',
+      link: {
+        type: 'doc',
+        id: 'langchain/langchain'
+      },
+      items: ['langchain/orchestration', 'langchain/openai']
     },
     {
       type: 'category',

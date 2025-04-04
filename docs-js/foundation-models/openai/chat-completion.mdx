@@ -101,16 +101,13 @@ console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 
 ### Streaming the Delta Content
 
-The client provides a helper method to extract the text chunks as strings:
+Use `toContentStream()` method to create a stream generating delta content string.
 
 ```ts
 for await (const chunk of response.stream.toContentStream()) {
   console.log(chunk); // will log the delta content
 }
 ```
-
-Each chunk will be a defined string containing the delta content.
-Set `choiceIndex` parameter for `toContentStream()` method to stream a specific choice.
 
 ### Streaming with Abort Controller
 
