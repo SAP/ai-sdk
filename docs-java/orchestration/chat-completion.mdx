@@ -6,9 +6,11 @@ hide_table_of_contents: false
 description: How to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
 keywords:
   - sap
-  - cloud
-  - sdk
   - ai
+  - sdk
+  - cloud
+  - orchestration
+  - chat
 ---
 
 ## Introduction
@@ -78,9 +80,9 @@ Add the following dependency to your `pom.xml` file:
 
 See [an example `pom.xml` in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml).
 
-### Create a Client
+### Create a Client and Choose an LLM
 
-To use the Orchestration service, create a client and a configuration object:
+To use the Orchestration service, initialize an orchestration client with an LLM:
 
 ```java
 var client = new OrchestrationClient();
@@ -115,6 +117,37 @@ String messageResult = result.getContent();
 
 In this example, the Orchestration service generates a response to the user message "Hello world! Why is this phrase so famous?".
 The LLM response is available as the first choice under the `result.getOrchestrationResult()` object.
+
+## Harmonized API
+
+The [Harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api?locale=en-US) lets you use different foundation models without the need to change the client code.
+You can switch from one LLM to another easily like the example below.
+
+```java
+// Original config for using GPT 4o
+/*
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+*/
+
+// Switch to Claude 3.5 Sonnet
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.CLAUDE_3_5_SONNET);
+```
+
+:::tip Available LLMs on SAP Generative AI Hub
+Thanks to the harmonized API, all available LLMs on SAP Generative AI Hub can be consumed via orchestration including:
+
+- OpenAI GPT 4o
+- OpenAI o1
+- OpenAI o3 mini
+- AWS Anthropic Claud
+- AWS Amazon Nova
+- GCP Gemini
+- Mistral AI
+  :::
+
+Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
 
 ## Templating
 
