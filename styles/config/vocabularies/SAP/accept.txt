@@ -139,3 +139,4 @@ lookups
 
 alwaysSubscriber
 jQuery
+Zod
