@@ -3,7 +3,7 @@ id: orchestration
 title: Orchestration Integration
 hide_title: false
 hide_table_of_contents: false
-description: How to use our Spring AI integration with our Orchestration client in SAP AI Core for chat completion tasks using the SAP Cloud SDK for AI for Java.
+description: How to use our Spring AI integration with our Orchestration client in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
 keywords:
   - sap
   - cloud
@@ -14,7 +14,7 @@ keywords:
 ## Introduction
 
 This guide provides examples of how to use our Spring AI integration with our Orchestration client in SAP AI Core
-for chat completion tasks using the SAP Cloud SDK for AI for Java.
+for chat completion tasks using the SAP AI SDK for Java.
 
 First, add the Spring AI dependency to your `pom.xml`:
 
@@ -37,9 +37,9 @@ First, add the Spring AI dependency to your `pom.xml`:
 
 :::note Spring AI Milestone Version
 Note that currently no stable version of Spring AI exists just yet.
-The SAP Cloud SDK for AI currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
+The SAP AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
 
-Please be aware that future versions of the SAP Cloud SDK for AI may increase the Spring AI version.
+Please be aware that future versions of the SAP AI SDK may increase the Spring AI version.
 :::
 
 ## Chat Completion
@@ -59,7 +59,7 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 
 ## Masking
 
-Configure Orchestration modules within Spring AI:
+Configure Orchestration modules withing Spring AI:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
@@ -80,31 +80,6 @@ ChatResponse response = client.call(prompt);
 
 Please
 find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
-
-## Filtering
-
-Apply [input filtering](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering) or [output filtering](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering) to the LLM call:
-
-```java
-ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
-var filterConfig = new AzureContentFilter()
-        .hate(AzureFilterThreshold.ALLOW_SAFE)
-        .selfHarm(AzureFilterThreshold.ALLOW_SAFE)
-        .sexual(AzureFilterThreshold.ALLOW_SAFE)
-        .violence(AzureFilterThreshold.ALLOW_SAFE);
-
-// Use config.withOutputFiltering(filterConfig) for output filtering
-var opts = new OrchestrationChatOptions(config.withInputFiltering(filterConfig));
-var prompt = new Prompt("'We shall spill blood tonight', said the operator in charge.", opts);
-
-ChatResponse response = client.call(prompt);
-```
-
-Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
-
-For detailed information on the behaviour of input and output filters, check the [Filter Documentation for Orchestration](../orchestration/chat-completion#filtering).
 
 ## Stream chat completion
 

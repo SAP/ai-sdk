@@ -3,7 +3,7 @@ id: chat-completion
 title: Chat Completion
 hide_title: false
 hide_table_of_contents: false
-description: How to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP Cloud SDK for AI for Java.
+description: How to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
 keywords:
   - sap
   - cloud
@@ -13,7 +13,7 @@ keywords:
 
 ## Introduction
 
-This guide provides examples of how to use the [Orchestration service in SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) for chat completion tasks using the SAP Cloud SDK for AI for Java.
+This guide provides examples of how to use the [Orchestration service in SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) for chat completion tasks using the SAP AI SDK for Java.
 
 For detailed information on the individual capabilities of the Orchestration service, please refer to the [official documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
 
@@ -134,7 +134,7 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 
 In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
 
-Alternatively, you can use already prepared templates from the [**Prompt Registry**](../ai-core/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
+Alternatively, you can use already prepared templates from the [**Prompt Registry**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
 
 ```java
 var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
@@ -227,7 +227,7 @@ var configWithMasking = config.withMaskingConfig(maskingConfig);
 
 var systemMessage = Message.system("Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
 var userMessage = Message.user("""
-                 I think the SAP Cloud SDK for AI is good, but could use some further enhancements.
+                 I think the SAP AI SDK is good, but could use some further enhancements.
                  My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                  """);
 
