@@ -4,20 +4,24 @@ title: About the SAP Cloud SDK for AI
 hide_title: false
 hide_table_of_contents: false
 sidebar_label: About the SAP Cloud SDK for AI
-description: SAP Cloud SDK for AI is the simplest and fastest way to extend SAP services and applications in the cloud.
+description: SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service.
 keywords:
   - sap
-  - cloud
-  - sdk
   - ai
+  - sdk
+  - orchestration
+  - llm
+  - cloud
 ---
-
-import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Introduction
 
-The SAP Cloud SDK for AI is a set of libraries and tools for developers to build cloud-native applications on the SAP Business Technology Platform (SAP BTP).
-It abstracts the complexities of the SAP BTP, thus allowing you to focus on the application's business logic.
+SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
+
+Integrate chat completion into your business applications with SAP Cloud SDK for AI.
+Leverage the SAP Generative AI Hub of [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) to make use of templating, grounding, data masking, content filtering and more.
+Set up your SAP AI Core instance with SAP Cloud SDK for AI.
+
 The SAP Cloud SDK for AI is available in two flavors:
 
 - [SAP Cloud SDK for AI Java](/docs/java/overview-cloud-sdk-for-ai-java)
@@ -25,12 +29,20 @@ The SAP Cloud SDK for AI is available in two flavors:
 
 ## Capabilities
 
-- Simplify development using connectivity abstractions for SAP BTP: handling destinations, proxies, and authentication for cloud and on-premise systems
-- Prevent cascading failures through common resiliency patterns such as retry and circuit-breaker
-- Improve application performance through configurable and tenant-aware caching solutions
-- Access application logs using standard logging frameworks integrations
-- Build multi-tenant applications on supported environments like Cloud Foundry, Kubernetes and Kyma
-- Chat completion, templating, grounding, data masking, and content filtering.
+- **Harmonized API** to consume [all LLMs available on SAP Generative AI Hub](https://me.sap.com/notes/3437766)
+- **Seamless framework integration** with LangChain (for JS) and Spring AI (for Java)
+- **Advanced LLM features:**
+  - Streaming
+  - Prompt Templating
+  - Multimodality
+- **Retrieval Augmented Generation (RAG)** for more relevant LLM responses.
+- **Essential Business AI capabilities** to ensure security and compliance:
+  - Content Moderation
+  - Data Masking
+- **Native, type safe client** for:
+  - AI Core API
+  - Document Grounding API
+  - Prompt Registry API
 
 For a complete overview of supported features, check out the [feature matrix](./feature-matrix.mdx).
 
@@ -42,22 +54,7 @@ Both [JavaScript / TypeScript](https://github.com/SAP/ai-sdk-js) and [Java](http
 
 A few prominent products using the SAP Cloud SDK for AI are:
 
-- [SAP Cloud Application Lifecycle Management](https://support.sap.com/en/alm.html)
-- [SAP Cloud Application Programming Model](https://cap.cloud.sap/docs/)
-- [SAP Cloud for Real Estate](https://www.sap.com/products/real-estate-facilities-mgmt-cloud.html)
-- [SAP Portfolio and Project Management](https://www.sap.com/germany/products/project-portfolio-management.html)
-- [SAP Business Technology Platform Workflow](https://help.sap.com/viewer/product/WORKFLOW_SERVICE/Cloud/en-US)
-
-## SAP Cloud Application Programming Model
-
-The [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/) is a framework of languages, libraries, and tools for building enterprise-grade services and applications.
-With CAP, you can model an application's business domains and services in Core Data Services (CDS), add the business logic and automatically expose it via service APIs.
-CAP is recommended for building APIs (OData, REST, Messaging) and consuming and emitting Enterprise Messages for SAP S/4HANA.
-
-### SAP Cloud SDK for AI & SAP Cloud Application Programming Model
-
-CAP plays on the API and service publishing side, while SAP Cloud SDK for AI deals with API consumption and deployment of applications to SAP BTP.
-The SAP Cloud SDK for AI is also used internally by CAP for consuming remote services of SAP and other solutions.
-If you do not interact with other services or SAP solutions, you may not need the capabilities of the SAP Cloud SDK for AI.
-
-Depending on your use case, you can use SAP Cloud SDK for AI and SAP Cloud Application Programming Model individually or in combination.
+- SAP Concur
+- SAP Ariba
+- SAP Signavio
+- Many other internal and external products

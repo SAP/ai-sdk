@@ -14,7 +14,7 @@ This repository contains sources for the [SAP Cloud SDK for AI Documentation](ht
 Find it here:
 
 - [Javascript/Typescript](https://github.com/SAP/ai-sdk-js).
-- [Java](https://github.com/SAP/ai-sdk/issues).
+- [Java](https://github.com/SAP/ai-sdk-java).
 
 ## Requirements and Setup
 

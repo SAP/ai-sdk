@@ -30,7 +30,11 @@ module.exports = {
     {
       type: 'category',
       label: 'AI Core Services',
-      items: ['ai-core/ai-core-deployment', 'ai-core/document-grounding']
+      items: [
+        'ai-core/ai-core-deployment',
+        'ai-core/document-grounding',
+        'ai-core/prompt-registry'
+      ]
     },
     'release-notes',
     'frequently-asked-questions',

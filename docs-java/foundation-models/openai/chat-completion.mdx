@@ -21,7 +21,8 @@ This means that these model classes are not guaranteed to be stable and may chan
 They are safe to use, but may require updates even in minor releases.
 :::
 
-### New User Interface (v1.4.0)
+<details>
+<summary>New User Interface (v1.4.0)</summary>
 
 We're excited to introduce a new user interface for OpenAI chat completions starting with **version 1.4.0**. This update is designed to improve the SAP Cloud SDK for AI by:
 
@@ -34,6 +35,8 @@ We're excited to introduce a new user interface for OpenAI chat completions star
 - The new interface is gradually being rolled out across the SAP Cloud SDK for AI.
 - We welcome your feedback to help us refine this interface.
 - The existing interface (v1.0.0) remains available for compatibility.
+
+</details>
 
 ## Prerequisites
 
@@ -289,3 +292,76 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 </details>
+
+## Executing Tool Calls
+
+**Since v1.6.0**
+
+You can pass [tool definitions](https://platform.openai.com/docs/guides/function-calling?api-mode=chat#overview) to the model to enable tool calling.
+
+Below is a [sample tool named `WeatherMethod`](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/WeatherMethod.java) with parameters location and temperature unit.
+
+```java
+class WeatherMethod {
+  enum Unit {C,F}
+  record Request(String location, Unit unit) {}
+  record Response(double temp, Unit unit) {}
+
+  static Response getCurrentWeather(Request request) {
+    int temperature = request.location.hashCode() % 30;
+    return new Response(temperature, request.unit);
+  }
+}
+```
+
+You can define the function and pass it to the model as follows.
+
+```java
+var question = "What's the weather in Berlin in Celsius";
+
+ // 1. Define the function
+ // Find generateSchema in the sample application
+Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
+var function =
+    new FunctionObject()
+        .name("weather")
+        .description("Get the weather for the given location")
+        .parameters(schemaMap);
+var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+
+var messages = new ArrayList<OpenAiMessage>();
+messages.add(OpenAiMessage.user(question));
+
+// Assistant will call the function
+var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
+OpenAiChatCompletionResponse response =
+    OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+```
+
+Optionally, you can execute the tool call and request the LLM to format the result in a user-friendly way.
+
+```java
+OpenAiAssistantMessage assistantMessage = response.getMessage();
+messages.add(assistantMessage);
+
+OpenAiToolCall toolCall = assistantMessage.toolCalls().get(0);
+if (!(toolCall instanceof OpenAiFunctionCall functionCall)) {
+  throw new IllegalArgumentException(
+      "Expected a function call, but got: %s".formatted(assistantMessage));
+}
+
+// Find parseJson is in the sample application
+WeatherMethod.Request arguments =
+    parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
+WeatherMethod.Response weatherMethod = WeatherMethod.getCurrentWeather(arguments);
+
+messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()));
+
+// Send back the results, and the model will incorporate them into its final response.
+OpenAiChatCompletionResponse finalResponse =
+    OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
+
+String content = finalResponse.getContent();
+```
+
+Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OpenAiServiceV2.java) including the definition for `generateSchema` and `parseJson`.
