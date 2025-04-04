@@ -213,6 +213,7 @@ module.exports = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
+          // Java
           {
             from: '/docs/java/guides/ai-core-deployment',
             to: '/docs/java/ai-core/ai-core-deployment'
@@ -236,6 +237,35 @@ module.exports = {
           {
             from: '/docs/java/guides/connecting-to-ai-core',
             to: '/docs/java/connecting-to-ai-core'
+          },
+          // JavaScript
+          {
+            from: '/docs/js/guides/ai-api',
+            to: '/docs/js/ai-core/ai-api'
+          },
+          {
+            from: '/docs/js/guides/document-grounding',
+            to: '/docs/js/ai-core/document-grounding'
+          },
+          {
+            from: '/docs/js/guides/openai-chat-completion',
+            to: '/docs/js/foundation-models/openai/chat-completion'
+          },
+          {
+            from: '/docs/js/guides/openai-chat-embedding',
+            to: '/docs/js/foundation-models/openai/embedding'
+          },
+          {
+            from: '/docs/js/guides/orchestration-chat-completion',
+            to: '/docs/js/orchestration/chat-completion'
+          },
+          {
+            from: '/docs/js/guides/langchain',
+            to: '/docs/js/langchain'
+          },
+          {
+            from: '/docs/js/guides/connecting-to-ai-core',
+            to: '/docs/js/connecting-to-ai-core'
           }
         ]
       }
