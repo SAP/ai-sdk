@@ -42,9 +42,7 @@ const orchestrationClient = new OrchestrationClient({
     model_name: 'gpt-4o'
   },
   templating: {
-    template: [
-      { role: 'user', content: 'Answer the question: {{?question}}' }
-    ]
+    template: [{ role: 'user', content: 'Answer the question: {{?question}}' }]
   }
 });
 ```

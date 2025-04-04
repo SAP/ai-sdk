@@ -75,7 +75,8 @@ Optionally, define `model_version` (default: `latest`) and `model_params` for cu
 const llm: LlmModuleConfig = {
   model_name: 'gpt-4o',
   model_version: '2024-08-06', // optional
-  model_params: { // optional
+  model_params: {
+    // optional
     max_tokens: 50,
     temperature: 0.1
   }
@@ -98,9 +99,7 @@ This allows for variations in the prompt based on the input parameters.
 
 ```ts
 const templating: TemplatingModuleConfig = {
-  template: [
-    { role: 'user', content: 'What is the capital of {{?country}}?' }
-  ]
+  template: [{ role: 'user', content: 'What is the capital of {{?country}}?' }]
 };
 
 const orchestrationClient = new OrchestrationClient({
@@ -596,12 +595,9 @@ If you have deployed the orchestration service in a different resource group, yo
 Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create a deployment for orchestration.
 
 ```ts
-const orchestrationClient = new OrchestrationClient(
-  orchestrationConfig,
-  {
-    resourceGroup: 'my-custom-resource-group'
-  }
-);
+const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
+  resourceGroup: 'my-custom-resource-group'
+});
 ```
 
 ### Custom Request Configuration

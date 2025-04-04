@@ -29,7 +29,9 @@ import {
 } from '@sap-ai-sdk/langchain';
 
 const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
-const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'text-embedding-3-small' });
+const embeddingClient = new AzureOpenAiEmbeddingClient({
+  modelName: 'text-embedding-3-small'
+});
 ```
 
 Optionally, you can also specify model version, resource group and other parameters such as `max_tokens`, `temperature` and many more.

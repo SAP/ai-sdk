@@ -1,6 +1,6 @@
 module.exports = {
   docsJsSidebar: [
-    'overview-cloud-sdk-for-ai-js', 
+    'overview-cloud-sdk-for-ai-js',
     'getting-started',
     'connecting-to-ai-core',
     {
@@ -20,7 +20,7 @@ module.exports = {
           type: 'category',
           label: 'OpenAI',
           items: [
-            'foundation-models/openai/chat-completion', 
+            'foundation-models/openai/chat-completion',
             'foundation-models/openai/embedding'
           ]
         }
@@ -39,7 +39,7 @@ module.exports = {
       type: 'category',
       label: 'AI Core Services',
       items: [
-        'ai-core/ai-api', 
+        'ai-core/ai-api',
         'ai-core/document-grounding',
         'ai-core/prompt-registry'
       ]

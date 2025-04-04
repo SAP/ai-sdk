@@ -31,12 +31,10 @@ Once the deployment is complete, verify that it can be accessed via the `deploym
 
 ## Client Initialization
 
-Initialize a client with the model name. 
+Initialize a client with the model name.
 If model version is not specified, it is set to `latest`.
 
-The current available clients are:
-    - `AzureOpenAiChatClient`
-    - `AzureOpenAiEmbeddingClient`
+The current available clients are: - `AzureOpenAiChatClient` - `AzureOpenAiEmbeddingClient`
 
 Take the `AzureOpenAiChatClient` as an example, use the following code to initialize a client:
 
@@ -69,9 +67,7 @@ const client = new AzureOpenAiChatClient({
 ```
 
 :::tip
-When initializing a client for using a foundation model, it is equivalent to provide
-    - a combination of model name and model version
-    - or deployment ID
+When initializing a client for using a foundation model, it is equivalent to provide - a combination of model name and model version - or deployment ID
 
 to identify a model within a [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group).
 If multiple deployments were created with the same model name and version, the first deployment will be used.
@@ -118,9 +114,9 @@ const response = await client.run(
 This can be useful, e.g., to overwrite the API version of Azure OpenAI by defining the `api-version` parameter in the `params` object.
 
 ```ts
-{ 
-  params: { 
-    'api-version': 'AZURE_OPENAI_API_VERSION' 
+{
+  params: {
+    'api-version': 'AZURE_OPENAI_API_VERSION'
   }
 }
 ```

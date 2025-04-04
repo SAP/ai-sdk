@@ -12,7 +12,7 @@ keywords:
   - error
 ---
 
-A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`. 
+A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`.
 In this case, SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
 
 ## Accessing Error Information
@@ -21,8 +21,14 @@ For example, for the following nested `ErrorWithCause`
 
 ```ts
 const rootCause = new Error('The root cause is a bug!');
-const lowerLevelErrorWithCause = new ErrorWithCause('Failed to call function foo().', rootCause);
-const upperLevelErrorWithCause = new ErrorWithCause('Process crashed.', lowerLevelErrorWithCause);
+const lowerLevelErrorWithCause = new ErrorWithCause(
+  'Failed to call function foo().',
+  rootCause
+);
+const upperLevelErrorWithCause = new ErrorWithCause(
+  'Process crashed.',
+  lowerLevelErrorWithCause
+);
 throw upperLevelErrorWithCause;
 ```
 
