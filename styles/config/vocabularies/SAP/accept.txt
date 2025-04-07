@@ -3,6 +3,7 @@ SAP AI SDK
 AI Core
 SAP Generative AI Hub
 SAP Cloud SDK
+SAP Cloud SDK for AI
 Cloud Foundry
 Fieldglass
 Ariba
@@ -139,3 +140,6 @@ lookups
 
 alwaysSubscriber
 jQuery
+
+LLM
+LLMs
