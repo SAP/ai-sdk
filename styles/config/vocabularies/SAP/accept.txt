@@ -3,6 +3,7 @@ SAP Cloud SDK for AI
 AI Core
 SAP Generative AI Hub
 SAP Cloud SDK
+SAP Cloud SDK for AI
 Cloud Foundry
 Fieldglass
 Ariba
@@ -142,3 +143,6 @@ jQuery
 Zod
 pseudonymize
 pseudonymization
+
+LLM
+LLMs
