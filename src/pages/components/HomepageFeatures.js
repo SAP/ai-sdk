@@ -25,7 +25,7 @@ const FeatureList = [
         </b>
         <br />
         <a href="docs/java/getting-started">
-          Get started with the SAP Cloud SDK for AI for Java.
+          Get started with the SAP Cloud SDK for AI (Java)
         </a>
       </div>
     )
@@ -35,10 +35,12 @@ const FeatureList = [
     link: 'docs/js/getting-started',
     Svg: () => <span style={{ fontSize: '200px' }}>🚀</span>,
     badge: (
-      <img
-        alt="NPM Version"
-        src="https://img.shields.io/npm/v/%40sap-ai-sdk%2Fai-api?color=dark-green"
-      />
+      <a href="https://www.npmjs.com/search?q=%40sap-ai-sdk">
+        <img
+          alt="NPM Version"
+          src="https://img.shields.io/npm/v/%40sap-ai-sdk%2Fai-api?color=dark-green"
+        />
+      </a>
     ),
     description: (
       <div data-nosnippet>
@@ -50,7 +52,7 @@ const FeatureList = [
         </b>
         <br />
         <a href="docs/js/getting-started">
-          Get started with the SAP Cloud SDK for AI for JavaScript
+          Get started with the SAP Cloud SDK for AI (JavaScript)
         </a>
       </div>
     )
