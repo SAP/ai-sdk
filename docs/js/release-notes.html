@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-docs-js docs-version-current docs-doc-page docs-doc-id-release-notes" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.7.0">
+<title data-rh="true">Release Notes | SAP Cloud SDK for AI</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://sap.github.io/ai-sdk/docs/js/release-notes"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-docs-js-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-docs-js-current"><meta data-rh="true" property="og:title" content="Release Notes | SAP Cloud SDK for AI"><meta data-rh="true" name="description" content="Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations."><meta data-rh="true" property="og:description" content="Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations."><meta data-rh="true" name="keywords" content="sap,cloud,sdk,ai"><link data-rh="true" rel="icon" href="/ai-sdk/img/AI-SDK-Logo.svg"><link data-rh="true" rel="canonical" href="https://sap.github.io/ai-sdk/docs/js/release-notes"><link data-rh="true" rel="alternate" href="https://sap.github.io/ai-sdk/docs/js/release-notes" hreflang="en"><link data-rh="true" rel="alternate" href="https://sap.github.io/ai-sdk/docs/js/release-notes" hreflang="x-default"><link data-rh="true" rel="preconnect" href="https://E4A268JVO0-dsn.algolia.net" crossorigin="anonymous"><link rel="search" type="application/opensearchdescription+xml" title="SAP Cloud SDK for AI" href="/ai-sdk/opensearch.xml"><link rel="stylesheet" href="/ai-sdk/assets/css/styles.77929aa1.css">
+<script src="/ai-sdk/assets/js/runtime~main.5805b781.js" defer="defer"></script>
+<script src="/ai-sdk/assets/js/main.8173cbdb.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();null!==e?t(e):window.matchMedia("(prefers-color-scheme: dark)").matches?t("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,t("light"))}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-sdk/"><div class="navbar__logo"><img src="/ai-sdk/img/AI-SDK-Logo.svg" alt="SAP Cloud SDK for AI" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/ai-sdk/img/AI-SDK-Logo.svg" alt="SAP Cloud SDK for AI" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">SAP Cloud SDK for AI</b></a><a class="navbar__item navbar__link" href="/ai-sdk/docs/overview/overview-cloud-sdk-for-ai">Overview</a><a class="navbar__item navbar__link" docspluginid="docs-java" href="/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java">☕ Java</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" docspluginid="docs-js" href="/ai-sdk/docs/js/overview">🚀 JavaScript</a></div><div class="navbar__items navbar__items--right"><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-sdk/docs/js/release-notes">v1</a><div class="navbarSearchContainer_Bca1"><button type="button" class="DocSearch DocSearch-Button" aria-label="Search (Command+K)"><span class="DocSearch-Button-Container"><svg width="20" height="20" class="DocSearch-Search-Icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="DocSearch-Button-Placeholder">Search</span></span><span class="DocSearch-Button-Keys"></span></button></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><main class="docMainContainer_TBSr docMainContainerEnhanced_lQrH"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Release Notes</h1></header><h2 class="anchor anchorWithStickyNavbar_LWe7" id="1110---apr-8-2025">1.11.0 - Apr 8, 2025<a href="#1110---apr-8-2025" class="hash-link" aria-label="Direct link to 1.11.0 - Apr 8, 2025" title="Direct link to 1.11.0 - Apr 8, 2025">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="compatibility-notes">Compatibility Notes<a href="#compatibility-notes" class="hash-link" aria-label="Direct link to Compatibility Notes" title="Direct link to Compatibility Notes">​</a></h3>
+<ul>
+<li>[core] Removed deprecated models:<!-- -->
+<ul>
+<li><code>text-embedding-ada-002</code>, use <code>text-embedding-3-small</code> or <code>text-embedding-3-large</code> instead.</li>
+<li><code>meta--llama3-70b-instruct</code>, use <code>meta--llama3.1-70b-instruct</code> instead.</li>
+<li><code>gpt-35-turbo</code>, use <code>gpt-4o-mini</code> instead.</li>
+<li><code>gpt-35-turbo-16k</code>, use <code>gpt-4o-mini</code> instead. - <code>gpt-4-32k</code>, use <code>gpt-4o</code> instead. (627a152)</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality">New Functionality<a href="#new-functionality" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[langchain] Support using data masking in LangChain orchestration client. (3f8bd81)</li>
+<li>[langchain] Support using content filtering in LangChain orchestration client. (e1f2b5a)</li>
+<li>[orchestration] Introduce <code>buildDpiMaskingProvider()</code> convenience function to build masking provider <code>SAP Data Privacy Integration</code>. (a8d05b0)</li>
+<li>[orchestration] Support setting <code>metadata_params</code> property in <code>buildDocumentGroundingConfig()</code> convenience function. (264c5b0)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="1100---mar-19-2025">1.10.0 - Mar 19, 2025<a href="#1100---mar-19-2025" class="hash-link" aria-label="Direct link to 1.10.0 - Mar 19, 2025" title="Direct link to 1.10.0 - Mar 19, 2025">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-1">New Functionality<a href="#new-functionality-1" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[prompt-registry] Add a new package @sap-ai-sdk/prompt-registry for consuming APIs from prompt registry service. (01ffe58)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="improvements">Improvements<a href="#improvements" class="hash-link" aria-label="Direct link to Improvements" title="Direct link to Improvements">​</a></h3>
+<ul>
+<li>[core] Add o1 , o3-mini and alephalpha-pharia-1-7b-control to the available model list. (6f28f47)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="190---mar-6-2025">1.9.0 - Mar 6, 2025<a href="#190---mar-6-2025" class="hash-link" aria-label="Direct link to 1.9.0 - Mar 6, 2025" title="Direct link to 1.9.0 - Mar 6, 2025">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="compatibility-notes-1">Compatibility Notes<a href="#compatibility-notes-1" class="hash-link" aria-label="Direct link to Compatibility Notes" title="Direct link to Compatibility Notes">​</a></h3>
+<ul>
+<li>[core] Due to the introduction of ErrorWithCause , AxiosError is now wrapped inside the cause property. For example, use error.cause.response.data instead of error.response.data to access the error response from the server. (bfed500)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-2">New Functionality<a href="#new-functionality-2" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[langchain] Add LangChain Orchestration client. (a45dc06)</li>
+<li>[orchestration] Introduce buildLlamaGuardFilter() convenience function to build Llama guard filters. (bc51f59)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="improvements-1">Improvements<a href="#improvements-1" class="hash-link" aria-label="Direct link to Improvements" title="Direct link to Improvements">​</a></h3>
+<ul>
+<li>[orchestration] Update Orchestration to 2502b Release (84175fb)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="fixed-issues">Fixed Issues<a href="#fixed-issues" class="hash-link" aria-label="Direct link to Fixed Issues" title="Direct link to Fixed Issues">​</a></h3>
+<ul>
+<li>[ai-api, core] Add missing cause in the error object for failing HTTP requests by using ErrorWithCause , providing more context for debugging.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="180---feb-14-2025">1.8.0 - Feb 14, 2025<a href="#180---feb-14-2025" class="hash-link" aria-label="Direct link to 1.8.0 - Feb 14, 2025" title="Direct link to 1.8.0 - Feb 14, 2025">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="compatibility-notes-2">Compatibility Notes<a href="#compatibility-notes-2" class="hash-link" aria-label="Direct link to Compatibility Notes" title="Direct link to Compatibility Notes">​</a></h3>
+<ul>
+<li>[ai-api] Update AI API spec to 2501b release. The kubesubmitV4GenericSecretsGet function is renamed to kubesubmitV4GenericSecretsGetAll . (1731104)</li>
+<li>[orchestration] Deprecate buildAzureContentFilter() function. Use buildAzureContentSafetyFilter() function instead. (54a9044)</li>
+<li>[orchestration] Update Orchestration to 2502a Release (2c76a1f)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-3">New Functionality<a href="#new-functionality-3" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[orchestration] Support configuring data masking for grounding inputs. (16d97ab)</li>
+<li>[orchestration] Support using prompt registry with orchestration client. (5c248a1)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="fixed-issues-1">Fixed Issues<a href="#fixed-issues-1" class="hash-link" aria-label="Direct link to Fixed Issues" title="Direct link to Fixed Issues">​</a></h3>
+<ul>
+<li>[ai-api, foundation-models, orchestration] Consider destination when resolving deployment ids. (09b0d2d)</li>
+<li>[langchain] Add tool_calls array to assistant messages only when it is not empty. (cd06f2a)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="170---jan-30-2025">1.7.0 - Jan 30, 2025<a href="#170---jan-30-2025" class="hash-link" aria-label="Direct link to 1.7.0 - Jan 30, 2025" title="Direct link to 1.7.0 - Jan 30, 2025">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="compatibility-notes-3">Compatibility Notes<a href="#compatibility-notes-3" class="hash-link" aria-label="Direct link to Compatibility Notes" title="Direct link to Compatibility Notes">​</a></h3>
+<ul>
+<li>[orchestration] Update Orchestration API to the 2501a release. As part of this change, the modelsGet method of ScenarioAPI has been renamed to scenarioQueryModels . (0a62553)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-4">New Functionality<a href="#new-functionality-4" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[orchestration] Support using help.sap.com as data repository type in the grounding module. (f08ac2e)</li>
+<li>[orchestration] Add streaming option in the OrchestrationModuleConfig type to set global streaming options. (bdaae7e)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="fixed-issues-2">Fixed Issues<a href="#fixed-issues-2" class="hash-link" aria-label="Direct link to Fixed Issues" title="Direct link to Fixed Issues">​</a></h3>
+<ul>
+<li>[langchain] Fix the internal mapping of LangChain to Azure OpenAI and vice versa. (ccfa2eb)</li>
+<li>[orchestration] Fix logging bug when using streaming with an Orchestration JSON client. (bdaae7e)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="160---jan-14-2025">1.6.0 - Jan 14, 2025<a href="#160---jan-14-2025" class="hash-link" aria-label="Direct link to 1.6.0 - Jan 14, 2025" title="Direct link to 1.6.0 - Jan 14, 2025">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-5">New Functionality<a href="#new-functionality-5" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[orchestration] Support image recognition for orchestration service. (1da2caa)</li>
+<li>[orchestration] Add support for streaming in the orchestration client. (d836abf)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="improvements-2">Improvements<a href="#improvements-2" class="hash-link" aria-label="Direct link to Improvements" title="Direct link to Improvements">​</a></h3>
+<ul>
+<li>[orchestration] Make model_params property in the LlmModuleConfig optional and refine the type definition to also include known properties. (1476584)</li>
+<li>[orchestration] Add buildDocumentGroundingConfig() convenience function to create document grounding configuration in the Orchestration client. (a039890)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="150---jan-7-2025">1.5.0 - Jan 7, 2025<a href="#150---jan-7-2025" class="hash-link" aria-label="Direct link to 1.5.0 - Jan 7, 2025" title="Direct link to 1.5.0 - Jan 7, 2025">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-6">New Functionality<a href="#new-functionality-6" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[ai-api, core, foundation-models, langchain, orchestration] Add support for providing custom destination for AI Core besides using environment variable and service binding. (b4a5506)</li>
+<li>[document-grounding] Add a new package @sap-ai-sdk/document-grounding for consuming vector, pipeline and retrieval APIs from document grounding service. This package is still in beta and is subject to breaking changes. Use it with caution. (4425bfd)</li>
+<li>[orchestration] Add support for using a JSON configuration obtained from AI Launchpad to consume orchestration service. (17a1eea)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="140---dec-10-2024">1.4.0 - Dec 10, 2024<a href="#140---dec-10-2024" class="hash-link" aria-label="Direct link to 1.4.0 - Dec 10, 2024" title="Direct link to 1.4.0 - Dec 10, 2024">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-7">New Functionality<a href="#new-functionality-7" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[foundation-models] Add support for streaming chat completion in the Azure OpenAI client. (d79cee8)</li>
+<li>[orchestration] Add support for grounding capabilities of the orchestration service. (d79cee8)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="130---nov-15-2024">1.3.0 - Nov 15, 2024<a href="#130---nov-15-2024" class="hash-link" aria-label="Direct link to 1.3.0 - Nov 15, 2024" title="Direct link to 1.3.0 - Nov 15, 2024">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="compatibility-notes-4">Compatibility Notes<a href="#compatibility-notes-4" class="hash-link" aria-label="Direct link to Compatibility Notes" title="Direct link to Compatibility Notes">​</a></h3>
+<ul>
+<li>[orchestration] Switch some of the orchestration interfaces to types, as they were introduced by accident.</li>
+<li>[orchestration] Remove grounding key from the type ModuleResults . (6fe32b8)</li>
+<li>[orchestration] FilteringConfig type has been renamed to InputFilteringConfig and OutputFilteringConfig for future extensibility. (bf17e17)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="fixed-issues-3">Fixed Issues<a href="#fixed-issues-3" class="hash-link" aria-label="Direct link to Fixed Issues" title="Direct link to Fixed Issues">​</a></h3>
+<ul>
+<li>[foundation-models, orchestration] Get choice via index by comparing the index property instead of using array index. @sap-ai-sdk/ai-api@1.3.0 @sap-ai-sdk/core@1.3.0 (91df549)</li>
+<li>[orchestration] Fix input and output filters to disallow additional properties as part of the filter config.</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="120---oct-25-2024">1.2.0 - Oct 25, 2024<a href="#120---oct-25-2024" class="hash-link" aria-label="Direct link to 1.2.0 - Oct 25, 2024" title="Direct link to 1.2.0 - Oct 25, 2024">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="compatibility-notes-5">Compatibility Notes<a href="#compatibility-notes-5" class="hash-link" aria-label="Direct link to Compatibility Notes" title="Direct link to Compatibility Notes">​</a></h3>
+<ul>
+<li>[foundation-models] Adjust AzureOpenAiEmbeddingOutput type to include multiple embedding responses as opposed to one. (99498cd)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-8">New Functionality<a href="#new-functionality-8" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[foundation-models] Add convenience method to access all embeddings in an Azure OpenAI response ( AzureOpenAiEmbeddingResponse ). (99498cd)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="fixed-issues-4">Fixed Issues<a href="#fixed-issues-4" class="hash-link" aria-label="Direct link to Fixed Issues" title="Direct link to Fixed Issues">​</a></h3>
+<ul>
+<li>[langchain] Fix performance issues when creating embeddings for split documents by sending all documents in one request instead of splitting it up in separate requests. (99498cd)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="110---oct-4-2024">1.1.0 - Oct 4, 2024<a href="#110---oct-4-2024" class="hash-link" aria-label="Direct link to 1.1.0 - Oct 4, 2024" title="Direct link to 1.1.0 - Oct 4, 2024">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="compatibility-notes-6">Compatibility Notes<a href="#compatibility-notes-6" class="hash-link" aria-label="Direct link to Compatibility Notes" title="Direct link to Compatibility Notes">​</a></h3>
+<ul>
+<li>[ai-api] Move modelsGet() from ModelApi to ScenarioApi , and remove ModelAPI . (5bd2e4d)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-9">New Functionality<a href="#new-functionality-9" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[orchestration] Add support for the data masking capabilities of the orchestration service. (a1105d9)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="improvements-3">Improvements<a href="#improvements-3" class="hash-link" aria-label="Direct link to Improvements" title="Direct link to Improvements">​</a></h3>
+<ul>
+<li>[ai-api] Add kubesubmitV4ResourceQuotaGetDeploymentQuota() function in DeploymentApi to get details about quota and usage for deployments. Additionally introduce two new types BckndDeploymentQuotaItem and BckndDeploymentResourceQuotaResponse . (5bd2e4d)</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="fixed-issues-5">Fixed Issues<a href="#fixed-issues-5" class="hash-link" aria-label="Direct link to Fixed Issues" title="Direct link to Fixed Issues">​</a></h3>
+<ul>
+<li>[ai-api] Fix AiExecutionModificationResponseList type to correctly represent an array of responses or errors. (5bd2e4d)</li>
+<li>[ai-api, core, foundation-models, langchain, orchestration] Fix sending the correct resource group headers when custom resource group is set. (771f986)</li>
+<li>[ai-api, core, foundation-models, langchain, orchestration] Fix missing and unused dependencies. (506a1e4)</li>
+<li>[foundation-models] Fix index-based data access in embedding response. Previously, the 0th index data was always returned. (3cbfdc7)</li>
+<li>[langchain] Fix auto completion for Azure OpenAI Embedding models. (5a977da)</li>
+<li>[langchain] Fix LangChain types for proper IDE auto completion. (8cda2de)</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="100---sep-19-2024">1.0.0 - Sep 19, 2024<a href="#100---sep-19-2024" class="hash-link" aria-label="Direct link to 1.0.0 - Sep 19, 2024" title="Direct link to 1.0.0 - Sep 19, 2024">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="new-functionality-10">New Functionality<a href="#new-functionality-10" class="hash-link" aria-label="Direct link to New Functionality" title="Direct link to New Functionality">​</a></h3>
+<ul>
+<li>[ai-api] Provide an HTTP wrapper to consume the <a href="https://api.sap.com/api/AI_CORE_API/overview" target="_blank" rel="noopener noreferrer">AI Core Rest APIs</a>. It is powered by the SAP Cloud SDK OpenAPI generator. (ba9133b)</li>
+<li>[foundation-models] Offer an OpenAI client to consume Azure OpenAI models for chat completion and embeddings via generative AI hub of SAP AI Core. (ba9133b)</li>
+<li>[langchain] Support using the <a href="https://js.langchain.com/v0.2/docs/tutorials/" target="_blank" rel="noopener noreferrer">LangChain</a> framework for consuming Azure OpenAI models from generative AI hub of SAP AI Core. (ba9133b)</li>
+<li>[orchestration] Introduce orchestration client for consuming the following features of the orchestration service:<!-- -->
+<ul>
+<li>harmonized LLM access via orchestration</li>
+<li>client side prompt templates</li>
+<li>content filtering (ba9133b)</li>
+</ul>
+</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col"><a href="https://github.com/SAP/ai-sdk/edit/main/docs-js/release-notes.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#1110---apr-8-2025" class="table-of-contents__link toc-highlight">1.11.0 - Apr 8, 2025</a><ul><li><a href="#compatibility-notes" class="table-of-contents__link toc-highlight">Compatibility Notes</a></li><li><a href="#new-functionality" class="table-of-contents__link toc-highlight">New Functionality</a></li></ul></li><li><a href="#1100---mar-19-2025" class="table-of-contents__link toc-highlight">1.10.0 - Mar 19, 2025</a><ul><li><a href="#new-functionality-1" class="table-of-contents__link toc-highlight">New Functionality</a></li><li><a href="#improvements" class="table-of-contents__link toc-highlight">Improvements</a></li></ul></li><li><a href="#190---mar-6-2025" class="table-of-contents__link toc-highlight">1.9.0 - Mar 6, 2025</a><ul><li><a href="#compatibility-notes-1" class="table-of-contents__link toc-highlight">Compatibility Notes</a></li><li><a href="#new-functionality-2" class="table-of-contents__link toc-highlight">New Functionality</a></li><li><a href="#improvements-1" class="table-of-contents__link toc-highlight">Improvements</a></li><li><a href="#fixed-issues" class="table-of-contents__link toc-highlight">Fixed Issues</a></li></ul></li><li><a href="#180---feb-14-2025" class="table-of-contents__link toc-highlight">1.8.0 - Feb 14, 2025</a><ul><li><a href="#compatibility-notes-2" class="table-of-contents__link toc-highlight">Compatibility Notes</a></li><li><a href="#new-functionality-3" class="table-of-contents__link toc-highlight">New Functionality</a></li><li><a href="#fixed-issues-1" class="table-of-contents__link toc-highlight">Fixed Issues</a></li></ul></li><li><a href="#170---jan-30-2025" class="table-of-contents__link toc-highlight">1.7.0 - Jan 30, 2025</a><ul><li><a href="#compatibility-notes-3" class="table-of-contents__link toc-highlight">Compatibility Notes</a></li><li><a href="#new-functionality-4" class="table-of-contents__link toc-highlight">New Functionality</a></li><li><a href="#fixed-issues-2" class="table-of-contents__link toc-highlight">Fixed Issues</a></li></ul></li><li><a href="#160---jan-14-2025" class="table-of-contents__link toc-highlight">1.6.0 - Jan 14, 2025</a><ul><li><a href="#new-functionality-5" class="table-of-contents__link toc-highlight">New Functionality</a></li><li><a href="#improvements-2" class="table-of-contents__link toc-highlight">Improvements</a></li></ul></li><li><a href="#150---jan-7-2025" class="table-of-contents__link toc-highlight">1.5.0 - Jan 7, 2025</a><ul><li><a href="#new-functionality-6" class="table-of-contents__link toc-highlight">New Functionality</a></li></ul></li><li><a href="#140---dec-10-2024" class="table-of-contents__link toc-highlight">1.4.0 - Dec 10, 2024</a><ul><li><a href="#new-functionality-7" class="table-of-contents__link toc-highlight">New Functionality</a></li></ul></li><li><a href="#130---nov-15-2024" class="table-of-contents__link toc-highlight">1.3.0 - Nov 15, 2024</a><ul><li><a href="#compatibility-notes-4" class="table-of-contents__link toc-highlight">Compatibility Notes</a></li><li><a href="#fixed-issues-3" class="table-of-contents__link toc-highlight">Fixed Issues</a></li></ul></li><li><a href="#120---oct-25-2024" class="table-of-contents__link toc-highlight">1.2.0 - Oct 25, 2024</a><ul><li><a href="#compatibility-notes-5" class="table-of-contents__link toc-highlight">Compatibility Notes</a></li><li><a href="#new-functionality-8" class="table-of-contents__link toc-highlight">New Functionality</a></li><li><a href="#fixed-issues-4" class="table-of-contents__link toc-highlight">Fixed Issues</a></li></ul></li><li><a href="#110---oct-4-2024" class="table-of-contents__link toc-highlight">1.1.0 - Oct 4, 2024</a><ul><li><a href="#compatibility-notes-6" class="table-of-contents__link toc-highlight">Compatibility Notes</a></li><li><a href="#new-functionality-9" class="table-of-contents__link toc-highlight">New Functionality</a></li><li><a href="#improvements-3" class="table-of-contents__link toc-highlight">Improvements</a></li><li><a href="#fixed-issues-5" class="table-of-contents__link toc-highlight">Fixed Issues</a></li></ul></li><li><a href="#100---sep-19-2024" class="table-of-contents__link toc-highlight">1.0.0 - Sep 19, 2024</a><ul><li><a href="#new-functionality-10" class="table-of-contents__link toc-highlight">New Functionality</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="col footer__col"><div class="footer__title">SAP Cloud SDK for AI Java</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://developers.sap.com/group.sap-ai-core-generative.html" target="_blank" rel="noopener noreferrer" class="footer__link-item">Tutorials<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li class="footer__item"><a href="https://central.sonatype.com/search?smo=true&amp;namespace=com.sap.ai.sdk" target="_blank" rel="noopener noreferrer" class="footer__link-item">Maven<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/ai-sdk/docs/overview/get-support">Support</a></li></ul></div><div class="col footer__col"><div class="footer__title">SAP Cloud SDK for AI JavaScript</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://developers.sap.com/group.sap-ai-core-generative.html" target="_blank" rel="noopener noreferrer" class="footer__link-item">Tutorials</a></li><li class="footer__item"><a href="https://www.npmjs.com/search?q=sap-ai-sdk" target="_blank" rel="noopener noreferrer" class="footer__link-item">npm<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li class="footer__item"><a href="https://github.com/SAP/ai-sdk-js" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li class="footer__item"><a href="https://github.com/SAP/ai-sdk-js/tree/main/sample-code" target="_blank" rel="noopener noreferrer" class="footer__link-item">Sample repository<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/ai-sdk/docs/overview/get-support">Support</a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 SAP SE or an SAP affiliate company. All rights reserved.</div></div></div></footer></div>
+</body>
+</html>
