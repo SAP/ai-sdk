@@ -14,6 +14,7 @@ swap:
   (?:[^\s]*) ?Fieldglass: SAP Fieldglass
   (?:[^\s]*) ?Ariba: SAP Ariba
   (?:[^\s]*) ?Concur: SAP Concur
+  (?:[^\s]*) ?Signavio: SAP Signavio
   (?:[^\s]*) ?BTP: SAP BTP
   (?:[^\s]*) ?cloud [fF]oundry: Cloud Foundry
   (?:[^\s]*) ?[cC]loud foundry: Cloud Foundry
