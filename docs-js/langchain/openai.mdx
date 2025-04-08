@@ -58,7 +58,7 @@ const chatClient = new AzureOpenAiChatClient(
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
 
 ## Chat Completion
 
@@ -77,7 +77,7 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 
 // Initialize the client
-const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
+const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 
 // Create a prompt template
 const promptTemplate = ChatPromptTemplate.fromMessages([

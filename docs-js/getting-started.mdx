@@ -20,7 +20,7 @@ The application will send a prompt to the AI model and display the generated res
 ### Prerequisites
 
 This quickstart assumes you are using the `default` resource group of your AI Core instance.
-If you want or need to [use a different resource group](orchestration/chat-completion#create-a-client), make sure it has an [orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) available.
+If you need to [use a different resource group](orchestration/chat-completion#custom-resource-group), make sure it has an [orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) available.
 
 ### Add `@sap-ai-sdk/orchestration` as a Dependency
 
@@ -61,7 +61,7 @@ Use `getContent()` method to get the generated text.
 
 ### Run the Application Locally
 
-Create a `.env` file with the following content to define the `AICORE_SERVICE_KEY` environment variable storing the service key of your AI Core service instance.
+Define the `AICORE_SERVICE_KEY` environment variable with your AI Core service key in a `.env` file.
 
 ```txt
 AICORE_SERVICE_KEY='{

@@ -39,7 +39,7 @@ This approach will allow patch-level updates while preventing potentially breaki
 ## Usage
 
 The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core.
-In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/ai-api).
+In addition to the examples below, you can find more sample code [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/ai-api).
 
 ### Create an Artifact
 
@@ -65,13 +65,13 @@ async function createArtifact() {
 ```ts
 async function createConfiguration() {
   const requestBody: ConfigurationBaseData = {
-    name: 'gpt-35-turbo',
+    name: 'gpt-4o',
     executableId: 'azure-openai',
     scenarioId: 'foundation-models',
     parameterBindings: [
       {
         key: 'modelName',
-        value: 'gpt-35-turbo'
+        value: 'gpt-4o'
       },
       {
         key: 'modelVersion',
@@ -154,4 +154,4 @@ return DeploymentApi.deploymentQuery(queryParams, {
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.

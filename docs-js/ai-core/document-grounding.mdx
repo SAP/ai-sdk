@@ -36,7 +36,7 @@ This approach will allow patch-level updates while preventing potentially breaki
 ## Usage
 
 The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core document grounding service.
-In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts).
+In addition to the examples below, you can find more sample code [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts).
 
 :::tip
 If you define a custom resource group, ensure that it has the label `document-grounding: true` in order to use the document grounding service.
@@ -104,4 +104,4 @@ const response = await VectorApi.deleteCollectionById(collectionId, {
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
