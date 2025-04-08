@@ -5,6 +5,7 @@ level: error
 ignorecase: false
 swap:
   (?:[^\s]*) ?Cloud ?SDKs?: SAP Cloud SDK
+  (?:[^\s]*) ?(?:[^\s]*) ?SDKs?: SAP AI SDK
   (?:[^\s]*) ?Cloud Platform: SAP Cloud Platform
   (?:[^\s]*) ?S/?4/? ?HANA: SAP S/4HANA
   (?:[^\s]*) ?Success ?Factors: SAP SuccessFactors
