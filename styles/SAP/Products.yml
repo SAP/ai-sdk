@@ -4,8 +4,8 @@ link: 'https://www.sapbrandtools.com/naming-center/'
 level: error
 ignorecase: false
 swap:
-  (?:[^\s]*) ?Cloud ?(?<!\()SDKs?: SAP Cloud SDK
-  (?:[^\s]*) ?AI ?(?<!\()SDKs?: SAP AI SDK
+  (?:[^\s]*) ?Cloud ?SDKs?: SAP Cloud SDK
+  (?:[^\s]*) ?AI ?SDKs?: SAP AI SDK
   (?:[^\s]*) ?Cloud Platform: SAP Cloud Platform
   (?:[^\s]*) ?S/?4/? ?HANA: SAP S/4HANA
   (?:[^\s]*) ?Success ?Factors: SAP SuccessFactors
