@@ -25,7 +25,11 @@ When running on SAP BTP, [create an instance of the AI Core service](https://hel
 - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
 - In Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
 
-If no service binding is found and no destination is explicitly provided, the SDK throws an exception.
+If no service binding is found and no destination is explicitly provided, the SDK throws an exception:
+
+```txt
+Could not find service credentials for AI Core. Please check the service binding.
+```
 
 To run the code outside of SAP BTP (e.g., locally), provide the necessary credentials manually.
 
