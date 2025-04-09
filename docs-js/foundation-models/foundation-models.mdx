@@ -75,8 +75,7 @@ If multiple deployments were created with the same model name and version, the f
 
 ### Custom Destination
 
-When initializing a client, it is possible to provide a custom destination for your SAP AI Core instance.
-For example, when initializing an `AzureOpenAiChatClient` targeting a destination with the name `my-destination`, the following code can be used:
+When initializing the client, it is possible to provide a custom destination for your SAP AI Core instance.
 
 ```ts
 const client = await new AzureOpenAiChatClient('gpt-4o', {
