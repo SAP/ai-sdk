@@ -8,7 +8,176 @@ keywords:
   - cloud
   - sdk
   - ai
-  - release notes
 ---
 
-Work in progress, please check back later.
+<!-- vale off -->
+<!-- This line is used for our release notes automation -->
+
+## 1.11.0 - Apr 8, 2025
+
+### Compatibility Notes
+
+- [core] Removed deprecated models:
+  - `text-embedding-ada-002`, use `text-embedding-3-small` or `text-embedding-3-large` instead.
+  - `meta--llama3-70b-instruct`, use `meta--llama3.1-70b-instruct` instead.
+  - `gpt-35-turbo`, use `gpt-4o-mini` instead.
+  - `gpt-35-turbo-16k`, use `gpt-4o-mini` instead. - `gpt-4-32k`, use `gpt-4o` instead. (627a152)
+
+### New Functionality
+
+- [langchain] Support using data masking in LangChain orchestration client. (3f8bd81)
+- [langchain] Support using content filtering in LangChain orchestration client. (e1f2b5a)
+- [orchestration] Introduce `buildDpiMaskingProvider()` convenience function to build masking provider `SAP Data Privacy Integration`. (a8d05b0)
+- [orchestration] Support setting `metadata_params` property in `buildDocumentGroundingConfig()` convenience function. (264c5b0)
+
+## 1.10.0 - Mar 19, 2025
+
+### New Functionality
+
+- [prompt-registry] Add a new package @sap-ai-sdk/prompt-registry for consuming APIs from prompt registry service. (01ffe58)
+
+### Improvements
+
+- [core] Add o1 , o3-mini and alephalpha-pharia-1-7b-control to the available model list. (6f28f47)
+
+## 1.9.0 - Mar 6, 2025
+
+### Compatibility Notes
+
+- [core] Due to the introduction of ErrorWithCause , AxiosError is now wrapped inside the cause property. For example, use error.cause.response.data instead of error.response.data to access the error response from the server. (bfed500)
+
+### New Functionality
+
+- [langchain] Add LangChain Orchestration client. (a45dc06)
+- [orchestration] Introduce buildLlamaGuardFilter() convenience function to build Llama guard filters. (bc51f59)
+
+### Improvements
+
+- [orchestration] Update Orchestration to 2502b Release (84175fb)
+
+### Fixed Issues
+
+- [ai-api, core] Add missing cause in the error object for failing HTTP requests by using ErrorWithCause , providing more context for debugging.
+
+## 1.8.0 - Feb 14, 2025
+
+### Compatibility Notes
+
+- [ai-api] Update AI API spec to 2501b release. The kubesubmitV4GenericSecretsGet function is renamed to kubesubmitV4GenericSecretsGetAll . (1731104)
+- [orchestration] Deprecate buildAzureContentFilter() function. Use buildAzureContentSafetyFilter() function instead. (54a9044)
+- [orchestration] Update Orchestration to 2502a Release (2c76a1f)
+
+### New Functionality
+
+- [orchestration] Support configuring data masking for grounding inputs. (16d97ab)
+- [orchestration] Support using prompt registry with orchestration client. (5c248a1)
+
+### Fixed Issues
+
+- [ai-api, foundation-models, orchestration] Consider destination when resolving deployment ids. (09b0d2d)
+- [langchain] Add tool_calls array to assistant messages only when it is not empty. (cd06f2a)
+
+## 1.7.0 - Jan 30, 2025
+
+### Compatibility Notes
+
+- [orchestration] Update Orchestration API to the 2501a release. As part of this change, the modelsGet method of ScenarioAPI has been renamed to scenarioQueryModels . (0a62553)
+
+### New Functionality
+
+- [orchestration] Support using help.sap.com as data repository type in the grounding module. (f08ac2e)
+- [orchestration] Add streaming option in the OrchestrationModuleConfig type to set global streaming options. (bdaae7e)
+
+### Fixed Issues
+
+- [langchain] Fix the internal mapping of LangChain to Azure OpenAI and vice versa. (ccfa2eb)
+- [orchestration] Fix logging bug when using streaming with an Orchestration JSON client. (bdaae7e)
+
+## 1.6.0 - Jan 14, 2025
+
+### New Functionality
+
+- [orchestration] Support image recognition for orchestration service. (1da2caa)
+- [orchestration] Add support for streaming in the orchestration client. (d836abf)
+
+### Improvements
+
+- [orchestration] Make model_params property in the LlmModuleConfig optional and refine the type definition to also include known properties. (1476584)
+- [orchestration] Add buildDocumentGroundingConfig() convenience function to create document grounding configuration in the Orchestration client. (a039890)
+
+## 1.5.0 - Jan 7, 2025
+
+### New Functionality
+
+- [ai-api, core, foundation-models, langchain, orchestration] Add support for providing custom destination for AI Core besides using environment variable and service binding. (b4a5506)
+- [document-grounding] Add a new package @sap-ai-sdk/document-grounding for consuming vector, pipeline and retrieval APIs from document grounding service. This package is still in beta and is subject to breaking changes. Use it with caution. (4425bfd)
+- [orchestration] Add support for using a JSON configuration obtained from AI Launchpad to consume orchestration service. (17a1eea)
+
+## 1.4.0 - Dec 10, 2024
+
+### New Functionality
+
+- [foundation-models] Add support for streaming chat completion in the Azure OpenAI client. (d79cee8)
+- [orchestration] Add support for grounding capabilities of the orchestration service. (d79cee8)
+
+## 1.3.0 - Nov 15, 2024
+
+### Compatibility Notes
+
+- [orchestration] Switch some of the orchestration interfaces to types, as they were introduced by accident.
+- [orchestration] Remove grounding key from the type ModuleResults . (6fe32b8)
+- [orchestration] FilteringConfig type has been renamed to InputFilteringConfig and OutputFilteringConfig for future extensibility. (bf17e17)
+
+### Fixed Issues
+
+- [foundation-models, orchestration] Get choice via index by comparing the index property instead of using array index. @sap-ai-sdk/ai-api@1.3.0 @sap-ai-sdk/core@1.3.0 (91df549)
+- [orchestration] Fix input and output filters to disallow additional properties as part of the filter config.
+
+## 1.2.0 - Oct 25, 2024
+
+### Compatibility Notes
+
+- [foundation-models] Adjust AzureOpenAiEmbeddingOutput type to include multiple embedding responses as opposed to one. (99498cd)
+
+### New Functionality
+
+- [foundation-models] Add convenience method to access all embeddings in an Azure OpenAI response ( AzureOpenAiEmbeddingResponse ). (99498cd)
+
+### Fixed Issues
+
+- [langchain] Fix performance issues when creating embeddings for split documents by sending all documents in one request instead of splitting it up in separate requests. (99498cd)
+
+## 1.1.0 - Oct 4, 2024
+
+### Compatibility Notes
+
+- [ai-api] Move modelsGet() from ModelApi to ScenarioApi , and remove ModelAPI . (5bd2e4d)
+
+### New Functionality
+
+- [orchestration] Add support for the data masking capabilities of the orchestration service. (a1105d9)
+
+### Improvements
+
+- [ai-api] Add kubesubmitV4ResourceQuotaGetDeploymentQuota() function in DeploymentApi to get details about quota and usage for deployments. Additionally introduce two new types BckndDeploymentQuotaItem and BckndDeploymentResourceQuotaResponse . (5bd2e4d)
+
+### Fixed Issues
+
+- [ai-api] Fix AiExecutionModificationResponseList type to correctly represent an array of responses or errors. (5bd2e4d)
+- [ai-api, core, foundation-models, langchain, orchestration] Fix sending the correct resource group headers when custom resource group is set. (771f986)
+- [ai-api, core, foundation-models, langchain, orchestration] Fix missing and unused dependencies. (506a1e4)
+- [foundation-models] Fix index-based data access in embedding response. Previously, the 0th index data was always returned. (3cbfdc7)
+- [langchain] Fix auto completion for Azure OpenAI Embedding models. (5a977da)
+- [langchain] Fix LangChain types for proper IDE auto completion. (8cda2de)
+
+## 1.0.0 - Sep 19, 2024
+
+### New Functionality
+
+- [ai-api] Provide an HTTP wrapper to consume the [AI Core Rest APIs](https://api.sap.com/api/AI_CORE_API/overview). It is powered by the SAP Cloud SDK OpenAPI generator. (ba9133b)
+- [foundation-models] Offer an OpenAI client to consume Azure OpenAI models for chat completion and embeddings via generative AI hub of SAP AI Core. (ba9133b)
+- [langchain] Support using the [LangChain](https://js.langchain.com/v0.2/docs/tutorials/) framework for consuming Azure OpenAI models from generative AI hub of SAP AI Core. (ba9133b)
+- [orchestration] Introduce orchestration client for consuming the following features of the orchestration service:
+  - harmonized LLM access via orchestration
+  - client side prompt templates
+  - content filtering (ba9133b)
