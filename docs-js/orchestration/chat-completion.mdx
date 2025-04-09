@@ -75,7 +75,8 @@ Optionally, define `model_version` (default: `latest`) and `model_params` for cu
 const llm: LlmModuleConfig = {
   model_name: 'gpt-4o',
   model_version: '2024-08-06', // optional
-  model_params: { // optional
+  model_params: {
+    // optional
     max_tokens: 50,
     temperature: 0.1
   }
