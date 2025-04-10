@@ -4,7 +4,7 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
-    title: <>SAP Cloud SDK for AI Java</>,
+    title: <>SAP Cloud SDK for AI (Java)</>,
     link: 'docs/java/getting-started',
     Svg: () => <span style={{ fontSize: '200px' }}>☕️</span>,
     badge: (
@@ -17,25 +17,18 @@ const FeatureList = [
     ),
     description: (
       <div data-nosnippet>
-        <b>
-          🚧 Work in Progress: Documentation Portal 🚧
-          <br />
-          We are actively working on the documentation portal. Expect frequent
-          updates and changes.
-        </b>
-        <br />
         <a href="docs/java/getting-started">
-          Get started with the SAP Cloud SDK for AI (Java)
+          Get Started
         </a>
       </div>
     )
   },
   {
-    title: <>SAP Cloud SDK for AI JavaScript</>,
+    title: <>SAP Cloud SDK for AI (JavaScript)</>,
     link: 'docs/js/getting-started',
     Svg: () => <span style={{ fontSize: '200px' }}>🚀</span>,
     badge: (
-      <a href="https://www.npmjs.com/search?q=%40sap-ai-sdk">
+      <a href="https://www.npmjs.com/org/sap-ai-sdk">
         <img
           alt="NPM Version"
           src="https://img.shields.io/npm/v/%40sap-ai-sdk%2Fai-api?color=dark-green"
@@ -44,16 +37,31 @@ const FeatureList = [
     ),
     description: (
       <div data-nosnippet>
+        <a href="docs/js/getting-started">
+          Get Started
+        </a>
+      </div>
+    )
+  },
+  {
+    title: <>Python SDK</>,
+    link: '',
+    Svg: () => <span style={{ fontSize: '200px' }}>🐍</span>,
+    badge: (
+      <a href="https://pypi.org/project/generative-ai-hub-sdk/">
+        <img
+          alt="Pypi Version"
+          src="https://img.shields.io/pypi/v/generative-ai-hub-sdk?color=dark-green"
+        />
+      </a>
+    ),
+    description: (
+      <div data-nosnippet>
         <b>
           🚧 Work in Progress: Documentation Portal 🚧
-          <br />
-          We are actively working on the documentation portal. Expect frequent
-          updates and changes.
         </b>
         <br />
-        <a href="docs/js/getting-started">
-          Get started with the SAP Cloud SDK for AI (JavaScript)
-        </a>
+        <a href="">Get Started</a>
       </div>
     )
   }
