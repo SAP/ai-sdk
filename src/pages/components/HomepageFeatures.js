@@ -17,9 +17,7 @@ const FeatureList = [
     ),
     description: (
       <div data-nosnippet>
-        <a href="docs/java/getting-started">
-          Get Started
-        </a>
+        <a href="docs/java/getting-started">Get Started</a>
       </div>
     )
   },
@@ -37,9 +35,7 @@ const FeatureList = [
     ),
     description: (
       <div data-nosnippet>
-        <a href="docs/js/getting-started">
-          Get Started
-        </a>
+        <a href="docs/js/getting-started">Get Started</a>
       </div>
     )
   },
@@ -57,9 +53,7 @@ const FeatureList = [
     ),
     description: (
       <div data-nosnippet>
-        <b>
-          🚧 Work in Progress: Documentation Portal 🚧
-        </b>
+        <b>🚧 Work in Progress: Documentation Portal 🚧</b>
         <br />
         <a href="">Get Started</a>
       </div>
