@@ -18,7 +18,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion)`
     }
   },
   {
@@ -150,7 +150,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/ai-core#prompt-registry)`
+      docsLink: `[docs](${baseUrl}/js/ai-core/prompt-registry)`
     }
   },
   {
@@ -161,7 +161,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/langchain/orchestration)`
     }
   },
   {
@@ -172,7 +172,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/langchain)`
+      docsLink: `[docs](${baseUrl}/js/langchain/openai)`
     }
   },
   {
@@ -183,7 +183,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/foundation-models/openai/chat-completion)`
     }
   },
   {
