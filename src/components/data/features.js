@@ -18,7 +18,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion)`
     }
   },
   {
