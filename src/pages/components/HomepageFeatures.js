@@ -8,12 +8,21 @@ const FeatureList = [
     link: 'docs/java/getting-started',
     Svg: () => <span style={{ fontSize: '200px' }}>☕️</span>,
     badge: (
-      <a href="https://central.sonatype.com/search?smo=true&namespace=com.sap.ai.sdk">
-        <img
-          alt="Maven Central Version"
-          src="https://img.shields.io/maven-central/v/com.sap.ai.sdk/core?color=dark-green"
-        />
-      </a>
+      <>
+        <a href="https://central.sonatype.com/search?smo=true&namespace=com.sap.ai.sdk">
+          <img
+            alt="Maven Central Version"
+            src="https://img.shields.io/maven-central/v/com.sap.ai.sdk/core?color=dark-green"
+          />
+        </a>
+        &nbsp;&nbsp;
+        <a href="https://central.sonatype.com/search?smo=true&namespace=com.sap.ai.sdk">
+          <img
+            alt="Maven Central License"
+            src="https://img.shields.io/npm/l/%40sap-ai-sdk%2Fai-api?color=dark-green"
+          />
+        </a>
+      </>
     ),
     description: (
       <div data-nosnippet>
@@ -26,12 +35,21 @@ const FeatureList = [
     link: 'docs/js/getting-started',
     Svg: () => <span style={{ fontSize: '200px' }}>🚀</span>,
     badge: (
-      <a href="https://www.npmjs.com/org/sap-ai-sdk">
-        <img
-          alt="NPM Version"
-          src="https://img.shields.io/npm/v/%40sap-ai-sdk%2Fai-api?color=dark-green"
-        />
-      </a>
+      <>
+        <a href="https://www.npmjs.com/org/sap-ai-sdk">
+          <img
+            alt="NPM Version"
+            src="https://img.shields.io/npm/v/%40sap-ai-sdk%2Fai-api?color=dark-green"
+          />
+        </a>
+        &nbsp;&nbsp;
+        <a href="https://www.npmjs.com/org/sap-ai-sdk">
+          <img
+            alt="NPM License"
+            src="https://img.shields.io/npm/l/%40sap-ai-sdk%2Fai-api?color=dark-green"
+          />
+        </a>
+      </>
     ),
     description: (
       <div data-nosnippet>
@@ -44,12 +62,21 @@ const FeatureList = [
     link: '',
     Svg: () => <span style={{ fontSize: '200px' }}>🐍</span>,
     badge: (
-      <a href="https://pypi.org/project/generative-ai-hub-sdk/">
-        <img
-          alt="Pypi Version"
-          src="https://img.shields.io/pypi/v/generative-ai-hub-sdk?color=dark-green"
-        />
-      </a>
+      <>
+        <a href="https://pypi.org/project/generative-ai-hub-sdk/">
+          <img
+            alt="Pypi Version"
+            src="https://img.shields.io/pypi/v/generative-ai-hub-sdk?color=dark-green"
+          />
+        </a>
+        &nbsp;&nbsp;
+        <a href="https://pypi.org/project/generative-ai-hub-sdk/">
+          <img
+            alt="Pypi License"
+            src="https://img.shields.io/pypi/l/generative-ai-hub-sdk?color=dark-green"
+          />
+        </a>
+      </>
     ),
     description: (
       <div data-nosnippet>
