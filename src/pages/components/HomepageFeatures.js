@@ -45,7 +45,7 @@ const FeatureList = [
         &nbsp;&nbsp;
         <a href="https://www.npmjs.com/org/sap-ai-sdk">
           <img
-            alt="NPM License"
+            alt="npm License"
             src="https://img.shields.io/npm/l/%40sap-ai-sdk%2Fai-api?color=dark-green"
           />
         </a>
