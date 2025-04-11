@@ -72,14 +72,6 @@ module.exports = {
           sdkSwitch: true
         },
         {
-          label: '🐍 Python',
-          to: '/',
-          position: 'left',
-          docsPluginId: '',
-          activeBasePath: '/',
-          sdkSwitch: true
-        },
-        {
           type: 'docsVersionDropdown',
           position: 'right',
           docsPluginId: 'docs-js'

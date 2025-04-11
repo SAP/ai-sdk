@@ -82,7 +82,6 @@ const FeatureList = [
       <div data-nosnippet>
         <b>🚧 Work in Progress: Documentation Portal 🚧</b>
         <br />
-        <a href="">Get Started</a>
       </div>
     )
   }
