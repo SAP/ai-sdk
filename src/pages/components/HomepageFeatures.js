@@ -65,7 +65,7 @@ const FeatureList = [
       <>
         <a href="https://pypi.org/project/generative-ai-hub-sdk/">
           <img
-            alt="Pypi Version"
+            alt="PyPI Version"
             src="https://img.shields.io/pypi/v/generative-ai-hub-sdk?color=dark-green"
           />
         </a>
