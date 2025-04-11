@@ -98,6 +98,14 @@ module.exports = {
               href: 'https://central.sonatype.com/search?smo=true&namespace=com.sap.ai.sdk'
             },
             {
+              label: 'GitHub',
+              href: 'https://github.com/SAP/ai-sdk-java'
+            },
+            {
+              label: 'Sample Code',
+              href: 'https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app'
+            },
+            {
               label: 'Support',
               to: 'docs/overview/get-support'
             }
@@ -108,11 +116,11 @@ module.exports = {
           items: [
             {
               label: 'Tutorials',
-              to: 'https://developers.sap.com/group.sap-ai-core-generative.html'
+              href: 'https://developers.sap.com/group.sap-ai-core-generative.html'
             },
             {
               label: 'npm',
-              href: 'https://www.npmjs.com/search?q=sap-ai-sdk'
+              href: 'https://www.npmjs.com/org/sap-ai-sdk'
             },
             {
               label: 'GitHub',
@@ -125,6 +133,19 @@ module.exports = {
             {
               label: 'Support',
               to: 'docs/overview/get-support'
+            }
+          ]
+        },
+        {
+          title: 'Python SDK',
+          items: [
+            {
+              label: 'Tutorials',
+              href: 'https://developers.sap.com/group.sap-ai-core-generative.html'
+            },
+            {
+              label: 'PyPI',
+              href: 'https://pypi.org/project/generative-ai-hub-sdk/'
             }
           ]
         }

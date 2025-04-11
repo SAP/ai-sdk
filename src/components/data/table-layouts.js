@@ -33,5 +33,18 @@ export const mainFeatureTableLayout = [
         accessor: 'js.docsLink'
       }
     ]
+  },
+  {
+    Header: '🐍 Python',
+    columns: [
+      {
+        Header: 'Status',
+        accessor: 'python.status'
+      },
+      {
+        Header: 'Docs',
+        accessor: 'python.docsLink'
+      }
+    ]
   }
 ];

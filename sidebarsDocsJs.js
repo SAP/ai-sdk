@@ -44,6 +44,11 @@ module.exports = {
         'ai-core/prompt-registry'
       ]
     },
-    'error-handling'
+    'error-handling',
+    {
+      type: 'link',
+      label: 'npm',
+      href: 'https://www.npmjs.com/org/sap-ai-sdk'
+    }
   ]
 };
