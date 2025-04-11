@@ -106,7 +106,7 @@ module.exports = {
               href: 'https://central.sonatype.com/search?smo=true&namespace=com.sap.ai.sdk'
             },
             {
-              label: 'Github',
+              label: 'GitHub',
               href: 'https://github.com/SAP/ai-sdk-java'
             },
             {
