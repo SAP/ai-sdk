@@ -152,7 +152,7 @@ module.exports = {
               href: 'https://developers.sap.com/group.sap-ai-core-generative.html'
             },
             {
-              label: 'Pypi',
+              label: 'PyPI',
               href: 'https://pypi.org/project/generative-ai-hub-sdk/'
             }
           ]
