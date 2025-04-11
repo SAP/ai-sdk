@@ -13,6 +13,20 @@ keywords:
 <!-- vale off -->
 <!-- This line is used for our release notes automation -->
 
+## 1.11.0 [Core Modules] - April 11, 2025
+
+### Compatibility Notes
+
+- [core] Removed deprecated model `text-embedding-ada-002`.
+  Use `text-embedding-3-small` or `text-embedding-3-large` instead. (79b2cf3)
+
+### New Features
+
+- [langchain] Support using data masking in LangChain orchestration client. (79b2cf3)
+- [langchain] Support using content filtering in LangChain orchestration client. (79b2cf3)
+- [orchestration] Introduce `buildDpiMaskingProvider()` convenience function to build masking provider `SAP Data Privacy Integration`. (79b2cf3)
+- [orchestration] Support setting `metadata_params` property in `buildDocumentGroundingConfig()` convenience function. (79b2cf3)
+
 ## 1.11.0 - Apr 8, 2025
 
 ### Compatibility Notes
