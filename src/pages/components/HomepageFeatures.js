@@ -38,14 +38,14 @@ const FeatureList = [
       <>
         <a href="https://www.npmjs.com/org/sap-ai-sdk">
           <img
-            alt="NPM Version"
+            alt="npm Version"
             src="https://img.shields.io/npm/v/%40sap-ai-sdk%2Fai-api?color=dark-green"
           />
         </a>
         &nbsp;&nbsp;
         <a href="https://www.npmjs.com/org/sap-ai-sdk">
           <img
-            alt="NPM License"
+            alt="npm License"
             src="https://img.shields.io/npm/l/%40sap-ai-sdk%2Fai-api?color=dark-green"
           />
         </a>
@@ -65,14 +65,14 @@ const FeatureList = [
       <>
         <a href="https://pypi.org/project/generative-ai-hub-sdk/">
           <img
-            alt="Pypi Version"
+            alt="PyPI Version"
             src="https://img.shields.io/pypi/v/generative-ai-hub-sdk?color=dark-green"
           />
         </a>
         &nbsp;&nbsp;
         <a href="https://pypi.org/project/generative-ai-hub-sdk/">
           <img
-            alt="Pypi License"
+            alt="PyPI License"
             src="https://img.shields.io/pypi/l/generative-ai-hub-sdk?color=dark-green"
           />
         </a>
