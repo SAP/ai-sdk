@@ -26,7 +26,7 @@ Find more details about orchestration workflow [here](https://help.sap.com/docs/
 $ npm install @sap-ai-sdk/orchestration
 ```
 
-## Usage
+## Quick Start
 
 Initialize a client with proper orchestration configuration for each module.
 Below is an example for configuring the mandatory `llm` and `templating` modules.
@@ -66,7 +66,7 @@ console.log(JSON.stringify(response.getTokenUsage()));
 
 The following sections provide detailed configuration for each module.
 
-### LLM Configuration
+## LLM Configuration
 
 Choose the LLM by setting the `model_name` property in `llm` module configuration.
 Optionally, define `model_version` (default: `latest`) and `model_params` for custom settings.
@@ -83,16 +83,40 @@ const llm: LlmModuleConfig = {
 };
 ```
 
-#### Harmonized API
+## Harmonized API
 
-The orchestration service provides a [harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api) for all models.
-It allows using different models with the same API.
+The [Harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api?locale=en-US) lets you use different foundation models without the need to change the client code.
+You can switch from one LLM to another easily like the example below.
 
-Refer to [Availability of Generative AI Models](../overview-cloud-sdk-for-ai-js#availability-of-generative-ai-models) for a list of available models and their specific parameters.
-The supported models in the orchestration service are listed in the SAP Note [Availability of Generative AI Models
-](https://me.sap.com/notes/3437766).
+```javascript
+// Original config for using GPT 4o
+/*
+const llm: LlmModuleConfig = {
+  model_name: 'gpt-4o'
+};
+*/
 
-### Templating
+// Switch to Claude 3.5 Sonnet
+const llm: LlmModuleConfig = {
+  model_name: 'anthropic--claude-3.5-sonnet'
+};
+```
+
+:::tip Available LLMs on SAP Generative AI Hub
+Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub can be accessed through orchestration, including:
+
+- OpenAI GPT 4o
+- OpenAI o1
+- OpenAI o3 mini
+- AWS Anthropic Claud
+- AWS Amazon Nova
+- GCP Gemini
+- Mistral AI
+  :::
+
+Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
+
+## Templating
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
 This allows for variations in the prompt based on the input parameters.
@@ -112,7 +136,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-#### Function Calling
+## Function Calling
 
 Function calling with tools enable the creation of multi-step, agent-driven workflows, allowing generative AI model to perform specific actions.
 Set `strict` to `true` in the function definition to let the response adhere to the schema definition of the function input when a function should be called.
@@ -139,7 +163,7 @@ const templating: TemplatingModuleConfig = {
 }
 ```
 
-#### Response Format
+## Response Format
 
 For general response formatting, use the `response_format` parameter.
 It is useful when model is **not calling a tool** and should still return a structured response.
@@ -193,7 +217,7 @@ const response_format: ResponseFormatJsonSchema = {
 };
 ```
 
-### Prompt Registry
+## Prompt Registry
 
 You can define template content within the templating configuration, or refer to a template defined in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry).
 
@@ -217,7 +241,7 @@ const response = orchestrationClient.chatCompletion({
 A prompt template can be referenced either by ID, or by a combination of name, scenario and version.
 For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
-#### Message History
+## Message History
 
 The orchestration service supports chat completion with message history.
 This allows the model to remember previous messages in the conversation, enabling a more coherent and context-aware interaction.
@@ -252,7 +276,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-#### Image Recognition
+## Image Recognition
 
 Many models in the orchestration service have image recognition capabilities, meaning the models can take images as input and answer questions about them.
 
@@ -296,7 +320,7 @@ const response = await orchestrationClient.chatCompletion({
 You can send a single chat completion request with multiple images by defining multiple content blocks with `image_url` type in the template.
 The model will process each image and use the information from all of them to respond.
 
-### Content Filtering
+## Content Filtering
 
 Configure content filtering to restrict content that is passed to and received from a generative AI model.
 
@@ -342,7 +366,7 @@ In case of a `200` HTTP response, the `getContent()` method can throw an error i
 See the [Error Handling](../error-handling) page for more details.
 :::
 
-#### Azure Content Filter
+### Azure Content Filter
 
 Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
 Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
@@ -363,7 +387,7 @@ const filter = buildAzureContentSafetyFilter({
 });
 ```
 
-#### Llama Guard Filter
+### Llama Guard Filter
 
 Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
 
@@ -376,7 +400,7 @@ import { buildLlamaGuardFilter } from '@sap-ai-sdk/orchestration';
 const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
 ```
 
-### Data Masking
+## Data Masking
 
 Use the orchestration client with the masking module to mask sensitive information in the prompt while preserving necessary context for the generative AI model.
 
@@ -407,7 +431,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-#### SAP Data Privacy Integration
+### SAP Data Privacy Integration
 
 Orchestration service offers a masking provider "SAP Data Privacy Integration (DPI)" to anonymize or pseudonymize sensitive information.
 Use `buildDpiMaskingProvider()` function to build a DPI masking provider.
@@ -424,7 +448,7 @@ const maskingProvider = buildDpiMaskingProvider({
 The `allowlist` property specifies terms which will be kept unmasked.
 Set `mask_grounding_input` to `true` to mask [Grounding](#grounding) input as well.
 
-### Grounding
+## Grounding
 
 Grounding enables integrating external, contextually relevant, domain-specific, or real-time data into AI processes.
 Use `buildDocumentGroundingConfig()` function to build configuration for document grounding service.
@@ -471,7 +495,7 @@ If set the value to `'*'`, all metadata will be included.
 Set `data_repositories` property with an array of repository IDs to search in specific data repositories.
 Skip this property to search in all available data repositories.
 
-### Use JSON Configuration from AI Launchpad
+## Use JSON Configuration from AI Launchpad
 
 If you already have an orchestration workflow created in your SAP AI Launchpad instance, you can either download the configuration as a JSON file or copy the JSON string in code to configure the orchestration client.
 
@@ -486,7 +510,7 @@ const jsonConfig = await fs.promises.readFile(
 const orchestrationClient = new OrchestrationClient(jsonConfig);
 ```
 
-### Streaming
+## Streaming
 
 The `OrchestrationClient` supports streaming responses for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
 
@@ -509,7 +533,7 @@ console.log(`Finish reason: ${finishReason}\n`);
 console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 ```
 
-#### Streaming the Delta Content
+### Streaming the Delta Content
 
 Use `toContentStream()` method to create a stream generating delta content string.
 
@@ -519,7 +543,7 @@ for await (const chunk of response.stream.toContentStream()) {
 }
 ```
 
-#### Streaming with Abort Controller
+### Streaming with Abort Controller
 
 Streaming request can be aborted using the `AbortController` API.
 In case of an error, SAP Cloud SDK for AI will automatically close the stream.
@@ -556,7 +580,7 @@ for await (const chunk of response.stream) {
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
 
-#### Streaming Options
+### Streaming Options
 
 The orchestration service offers multiple streaming options, which you can configure in addition to the LLM streaming options.
 These include options like defining the maximum number of characters per chunk or modifying the output filter behavior.
@@ -587,7 +611,7 @@ Set the `llm` property to `null` to not send any LLM streaming options.
 When initializing a client with JSON module config, it is not possible to provide streaming options.
 :::
 
-### Custom Resource Group
+## Custom Resource Group
 
 By default, you should have an orchestration deployment in the `default` [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups).
 
@@ -600,7 +624,7 @@ const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
 });
 ```
 
-### Custom Request Configuration
+## Custom Request Configuration
 
 Set custom request configuration in the `requestConfig` parameter when calling the `chatCompletion()` method.
 
@@ -622,7 +646,7 @@ const response = await orchestrationClient.chatCompletion(
 );
 ```
 
-### Custom Destination
+## Custom Destination
 
 When initializing the client, it is possible to provide a custom destination.
 For example, when targeting a destination with the name `my-destination`, the following code can be used:
