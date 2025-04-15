@@ -44,6 +44,7 @@ module.exports = {
         'ai-core/prompt-registry'
       ]
     },
+    'release-notes',
     'error-handling',
     {
       type: 'link',
