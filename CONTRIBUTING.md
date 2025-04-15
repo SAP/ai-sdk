@@ -128,7 +128,8 @@ We use GitHub to manage reviews of pull requests.
 
 ## Steps to Contribute
 
-Should you wish to work on an issue, please claim it first by commenting on the GitHub issue that you want to work on. This is to prevent duplicated efforts from other contributors on the same issue.
+Should you wish to work on an issue, please claim it first by commenting on the GitHub issue that you want to work on.
+This is to prevent duplicated efforts from other contributors on the same issue.
 
 If you have questions about one of the issues, please comment on them, and one of the maintainers will clarify.
 

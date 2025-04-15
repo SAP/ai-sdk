@@ -1,7 +1,8 @@
 > [!warning]
 > 🚧 Work in Progress: Documentation Portal 🚧
 >
-> We are actively working on the documentation portal. Expect frequent updates and changes.
+> We are actively working on the documentation portal.
+> Expect frequent updates and changes.
 
 # SAP Cloud SDK for AI documentation portal
 
@@ -13,7 +14,7 @@ This repository contains sources for the [SAP Cloud SDK for AI Documentation](ht
 
 Find it here:
 
-- [Javascript/Typescript](https://github.com/SAP/ai-sdk-js).
+- [JavaScript/TypeScript](https://github.com/SAP/ai-sdk-js).
 - [Java](https://github.com/SAP/ai-sdk-java).
 
 ## Requirements and Setup
@@ -44,12 +45,16 @@ Check out our [contribution guide](./CONTRIBUTING.md) and follow our [code of co
 
 ## Security / Disclosure
 
-If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk/security/policy) on how to report it. Please do not create GitHub issues for security-related doubts or problems.
+If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk/security/policy) on how to report it.
+Please do not create GitHub issues for security-related doubts or problems.
 
 ## Code of Conduct
 
-We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone. By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
+We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone.
+By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
 
 ## Licensing
 
-Copyright 2025 SAP SE or an SAP affiliate company and ai-sdk contributors. Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk).
+Copyright 2025 SAP SE or an SAP affiliate company and ai-sdk contributors.
+Please see our [LICENSE](LICENSE) for copyright and license information.
+Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk).
