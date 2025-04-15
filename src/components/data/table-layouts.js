@@ -1,49 +1,60 @@
 export const mainFeatureTableLayout = [
   {
     Header: 'Feature',
+    id: 'feature',
     columns: [
       {
+        id: 'feature-name',
         Header: 'Name',
-        accessor: 'name'
+        accessorKey: 'name'
       }
     ]
   },
   {
     Header: '☕️ Java',
+    id: 'java',
     columns: [
       {
+        id: 'java-status',
         Header: 'Status',
-        accessor: 'java.status'
+        accessorKey: 'java.status'
       },
       {
+        id: 'java-docs',
         Header: 'Docs',
-        accessor: 'java.docsLink'
+        accessorKey: 'java.docsLink'
       }
     ]
   },
   {
     Header: '🚀 JavaScript',
+    id: 'javascript',
     columns: [
       {
+        id: 'js-status',
         Header: 'Status',
-        accessor: 'js.status'
+        accessorKey: 'js.status'
       },
       {
+        id: 'js-docs',
         Header: 'Docs',
-        accessor: 'js.docsLink'
+        accessorKey: 'js.docsLink'
       }
     ]
   },
   {
     Header: '🐍 Python',
+    id: 'python',
     columns: [
       {
+        id: 'python-status',
         Header: 'Status',
-        accessor: 'python.status'
+        accessorKey: 'python.status'
       },
       {
+        id: 'python-docs',
         Header: 'Docs',
-        accessor: 'python.docsLink'
+        accessorKey: 'python.docsLink'
       }
     ]
   }
