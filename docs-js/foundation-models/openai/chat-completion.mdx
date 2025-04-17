@@ -201,7 +201,7 @@ if (initialResponse.tool_calls) {
   const args = JSON.parse(toolCall.function.arguments);
 
   // Execute the function with the provided arguments
-  const toolResult = convertTemperatureToFahrenheit(args.temperature);
+  const toolResult = callFunction(name, args);
   messages.push({
     role: 'tool',
     content: toolResult,
