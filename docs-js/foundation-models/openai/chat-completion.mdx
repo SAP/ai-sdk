@@ -233,7 +233,7 @@ Send the function result back to the model to get it's final response:
 
 ```ts
 const finalResponse = await client.run({
-  messages, //A list of the model's previous responses and the function result
+  messages, // List of the previous messages with the function result
   tools: [convertTemperatureTool]
 });
 
