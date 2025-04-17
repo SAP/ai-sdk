@@ -147,7 +147,8 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 
 ## Executing tool calls
 
-Define and pass [tool definitions](https://platform.openai.com/docs/guides/function-calling) to enable the model to call specific functions. Here's an example of temperature conversion using tool calls:
+Define and pass [tool definitions](https://platform.openai.com/docs/guides/function-calling) to enable the model to call specific functions. 
+Here's an example of temperature conversion using tool calls:
 
 First, define the tool with its name and parameters:
 
@@ -186,7 +187,7 @@ const response = await client.run({
 ```
 
 When the model decides to use a tool, it returns the function name and input arguments in the response.
-Parse the model's response and use them to execute the function code.
+Parse the model's response and use them to execute the function.
 
 ```ts
 const initialResponse = response.data.choices[0].message;
@@ -209,7 +210,7 @@ if (initialResponse.tool_calls) {
 }
 ```
 
-The `callFunction` routes the model's function calls to their actual implementations. It takes the function name and arguments returned by the model, executes the appropriate function, and returns the result.
+The `callFunction` routes the model's function calls to their actual implementations.
 
 ```ts
 // Route function calls to the appropriate implementation
@@ -232,7 +233,7 @@ Send the function result back to the model to get it's final response:
 
 ```ts
 const finalResponse = await client.run({
-  messages,
+  messages, //A list of model's previous responses and the function result
   tools: [convertTemperatureTool]
 });
 
