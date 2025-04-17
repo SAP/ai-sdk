@@ -149,7 +149,7 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 
 Define and pass [tool definitions](https://platform.openai.com/docs/guides/function-calling) to enable the model to call specific functions. Here's an example of temperature conversion using tool calls:
 
-First, define the tool with its parameters and description:
+First, define the tool with its name and parameters:
 
 ```ts
 const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
@@ -185,7 +185,7 @@ const response = await client.run({
 });
 ```
 
-When the model decides to use a tool, it returns the function name and input arguments in the response. 
+When the model decides to use a tool, it returns the function name and input arguments in the response.
 Parse the model's response and use them to execute the function code.
 
 ```ts
@@ -209,6 +209,25 @@ if (initialResponse.tool_calls) {
 }
 ```
 
+The `callFunction` routes the model's function calls to their actual implementations. It takes the function name and arguments returned by the model, executes the appropriate function, and returns the result.
+
+```ts
+// Route function calls to the appropriate implementation
+const callFunction = (name: string, args: any): string => {
+  switch (name) {
+    case 'convert_temperature_to_fahrenheit':
+      return convertTemperatureToFahrenheit(args.temperature);
+    default:
+      throw new Error(`Function: ${name} not found!`);
+  }
+};
+
+// Define the actual function that performs the conversion
+function convertTemperatureToFahrenheit(temperature: number): string {
+  return `The temperature in Fahrenheit is ${(temperature * 9) / 5 + 32}°F.`;
+}
+```
+
 Send the function result back to the model to get it's final response:
 
 ```ts
@@ -218,10 +237,6 @@ const finalResponse = await client.run({
 });
 
 console.log(finalResponse.getContent());
-
-function convertTemperatureToFahrenheit(temperature: number): string {
-  return `The temperature in Fahrenheit is ${(temperature * 9) / 5 + 32}°F.`;
-}
 ```
 
 The model decides whether to use the provided tools based on the user's request. When appropriate, it will make tool calls to help generate more accurate responses.
