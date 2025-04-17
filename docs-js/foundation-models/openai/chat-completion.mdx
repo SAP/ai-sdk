@@ -214,7 +214,7 @@ The `callFunction` routes the model's function calls to their actual implementat
 
 ```ts
 // Route function calls to the appropriate implementation
-const callFunction = (name: string, args: any): string => {
+function callFunction(name: string, args: any): string {
   switch (name) {
     case 'convert_temperature_to_fahrenheit':
       return convertTemperatureToFahrenheit(args.temperature);
