@@ -150,7 +150,7 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 Define and pass [tool definitions](https://platform.openai.com/docs/guides/function-calling) to enable the model to call specific functions.
 Here's an example of temperature conversion using tool calls:
 
-First, define the tool with its name and parameters:
+First, define the tool with its `name` and `parameters`:
 
 ```ts
 const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
