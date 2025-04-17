@@ -148,6 +148,23 @@ module.exports = {
               href: 'https://pypi.org/project/generative-ai-hub-sdk/'
             }
           ]
+        },
+        {
+          title: 'Additional Resources',
+          items: [
+            {
+              label: 'SAP Cloud SDK (Java) - GitHub',
+              href: 'https://github.com/SAP/cloud-sdk-java'
+            },
+            {
+              label: 'SAP Cloud SDK (JavaScript) - GitHub',
+              href: 'https://github.com/SAP/cloud-sdk-js'
+            },
+            {
+              label: 'SAP Cloud SDK Documentation',
+              href: 'https://sap.github.io/cloud-sdk/'
+            }
+          ]
         }
       ],
       copyright: `Copyright © ${new Date().getFullYear()} SAP SE or an SAP affiliate company. All rights reserved.`
