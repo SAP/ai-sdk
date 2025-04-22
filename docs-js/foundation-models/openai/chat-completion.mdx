@@ -171,6 +171,7 @@ const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
   }
 };
 ```
+
 :::info
 
 Set `strict` to `true` to ensure function calls adhere to the function schema.
@@ -227,7 +228,7 @@ function callFunction(name: string, args: any): string {
     default:
       throw new Error(`Function: ${name} not found!`);
   }
-};
+}
 
 // Define the actual function that performs the conversion
 function convertTemperatureToFahrenheit(temperature: number): string {
