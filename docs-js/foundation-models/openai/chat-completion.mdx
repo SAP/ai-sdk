@@ -204,7 +204,7 @@ if (initialResponse.tool_calls) {
   const toolCall = initialResponse.tool_calls[0];
   // The model provides the function name to call
   const name = toolCall.function.name;
-  // And the arguments to pass to the function
+  // Extract the arguments to pass to the function
   const args = JSON.parse(toolCall.function.arguments);
 
   // Execute the function with the provided arguments
@@ -246,5 +246,3 @@ const finalResponse = await client.run({
 
 console.log(finalResponse.getContent());
 ```
-
-The model decides whether to use the provided tools based on the user's request.
