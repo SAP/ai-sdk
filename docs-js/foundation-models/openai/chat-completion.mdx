@@ -144,3 +144,101 @@ for await (const chunk of response.stream) {
 
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+## Function Calling
+
+Define and pass [tool definitions](https://platform.openai.com/docs/guides/function-calling) to enable the model to call specific functions.
+Here's an example of temperature conversion using tool calls:
+
+First, define the tool with its `name` and `parameters`:
+
+```ts
+const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'convert_temperature_to_fahrenheit',
+    description: 'Converts temperature from Celsius to Fahrenheit',
+    parameters: {
+      type: 'object',
+      properties: {
+        temperature: {
+          type: 'number',
+          description: 'The temperature value in Celsius to convert.'
+        }
+      },
+      required: ['temperature']
+    }
+  }
+};
+```
+
+Set `strict` to `true` to ensure function calls adhere to the function schema.
+For more information refer to the [OpenAI documentation](https://platform.openai.com/docs/guides/function-calling?api-mode=chat#strict-mode).
+
+Initialize the client and send the initial request with the tool definition:
+
+```ts
+const client = new AzureOpenAiChatClient('gpt-4o');
+const messages = [
+  { role: 'user', content: 'Convert 20 degrees Celsius to Fahrenheit.' }
+];
+
+const response = await client.run({
+  messages,
+  tools: [convertTemperatureTool]
+});
+```
+
+When the model decides to use a tool, it returns the function name and input arguments in the response.
+Use the model response to execute the function.
+
+```ts
+const initialResponse = response.data.choices[0].message;
+messages.push(initialResponse);
+
+if (initialResponse.tool_calls) {
+  const toolCall = initialResponse.tool_calls[0];
+  // The model provides the function name to call
+  const name = toolCall.function.name;
+  // Extract the arguments to pass to the function
+  const args = JSON.parse(toolCall.function.arguments);
+
+  // Execute the function with the provided arguments
+  const toolResult = callFunction(name, args);
+  messages.push({
+    role: 'tool',
+    content: toolResult,
+    tool_call_id: toolCall.id
+  });
+}
+```
+
+The `callFunction` routes the model's function calls to their actual implementations.
+
+```ts
+// Route function calls to the appropriate implementation
+function callFunction(name: string, args: any): string {
+  switch (name) {
+    case 'convert_temperature_to_fahrenheit':
+      return convertTemperatureToFahrenheit(args.temperature);
+    default:
+      throw new Error(`Function: ${name} not found!`);
+  }
+}
+
+// Define the actual function that performs the conversion
+function convertTemperatureToFahrenheit(temperature: number): string {
+  return `The temperature in Fahrenheit is ${(temperature * 9) / 5 + 32}°F.`;
+}
+```
+
+Send the function result back to the model to get it's final response:
+
+```ts
+const finalResponse = await client.run({
+  messages, // List of the previous messages with the function result
+  tools: [convertTemperatureTool]
+});
+
+console.log(finalResponse.getContent());
+```
