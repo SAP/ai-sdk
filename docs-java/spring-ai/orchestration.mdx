@@ -192,7 +192,9 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 
 ## Response Format
 
-It is possible to force the response of the LLM to follow a certain JSON schema which is derived from a Java class. The response can automatically be deserialized back into the Java class. The following example uses the `Translation` class:
+It is possible to force the response of the LLM to follow a certain JSON schema which is derived from a Java class.
+The response can automatically be deserialized back into the Java class.
+The following example uses the `Translation` class:
 
 ```java
 public record Translation(
