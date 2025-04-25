@@ -55,6 +55,8 @@ Use the following convenience methods for handling chat completion response:
 - `getContent()` parses the response and returns the model's output as a string.
 - `getFinishReason()` retrieves the `finish_reason` explaining why chat completion request stopped.
 - `getTokenUsage()` provides token usage details, including `total_tokens`, `prompt_tokens`, and `completion_tokens`.
+- `getAllMessages()` parses the response and returns a list of all messages.
+- `getAssistantMessage()` parses the response and returns the assistant message.
 
 ```ts
 const response = await orchestrationClient.chatCompletion();
@@ -62,6 +64,8 @@ const response = await orchestrationClient.chatCompletion();
 console.log(response.getContent());
 console.log(response.getFinishReason());
 console.log(JSON.stringify(response.getTokenUsage()));
+console.log(response.getAllMessages());
+console.log(response.getAssistantMessage());
 ```
 
 The following sections provide detailed configuration for each module.
