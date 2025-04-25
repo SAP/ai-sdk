@@ -189,3 +189,28 @@ String content2 = cl.prompt(prompt2).call().content();
 ```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
+## Response Format
+
+It is possible to force the response of the LLM to follow a certain JSON schema which is derived from a Java class. The response can automatically be deserialized back into the Java class. The following example uses the `Translation` class:
+
+```java
+public record Translation(
+  @JsonProperty(required = true) String translation,
+  @JsonProperty(required = true) String language) {}
+
+val cl = ChatClient.builder(new OrchestrationChatModel()).build();
+
+val schema = ResponseJsonSchema.fromType(Translation.class);
+val template = TemplateConfig.create().withJsonSchemaResponse(schema);
+
+val options = new OrchestrationChatOptions(config.withTemplateConfig(template));
+val prompt =
+  new Prompt("How do I say 'AI is going to revolutionize the world' in dutch?", options);
+
+Translation translation = cl.prompt(prompt).call().entity(Translation.class);
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
+For detailed information on setting a response format, check the corresponding [Documentation for Orchestration](../orchestration/chat-completion#response-format).
