@@ -317,39 +317,37 @@ class WeatherMethod {
 You can define the function and pass it to the model as follows.
 
 ```java
+var client = OpenAiClient.forModel(GPT_4O_MINI);
+
 var messages = new ArrayList<OpenAiMessage>();
 messages.add(OpenAiMessage.user("What's the weather in Berlin in Celsius"));
 
-// 1. Define the function
-var tool = new OpenAiFunctionTool("weather", WeatherMethod.Request.class)
-    .withDescription("Get the weather for the given location");
+// 1. Define the functions
+List<OpenAiTool<?>> tools =
+  List.of(
+    new OpenAiTool<>("weather", WeatherMethod.Request.class)
+      .setDescription("Get the weather for the given location")
+      .setFunction(WeatherMethod::getCurrentWeather));
 
-// 2. Assistant calls the function
-var request = new OpenAiChatCompletionRequest(messages).withOpenAiTools(List.of(tool));
-OpenAiChatCompletionResponse response =
-    OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
-OpenAiAssistantMessage assistantMessage = response.getMessage();
+// 2. Query LLM for assistant to call the function
+var request = new OpenAiChatCompletionRequest(messages).withToolsExecutable(tools);
+var response = client.chatCompletion(request);
+var assistantMessage = response.getMessage();
+
+var toolCallsInput = assistantMessage.toolCalls(); // raw tool call input arguments
 ```
 
 Optionally, you can execute the tool call and request the LLM to format the result in a user-friendly way.
 
 ```java
-// 3. Execute the function call
-OpenAiToolCall toolCall = assistantMessage.toolCalls().get(0);
-if (!(toolCall instanceof OpenAiFunctionCall functionCall)) {
-  throw new IllegalArgumentException(
-      "Expected a function call, but got: %s".formatted(assistantMessage));
-}
-
-WeatherMethod.Request arguments = functionCall.getArgumentsAsObject(weatherFunction);
-WeatherMethod.Response currentWeather = WeatherMethod.getCurrentWeather(arguments);
+// 3. Execute the function call at runtime
+var toolResults = OpenAiTool.execute(tools, assistantMessage); 
 
 // 4. Send back the results, and the model will incorporate them into its final response.
 messages.add(assistantMessage);
-messages.add(OpenAiMessage.tool(currentWeather.toString(), functionCall.getId()));
-OpenAiChatCompletionResponse finalResponse =
-    OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
+messages.add(toolResults.getMessages());
 
+var finalResponse = client.chatCompletion(request.withMessages(messages));
 String content = finalResponse.getContent();
 ```
 
