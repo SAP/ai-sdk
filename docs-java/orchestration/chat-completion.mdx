@@ -208,7 +208,7 @@ spec:
     word: "apple"
 """;
 var template = TemplateConfig.create().fromYaml(promptTemplate);
-var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
+var configWithTemplate = config.withTemplateConfig(template);
 
 var inputParams = Map.of("language", "German");
 var prompt = new OrchestrationPrompt(inputParams);
