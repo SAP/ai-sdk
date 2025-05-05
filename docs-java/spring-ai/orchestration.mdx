@@ -157,8 +157,6 @@ OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
 
-options.setInternalToolExecutionEnabled(false);// tool execution is not yet available in orchestration
-
 Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
 ChatResponse response = client.call(prompt);
