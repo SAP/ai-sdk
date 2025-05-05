@@ -148,7 +148,17 @@ class WeatherMethod {
 }
 ```
 
-Then add your tool to the options:
+<details>
+  <summary>What to consider:</summary>
+
+- Self-explanatory interfaces that avoid acronyms.
+- Provide clear, humane readable error messages.
+- Enriched data objects to avoid client-side data merging.
+- Filter output to control size
+
+</details>
+
+Then pass your tool to the model as follows.
 
 ```java
 ChatModel client = new OrchestrationChatModel();
