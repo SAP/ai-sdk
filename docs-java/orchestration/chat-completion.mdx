@@ -192,21 +192,7 @@ You can also test prompt templates in YAML format locally without using the prom
 This can be helpful, for example, if you want to quickly iterate over a prompt template before uploading it.
 
 ```Java
-String promptTemplate = """
-name: translator
-version: 0.0.1
-scenario: translation scenario
-spec:
-  template:
-    - role: "system"
-      content: |-
-        You are a language translator.
-    - role: "user"
-      content: |-
-        Whats {{ ?word }} in {{ ?language }}?
-  defaults:
-    word: "apple"
-""";
+String promptTemplate = Files.readString(Path.of("path/to/my/prompt-template.yaml"));
 var template = TemplateConfig.create().fromYaml(promptTemplate);
 var configWithTemplate = config.withTemplateConfig(template);
 
@@ -217,7 +203,7 @@ var response = client.chatCompletion(prompt, configWithTemplate);
 
 The `fromYaml()` method will throw an exception if the YAML is not valid or does not match the spec of the Prompt Registry.
 
-Note that `additionalFields` will be ignored when using a prompt template locally like this.
+Note that `additionalFields` (as specified in the Prompt Registry spec) will be ignored when using a prompt template locally like this.
 
 Please also refer to [our sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for an implementation and more examples.
 
