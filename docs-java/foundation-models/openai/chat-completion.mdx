@@ -332,21 +332,18 @@ List<OpenAiTool<?>> tools =
 // 2. Query LLM for assistant to call the function
 var request = new OpenAiChatCompletionRequest(messages).withToolsExecutable(tools);
 var response = client.chatCompletion(request);
-var assistantMessage = response.getMessage();
 
-var toolCallsInput = assistantMessage.toolCalls(); // raw tool call input arguments
+var toolCallsInput = response.getMessage().toolCalls(); // raw tool call input arguments
 ```
 
 Optionally, you can execute the tool call and request the LLM to format the result in a user-friendly way.
 
 ```java
 // 3. Execute the function call at runtime
-var toolResults = OpenAiTool.execute(tools, assistantMessage); 
+messages.add(response.getMessage());
+messages.addAll(response.executeTools());
 
 // 4. Send back the results, and the model will incorporate them into its final response.
-messages.add(assistantMessage);
-messages.addAll(toolResults.getMessages());
-
 var finalResponse = client.chatCompletion(request.withMessages(messages));
 String content = finalResponse.getContent();
 ```
