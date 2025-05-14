@@ -323,7 +323,7 @@ var messages = new ArrayList<OpenAiMessage>();
 messages.add(OpenAiMessage.user("What's the weather in Berlin in Celsius"));
 
 // 1. Define the functions
-List<OpenAiTool<?>> tools =
+List<OpenAiTool> tools =
   List.of(
     OpenAiTool.forFunction(WeatherMethod::getCurrentWeather)
       .withArgument(WeatherMethod.Request.class)
