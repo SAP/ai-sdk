@@ -333,7 +333,6 @@ List<OpenAiTool<?>> tools =
 var request = new OpenAiChatCompletionRequest(messages).withToolsExecutable(tools);
 var response = client.chatCompletion(request);
 
-var toolCallsInput = response.getMessage().toolCalls(); // raw tool call input arguments
 ```
 
 Optionally, you can execute the tool call and request the LLM to format the result in a user-friendly way.
