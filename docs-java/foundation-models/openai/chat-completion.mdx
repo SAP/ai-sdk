@@ -345,7 +345,7 @@ var toolResults = OpenAiTool.execute(tools, assistantMessage);
 
 // 4. Send back the results, and the model will incorporate them into its final response.
 messages.add(assistantMessage);
-messages.add(toolResults.getMessages());
+messages.addAll(toolResults.getMessages());
 
 var finalResponse = client.chatCompletion(request.withMessages(messages));
 String content = finalResponse.getContent();
