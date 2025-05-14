@@ -18,7 +18,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion)`
     }
   },
   {
@@ -29,7 +29,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#harmonized-api)`
     }
   },
   {
@@ -40,7 +40,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#templating)`
     }
   },
   {
@@ -51,7 +51,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#image-recognition)`
     }
   },
   {
@@ -62,7 +62,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#streaming)`
     }
   },
   {
@@ -73,7 +73,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#content-filtering)`
     }
   },
   {
@@ -84,7 +84,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#content-filtering)`
     }
   },
   {
@@ -95,7 +95,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#data-masking)`
     }
   },
   {
@@ -106,7 +106,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#grounding)`
     }
   },
   {
@@ -117,7 +117,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#prompt-registry)`
     }
   },
   {
@@ -128,7 +128,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/ai-core/ai-api)`
     }
   },
   {
@@ -139,7 +139,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/ai-core/document-grounding)`
     }
   },
   {
@@ -150,7 +150,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/ai-core/prompt-registry)`
     }
   },
   {
@@ -161,7 +161,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/langchain/orchestration)`
     }
   },
   {
@@ -172,7 +172,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/langchain/openai)`
     }
   },
   {
@@ -183,7 +183,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/foundation-models/openai/chat-completion)`
     }
   },
   {
@@ -194,7 +194,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/foundation-models/openai/chat-completion#streaming)`
     }
   },
   {
@@ -205,7 +205,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: ``
+      docsLink: `[docs](${baseUrl}/js/foundation-models/openai/embedding)`
     }
   }
 ];

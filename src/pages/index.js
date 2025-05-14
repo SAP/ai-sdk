@@ -5,6 +5,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
 import HomepageFeatures from './components/HomepageFeatures';
+import Head from '@docusaurus/Head';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -31,8 +32,11 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="SAP Cloud SDK for AI is a one-stop shop for developing and extending SAP applications in the cloud."
+      description="SAP Cloud SDK for AI (SAP AI SDK) is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service."
     >
+      <Head>
+        <meta name="keywords" content="SAP, AI, SDK, Cloud, Orchestration" />
+      </Head>
       <HomepageHeader />
       <main>
         <HomepageFeatures />

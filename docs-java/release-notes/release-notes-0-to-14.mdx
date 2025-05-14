@@ -1,3 +1,21 @@
+## 1.7.0 - April 30, 2025
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.7.0)
+
+### 🔧 Compatibility Notes
+
+- [Orchestration] Deprecated `OrchestrationAiModel.GEMINI_1_0_PRO`. The replacements are either:
+  - `OrchestrationAiModel.GEMINI_2_0_FLASH`
+  - `OrchestrationAiModel.GEMINI_2_0_FLASH_LITE`.
+
+### ✨ New Functionality
+
+- [Orchestration] [Added support to locally test prompt template files](orchestration/chat-completion#locally-test-a-prompt-template)
+- [Orchestration] Added new models:
+  - `OrchestrationAiModel.CLAUDE_3_7_SONNET`
+  - `OrchestrationAiModel.GEMINI_2_0_FLASH`
+  - `OrchestrationAiModel.GEMINI_2_0_FLASH_LITE`
+
 ## 1.6.0 - April 03, 2025
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.6.0)
@@ -127,7 +145,7 @@
   - Generate embeddings for input text.
 
 :::warning
-All classes under any of the `...model` packages are generated from an OpenAPI specification and marked as `@Beta`.
+All classes under any of the `...model` packages are generated from an OpenAPI specification.
 This means that these model classes are not guaranteed to be stable and may change with future releases.
 They are safe to use, but may require updates even in minor releases.
 :::

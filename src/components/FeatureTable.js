@@ -20,8 +20,6 @@ export default function FeatureTable() {
       <b>
         🚧 Work in Progress: Documentation Portal 🚧
         <br />
-        We are actively working on the documentation portal. Expect frequent
-        updates and changes.
       </b>
       <br />
       <br />

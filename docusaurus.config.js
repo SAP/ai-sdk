@@ -65,7 +65,7 @@ module.exports = {
         },
         {
           label: '🚀 JavaScript',
-          to: 'docs/js/overview',
+          to: 'docs/js/overview-cloud-sdk-for-ai-js',
           position: 'left',
           docsPluginId: 'docs-js',
           activeBasePath: 'docs/js',
@@ -98,6 +98,14 @@ module.exports = {
               href: 'https://central.sonatype.com/search?smo=true&namespace=com.sap.ai.sdk'
             },
             {
+              label: 'GitHub',
+              href: 'https://github.com/SAP/ai-sdk-java'
+            },
+            {
+              label: 'Sample Code',
+              href: 'https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app'
+            },
+            {
               label: 'Support',
               to: 'docs/overview/get-support'
             }
@@ -108,23 +116,53 @@ module.exports = {
           items: [
             {
               label: 'Tutorials',
-              to: 'https://developers.sap.com/group.sap-ai-core-generative.html'
+              href: 'https://developers.sap.com/group.sap-ai-core-generative.html'
             },
             {
               label: 'npm',
-              href: 'https://www.npmjs.com/search?q=sap-ai-sdk'
+              href: 'https://www.npmjs.com/org/sap-ai-sdk'
             },
             {
               label: 'GitHub',
               href: 'https://github.com/SAP/ai-sdk-js'
             },
             {
-              label: 'Sample repository',
+              label: 'Sample Code',
               href: 'https://github.com/SAP/ai-sdk-js/tree/main/sample-code'
             },
             {
               label: 'Support',
               to: 'docs/overview/get-support'
+            }
+          ]
+        },
+        {
+          title: 'Python SDK',
+          items: [
+            {
+              label: 'Tutorials',
+              href: 'https://developers.sap.com/group.sap-ai-core-generative.html'
+            },
+            {
+              label: 'PyPI',
+              href: 'https://pypi.org/project/generative-ai-hub-sdk/'
+            }
+          ]
+        },
+        {
+          title: 'Additional Resources',
+          items: [
+            {
+              label: 'SAP Cloud SDK (Java) - GitHub',
+              href: 'https://github.com/SAP/cloud-sdk-java'
+            },
+            {
+              label: 'SAP Cloud SDK (JavaScript) - GitHub',
+              href: 'https://github.com/SAP/cloud-sdk-js'
+            },
+            {
+              label: 'SAP Cloud SDK Documentation',
+              href: 'https://sap.github.io/cloud-sdk/'
             }
           ]
         }
@@ -213,6 +251,7 @@ module.exports = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
+          // Java
           {
             from: '/docs/java/guides/ai-core-deployment',
             to: '/docs/java/ai-core/ai-core-deployment'
@@ -236,6 +275,39 @@ module.exports = {
           {
             from: '/docs/java/guides/connecting-to-ai-core',
             to: '/docs/java/connecting-to-ai-core'
+          },
+          // JavaScript
+          {
+            from: '/docs/js/guides/ai-api',
+            to: '/docs/js/ai-core/ai-api'
+          },
+          {
+            from: '/docs/js/guides/document-grounding',
+            to: '/docs/js/ai-core/document-grounding'
+          },
+          {
+            from: '/docs/js/guides/prompt-registry',
+            to: '/docs/js/ai-core/prompt-registry'
+          },
+          {
+            from: '/docs/js/guides/openai-chat-completion',
+            to: '/docs/js/foundation-models/openai/chat-completion'
+          },
+          {
+            from: '/docs/js/guides/openai-chat-embedding',
+            to: '/docs/js/foundation-models/openai/embedding'
+          },
+          {
+            from: '/docs/js/guides/orchestration-chat-completion',
+            to: '/docs/js/orchestration/chat-completion'
+          },
+          {
+            from: '/docs/js/guides/langchain',
+            to: '/docs/js/langchain'
+          },
+          {
+            from: '/docs/js/guides/connecting-to-ai-core',
+            to: '/docs/js/connecting-to-ai-core'
           }
         ]
       }

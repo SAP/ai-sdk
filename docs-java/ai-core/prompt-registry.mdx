@@ -16,7 +16,7 @@ keywords:
 This guide provides examples on how to manage the life cycle of your prompts, from design to runtime in [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry).
 
 :::warning
-All classes under any of the `...model` packages are generated from an OpenAPI specification and marked as `@Beta`.
+All classes under any of the `...model` packages are generated from an OpenAPI specification.
 This means that these model classes are not guaranteed to be stable and may change with future releases.
 They are safe to use, but may require updates even in minor releases.
 :::
@@ -158,3 +158,8 @@ PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.get
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
+
+## Locally Test a Prompt Template
+
+Note that you can also locally test a prompt, without needing it to be deployed in the Prompt Registry.
+For more information, see [the Orchestration documentation](../orchestration/chat-completion#locally-test-a-prompt-template).

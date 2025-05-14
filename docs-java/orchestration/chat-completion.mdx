@@ -20,7 +20,7 @@ This guide provides examples of how to use the [Orchestration service in SAP AI 
 For detailed information on the individual capabilities of the Orchestration service, please refer to the [official documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
 
 :::warning
-All classes under any of the `...model` packages are generated from an OpenAPI specification and marked as `@Beta`.
+All classes under any of the `...model` packages are generated from an OpenAPI specification.
 This means that these model classes are not guaranteed to be stable and may change with future releases.
 They are safe to use, but may require updates even in minor releases.
 :::
@@ -167,6 +167,8 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 
 In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
 
+### Prompt Templates from Prompt Registry
+
 Alternatively, you can use already prepared templates from the [**Prompt Registry**](../ai-core/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
 
 ```java
@@ -183,6 +185,27 @@ A prompt template can be referenced either by ID as above, or by using a combina
 For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 You can find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating using templates from Prompt Registry.
+
+### Locally Test a Prompt Template
+
+You can also test prompt templates in YAML format locally without using the prompt registry.
+This can be helpful, for example, if you want to quickly iterate over a prompt template before uploading it.
+
+```Java
+String promptTemplate = Files.readString(Path.of("path/to/my/prompt-template.yaml"));
+var template = TemplateConfig.create().fromYaml(promptTemplate);
+var configWithTemplate = config.withTemplateConfig(template);
+
+var inputParams = Map.of("language", "German");
+var prompt = new OrchestrationPrompt(inputParams);
+var response = client.chatCompletion(prompt, configWithTemplate);
+```
+
+The `fromYaml()` method will throw an exception if the YAML is not valid or does not match the spec of the Prompt Registry.
+
+Note that `additionalFields` (as specified in the Prompt Registry spec) will be ignored when using a prompt template locally like this.
+
+Please also refer to [our sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for an implementation and more examples.
 
 ## Message History
 

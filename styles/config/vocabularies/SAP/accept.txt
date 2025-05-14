@@ -1,5 +1,4 @@
 SAP S/4HANA
-SAP AI SDK
 AI Core
 SAP Generative AI Hub
 SAP Cloud SDK
@@ -7,6 +6,7 @@ SAP Cloud SDK for AI
 Cloud Foundry
 Fieldglass
 Ariba
+Signavio
 Grammarly
 [dD]ocusaurus
 Javadoc
@@ -134,12 +134,17 @@ EDM
 unintuitive
 Istio
 [Mm]egaclite
+fs
 
 seldomly
 lookups
 
 alwaysSubscriber
 jQuery
+Zod
+pseudonymize
+pseudonymization
+[mM]ultimodality
 
 LLM
 LLMs
