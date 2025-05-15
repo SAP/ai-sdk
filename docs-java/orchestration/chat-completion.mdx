@@ -121,7 +121,7 @@ The LLM response is available as the first choice under the `result.getOrchestra
 ## Harmonized API
 
 The [Harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api?locale=en-US) lets you use different foundation models without the need to change the client code.
-You can switch from one LLM to another easily like the example below.
+You can switch from one LLM to another like in the example below.
 
 ```java
 // Original config for using GPT 4o
@@ -511,6 +511,33 @@ var configWithResponseSchema =
 </details>
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
+
+## Translation
+
+Translate the input or output to [any supported language](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).
+The following sample will translate the prompt in English, send it to the LLM, and then translate the output to German.
+
+```java
+var prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel?");
+
+var configWithTranslation =
+    config
+        .withInputTranslationConfig(
+            SAPDocumentTranslation.create()
+                .type(SAP_DOCUMENT_TRANSLATION)
+                .config(SAPDocumentTranslationConfig.create().targetLanguage("en-US")))
+        .withOutputTranslationConfig(
+            SAPDocumentTranslation.create()
+                .type(SAP_DOCUMENT_TRANSLATION)
+                .config(SAPDocumentTranslationConfig.create().targetLanguage("de-DE")));
+
+var response = client.chatCompletion(prompt, configWithTranslation);
+```
+
+You can also optionally specify the source language, **the source-target pair has to be in the [list](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).**
+
+You will find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
 
 ## Configure the LLM
 
