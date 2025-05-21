@@ -56,10 +56,11 @@ Use the following convenience methods for handling chat completion response:
 - `getRefusal()` parses the response and returns the refusal message from the model.
 
 ```ts
-const response = await orchestrationClient.chatCompletion({ messages: [
-      { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
-    ]
-  });
+const response = await orchestrationClient.chatCompletion({
+  messages: [
+    { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
+  ]
+});
 
 console.log(response.getContent());
 console.log(response.getFinishReason());
@@ -128,7 +129,9 @@ This setup is useful when the base structure of your prompt remains the same acr
 const orchestrationClient = new OrchestrationClient({
   llm,
   templating: {
-    template: [{ role: 'user', content: 'What is the capital of {{?country}}?' }]
+    template: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ]
   }
 });
 
@@ -576,7 +579,8 @@ It can also be manually aborted if an `AbortController` object was provided when
 const orchestrationClient = new OrchestrationClient({ llm });
 
 const controller = new AbortController();
-const response = await orchestrationClient.stream({
+const response = await orchestrationClient.stream(
+  {
     messages: [
       { role: 'user', content: 'Give a long history of {{?country}}?' }
     ],
@@ -609,7 +613,8 @@ You can check the list of available stream options [here](https://help.sap.com/d
 Below is an example for setting the streaming options when calling the `stream()` method.
 
 ```ts
-const response = orchestrationClient.stream({
+const response = orchestrationClient.stream(
+  {
     messages: [
       { role: 'user', content: 'Give a long history of {{?country}}?' }
     ],
