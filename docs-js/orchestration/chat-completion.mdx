@@ -535,10 +535,11 @@ The target language is mandatory, while source language will be auto-detected if
 
 For available translation options, consult the [list of supported languages](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d) to identify compatible language pairs.
 
-The following example demonstrates how to use the translation module with the orchestration client.
-
 ```ts
-const translationConfig: SAPDocumentTranslation = ... // Use a build function to create a translation config
+const translationConfig: SAPDocumentTranslation = buildTranslationConfig({
+  sourceLanguage: 'en-US',
+  targetLanguage: 'de-DE'
+});
 
 const orchestrationClient = new OrchestrationClient({
   llm,
