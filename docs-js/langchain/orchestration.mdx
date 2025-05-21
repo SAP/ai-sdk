@@ -29,11 +29,6 @@ import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 const config: OrchestrationModuleConfig = {
   llm: {
     model_name: 'gpt-4o'
-  },
-  templating: {
-    template: [
-      { role: 'user', content: 'Give me a long introduction of {{?subject}}' }
-    ]
   }
 };
 const client = new OrchestrationClient(config);
