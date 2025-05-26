@@ -131,6 +131,9 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#grounding)`
+    },
+    python: {
+      status: YES
     }
   },
   {
@@ -142,6 +145,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#prompt-registry)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
