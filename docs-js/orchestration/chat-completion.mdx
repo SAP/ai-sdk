@@ -122,7 +122,7 @@ Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs o
 ## Templating
 
 Use the orchestration client with the `templating` configuration to define a static prompt.
-This prompt can include placeholders, which are replaced with values from `inputParams` during a `.chatCompletion()` call.
+This prompt can include placeholders, which are replaced with values from `inputParams` during a `chatCompletion()` method call.
 This setup is useful when the base structure of your prompt remains the same across requests.
 
 ```ts
@@ -141,7 +141,7 @@ const response = await orchestrationClient.chatCompletion({
 ```
 
 :::info
-The `template` messages defined in the client configuration are static - they are always included in every `.chatCompletion()` request.
+The `template` messages defined in the client configuration are static - they are always included in every `chatCompletion()` request.
 For more dynamic prompts, i.e., you want to vary the full message list per request without re-initializing the client, use the `messages` property instead.
 :::
 
