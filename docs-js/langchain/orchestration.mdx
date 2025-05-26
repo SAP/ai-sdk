@@ -71,6 +71,40 @@ const response = await client.invoke(history, {
 });
 ```
 
+## Streaming
+
+The `OrchestrationClient` LangChain client supports streaming responses for chat completion requests.
+Use the `stream()` method to receive a stream of chunk responses from the model.
+
+By default, the last chunk contains the finish reason and token usage information.
+
+```ts
+const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  llm: {
+    model_name: 'gpt-4o'
+  }
+};
+
+const client = new OrchestrationClient(orchestrationConfig);
+const response = await client.stream([
+  {
+    role: 'user',
+    content:
+      'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+  }
+]);
+
+let finalResult: AIMessageChunk | undefined;
+
+for await (const chunk of response) {
+  console.log(chunk.content);
+  finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+}
+
+console.log(finalResult?.response_metadata?.finishReason);
+console.log(finalResult?.usage_metadata);
+```
+
 ## Resilience
 
 Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
@@ -103,5 +137,4 @@ const response = await client.invoke(messageHistory, { timeout: 10000 });
 
 Currently unsupported features are:
 
-- Streaming
 - Tool Calling
