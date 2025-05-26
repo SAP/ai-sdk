@@ -536,29 +536,24 @@ The target language is mandatory, while source language will be auto-detected if
 For available translation options, consult the [list of supported languages](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d) to identify compatible language pairs.
 
 ```ts
-const translationConfig: SAPDocumentTranslation = buildTranslationConfig({
+const translationConfig = buildTranslationConfig({
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE'
 });
 
 const orchestrationClient = new OrchestrationClient({
   llm,
-  templating: {
-    template: [
-      {
-        role: 'user',
-        content: '{{?input}}'
-      }
-    ]
-  },
   inputTranslation: translationConfig,
   outputTranslation: translationConfig
 });
 
 const response = orchestrationClient.chatCompletion({
-  inputParams: {
-    input: 'Write an abstract for a thriller playing at SAP headquarters.'
-  }
+  messages: [
+    {
+      role: 'user',
+      content: 'Write an abstract for a thriller playing at SAP headquarters.'
+    }
+  ]
 });
 ```
 
