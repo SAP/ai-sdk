@@ -90,22 +90,22 @@ const response = await client.stream([
   }
 ]);
 
-let finalResult: AIMessageChunk | undefined;
+let finalChunk: AIMessageChunk | undefined;
 
 for await (const chunk of response) {
   console.log(chunk.content);
-  finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+  finalChunk = chunk;
 }
 
-console.log(finalResult?.response_metadata?.finish_reason);
+console.log(finalChunk?.response_metadata?.finish_reason);
 
-console.log(finalResult?.usage_metadata);
+console.log(finalChunk?.usage_metadata);
 /*
   { input_tokens: 13, output_tokens: 30, total_tokens: 43 }
 */
 
 // Token usage is also available in the response metadata
-console.log(finalResult?.response_metadata?.token_usage);
+console.log(finalChunk?.response_metadata?.token_usage);
 /*
   { completion_tokens: 30, prompt_tokens: 13, total_tokens: 43 }
 */
