@@ -295,7 +295,7 @@ Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the
 
 ## Executing Tool Calls
 
-**Since v1.6.0**
+**Since v1.8.0**
 
 You can pass [tool definitions](https://platform.openai.com/docs/guides/function-calling?api-mode=chat#overview) to the model to enable tool calling.
 
@@ -327,50 +327,33 @@ class WeatherMethod {
 You can define the function and pass it to the model as follows.
 
 ```java
-var question = "What's the weather in Berlin in Celsius";
-
- // 1. Define the function
- // Find generateSchema in the sample application
-Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
-var function =
-    new FunctionObject()
-        .name("weather")
-        .description("Get the weather for the given location")
-        .parameters(schemaMap);
-var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+var client = OpenAiClient.forModel(GPT_4O_MINI);
 
 var messages = new ArrayList<OpenAiMessage>();
-messages.add(OpenAiMessage.user(question));
+messages.add(OpenAiMessage.user("What's the weather in Berlin in Celsius"));
 
-// Assistant will call the function
-var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
-OpenAiChatCompletionResponse response =
-    OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+// 1. Define the functions
+List<OpenAiTool> tools =
+  List.of(
+    OpenAiTool.forFunction(WeatherMethod::getCurrentWeather)
+      .withArgument(WeatherMethod.Request.class)
+      .withName("weather")
+      .withDescription("Get the weather for the given location"));
+
+// 2. Query LLM for assistant to call the function
+OpenAiChatCompletionRequest request = new OpenAiChatCompletionRequest(messages).withToolsExecutable(tools);
+OpenAiChatCompletionResponse response = client.chatCompletion(request);
 ```
 
 Optionally, you can execute the tool call and request the LLM to format the result in a user-friendly way.
 
 ```java
-OpenAiAssistantMessage assistantMessage = response.getMessage();
-messages.add(assistantMessage);
+// 3. Execute the function call at runtime
+messages.add(response.getMessage());
+messages.addAll(response.executeTools());
 
-OpenAiToolCall toolCall = assistantMessage.toolCalls().get(0);
-if (!(toolCall instanceof OpenAiFunctionCall functionCall)) {
-  throw new IllegalArgumentException(
-      "Expected a function call, but got: %s".formatted(assistantMessage));
-}
-
-// Find parseJson is in the sample application
-WeatherMethod.Request arguments =
-    parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
-WeatherMethod.Response weatherMethod = WeatherMethod.getCurrentWeather(arguments);
-
-messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()));
-
-// Send back the results, and the model will incorporate them into its final response.
-OpenAiChatCompletionResponse finalResponse =
-    OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
-
+// 4. Send back the results, and the model will incorporate them into its final response.
+OpenAiChatCompletionResponse finalResponse = client.chatCompletion(request.withMessages(messages));
 String content = finalResponse.getContent();
 ```
 
