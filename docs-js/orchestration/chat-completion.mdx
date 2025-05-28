@@ -521,6 +521,37 @@ If set the value to `'*'`, all metadata will be included.
 Set `data_repositories` property with an array of repository IDs to search in specific data repositories.
 Skip this property to search in all available data repositories.
 
+## Translation
+
+The translation module translates content sent to and received from a generative AI model into a chosen target language.
+
+The module supports SAP's Document Translation service and allows translating both [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-translation) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-translation) of a model.
+The target language is mandatory, while source language will be auto-detected if not provided.
+
+For available translation options, consult the [list of supported languages](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d) to identify compatible language pairs.
+
+```ts
+const translationConfig = buildTranslationConfig({
+  sourceLanguage: 'en-US',
+  targetLanguage: 'de-DE'
+});
+
+const orchestrationClient = new OrchestrationClient({
+  llm,
+  inputTranslation: translationConfig,
+  outputTranslation: translationConfig
+});
+
+const response = orchestrationClient.chatCompletion({
+  messages: [
+    {
+      role: 'user',
+      content: 'Write an abstract for a thriller playing at SAP headquarters.'
+    }
+  ]
+});
+```
+
 ## Use JSON Configuration from AI Launchpad
 
 If you already have an orchestration workflow created in your SAP AI Launchpad instance, you can either download the configuration as a JSON file or copy the JSON string in code to configure the orchestration client.
