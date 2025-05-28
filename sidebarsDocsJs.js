@@ -44,6 +44,13 @@ module.exports = {
         'ai-core/prompt-registry'
       ]
     },
+    {
+      type: 'category',
+      label: 'Tutorials',
+      items: [
+        'tutorials/getting-started-with-agents',
+      ]
+    },
     'error-handling',
     'release-notes',
     {
