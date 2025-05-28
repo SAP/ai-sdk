@@ -1,3 +1,23 @@
+## 1.8.0 - May 26, 2025
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.8.0)
+
+### 🔧 Compatibility Notes
+
+- The constructor of the `AssistantMessage` class now takes `List<MessageToolCall>` as input instead of `List<ResponseMessageToolCall>` (the generated class got renamed).
+
+### ✨ New Functionality
+
+- [OpenAI] [Add convenience for tool definition, parsing function calls and tool execution](foundation-models/openai/chat-completion#executing-tool-calls)
+- [OpenAI] Added the following new models: `o4-mini`, `o3`, `gpt-4.1`, `gpt-4.1-nano`, and `gpt-4.1-mini`
+- [Orchestration] Added new model DeepSeek-R1: `OrchestrationAiModel.DEEPSEEK_R1`
+- [Orchestration] [Tool execution fully enabled](spring-ai/orchestration#tool-calling)
+- [Orchestration] [Added translation](orchestration/chat-completion#translation)
+
+### 🐛 Fixed Issues
+
+- [Orchestration] Fixed `OrchestrationAiModel.CLAUDE_3_7_SONNET`.
+
 ## 1.7.0 - April 30, 2025
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.7.0)

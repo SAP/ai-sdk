@@ -19,6 +19,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
@@ -30,6 +34,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#harmonized-api)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
@@ -41,6 +49,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#templating)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
@@ -63,6 +75,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#streaming)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
@@ -74,6 +90,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#content-filtering)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
@@ -85,6 +105,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#content-filtering)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
@@ -96,6 +120,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#data-masking)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
@@ -107,6 +135,9 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#grounding)`
+    },
+    python: {
+      status: YES
     }
   },
   {
@@ -118,6 +149,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#prompt-registry)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html)`
     }
   },
   {
@@ -129,6 +164,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/ai-core/ai-api)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://pypi.org/project/ai-core-sdk/)`
     }
   },
   {
@@ -140,6 +179,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/ai-core/document-grounding)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/document-grounding.html)`
     }
   },
   {
@@ -151,6 +194,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/ai-core/prompt-registry)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/prompt-registry.html)`
     }
   },
   {
@@ -173,6 +220,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/langchain/openai)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/gen_ai_hub.html#langchain-integration)`
     }
   },
   {
@@ -184,6 +235,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/foundation-models/openai/chat-completion)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/gen_ai_hub.html#)`
     }
   },
   {
@@ -195,6 +250,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/foundation-models/openai/chat-completion#streaming)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/streaming.html)`
     }
   },
   {
@@ -206,6 +265,10 @@ export const features = [
     js: {
       status: YES,
       docsLink: `[docs](${baseUrl}/js/foundation-models/openai/embedding)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/gen_ai_hub.html)`
     }
   }
 ];
