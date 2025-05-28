@@ -102,8 +102,12 @@ for await (const chunk of response) {
   finalResult = finalResult ? finalResult.concat(chunk) : chunk;
 }
 
-console.log(finalResult?.response_metadata?.finishReason);
+console.log(finalResult?.response_metadata?.finish_reason);
 console.log(finalResult?.usage_metadata);
+
+/*
+  { input_tokens: 13, output_tokens: 30, total_tokens: 43 }
+*/
 ```
 
 ## Resilience
