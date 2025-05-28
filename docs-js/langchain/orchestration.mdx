@@ -71,7 +71,7 @@ const response = await client.invoke(history, {
 The client supports streaming responses for chat completion requests.
 Use the `stream()` method to receive a stream of chunk responses from the model.
 
-By default, the last chunk contains the `finish_reason` and token `usage` information.
+By default, the last chunk contains the finish reason and token usage information.
 The orchestration service doesn't support multiple choices during streaming.
 
 ```ts
