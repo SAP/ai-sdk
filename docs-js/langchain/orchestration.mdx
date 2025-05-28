@@ -176,6 +176,20 @@ To limit the maximum duration for the entire request including retries, specify 
 const response = await client.invoke(messageHistory, { timeout: 10000 });
 ```
 
+Timeout can also be set for streaming requests.
+
+```ts
+const response = await client.stream(
+  [
+    {
+      role: 'user',
+      content: 'Hello world! Why is this phrase so famous?'
+    }
+  ],
+  { timeout: 1000 }
+);
+```
+
 ## Limitations
 
 Currently unsupported features are:
