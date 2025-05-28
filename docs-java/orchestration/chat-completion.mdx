@@ -154,9 +154,9 @@ Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs o
 Use a prepared [**template**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating) and execute requests with by passing only the input parameters:
 
 ```java
-var template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
+var message = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
 var templatingConfig =
-        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
+        TemplateConfig.create().withTemplateMessages(List.of(message));
 var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
 var inputParams = Map.of("language", "German");
