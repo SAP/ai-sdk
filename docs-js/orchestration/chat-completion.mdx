@@ -29,7 +29,7 @@ $ npm install @sap-ai-sdk/orchestration
 ## Quick Start
 
 Initialize a client with proper orchestration configuration for each module.
-Below is an example for configuring the mandatory `llm` and `templating` modules.
+Below is an example for configuring the mandatory `llm` module.
 In addition, you can find more sample code [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
 
 ```ts
@@ -38,11 +38,6 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o'
-  },
-  templating: {
-    template: [
-      { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
-    ]
   }
 });
 ```
@@ -61,7 +56,11 @@ Use the following convenience methods for handling chat completion response:
 - `getRefusal()` parses the response and returns the refusal message from the model.
 
 ```ts
-const response = await orchestrationClient.chatCompletion();
+const response = await orchestrationClient.chatCompletion({
+  messages: [
+    { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
+  ]
+});
 
 console.log(response.getContent());
 console.log(response.getFinishReason());
@@ -122,20 +121,35 @@ Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs o
 
 ## Templating
 
-Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
-This allows for variations in the prompt based on the input parameters.
+Use the orchestration client with the `templating` configuration to define a static prompt.
+This prompt can include placeholders, which are replaced with values from `inputParams` during a `chatCompletion()` method call.
+This setup is useful when the base structure of your prompt remains the same across requests.
 
 ```ts
-const templating: TemplatingModuleConfig = {
-  template: [{ role: 'user', content: 'What is the capital of {{?country}}?' }]
-};
-
 const orchestrationClient = new OrchestrationClient({
   llm,
-  templating
+  templating: {
+    template: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ]
+  }
 });
 
 const response = await orchestrationClient.chatCompletion({
+  inputParams: { country: 'France' }
+});
+```
+
+:::info
+The `template` messages defined in the client configuration are static - they are always included in every `chatCompletion()` request.
+For more dynamic prompts, i.e., you want to vary the full message list per request without re-initializing the client, use the `messages` property instead.
+:::
+
+```ts
+const orchestrationClient = new OrchestrationClient({ llm });
+
+const response = await orchestrationClient.chatCompletion({
+  messages: [{ role: 'user', content: 'What is the capital of {{?country}}?' }],
   inputParams: { country: 'France' }
 });
 ```
@@ -197,9 +211,7 @@ Function calling with tools enable the creation of multi-step, agent-driven work
 Set `strict` to `true` in the function definition to let the response adhere to the schema definition of the function input when a function should be called.
 
 ```ts
-const templating: TemplatingModuleConfig = {
-  template,
-  tools: [
+const tools = [
     {
       type: 'function',
       function: {
@@ -214,8 +226,7 @@ const templating: TemplatingModuleConfig = {
         strict: true
       }
     }
-  ]
-}
+  ];
 ```
 
 ## Response Format
@@ -227,7 +238,6 @@ The example below returns a JSON Schema with `strict` set to `true` to let the r
 
 ```ts
 const templating: TemplateModuleConfig = {
-  template,
   response_format: {
     type: 'json_schema',
     json_schema: {
@@ -280,14 +290,10 @@ This allows the model to remember previous messages in the conversation, enablin
 Provide the message history in the `messagesHistory` parameter when calling the `chatCompletion()` method.
 
 ```ts
-const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating: {
-    template: [{ role: 'user', content: 'What is my name?' }]
-  }
-});
+const orchestrationClient = new OrchestrationClient({ llm });
 
 const response = await orchestrationClient.chatCompletion({
+  messages: [{ role: 'user', content: 'What is my name?' }],
   messagesHistory: [
     {
       role: 'system',
@@ -317,10 +323,10 @@ Attempting to use `image_url` in non-user messages will result in an error.
 :::
 
 ```ts
-const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating: {
-    template: [
+const orchestrationClient = new OrchestrationClient({ llm });
+
+const response = await orchestrationClient.chatCompletion({
+  messages: [
       {
         role: 'user', // only user role supports image_url
         content: [
@@ -337,10 +343,6 @@ const orchestrationClient = new OrchestrationClient({
         ]
       }
     ]
-  }
-});
-
-const response = await orchestrationClient.chatCompletion({
   inputParams: {
     imageUrl: 'IMAGE_URL'
   }
@@ -365,9 +367,6 @@ const filter: FilterConfig = ... // Use a build function to create a content fil
 
 const orchestrationClient = new OrchestrationClient({
   llm,
-  templating: {
-    template: [{ role: 'user', content: '{{?input}}' }]
-  },
   filtering: {
     input: {
       filters: [filter] // Multiple filters can be applied
@@ -380,7 +379,7 @@ const orchestrationClient = new OrchestrationClient({
 
 try {
   const response = await orchestrationClient.chatCompletion({
-    inputParams: { input: 'I hate you!' }
+    messages: [{ role: 'user', content: 'I hate you!' }]
   });
   console.log(response.getContent());
 } catch (error: any) {
@@ -443,21 +442,19 @@ const maskingProvider: MaskingProviderConfig = ... // Use a build function to cr
 
 const orchestrationClient = new OrchestrationClient({
   llm,
-  templating: {
-    template: [
-      {
-        role: 'user',
-        content:
-          'Please write an email to {{?user}} ({{?email}}) about the amazing capabilities of SAP AI Core!'
-      }
-    ]
-  },
   masking: {
     masking_providers: [maskingProvider] // Multiple masking providers can be applied
   }
 });
 
 const response = await orchestrationClient.chatCompletion({
+  messages: [
+    {
+      role: 'user',
+      content:
+        'Please write an email to {{?user}} ({{?email}}) about the amazing capabilities of SAP AI Core!'
+    }
+  ],
   inputParams: { user: 'Jane Doe', email: 'jane.doe@example.com' }
 });
 ```
@@ -487,15 +484,6 @@ Use `buildDocumentGroundingConfig()` function to build configuration for documen
 ```ts
 const orchestrationClient = new OrchestrationClient({
   llm,
-  templating: {
-    template: [
-      {
-        role: 'user',
-        content:
-          'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-      }
-    ]
-  },
   grounding: buildDocumentGroundingConfig({
     input_params: ['groundingRequest'],
     output_param: 'groundingOutput',
@@ -511,6 +499,13 @@ const orchestrationClient = new OrchestrationClient({
 });
 
 const response = await orchestrationClient.chatCompletion({
+  messages: [
+    {
+      role: 'user',
+      content:
+        'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+    }
+  ],
   inputParams: {
     groundingRequest: 'Give me a short introduction of SAP AI Core.'
   }
@@ -581,18 +576,14 @@ In case of an error, SAP Cloud SDK for AI will automatically close the stream.
 It can also be manually aborted if an `AbortController` object was provided when calling the `stream()` method.
 
 ```ts
-const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating: {
-    template: [
-      { role: 'user', content: 'Give a long history of {{?country}}?' }
-    ]
-  }
-});
+const orchestrationClient = new OrchestrationClient({ llm });
 
 const controller = new AbortController();
 const response = await orchestrationClient.stream(
   {
+    messages: [
+      { role: 'user', content: 'Give a long history of {{?country}}?' }
+    ],
     inputParams: { country: 'France' }
   },
   controller
@@ -624,6 +615,9 @@ Below is an example for setting the streaming options when calling the `stream()
 ```ts
 const response = orchestrationClient.stream(
   {
+    messages: [
+      { role: 'user', content: 'Give a long history of {{?country}}?' }
+    ],
     inputParams: { country: 'France' }
   },
   controller,
