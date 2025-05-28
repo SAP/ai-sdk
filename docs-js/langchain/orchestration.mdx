@@ -103,6 +103,7 @@ for await (const chunk of response) {
 }
 
 console.log(finalResult?.response_metadata?.finish_reason);
+
 console.log(finalResult?.usage_metadata);
 /*
   { input_tokens: 13, output_tokens: 30, total_tokens: 43 }
@@ -111,7 +112,7 @@ console.log(finalResult?.usage_metadata);
 // Token usage is also available in the response metadata
 console.log(finalResult?.response_metadata?.token_usage);
 /*
-  { completion_tokens: 122, prompt_tokens: 20, total_tokens: 142 }
+  { completion_tokens: 30, prompt_tokens: 13, total_tokens: 43 }
 */
 ```
 
