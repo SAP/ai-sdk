@@ -35,6 +35,8 @@ const response = await client.run({
 console.log(response.getContent());
 ```
 
+### Message History
+
 Multiple messages can be sent in a single request, enabling the model to reference the conversation history.
 Include `max_tokens` and `temperature` in the request to control the completion behavior:
 
