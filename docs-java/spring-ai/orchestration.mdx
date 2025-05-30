@@ -148,7 +148,17 @@ class WeatherMethod {
 }
 ```
 
-Then add your tool to the options:
+<details>
+  <summary>What to consider:</summary>
+
+- Self-explanatory interfaces that avoid acronyms.
+- Provide clear, humane readable error messages.
+- Enriched data objects to avoid client-side data merging.
+- Filter output to control size
+
+</details>
+
+Then pass your tool to the model as follows.
 
 ```java
 ChatModel client = new OrchestrationChatModel();
@@ -156,8 +166,6 @@ OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-
-options.setInternalToolExecutionEnabled(false);// tool execution is not yet available in orchestration
 
 Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
