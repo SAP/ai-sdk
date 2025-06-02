@@ -32,7 +32,7 @@ The SAP Cloud SDK for AI simplifies the setup and interaction with SAP AI Core, 
 
 Below you can find an overview of the currently available features and documentation.
 
-**Legend:** ✅ - Generally Available, ❌ - Not Available, 🔧 - WIP/Limited Support, ➖- Not Applicable
+**Legend:** ✅ - Generally Available, ❌ - Not Available, 📅 - Planned, ➖- Not Applicable
 
 | Feature                            |                                                     Orchestration                                                      |                              Orchestration with LangChain                               |                                                  OpenAI                                                   |                              OpenAI with LangChain                               |
 | ---------------------------------- | :--------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: |
@@ -47,13 +47,14 @@ Below you can find an overview of the currently available features and documenta
 | **Multi-modal Messages**           |            ✅ [docs](https://sap.github.io/ai-sdk/docs/js/orchestration/chat-completion#image-recognition)             |                                           ❌                                            |                                                    ❌                                                     |                                        ➖                                        |
 | **Response Format**                |             ✅ [docs](https://sap.github.io/ai-sdk/docs/js/orchestration/chat-completion#response-format)              |                                           ❌                                            |                                                    ❌                                                     |                                        ❌                                        |
 | **Translation Service**            |               ✅ [docs](https://sap.github.io/ai-sdk/docs/js/orchestration/chat-completion#translation)                |                                           ❌                                            |                                                    ➖                                                     |                                        ➖                                        |
-| **Chat Completion: Tool Call**     |                                                           🔧                                                           |                                           ❌                                            | ✅ [docs](https://sap.github.io/ai-sdk/docs/js/foundation-models/openai/chat-completion#function-calling) |                                      ✅ \*                                       |
+| **Chat Completion: Tool Call**     |                                                           ✅                                                           |                                           ❌                                            | ✅ [docs](https://sap.github.io/ai-sdk/docs/js/foundation-models/openai/chat-completion#function-calling) |                                      ✅ \*                                       |
 | **Embedding**                      |                                                           ❌                                                           |                                           ❌                                            |    ✅ [docs](https://sap.github.io/ai-sdk/docs/js/foundation-models/openai/embedding#making-requests)     |    ✅ [docs](https://sap.github.io/ai-sdk/docs/js/langchain/openai#embedding)    |
 
 :::note
-The LangChain client extends the orchestration and foundation model clients using LangChain's interface.
-Supported modules can be configured using a combination of the original and LangChain-specific options.
-Refer to the [sample code](https://github.com/SAP/ai-sdk-js/tree/main/sample-code) in our official GitHub repository for details.
+\*: The LangChain clients conform to LangChain interface.
+Client options are a combination of LangChain options and original client configurations.
+Refer to the original client and LangChain documentation for more information.
+Additionally, refer to the [sample code](https://github.com/SAP/ai-sdk-js/tree/main/sample-code) in our official GitHub repository for examples.
 :::
 
 ## General Requirements
