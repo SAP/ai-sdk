@@ -478,7 +478,7 @@ var configWithResponseSchema =
         config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
 var prompt = new OrchestrationPrompt(Message.user("Some message."));
-TestClass response = client.chatCompletion(prompt, configWithTemplate).entity(TestClass.class);
+TestClass response = client.chatCompletion(prompt, configWithTemplate).asEntity(TestClass.class);
 ```
 
 Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`.
