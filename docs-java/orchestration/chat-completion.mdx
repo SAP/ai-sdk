@@ -155,8 +155,7 @@ Use a prepared [**template**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-
 
 ```java
 var message = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-var templatingConfig =
-        TemplateConfig.create().withTemplateMessages(List.of(message));
+var templatingConfig = TemplateConfig.create().withMessages(message);
 var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
 var inputParams = Map.of("language", "German");
