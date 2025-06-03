@@ -600,6 +600,20 @@ for await (const chunk of response.stream.toContentStream()) {
 }
 ```
 
+### Streaming with Tool calls
+
+Use `getToolCalls()` to get the tool calls at the end of the stream.
+Alternatively, you can also call `getDeltaToolCalls()` on a chunk level, but since incomplete tool calls are likely useless,
+we recommend calling the `getToolCalls()` function on a response level.
+
+```ts
+for await (const _ of response.stream) {
+  console.log('Waiting for the stream to end ...');
+}
+
+const toolCalls = response.getToolCalls();
+```
+
 ### Streaming with Abort Controller
 
 Streaming request can be aborted using the `AbortController` API.
