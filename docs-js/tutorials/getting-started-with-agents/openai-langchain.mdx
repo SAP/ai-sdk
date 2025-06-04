@@ -1,8 +1,8 @@
 ---
-id: getting-started-with-agents
-title: Getting Started with Agents using AzureOpenAiChatClient
-sidebar_label: Getting Started with Agents
-description: Building a Travel Itinerary Assistant with LangGraph and AzureOpenAiChatClient
+id: openai-langchain
+title: Getting Started with Agents using LangChain OpenAI
+sidebar_label: LangChain OpenAI
+description: Building a Travel Itinerary Assistant with LangGraph and LangChain OpenAI Client
 keywords: 
  - tutorial
  - agents
@@ -12,7 +12,7 @@ keywords:
 
 # Introduction
 
-In this tutorial, you'll build a simple travel assistant agent using the `AzureOpenAiChatClient` from the `@sap-ai-sdk/langchain` package alongside `LangGraph`.
+In this tutorial, you'll build a simple travel assistant agent using the LangChain OpenAI Client (`AzureOpenAiChatClient`) from the `@sap-ai-sdk/langchain` package alongside `LangGraph`.
 The agent creates an itinerary based on current weather conditions and supports follow-up queries.
 
 The assistant performs these steps:
@@ -24,10 +24,13 @@ The assistant performs these steps:
 
 # Prerequisites
 
+Refer to prerequisites outlined [here](../overview-cloud-sdk-for-ai-js#prerequisites).
+
 This tutorial assumes you have a basic understanding of TypeScript, LLMs and LangChain concepts.
 
-- Nodejs 22 or higher
-- Following dependencies are installed:
+## Installation
+
+Install the following dependencies:
 
 ```bash
 npm install @sap-ai-sdk/langchain langchain @langchain/langgraph @langchain/core zod

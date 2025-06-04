@@ -28,13 +28,15 @@ The SAP Cloud SDK for AI (SAP AI SDK) enables developers to seamlessly integrate
 Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications.
 The SAP Cloud SDK for AI simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
 
-## General Requirements
+## Prerequisites
 
 To use the SAP Cloud SDK for AI in a JavaScript / TypeScript application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
 
-- Node.js v20 or higher.
-- Your project supports ESM.
-- Access to an **SAP AI Core Service** instance.
+- A project with **Node.js v20 or higher** and **native ESM** support.
+- Access to an **SAP AI Core Service** instance. Refer to [enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- Ensure either an [Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) or [OpenAI model]((https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)) deployment is available.
+  - Alternatively, you can create a deployment using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
+- Once a deployment is complete, access the model via the `deploymentUrl`.
 
 Refer to [Connecting to AI Core](connecting-to-ai-core) section for **how to connect the SAP Cloud SDK for AI to AI Core**.
 
