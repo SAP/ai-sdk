@@ -334,12 +334,11 @@ A guide on how to setup a SharePoint for this can be found in this [SAP wiki](ht
 In order to then use the SharePoint for grounding in your code, you can add its corresponding data repository ID to the `DocumentGroundingFilter` object.
 
 ```java
-var dataRepositoryId = "SharePoint ID here"
+var dataRepositoryId = "SharePoint ID here";
 var filter =
     DocumentGroundingFilter.create()
         .dataRepositoryType(DataRepositoryType.VECTOR)
-        .dataRepositories(List.of(dataRepositoryId))
-        .searchConfig(GroundingFilterSearchConfiguration.create();
+        .dataRepositories(List.of(dataRepositoryId));
 var groundingConfig = Grounding.create().filters(filter);
 var prompt = groundingConfig.createGroundingPrompt("What is the information stored in the sharepoint?");
 var configWithGrounding = config.withGrounding(groundingConfig);
