@@ -138,8 +138,9 @@ const memory = new MemorySaver();
 const app = workflow.compile({ checkpointer: memory });
 ```
 :::note
-Using `MemorySaver` allows sharing context across multiple interactions in a single conversational thread (`conv-1`).
+Using [`MemorySaver`](https://langchain-ai.github.io/langgraphjs/how-tos/persistence/?h=memory+saver#add-memory) allows sharing context across multiple interactions in a single conversational thread (`conv-1`).
 In this example, it enables the agent to remember the previously mentioned city.
+
 :::
 
 ## Run the assistant
