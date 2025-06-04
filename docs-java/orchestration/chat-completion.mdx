@@ -327,14 +327,14 @@ var result = client.chatCompletion(prompt, configWithGrounding);
 
 In this example, the AI model is provided with additional context in the form of grounding information.
 
-### Grounding via Sharepoint
+### Grounding via SharePoint
 
-Another way to provide grounding data is by storing files in a sharepoint and use that as the base for the grounding.
-A guide on how to setup a sharepoint for this can be found in this [SAP wiki](https://wiki.one.int.sap/wiki/pages/viewpage.action?spaceKey=AI&title=SharePoint+with+client+credential).
-In order to then use the sharepoint for grounding in your code, you can simply add its corresponding data repository ID to the `DocumentGroundingFilter` object.
+Another way to provide grounding data is by storing files in a SharePoint and use that as the base for the grounding.
+A guide on how to setup a SharePoint for this can be found in this [SAP wiki](https://wiki.one.int.sap/wiki/pages/viewpage.action?spaceKey=AI&title=SharePoint+with+client+credential).
+In order to then use the sharepoint for grounding in your code, you can add its corresponding data repository ID to the `DocumentGroundingFilter` object.
 
 ```java
-var dataRepositoryId = "sharepoint ID here"
+var dataRepositoryId = "SharePoint ID here"
 var filter =
     DocumentGroundingFilter.create()
         .dataRepositoryType(DataRepositoryType.VECTOR)
