@@ -51,9 +51,7 @@ module.exports = {
         {
           type: 'category',
           label: 'Getting Started With Agents',
-          items: [
-            'tutorials/getting-started-with-agents/openai-langchain'
-          ]
+          items: ['tutorials/getting-started-with-agents/openai-langchain']
         }
       ]
     },
