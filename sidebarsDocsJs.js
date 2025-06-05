@@ -44,6 +44,17 @@ module.exports = {
         'ai-core/prompt-registry'
       ]
     },
+    {
+      type: 'category',
+      label: 'Tutorials',
+      items: [
+        {
+          type: 'category',
+          label: 'Getting Started With Agents',
+          items: ['tutorials/getting-started-with-agents/openai-langchain']
+        }
+      ]
+    },
     'error-handling',
     'release-notes',
     {
