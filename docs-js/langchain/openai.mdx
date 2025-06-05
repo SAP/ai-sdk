@@ -146,6 +146,13 @@ const vectorStore = await MemoryVectorStore.fromDocuments(
 const retriever = vectorStore.asRetriever();
 ```
 
+## Tool Calling
+
+LangChain offers a unified way to connect tools to language models.
+You can use the `bindTools()` method to define which tools a model can access.
+For more details, see the [official LangChain documentation on tool binding](https://js.langchain.com/docs/concepts/tool_calling/#tool-binding).
+For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents/openai-langchain#define-mock-tools).
+
 ## Resilience
 
 Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
