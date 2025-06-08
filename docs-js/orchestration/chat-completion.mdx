@@ -603,7 +603,7 @@ for await (const chunk of response.stream.toContentStream()) {
 ### Streaming with Tool calls
 
 Use `getToolCalls()` to get the tool calls at the end of the stream.
-Alternatively, you can also call `getDeltaToolCalls()` on a chunk level, but since incomplete tool calls are likely useless,
+While you can also call `getDeltaToolCalls()` method on individual chunks, partial tool calls are typically not useful.
 we recommend calling the `getToolCalls()` function on a response level.
 
 ```ts
