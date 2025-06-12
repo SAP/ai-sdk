@@ -252,7 +252,7 @@ console.log('next: ', (await app.getState(config)).next);
 next:  [ 'askHuman' ]
 ```
 
-Provide this value by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
+Provide the response by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
 
 ```ts
   response = await app.invoke(new Command({ resume: 'Can you suggest something more outdorsy?' }), config);
