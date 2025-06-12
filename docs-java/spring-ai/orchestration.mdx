@@ -209,16 +209,16 @@ public record Translation(
   @JsonProperty(required = true) String translation,
   @JsonProperty(required = true) String language) {}
 
-val cl = ChatClient.builder(new OrchestrationChatModel()).build();
+var client = new OrchestrationChatModel();
 
-val schema = ResponseJsonSchema.fromType(Translation.class);
-val template = TemplateConfig.create().withJsonSchemaResponse(schema);
+var schema = ResponseJsonSchema.fromType(Translation.class);
+var template = TemplateConfig.create().withJsonSchemaResponse(schema);
+var options = new OrchestrationChatOptions(config.withTemplateConfig(template));
 
-val options = new OrchestrationChatOptions(config.withTemplateConfig(template));
-val prompt =
+var prompt =
   new Prompt("How do I say 'AI is going to revolutionize the world' in dutch?", options);
 
-Translation translation = cl.prompt(prompt).call().entity(Translation.class);
+Translation translation = client.call(prompt).entity(Translation.class);
 ```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
@@ -230,13 +230,13 @@ For detailed information on setting a response format, check the corresponding [
 You can use prompt templates stored in a prompt registry in your Spring AI application.
 
 ```java
-val cl = ChatClient.builder(new OrchestrationChatModel()).build();
+ChatModel client = new OrchestrationChatModel();
 
-val template = TemplateConfig.reference().byScenario("scenario").name("name").version("1.0.0");
-val options = new OrchestrationChatOptions(config.withTemplateConfig(template));
-val prompt = new Prompt(List.of(), options);
+var template = TemplateConfig.reference().byScenario("scenario").name("name").version("1.0.0");
+var options = new OrchestrationChatOptions(config.withTemplateConfig(template));
+var prompt = new Prompt(List.of(), options);
 
-val response = cl.prompt(prompt).call();
+ChatResponse response = client.call(prompt);
 ```
 
 For more information on prompt registry, we refer to the corresponding [documentation](../ai-core/prompt-registry).
