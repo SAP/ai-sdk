@@ -12,7 +12,7 @@ keywords:
 
 # Introduction
 
-In this tutorial, you'll build a simple travel assistant agent using the LangChain Orchestration Client (`Orchestration`) from the `@sap-ai-sdk/langchain` package alongside `LangGraph`.
+In this tutorial, you'll build a simple travel assistant agent using the LangChain Orchestration Client (`OrchestrationClient`) from the `@sap-ai-sdk/langchain` package alongside `LangGraph`.
 The agent creates an itinerary based on current weather conditions and supports follow-up queries.
 
 The assistant performs these steps:
@@ -96,16 +96,16 @@ Replace the tools' implementation with real API calls to integrate live data.
 
 ## Setup the Agent
 
-Initialize the `AzureOpenAiChatClient` and add tools using the `buildTools()` method.
+Initialize the `OrchestrationClient` and add tools using the `buildTools()` method.
 Set up a `ToolNode` for routing tool calls.
 
 ```ts
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
 
 const tools = [getWeatherTool, getRestaurantsTool];
 
-const model = new AzureOpenAiChatClient({
+const model = new OrchestrationClient({
   modelName: 'gpt-4o',
   temperature: 0.7
 }).bindTools(tools);
@@ -193,7 +193,7 @@ async function runTravelAssistant() {
 
 This tutorial demonstrates how to implement a simple agent workflow using:
 
-- The `AzureOpenAiChatClient` with `bindTools()` method to integrate external capabilities.
+- The `OrchestrationClient` with `bindTools()` method to integrate external capabilities.
 - A `StateGraph` to manage agent-tool flow and decisions, and `MemorySaver` for multi-turn memory retention.
 
 Explore additional capabilities and patterns in [LangGraph documentation](https://langchain-ai.github.io/langgraphjs/tutorials/quickstart/).
