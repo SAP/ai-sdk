@@ -18,9 +18,10 @@ The agent creates an itinerary based on current weather conditions and supports 
 The assistant performs these steps:
 
 - Accepts a user travel request.
-- Calls a weather tool to get the current weather for the city.
-- Generates a weather-aware 3-item itinerary.
-- Handles follow-up questions like restaurant recommendations using conversation memory.
+- Calls a weather tool to fetch the current weather.
+- Creates a weather-aware 3-item itinerary.
+- Recommends restaurants upon request.
+- Asks for human input (via interruption) when confirmation is required.
 
 # Prerequisites
 
@@ -38,10 +39,16 @@ npm install @sap-ai-sdk/langchain langchain @langchain/langgraph @langchain/core
 
 ## Define Mock Tools
 
-Define two custom tools for weather and restaurant data.
+Define three tools:
 
 - `get_weather` for returning weather by city
 - `get_restaurants` for city-based restaurant recommendations
+- `humanAssistanceTool` to trigger a human-in-the-loop question when LLM needs feedback.
+
+:::info
+This example uses mocked data for simplicity.
+Replace the tools' implementation with real API calls to integrate live data.
+:::
 
 ```ts
 import { tool } from '@langchain/core/tools';
@@ -87,12 +94,21 @@ const getRestaurantsTool = tool(
     schema: z.object({ city: z.string().describe('The city name') })
   }
 );
-```
 
-:::info
-This example uses mocked data for simplicity.
-Replace the tools' implementation with real API calls to integrate live data.
-:::
+const humanAssistanceTool = tool(
+  async ({ question }) => {
+    return 'Human input requested';
+  },
+  {
+    name: 'humanAssistanceTool',
+    description:
+      'Ask for human input when you need feedback or confirmation on itinerary suggestions',
+    schema: z.object({
+      question: z.string().describe('The question to ask the human')
+    })
+  }
+);
+```
 
 ## Setup the Agent
 
@@ -103,7 +119,7 @@ Set up a `ToolNode` for routing tool calls.
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
 
-const tools = [getWeatherTool, getRestaurantsTool];
+const tools = [getWeatherTool, getRestaurantsTool, humanAssistanceTool];
 
 const model = new AzureOpenAiChatClient({
   modelName: 'gpt-4o',
@@ -122,13 +138,38 @@ import {
   StateGraph,
   MessagesAnnotation,
   MemorySaver,
-  START
+  START,
+  interrupt,
+  END
 } from '@langchain/langgraph';
-import { AIMessage } from '@langchain/core/messages';
+import { AIMessage, ToolMessage } from '@langchain/core/messages';
 
 function shouldContinue({ messages }: typeof MessagesAnnotation.State) {
   const lastMessage = messages[messages.length - 1] as AIMessage;
-  return lastMessage.tool_calls?.length ? 'tools' : '__end__';
+
+  if (!lastMessage.tool_calls?.length) return END;
+
+  if (lastMessage.tool_calls[0].name === 'humanAssistanceTool') {
+    console.log('--- ASKING HUMAN ---');
+    return 'askHuman';
+  }
+
+  return 'tools';
+}
+
+function askHuman({ messages }: typeof MessagesAnnotation.State) {
+  const lastMessage = messages[messages.length - 1] as AIMessage;
+  const toolCall = lastMessage.tool_calls?.[0];
+  const toolCallId = toolCall?.id;
+  const question = toolCall?.args?.question;
+
+  const humanResponse = interrupt(`${question}`);
+  const newToolMessage = new ToolMessage({
+    tool_call_id: toolCallId!,
+    content: humanResponse
+  });
+
+  return { messages: [newToolMessage] };
 }
 
 async function callModel(state: typeof MessagesAnnotation.State) {
@@ -138,10 +179,12 @@ async function callModel(state: typeof MessagesAnnotation.State) {
 
 const workflow = new StateGraph(MessagesAnnotation)
   .addNode('agent', callModel)
-  .addEdge(START, 'agent')
   .addNode('tools', toolNode)
+  .addNode('askHuman', askHuman)
+  .addConditionalEdges('agent', shouldContinue)
   .addEdge('tools', 'agent')
-  .addConditionalEdges('agent', shouldContinue);
+  .addEdge('askHuman', 'agent')
+  .addEdge(START, 'agent');
 
 const memory = new MemorySaver();
 const app = workflow.compile({ checkpointer: memory });
@@ -154,38 +197,77 @@ In this example, it enables the agent to remember the previously mentioned city.
 
 ## Run the assistant
 
-The following example simulates a conversation:
+The following example simulates a full interaction, with detailed console output at each step:
 
-1. The assistant receives an itinerary request.
-2. It retrieves the weather before generating a plan.
-3. A follow-up message requests restaurant recommendations for the same city.
+1. The assistant receives an initial itinerary request.
+2. It fetches the current weather for the destination city before creating the plan.
+3. It asks the user for feedback and, if requested, suggests an updated itinerary.
+4. It handles a follow-up request for restaurant recommendations in the same city.
 
 ```ts
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
+import { Command } from '@langchain/langgraph';
 
 const config = { configurable: { thread_id: 'conv-1' } };
 
-async function runTravelAssistant() {
-  // Initial system prompt and user message
-  let messages = [
-    new SystemMessage(
-      'You are a helpful travel assistant. Create a short, practical 3-item itinerary based on the city. Always check the weather before suggesting an itinerary.'
-    ),
-    new HumanMessage(
-      "I'm traveling to Paris. Can you help me prepare an itinerary?"
-    )
-  ];
+export async function runTravelAssistant() {
+    // Initial system prompt and user message
+    let messages = [
+      new SystemMessage(
+        `You are a helpful travel assistant. Create a short, practical 3-item itinerary based on the city weather.
+        After you present a complete 3-item itinerary AND ask if they want adjustments, you MUST also call the humanAssistanceTool. Do this consistently for both initial and modified itineraries.`
+      ),
+      new HumanMessage(
+        "I'm traveling to Paris. Can you help me prepare an itinerary?"
+      )
+    ];
 
-  // First interaction - triggers weather tool and itinerary generation
-  let response = await app.invoke({ messages }, config);
-  console.log('Assistant:', response.messages[response.messages.length - 1]);
+    try {
+      let response = await app.invoke({ messages }, config);
 
-  // Continue conversation - add restaurant question
-  messages = [new HumanMessage('Can you also recommend some restaurants?')];
+      console.log('Assistant:', response.messages[response.messages.length - 1].content);
+      console.log('Assistant:', (response.messages[response.messages.length - 1] as AIMessage).tool_calls);
+```
 
-  // Second interaction - should remember Paris and call restaurant tool
-  response = await app.invoke({ messages }, config);
-  console.log('Assistant:', response.messages[response.messages.length - 1]);
+```console
+[
+  {
+    id: 'call_VhqcEP76hN7DggRVWrrjMB7b',
+    name: 'humanAssistanceTool',
+    args: {
+      question: 'Do you have any feedback or need adjustments on the suggested itinerary for Paris?'
+    },
+    type: 'tool_call'
+  }
+]
+```
+
+After calling the `humanAssistanceTool`, the graph pauses at the `askHuman` node and waits for the human's response.
+
+```ts
+console.log('next: ', (await app.getState(config)).next);
+```
+
+```bash
+next:  [ 'askHuman' ]
+```
+
+Provide this value by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
+
+```ts
+  response = await app.invoke(new Command({ resume: 'Can you suggest something more outdorsy?' }), config);
+
+  console.log('Assistant:', response.messages[response.messages.length - 1].content);
+  console.log("next: ", (await app.getState(config)).next);
+
+  // Continue with restaurant request
+  response = await app.invoke(new Command({ resume: 'Great! Can you also recommend some restaurants?' }), config);
+
+  console.log('Assistant:', response.messages[response.messages.length - 1].content);
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
 ```
 
@@ -194,6 +276,8 @@ async function runTravelAssistant() {
 This tutorial demonstrates how to implement a simple agent workflow using:
 
 - The `AzureOpenAiChatClient` with `bindTools()` method to integrate external capabilities.
-- A `StateGraph` to manage agent-tool flow and decisions, and `MemorySaver` for multi-turn memory retention.
+- Defining a LangGraph `StateGraph` for branching logic and conditional tool use.
+- Interrupting the flow with a human tool via `interrupt()` and handling it inside the graph.
+- Maintaining context across interactions with `MemorySaver`.
 
 Explore additional capabilities and patterns in [LangGraph documentation](https://langchain-ai.github.io/langgraphjs/tutorials/quickstart/).
