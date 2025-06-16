@@ -112,6 +112,7 @@ Set up a `ToolNode` for routing tool calls.
     {label: "OpenAI Client", value: "openai"}
   ]}>
 <TabItem value="openai">
+
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
@@ -125,8 +126,10 @@ const model = new AzureOpenAiChatClient({
 
 const toolNode = new ToolNode(tools);
 ```
+
 </TabItem>
 <TabItem value="orchestration">
+
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
@@ -140,6 +143,7 @@ const model = new OrchestrationClient({
 
 const toolNode = new ToolNode(tools);
 ```
+
 </TabItem>
 </Tabs>
 
