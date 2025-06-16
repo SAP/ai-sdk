@@ -1,0 +1,238 @@
+---
+id: agentic-workflows
+title: Getting Started with Agentic Workflows
+hide_title: false
+hide_table_of_contents: false
+description: A tutorial on how to build agentic workflows using the AI SDK.
+keywords:
+  - sap
+  - ai
+  - sdk
+  - cloud
+  - orchestration
+  - agentic
+---
+
+## Introduction
+
+In this tutorial we will build a simple agentic travel assistant using the AI SDK and its SpringAI integration.
+The agent will create a short itinerary for a one-day trip to a specified city.
+In order to do that, it will collect weather information as well as restaurant recommendations through tool usage and combine the collected information using chat memory.
+
+The agent will perform the following steps in a chain-like structure:
+- Accept a travel request by the user.
+- Use a custom tool to recommend restaurants for the requested city.
+- Use a custom tool to get the current weather for the requested city.
+- Combine the collected information into a short itinerary using chat memory and return it to the user.
+
+For further reading on this topic, we recommend the Spring article [Building Effective Agents with Spring AI](https://spring.io/blog/2025/01/21/spring-ai-agentic-patterns).
+Our examples follow some of the ideas shown there and throughout this tutorial we will use terms introduced in this article.
+
+:::info
+An example implementation of this tutorial can be found in [our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiAgenticWorkflowService.java).
+:::
+
+## Prerequisites
+
+This tutorial requires basic knowledge of Java, the AI SDK, and Spring.
+Also, a basic understanding of concepts regarding LLMs and the above mentioned [Spring article](https://spring.io/blog/2025/01/21/spring-ai-agentic-patterns) are assumed.
+
+For technical requirements please refer to our [general prerequisites](../overview-cloud-sdk-for-ai-java#general-requirements).
+
+## Create Mock Tools
+
+We first create two mocked tools.
+For more information on tool usage, we refer to the respective [documentation](../spring-ai/orchestration#tool-calling).
+
+The first tool will return (pre-defined) restaurant suggestion for a provided city.
+
+```java
+class RestaurantMethod {
+
+  /**
+   * Request for list of restaurants
+   *
+   * @param location the city
+   */
+  record Request(String location) {}
+
+  /**
+   * Response for restaurant recommendations
+   *
+   * @param restaurants the list of restaurants
+   */
+  record Response(List<String> restaurants) {}
+
+  @Nonnull
+  @Tool(description = "Get recommended restaurants for a location")
+  static RestaurantMethod.Response getRestaurants(
+      @ToolParam @Nonnull final RestaurantMethod.Request request) {
+    var recommendations =
+        Map.of(
+            "paris",
+            List.of("Le Comptoir du Relais", "L'As du Fallafel", "Breizh Café"),
+            "reykjavik",
+            List.of("Dill Restaurant", "Fish Market", "Grillmarkaðurinn"));
+    return new RestaurantMethod.Response(
+        recommendations.getOrDefault(
+            request.location.toLowerCase(Locale.ROOT), List.of("No recommendations for this city.")));
+  }
+}
+```
+
+The second tool will return a (fake) weather forecast for a given city.
+
+```java
+class WeatherMethod {
+
+  /** Unit of temperature */
+  enum Unit {
+    /** Celsius */
+    @SuppressWarnings("unused")
+    C,
+    /** Fahrenheit */
+    @SuppressWarnings("unused")
+    F
+  }
+
+  /**
+   * Request for the weather
+   *
+   * @param location the city
+   * @param unit the unit of temperature
+   */
+  record Request(String location, Unit unit) {}
+
+  /**
+   * Response for the weather
+   *
+   * @param temp the temperature
+   * @param unit the unit of temperature
+   */
+  record Response(double temp, Unit unit) {}
+
+  @Nonnull
+  @SuppressWarnings("unused")
+  @Tool(description = "Get the weather in location")
+  static Response getCurrentWeather(@ToolParam @Nonnull final Request request) {
+    final int temperature = request.location.hashCode() % 30;
+    return new Response(temperature, request.unit);
+  }
+}
+```
+
+## Set up the Agent
+
+We are now ready to create our agent.
+For this, we start by configuring the chat memory and adding the tools from above.
+Note that in order to integrate this easily into a Spring app, we create the class as a Spring service.
+The agentic workflows will be triggered when calling the `chain()` method with the user input.
+
+```java
+@Service
+public class SpringAiAgenticWorkflowService {
+  private final ChatModel client = new OrchestrationChatModel();
+  private final OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+  public ChatResponse chain(String userInput) {
+
+    //    Configure chat memory
+    val memory = new InMemoryChatMemory();
+    val advisor = new MessageChatMemoryAdvisor(memory);
+    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+
+    //    Add (mocked) tools
+    val options = new OrchestrationChatOptions(config);
+    options.setToolCallbacks(
+        List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
+    options.setInternalToolExecutionEnabled(true);
+
+    //    The actual agentic workflow will be added here.
+
+    return null;
+  }
+}
+```
+
+For more information on how to use chat memory, we refer to the respective [documentation](../spring-ai/orchestration#chat-memory).
+
+## Implementing the Agentic Workflow
+
+Next, we implement the actual, chain-like agentic workflow by adapting the class introduced above.
+For this, we first define the system prompts that we will use in the call to the LLM and then loop over them, each time using the output from the previous call as input for the next.
+This results in the following class.
+
+```java
+@Service
+public class SpringAiAgenticWorkflowService {
+  private final ChatModel client = new OrchestrationChatModel();
+  private final OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+  @Nonnull
+  public ChatResponse chain(String userInput) {
+
+    //    Configure chat memory
+    val memory = new InMemoryChatMemory();
+    val advisor = new MessageChatMemoryAdvisor(memory);
+    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+
+    //    Add (mocked) tools
+    val options = new OrchestrationChatOptions(config);
+    options.setToolCallbacks(
+        List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
+    options.setInternalToolExecutionEnabled(true);
+
+    //    Prompts for the chain workflow
+    List<String> systemPrompts =
+        List.of(
+            "You are a traveling planning agent for a single day trip. Where appropriate, use the provided tools. First, start by suggesting some restaurants for the mentioned city.",
+            "Now, check the whether for the city.",
+            "Finally, combine the suggested itinerary from this conversation into a short, one-sentence plan for the day trip.");
+
+    //    Perform the chain workflow
+    int step = 0;
+    String responseText = userInput;
+    ChatResponse response = null;
+
+    System.out.printf("\nSTEP %s:\n %s%n", step++, responseText);
+
+    for (String systemPrompt : systemPrompts) {
+
+      // 1. Compose the input using the response from the previous step.
+      String input = String.format("{%s}\n {%s}", systemPrompt, responseText);
+      val prompt = new Prompt(input, options);
+
+      // 2. Call the chat client with the new input and get the new response.
+      response =
+          Objects.requireNonNull(
+              cl.prompt(prompt).call().chatResponse(), "Chat response is null in step " + step);
+      responseText = response.getResult().getOutput().getText();
+
+      System.out.printf("\nSTEP %s:\n %s%n", step++, responseText);
+    }
+
+    return response;
+  }
+}
+```
+
+## Running the Agentic Workflow
+
+We can now run this agentic workflow by calling the `chain()` method with some user input.
+This can, for example, be done through a Spring app controller class as below.
+
+```java
+@Autowired
+private SpringAiAgenticWorkflowService service;
+
+String runChainWorkflow() {
+final var response = service.chain("I want to do a one-day trip to Paris. Help me make an itinerary, please");
+return response.getResult().getOutput().getText();
+}
+```
+
+## Conclusion
+
+This tutorial showed how to build a simple, chain-like agentic workflow using the AI SDK's SpringAI integration.
