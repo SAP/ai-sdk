@@ -25,8 +25,8 @@ The agent will perform the following steps in a chain-like structure:
 - Use a custom tool to get the current weather for the requested city.
 - Combine the collected information into a short itinerary using chat memory and return it to the user.
 
-For further reading on this topic, we recommend the Spring article [Building Effective Agents with Spring AI](https://spring.io/blog/2025/01/21/spring-ai-agentic-patterns).
-Our examples follow some of the ideas shown there and throughout this tutorial we will use terms introduced in this article.
+For further reading on this topic, we recommend the Spring article [Building Effective Agents with SpringAI](https://spring.io/blog/2025/01/21/spring-ai-agentic-patterns).
+Our examples follow some of the ideas outlined there and throughout this tutorial we will use terms introduced in this article.
 
 :::info
 An example implementation of this tutorial can be found in [our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiAgenticWorkflowService.java).
@@ -35,14 +35,14 @@ An example implementation of this tutorial can be found in [our Spring Boot appl
 ## Prerequisites
 
 This tutorial requires basic knowledge of Java, the AI SDK, and Spring.
-Also, a basic understanding of concepts regarding LLMs and the above mentioned [Spring article](https://spring.io/blog/2025/01/21/spring-ai-agentic-patterns) are assumed.
+Also, a basic understanding of concepts regarding LLMs and the above mentioned [article on building agents with SpringAI](https://spring.io/blog/2025/01/21/spring-ai-agentic-patterns) are assumed.
 
-For technical requirements please refer to our [general prerequisites](../overview-cloud-sdk-for-ai-java#general-requirements).
+For technical prerequisites please refer to our [general requirements](../overview-cloud-sdk-for-ai-java#general-requirements).
 
 ## Create Mock Tools
 
-We first create two mocked tools.
-For more information on tool usage, we refer to the respective [documentation](../spring-ai/orchestration#tool-calling).
+We first create two mock tools.
+For more information on tool usage, we refer to the respective [chapter in our documentation](../spring-ai/orchestration#tool-calling).
 
 The first tool will return (pre-defined) restaurant suggestion for a provided city.
 
@@ -88,10 +88,8 @@ class WeatherMethod {
   /** Unit of temperature */
   enum Unit {
     /** Celsius */
-    @SuppressWarnings("unused")
     C,
     /** Fahrenheit */
-    @SuppressWarnings("unused")
     F
   }
 
@@ -112,7 +110,6 @@ class WeatherMethod {
   record Response(double temp, Unit unit) {}
 
   @Nonnull
-  @SuppressWarnings("unused")
   @Tool(description = "Get the weather in location")
   static Response getCurrentWeather(@ToolParam @Nonnull final Request request) {
     final int temperature = request.location.hashCode() % 30;
@@ -126,7 +123,7 @@ class WeatherMethod {
 We are now ready to create our agent.
 For this, we start by configuring the chat memory and adding the tools from above.
 Note that in order to integrate this easily into a Spring app, we create the class as a Spring service.
-The agentic workflows will be triggered when calling the `chain()` method with the user input.
+The agentic workflows will be triggered when calling the `runAgent()` method with the user input.
 
 ```java
 @Service
@@ -135,15 +132,15 @@ public class SpringAiAgenticWorkflowService {
   private final OrchestrationModuleConfig config =
       new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-  public ChatResponse chain(String userInput) {
+  public ChatResponse runAgent(String userInput) {
 
     //    Configure chat memory
-    val memory = new InMemoryChatMemory();
-    val advisor = new MessageChatMemoryAdvisor(memory);
-    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+    var memory = new InMemoryChatMemory();
+    var advisor = new MessageChatMemoryAdvisor(memory);
+    var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
     //    Add (mocked) tools
-    val options = new OrchestrationChatOptions(config);
+    var options = new OrchestrationChatOptions(config);
     options.setToolCallbacks(
         List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
     options.setInternalToolExecutionEnabled(true);
@@ -155,13 +152,13 @@ public class SpringAiAgenticWorkflowService {
 }
 ```
 
-For more information on how to use chat memory, we refer to the respective [documentation](../spring-ai/orchestration#chat-memory).
+For more information on how to use chat memory, we refer to the respective [chapter in our documentation](../spring-ai/orchestration#chat-memory).
 
 ## Implementing the Agentic Workflow
 
-Next, we implement the actual, chain-like agentic workflow by adapting the class introduced above.
+Next, we implement the actual agentic workflow by adapting the class introduced above.
+To keep it simple in the beginning, we start with a chain-like workflow.
 For this, we first define the system prompts that we will use in the call to the LLM and then loop over them, each time using the output from the previous call as input for the next.
-This results in the following class.
 
 ```java
 @Service
@@ -171,15 +168,15 @@ public class SpringAiAgenticWorkflowService {
       new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
   @Nonnull
-  public ChatResponse chain(String userInput) {
+  public String runAgent(String userInput) {
 
     //    Configure chat memory
-    val memory = new InMemoryChatMemory();
-    val advisor = new MessageChatMemoryAdvisor(memory);
-    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+    var memory = new InMemoryChatMemory();
+    var advisor = new MessageChatMemoryAdvisor(memory);
+    var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
     //    Add (mocked) tools
-    val options = new OrchestrationChatOptions(config);
+    var options = new OrchestrationChatOptions(config);
     options.setToolCallbacks(
         List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
     options.setInternalToolExecutionEnabled(true);
@@ -194,18 +191,17 @@ public class SpringAiAgenticWorkflowService {
     //    Perform the chain workflow
     int step = 0;
     String responseText = userInput;
-    ChatResponse response = null;
 
     System.out.printf("\nSTEP %s:\n %s%n", step++, responseText);
 
     for (String systemPrompt : systemPrompts) {
 
-      // 1. Compose the input using the response from the previous step.
+      // Combine the pre-defined prompt with the previous answer to get the new input
       String input = String.format("{%s}\n {%s}", systemPrompt, responseText);
-      val prompt = new Prompt(input, options);
+      var prompt = new Prompt(input, options);
 
-      // 2. Call the chat client with the new input and get the new response.
-      response =
+      // Make a call to the LLM with the new input
+      var response =
           Objects.requireNonNull(
               cl.prompt(prompt).call().chatResponse(), "Chat response is null in step " + step);
       responseText = response.getResult().getOutput().getText();
@@ -213,23 +209,22 @@ public class SpringAiAgenticWorkflowService {
       System.out.printf("\nSTEP %s:\n %s%n", step++, responseText);
     }
 
-    return response;
+    return responseText;
   }
 }
 ```
 
 ## Running the Agentic Workflow
 
-We can now run this agentic workflow by calling the `chain()` method with some user input.
-This can, for example, be done through a Spring app controller class as below.
+We can now run our agentic workflow by calling the `runAgent()` method with some user input.
 
 ```java
 @Autowired
 private SpringAiAgenticWorkflowService service;
 
 String runChainWorkflow() {
-final var response = service.chain("I want to do a one-day trip to Paris. Help me make an itinerary, please");
-return response.getResult().getOutput().getText();
+  final var response = service.runAgent("I want to do a one-day trip to Paris. Help me make an itinerary, please");
+  return response;
 }
 ```
 
