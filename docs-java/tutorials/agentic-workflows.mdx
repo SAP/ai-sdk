@@ -190,10 +190,7 @@ public class SpringAiAgenticWorkflowService {
             "Finally, combine the suggested itinerary from this conversation into a short, one-sentence plan for the day trip.");
 
     //    Perform the chain workflow
-    int step = 0;
     String responseText = userInput;
-
-    System.out.printf("\nSTEP %s:\n %s%n", step++, responseText);
 
     for (String systemPrompt : systemPrompts) {
 
@@ -204,10 +201,8 @@ public class SpringAiAgenticWorkflowService {
       // Make a call to the LLM with the new input
       var response =
           Objects.requireNonNull(
-              cl.prompt(prompt).call().chatResponse(), "Chat response is null in step " + step);
+              cl.prompt(prompt).call().chatResponse(), "Chat response is null.");
       responseText = response.getResult().getOutput().getText();
-
-      System.out.printf("\nSTEP %s:\n %s%n", step++, responseText);
     }
 
     return responseText;
