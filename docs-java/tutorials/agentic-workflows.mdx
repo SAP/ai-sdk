@@ -3,7 +3,7 @@ id: agentic-workflows
 title: Getting Started with Agentic Workflows
 hide_title: false
 hide_table_of_contents: false
-description: A tutorial on how to build agentic workflows using the AI SDK.
+description: A tutorial on how to build agentic workflows using the SAP AI SDK.
 keywords:
   - sap
   - ai
@@ -15,7 +15,7 @@ keywords:
 
 ## Introduction
 
-In this tutorial we will build a simple agentic travel assistant using the AI SDK and its SpringAI integration.
+In this tutorial we will build a simple agentic travel assistant using the SAP AI SDK and its SpringAI integration.
 The agent will create a short itinerary for a one-day trip to a specified city.
 In order to do that, it will collect weather information as well as restaurant recommendations through tool usage and combine the collected information using chat memory.
 
@@ -35,7 +35,7 @@ An example implementation of this tutorial can be found in [our Spring Boot appl
 
 ## Prerequisites
 
-This tutorial requires basic knowledge of Java, the AI SDK, and Spring.
+This tutorial requires basic knowledge of Java, the SAP AI SDK, and Spring.
 Also, a basic understanding of concepts regarding LLMs and the above mentioned [article on building agents with SpringAI](https://spring.io/blog/2025/01/21/spring-ai-agentic-patterns) are assumed.
 
 For technical prerequisites please refer to our [general requirements](../overview-cloud-sdk-for-ai-java#general-requirements).
@@ -123,7 +123,7 @@ class WeatherMethod {
 
 We are now ready to create our agent.
 For this, we start by configuring the chat memory and adding the tools from above.
-Note that in order to integrate this easily into a Spring app, we create the class as a Spring service.
+Note that in order to integrate this into a Spring app, we create the class as a Spring service.
 The agentic workflows will be triggered when calling the `runAgent()` method with the user input.
 
 ```java
@@ -226,4 +226,4 @@ String runChainWorkflow() {
 
 ## Conclusion
 
-This tutorial showed how to build a simple, chain-like agentic workflow using the AI SDK's SpringAI integration.
+This tutorial showed how to build a simple, chain-like agentic workflow using the SAP AI SDK's SpringAI integration.
