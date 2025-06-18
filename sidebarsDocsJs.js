@@ -48,11 +48,7 @@ module.exports = {
       type: 'category',
       label: 'Tutorials',
       items: [
-        {
-          type: 'category',
-          label: 'Getting Started With Agents',
-          items: ['tutorials/getting-started-with-agents/langchain']
-        }
+        'tutorials/getting-started-with-agents'
       ]
     },
     'error-handling',
