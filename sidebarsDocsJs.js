@@ -47,9 +47,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Tutorials',
-      items: [
-        'tutorials/getting-started-with-agents'
-      ]
+      items: ['tutorials/getting-started-with-agents']
     },
     'error-handling',
     'release-notes',
