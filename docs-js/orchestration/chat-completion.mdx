@@ -207,26 +207,102 @@ This [section](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/c
 
 ## Function Calling
 
-Function calling with tools enable the creation of multi-step, agent-driven workflows, allowing generative AI model to perform specific actions.
-Set `strict` to `true` in the function definition to let the response adhere to the schema definition of the function input when a function should be called.
+Define and pass [tool definitions](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/tool-calling) to enable the model to call specific functions.
+Here's an example of temperature conversion using tool calls:
+
+First, define the tool with `name`, `description` and `parameters` properties:
 
 ```ts
-const tools = [
-    {
-      type: 'function',
-      function: {
-        name: 'abs',
-        description: 'Calculate the absolute value of x',
-        parameters: {
-          type: 'object',
-          properties: {
-            x: { type: number }
-          }
+const convertTemperatureTool: ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'convert_temperature_to_fahrenheit',
+    description: 'Converts temperature from Celsius to Fahrenheit',
+    parameters: {
+      type: 'object',
+      properties: {
+        temperature: {
+          type: 'number',
+          description: 'The temperature value in Celsius to convert.'
         }
-        strict: true
-      }
+      },
+      required: ['temperature']
     }
-  ];
+  }
+};
+```
+
+Set `strict` to `true` to ensure function calls adhere to the function schema.
+For more information refer to Orchestration [Tool Calling](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/tool-calling).
+
+Initialize the client and send the initial request with the tool definition:
+
+```ts
+const client = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o'
+  },
+  templating: {
+    tools: [convertTemperatureTool]
+  }
+});
+
+const response = await client.chatCompletion({
+  messages: [
+    { role: 'user', content: 'Convert 20 degrees Celsius to Fahrenheit.' }
+  ]
+});
+```
+
+When the model decides to use a tool, it returns the function name and input arguments in the response.
+Use the model response to execute the function.
+
+```ts
+const initialResponse = response.getAssistantMessage();
+let toolMessage: ToolChatMessage;
+
+if (initialResponse & initialResponse.tool_calls) {
+  const toolCall = initialResponse.tool_calls[0];
+  const name = toolCall.function.name;
+  const args = JSON.parse(toolCall.function.arguments);
+
+  // Execute the function with the provided arguments
+  const toolResult = callFunction(name, args);
+
+  toolMessage: ToolChatMessage = {
+    role: 'tool',
+    content: toolResult,
+    tool_call_id: toolCall.id
+  };
+}
+```
+
+The `callFunction` function routes the calls to the actual implementations.
+
+```ts
+function callFunction(name: string, args: any): string {
+  switch (name) {
+    case 'convert_temperature_to_fahrenheit':
+      return convertTemperatureToFahrenheit(args.temperature);
+    default:
+      throw new Error(`Function: ${name} not found!`);
+  }
+}
+
+function convertTemperatureToFahrenheit(temperature: number): string {
+  return `The temperature in Fahrenheit is ${(temperature * 9) / 5 + 32}°F.`;
+}
+```
+
+Send the function result back to the model to get it's final response:
+
+```ts
+const finalResponse = await client.chatCompletion({
+  messages: [toolMessage],
+  messagesHistory: response.getAllMessages()
+});
+
+console.log(finalResponse.getContent());
 ```
 
 ## Response Format

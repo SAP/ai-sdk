@@ -162,16 +162,12 @@ In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
 
 
-
-
-
-
 ## Function Calling
 
 Define and pass [tool definitions](https://platform.openai.com/docs/guides/function-calling) to enable the model to call specific functions.
 Here's an example of temperature conversion using tool calls:
 
-First, define the tool with its `name` and `parameters`:
+First, define the tool with `name`, `description` and `parameters` properties:
 
 ```ts
 const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
@@ -216,28 +212,27 @@ Use the model response to execute the function.
 ```ts
 const initialResponse = response.data.choices[0].message;
 messages.push(initialResponse);
+let toolMessage: AzureOpenAiChatCompletionRequestToolMessage;
 
 if (initialResponse.tool_calls) {
   const toolCall = initialResponse.tool_calls[0];
-  // The model provides the function name to call
   const name = toolCall.function.name;
-  // Extract the arguments to pass to the function
   const args = JSON.parse(toolCall.function.arguments);
 
   // Execute the function with the provided arguments
   const toolResult = callFunction(name, args);
-  messages.push({
+
+  toolMessage = {
     role: 'tool',
     content: toolResult,
     tool_call_id: toolCall.id
-  });
+  };
 }
 ```
 
-The `callFunction` routes the model's function calls to their actual implementations.
+The `callFunction` function routes the calls to the actual implementations.
 
 ```ts
-// Route function calls to the appropriate implementation
 function callFunction(name: string, args: any): string {
   switch (name) {
     case 'convert_temperature_to_fahrenheit':
@@ -247,7 +242,6 @@ function callFunction(name: string, args: any): string {
   }
 }
 
-// Define the actual function that performs the conversion
 function convertTemperatureToFahrenheit(temperature: number): string {
   return `The temperature in Fahrenheit is ${(temperature * 9) / 5 + 32}°F.`;
 }
@@ -257,7 +251,7 @@ Send the function result back to the model to get it's final response:
 
 ```ts
 const finalResponse = await client.run({
-  messages, // List of the previous messages with the function result
+  messages: [...messages, toolMessage],
   tools: [convertTemperatureTool]
 });
 
