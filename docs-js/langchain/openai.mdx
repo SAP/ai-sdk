@@ -98,6 +98,94 @@ return llmChain.invoke({
 });
 ```
 
+### Streaming
+
+The client supports streaming responses for chat completion requests.
+Use the `stream()` method to receive a stream of chunk responses from the model.
+
+By default, the last chunk contains the finish reason and token usage information.
+
+```ts
+const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+const response = await client.stream([
+  {
+    role: 'user',
+    content:
+      'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+  }
+]);
+
+let finalResult: AIMessageChunk | undefined;
+
+for await (const chunk of stream) {
+  console.log(chunk.content);
+  finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+}
+
+console.log(finalResult?.response_metadata?.finish_reason);
+
+console.log(finalResult?.usage_metadata);
+/*
+  { input_tokens: 20, output_tokens: 126, total_tokens: 146 }
+*/
+
+// Token usage is also available in `response_metadata` property
+console.log(finalResult?.response_metadata?.token_usage);
+/*
+  {
+    completion_tokens: 126,
+    completion_tokens_details: {
+      accepted_prediction_tokens: 0,
+      audio_tokens: 0,
+      reasoning_tokens: 0,
+      rejected_prediction_tokens: 0
+    },
+    prompt_tokens: 20,
+    prompt_tokens_details: { audio_tokens: 0, cached_tokens: 0 },
+    total_tokens: 146
+  }
+*/
+```
+
+#### Streaming with Abort Controller
+
+The client supports aborting streaming requests using the `AbortController` API.
+In case of an error, SAP Cloud SDK for AI will automatically close the stream.
+It can also be manually aborted if an `AbortSignal` object associated with an `AbortController` was provided when calling the `stream()` method.
+
+```ts
+const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+const controller = new AbortController();
+const { signal } = controller;
+const response = await client.stream([
+  {
+    role: 'user',
+    content:
+      'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+  },
+  { signal }
+]);
+
+// Abort the streaming request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+for await (const chunk of response) {
+  console.log(chunk.content);
+}
+```
+
+In this example, streaming request will be aborted after one second.
+Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+### Tool Calling
+
+LangChain offers a unified way to connect tools to language models.
+You can use the `bindTools()` method to define which tools a model can access.
+For more details, see the [official LangChain documentation on tool binding](https://js.langchain.com/docs/concepts/tool_calling/#tool-binding).
+For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents/langchain#define-mock-tools).
+
 ## Embedding
 
 The `AzureOpenAiEmbeddingClient` allows embedding text or document chunks (represented as arrays of strings).
@@ -145,13 +233,6 @@ const vectorStore = await MemoryVectorStore.fromDocuments(
 // Create a retriever for the vector store
 const retriever = vectorStore.asRetriever();
 ```
-
-## Tool Calling
-
-LangChain offers a unified way to connect tools to language models.
-You can use the `bindTools()` method to define which tools a model can access.
-For more details, see the [official LangChain documentation on tool binding](https://js.langchain.com/docs/concepts/tool_calling/#tool-binding).
-For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents/langchain#define-mock-tools).
 
 ## Resilience
 
