@@ -244,12 +244,10 @@ By default, LangChain client retries up to six times with exponential delay.
 To modify this behavior, set the `maxRetries` option during the client initialization.
 
 ```ts
-const client = new AzureOpenAiChatClient(
-  { modelName: 'gpt-4o' },
-  {
-    maxRetries: 0
-  }
-);
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-4o',
+  maxRetries: 0
+});
 ```
 
 ### Timeout
