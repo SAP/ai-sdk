@@ -63,7 +63,7 @@ const FeatureList = [
     Svg: () => <span style={{ fontSize: '200px' }}>🐍</span>,
     badge: (
       <>
-        <a href="https://pypi.org/project/generative-ai-hub-sdk/">
+        <a href="https://pypi.org/project/sap-ai-sdk-gen/">
           <img
             alt="PyPI Version"
             src="https://img.shields.io/pypi/v/sap-ai-sdk-gen?color=dark-green"
