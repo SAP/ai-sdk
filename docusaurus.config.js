@@ -137,7 +137,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Python SDK',
+          title: 'SAP Cloud SDK for AI Python',
           items: [
             {
               label: 'Tutorials',
