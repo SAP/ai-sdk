@@ -142,8 +142,12 @@ const tools = [getWeatherTool, getRestaurantsTool];
 
 // Create a model
 const model = new OrchestrationClient({
-  modelName: 'gpt-4o',
-  temperature: 0.7
+  llm: {
+    model_name: 'gpt-4o-mini',
+    model_params: {
+      temperature: 0.7
+    }
+  }
 });
 
 // create a model with access to the tools
