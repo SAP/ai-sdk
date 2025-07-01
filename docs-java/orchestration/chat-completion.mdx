@@ -259,6 +259,7 @@ var configWithFilter = config.withInputFiltering(filterStrict).withOutputFilteri
 var result =
     new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ````
+
 **Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks.
 
 ### Behavior of Input and Output Filters
