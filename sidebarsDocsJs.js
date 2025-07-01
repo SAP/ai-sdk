@@ -51,6 +51,7 @@ module.exports = {
     },
     'error-handling',
     'release-notes',
+    'frequently-asked-questions',
     {
       type: 'link',
       label: 'npm',
