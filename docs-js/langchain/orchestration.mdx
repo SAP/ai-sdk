@@ -155,7 +155,7 @@ Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
 
 ### Retry
 
-By default, LangChain client retries up to six times with exponential delay.
+By default, LangChain client retries failed requests up to six times with exponential delay.
 To modify this behavior, set the `maxRetries` option during the client initialization.
 
 ```ts
@@ -172,6 +172,7 @@ If the error is caused by input content filtering, the client will throw immedia
 
 By default, no timeout is set in the client.
 To limit the maximum duration for the entire request including retries, specify a timeout in milliseconds when calling the `invoke` method.
+Requests which time out will be [retried up to six times](#retry) by default.
 
 ```ts
 const response = await client.invoke(messageHistory, { timeout: 10000 });
