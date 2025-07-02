@@ -240,13 +240,14 @@ var filterStrict = new AzureContentFilter()
                 .hate(ALLOW_SAFE)
                 .selfHarm(ALLOW_SAFE)
                 .sexual(ALLOW_SAFE)
-    .violence(ALLOW_SAFE);
+                .violence(ALLOW_SAFE)
+                .promptShield(true);
 
 var filterLoose = new AzureContentFilter()
                 .hate(ALLOW_SAFE_LOW_MEDIUM)
                 .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
                 .sexual(ALLOW_SAFE_LOW_MEDIUM)
-    .violence(ALLOW_SAFE_LOW_MEDIUM);
+                .violence(ALLOW_SAFE_LOW_MEDIUM);
 
 // choose Llama Guard filter or/and Azure filter
 var llamaGuardFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
@@ -258,6 +259,8 @@ var configWithFilter = config.withInputFiltering(filterStrict).withOutputFilteri
 var result =
     new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ````
+
+**Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks.
 
 ### Behavior of Input and Output Filters
 
