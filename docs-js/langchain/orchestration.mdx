@@ -66,13 +66,16 @@ const response = await client.invoke(history, {
 });
 ```
 
-## Streaming
+### Streaming
 
 The client supports streaming responses for chat completion requests.
 Use the `stream()` method to receive a stream of chunk responses from the model.
 
 By default, the last chunk contains the finish reason and token usage information.
-The orchestration service doesn't support multiple choices during streaming.
+
+:::warning
+The orchestration service currently doesn't support multiple choices during streaming.
+:::
 
 ```ts
 const orchestrationConfig: LangchainOrchestrationModuleConfig = {
@@ -90,28 +93,28 @@ const response = await client.stream([
   }
 ]);
 
-let finalChunk: AIMessageChunk | undefined;
+let finalResult: AIMessageChunk | undefined;
 
 for await (const chunk of response) {
   console.log(chunk.content);
-  finalChunk = chunk;
+  finalResult = finalResult ? finalResult.concat(chunk) : chunk;
 }
 
-console.log(finalChunk?.response_metadata?.finish_reason);
+console.log(finalResult?.response_metadata?.finish_reason);
 
-console.log(finalChunk?.usage_metadata);
+console.log(finalResult?.usage_metadata);
 /*
   { input_tokens: 13, output_tokens: 30, total_tokens: 43 }
 */
 
-// Token usage is also available in the response metadata
-console.log(finalChunk?.response_metadata?.token_usage);
+// Token usage is also available in `response_metadata` property
+console.log(finalResult?.response_metadata?.token_usage);
 /*
   { completion_tokens: 30, prompt_tokens: 13, total_tokens: 43 }
 */
 ```
 
-### Streaming with Abort Controller
+#### Streaming with Abort Controller
 
 The client supports aborting streaming requests using the `AbortController` API.
 In case of an error, SAP Cloud SDK for AI will automatically close the stream.
@@ -148,6 +151,13 @@ for await (const chunk of response) {
 
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+### Tool Calling
+
+LangChain offers a unified way to connect tools to language models.
+Use the `bindTools()` method to define the set of tools a model can access.
+For more details, see the [official LangChain documentation on tool binding](https://js.langchain.com/docs/concepts/tool_calling/#tool-binding).
+For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents/langchain#define-mock-tools).
 
 ## Resilience
 
@@ -191,9 +201,3 @@ const response = await client.stream(
   { timeout: 1000 }
 );
 ```
-
-## Limitations
-
-Currently unsupported features are:
-
-- Tool Calling
