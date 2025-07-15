@@ -541,11 +541,29 @@ const response = await orchestrationClient.chatCompletion({
 
 Orchestration service offers a masking provider "SAP Data Privacy Integration (DPI)" to anonymize or pseudonymize sensitive information.
 Use `buildDpiMaskingProvider()` function to build a DPI masking provider.
+Define either standard or custom entities to be anonymized.
+Use `replacement_strategy` to control how these entities are masked.
 
 ```ts
 const maskingProvider = buildDpiMaskingProvider({
   method: 'annonymization',
-  entities: ['profile-person', 'profile-org'],
+  entities: [
+    'profile-person',
+    {
+      type: 'profile-email',
+      replacement_strategy: {
+        method: 'fabricated_data'
+      }
+    },
+    {
+      type: 'custom',
+      regex: '\\b[0-9]{4}-[0-9]{4}-[0-9]{3,5}\\b',
+      replacement_strategy: {
+        method: 'constant',
+        value: 'REDACTED_ID'
+      }
+    }
+  ],
   // mask_grounding_input: false, // optional
   allowlist: ['SAP'] // optional
 });
