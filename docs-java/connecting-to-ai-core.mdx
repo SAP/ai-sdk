@@ -57,12 +57,10 @@ Here are three examples of how this can be done:
 1.  <details>
     <summary>Using a `.env` file</summary>
 
-    Create a `.env` file (without specifying a filename) in the **working directory** from which you run your code.
-    Add the following line:
+    Create a `.env` file in the **working directory** from which you run your code as shown in the image below.
+    Add the copied JSON object in the file as the value of the `AICORE_SERVICE_KEY` variable as shown in the image below.
 
-    ```txt
-    AICORE_SERVICE_KEY={...Fill it with JSON object copied above...}
-    ```
+    <img src="static/img/JSON-Object-Steps.png" alt="AICORE_SERVICE_KEY environment variable in .env file" width="600" />
 
     :::info
     The value of `AICORE_SERVICE_KEY` must be a single line, so remove any line breaks from the service key JSON.
