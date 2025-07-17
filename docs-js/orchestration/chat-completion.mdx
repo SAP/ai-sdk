@@ -313,7 +313,7 @@ It is useful when model is **not calling a tool** and should still return a stru
 The example below returns a JSON Schema with `strict` set to `true` to let the response adhere to the schema definition.
 
 ```ts
-const templating: TemplateModuleConfig = {
+const templating: TemplatingModuleConfig = {
   response_format: {
     type: 'json_schema',
     json_schema: {
