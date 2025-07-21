@@ -206,7 +206,7 @@ console.log(response.getContent());
 You can also define JSON schema using [Zod](https://zod.dev/) schema as shown below:
 
 ```ts
-import { z } from 'zod';
+import * as z from 'zod';
 import { AzureOpenAiResponseFormatJsonSchema } from '@sap-ai-sdk/foundation-models';
 
 const countryCapitalSchema = z
