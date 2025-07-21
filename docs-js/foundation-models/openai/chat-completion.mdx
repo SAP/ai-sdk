@@ -161,6 +161,70 @@ for await (const chunk of response.stream) {
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
 
+## Response Format
+
+For general response formatting, use the `response_format` parameter.
+It is useful when model is not calling a tool and should still return a structured response.
+
+The example below returns a JSON Schema with `strict: true` to let the response adhere to the schema definition.
+
+```ts
+const response = await client.run({
+  messages: [
+    {
+      role: 'user',
+      content: 'What is the capital of France?'
+    }
+  ],
+  response_format: {
+      type: 'json_schema',
+      json_schema: {
+        description: 'Response format for the capital of France.',
+        name: 'capital_of_france',
+        schema: {
+          type: 'object',
+          properties: {
+            capital: {
+              type: 'string',
+              description: 'The capital city of France.'
+            },
+            population: {
+              type: 'number',
+              description: 'The population of the capital city.'
+            }
+          },
+          additionalProperties: false, // Ensures no additional properties are allowed
+          required: ['capital', 'population']
+        },
+        strict: true
+      }
+    }
+});
+console.log(response.getContent());
+```
+
+You can also define JSON schema using Zod schema as shown below:
+
+```ts
+import { z } from 'zod';
+import { AzureOpenAiResponseFormatJsonSchema } from '@sap-ai-sdk/foundation-models';
+
+const countryCapitalSchema = z.object({
+    population: z.number(),
+    capital: z.string()
+  })
+  .strict();
+
+const response_format: AzureOpenAiResponseFormatJsonSchema = {
+  type: 'json_schema',
+  json_schema: {
+    name: 'capital_response',
+    strict: true,
+    schema: z.toJSONSchema(countryCapitalSchema)
+  }
+};
+```
+
 ## Function Calling
 
 Define and pass [tool definitions](https://platform.openai.com/docs/guides/function-calling) to enable the model to call specific functions.
