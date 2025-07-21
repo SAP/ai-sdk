@@ -342,6 +342,8 @@ You can also define JSON schema using [Zod](https://zod.dev/) schema as shown be
 
 ```ts
 import * as z from 'zod/v4';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration';
 
 const countryCapitalSchema = z
   .object({
@@ -355,7 +357,7 @@ const response_format: ResponseFormatJsonSchema = {
   json_schema: {
     name: 'capital_response',
     strict: true,
-    schema: z.toJSONSchema(countryCapitalSchema)
+    schema: toJsonSchema(countryCapitalSchema)
   }
 };
 ```
