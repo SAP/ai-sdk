@@ -11,6 +11,8 @@ keywords:
   - ai
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 The SAP AI SDK uses the [`Destination` concept of the SAP Cloud SDK](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/destination-service) to connect to AI Core.
 This allows for a seamless integration in BTP and offers a wide variety of managing the credentials for the connection.
 
@@ -43,8 +45,9 @@ cds bind --to aicore --exec mvn spring-boot:run
 #### Using the `AICORE_SERVICE_KEY` Environment Variable
 
 You can also provide the service credentials in the `AICORE_SERVICE_KEY` environment variable.
-First, [create a service key for your AI Core service instance](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-service-key).
+First, click on the SAP AI Core service instance in the SAP BTP Cockpit, press on the **View Credentials** tab on the top right corner.
 Copy the resulting JSON object.
+(JSON text copied will be used as shown in the examples in the next steps)
 
 Then set the environment variable `AICORE_SERVICE_KEY` to be defined for however you want to run your code.
 How exactly to set this depends on how you run your code (e.g. via IDE, command line etc.) and potentially on your operating system.
@@ -56,12 +59,10 @@ Here are three examples of how this can be done:
 1.  <details>
     <summary>Using a `.env` file</summary>
 
-    Create a `.env` file in the **working directory** from which you run your code.
-    Add the following line:
+    Create a `.env` file in the **working directory** from which you run your code as shown in the image below.
+    Add the copied JSON object in the file as the value of the `AICORE_SERVICE_KEY` variable as shown in the image below.
 
-    ```txt
-    AICORE_SERVICE_KEY={ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }
-    ```
+    <img src={useBaseUrl("img/JSON-Object-Steps.png")} alt="AICORE_SERVICE_KEY environment variable in .env file" width="600" />
 
     :::info
     The value of `AICORE_SERVICE_KEY` must be a single line, so remove any line breaks from the service key JSON.
