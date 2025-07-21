@@ -177,28 +177,28 @@ const response = await client.run({
     }
   ],
   response_format: {
-      type: 'json_schema',
-      json_schema: {
-        description: 'Response format for the capital of France.',
-        name: 'capital_of_france',
-        schema: {
-          type: 'object',
-          properties: {
-            capital: {
-              type: 'string',
-              description: 'The capital city of France.'
-            },
-            population: {
-              type: 'number',
-              description: 'The population of the capital city.'
-            }
+    type: 'json_schema',
+    json_schema: {
+      description: 'Response format for the capital of France.',
+      name: 'capital_of_france',
+      schema: {
+        type: 'object',
+        properties: {
+          capital: {
+            type: 'string',
+            description: 'The capital city of France.'
           },
-          additionalProperties: false, // Ensures no additional properties are allowed
-          required: ['capital', 'population']
+          population: {
+            type: 'number',
+            description: 'The population of the capital city.'
+          }
         },
-        strict: true
-      }
+        additionalProperties: false, // Ensures no additional properties are allowed
+        required: ['capital', 'population']
+      },
+      strict: true
     }
+  }
 });
 console.log(response.getContent());
 ```
@@ -209,7 +209,8 @@ You can also define JSON schema using [Zod](https://zod.dev/) schema as shown be
 import { z } from 'zod';
 import { AzureOpenAiResponseFormatJsonSchema } from '@sap-ai-sdk/foundation-models';
 
-const countryCapitalSchema = z.object({
+const countryCapitalSchema = z
+  .object({
     population: z.number(),
     capital: z.string()
   })
