@@ -250,7 +250,7 @@ For more information on prompt registry, we refer to the corresponding [document
 ## Model Context Protocol (MCP) Integration
 
 The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) enables AI models to interact with external tools and resources, expanding their capabilities beyond simple text generation.
-MCP servers can be used together with the AI SDK seamlessly through to the existing [integration with Spring AI](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html).
+MCP servers can be used together with the SAP AI SDK seamlessly through to the existing [integration with Spring AI](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html).
 
 ### Prerequisites
 
@@ -280,22 +280,22 @@ spring:
         type: SYNC
         stdio:
           connections:
-             # Configuration for file system access, uses the current working directory
-             localFS:
-               command: npx
-               args:
-                   - "-y"
-                   - "@modelcontextprotocol/server-filesystem"
-                   - "."
-               env:
-                 DEBUG: "true"
+            # Configuration for file system access, uses the current working directory
+            localFS:
+              command: npx
+              args:
+                - '-y'
+                - '@modelcontextprotocol/server-filesystem'
+                - '.'
+              env:
+                DEBUG: 'true'
 ```
 
 For more information on how to configure clients, refer to the [Spring MCP documentation](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html).
 
 ### Using MCP with Orchestration
 
-Once you've configured the MCP client, you can autowire the tools into your class:
+Once you've configured the MCP client, you can auto-wire the tools into your class:
 
 ```java
 @Autowired
@@ -313,4 +313,3 @@ options.setInternalToolExecutionEnabled(true);
 ```
 
 For more information also refer to the [sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
-
