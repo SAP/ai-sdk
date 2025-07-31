@@ -223,6 +223,11 @@ module.exports = {
           current: {
             label: 'v1',
             badge: false
+          },
+          '2.0.0': {
+            label: 'v2',
+            banner: 'unreleased',
+            badge: true
           }
         }
       }
