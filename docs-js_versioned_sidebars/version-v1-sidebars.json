@@ -6,9 +6,7 @@
     {
       "type": "category",
       "label": "Orchestration",
-      "items": [
-        "orchestration/chat-completion"
-      ]
+      "items": ["orchestration/chat-completion"]
     },
     {
       "type": "category",
@@ -35,10 +33,7 @@
         "type": "doc",
         "id": "langchain/langchain"
       },
-      "items": [
-        "langchain/orchestration",
-        "langchain/openai"
-      ]
+      "items": ["langchain/orchestration", "langchain/openai"]
     },
     {
       "type": "category",
@@ -52,9 +47,7 @@
     {
       "type": "category",
       "label": "Tutorials",
-      "items": [
-        "tutorials/getting-started-with-agents"
-      ]
+      "items": ["tutorials/getting-started-with-agents"]
     },
     "error-handling",
     "release-notes",
