@@ -218,16 +218,16 @@ module.exports = {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: require.resolve('./sidebarsDocsJs.js'),
-        lastVersion: 'current',
+        lastVersion: 'v1',
         versions: {
           current: {
-            label: 'v1',
-            badge: false
-          },
-          'v2': {
             label: 'v2',
             banner: 'unreleased',
             badge: true
+          },
+          v1: {
+            label: 'v1',
+            badge: false
           }
         }
       }
