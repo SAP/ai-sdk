@@ -1,0 +1,324 @@
+---
+id: chat-completion
+title: Chat Completion
+hide_title: false
+hide_table_of_contents: false
+description: How to use the SAP Cloud SDK for AI to perform chat completion tasks using Azure OpenAI models deployed through SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - chat
+  - completion
+  - openai
+---
+
+Initialize the `AzureOpenAiChatClient` by following the instructions in the [Client Initialization](../../foundation-models#client-initialization) section.
+
+Currently, the client sends request with Azure OpenAI API version `2024-10-21`.
+We are continuously updating the client to match the latest API specification.
+You can overwrite the API version by setting the `api-version` parameter in the `CustomRequestConfig` object.
+Refer to the [Custom Request Configuration](../../foundation-models#custom-request-configuration) section for more details.
+
+## Making Requests
+
+```ts
+const response = await client.run({
+  messages: [
+    {
+      role: 'user',
+      content: 'Where is the deepest place on earth located?'
+    }
+  ]
+});
+console.log(response.getContent());
+```
+
+### Message History
+
+Multiple messages can be sent in a single request, enabling the model to reference the conversation history.
+Include `max_tokens` and `temperature` in the request to control the completion behavior:
+
+```ts
+const response = await client.run({
+  messages: [
+    {
+      role: 'system',
+      content: 'You are a friendly chatbot.'
+    },
+    {
+      role: 'user',
+      content: 'Hi, my name is Isa'
+    },
+    {
+      role: 'assistant',
+      content:
+        'Hi Isa! It is nice to meet you. Is there anything I can help you with today?'
+    },
+    {
+      role: 'user',
+      content: 'Can you remind me, What is my name?'
+    }
+  ],
+  max_tokens: 100,
+  temperature: 0.0
+});
+console.log(response.getContent());
+
+const tokenUsage = response.getTokenUsage();
+console.log(
+  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
+    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
+    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+);
+```
+
+Use the autocompletion feature to see other possible parameters.
+
+## Streaming
+
+The `AzureOpenAiChatClient` supports streaming response for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
+
+Use the `stream()` method to receive a stream of chunk responses from the model.
+After consuming the stream, call the helper methods to get the finish reason and token usage information.
+
+```ts
+const response = await client.stream({
+  messages: [
+    {
+      role: 'user',
+      content: 'Give me a very long introduction of SAP Cloud SDK.'
+    }
+  ]
+});
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+
+const finishReason = response.getFinishReason();
+const tokenUsage = response.getTokenUsage();
+
+console.log(`Finish reason: ${finishReason}\n`);
+console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
+```
+
+### Streaming the Delta Content
+
+Use `toContentStream()` method to create a stream generating delta content string.
+
+```ts
+for await (const chunk of response.stream.toContentStream()) {
+  console.log(chunk); // will log the delta content
+}
+```
+
+### Streaming with Tool Calls
+
+Use `getToolCalls()` method to get the tool calls at the end of a stream.
+While `getDeltaToolCalls()` method can be called on individual chunks, partial tool calls are typically not useful.
+Therefore, it is recommended to use the `getToolCalls()` method on the full response instead.
+
+```ts
+for await (const _ of response.stream) {
+  console.log('Waiting for the stream to end ...');
+}
+
+const toolCalls = response.getToolCalls();
+```
+
+### Streaming with Abort Controller
+
+Streaming request can be aborted using the `AbortController` API.
+In case of an error, SAP Cloud SDK for AI will automatically close the stream.
+Additionally, it can be aborted manually by calling the `stream()` method with an `AbortController` object.
+
+```ts
+const controller = new AbortController();
+const response = await client.stream(
+  {
+    messages: [
+      {
+        role: 'user',
+        content: 'Give me a very long introduction of SAP Cloud SDK.'
+      }
+    ]
+  },
+  controller
+);
+
+// Abort the streaming request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+```
+
+In this example, streaming request will be aborted after one second.
+Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+## Response Format
+
+For general response formatting, use the `response_format` parameter.
+It is useful when model is not calling a tool and should still return a structured response.
+
+The example below returns a JSON Schema with `strict: true` to let the response adhere to the schema definition.
+
+```ts
+const response = await client.run({
+  messages: [
+    {
+      role: 'user',
+      content: 'What is the capital of France?'
+    }
+  ],
+  response_format: {
+    type: 'json_schema',
+    json_schema: {
+      description: 'Response format for the capital of France.',
+      name: 'capital_of_france',
+      schema: {
+        type: 'object',
+        properties: {
+          capital: {
+            type: 'string',
+            description: 'The capital city of France.'
+          },
+          population: {
+            type: 'number',
+            description: 'The population of the capital city.'
+          }
+        },
+        additionalProperties: false, // Ensures no additional properties are allowed
+        required: ['capital', 'population']
+      },
+      strict: true
+    }
+  }
+});
+console.log(response.getContent());
+```
+
+You can also define JSON schema using [Zod](https://zod.dev/) schema as shown below:
+
+```ts
+import * as z from 'zod';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import { AzureOpenAiResponseFormatJsonSchema } from '@sap-ai-sdk/foundation-models';
+
+const countryCapitalSchema = z
+  .object({
+    population: z.number(),
+    capital: z.string()
+  })
+  .strict();
+
+const response_format: AzureOpenAiResponseFormatJsonSchema = {
+  type: 'json_schema',
+  json_schema: {
+    name: 'capital_response',
+    strict: true,
+    schema: toJsonSchema(countryCapitalSchema)
+  }
+};
+```
+
+## Function Calling
+
+Define and pass [tool definitions](https://platform.openai.com/docs/guides/function-calling) to enable the model to call specific functions.
+Here's an example of temperature conversion using tool calls:
+
+First, define the tool with `name`, `description` and `parameters` properties:
+
+```ts
+const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'convert_temperature_to_fahrenheit',
+    description: 'Converts temperature from Celsius to Fahrenheit',
+    parameters: {
+      type: 'object',
+      properties: {
+        temperature: {
+          type: 'number',
+          description: 'The temperature value in Celsius to convert.'
+        }
+      },
+      required: ['temperature']
+    }
+  }
+};
+```
+
+Set `strict` to `true` to ensure function calls adhere to the function schema.
+For more information refer to the [OpenAI documentation](https://platform.openai.com/docs/guides/function-calling?api-mode=chat#strict-mode).
+
+Initialize the client and send the initial request with the tool definition:
+
+```ts
+const client = new AzureOpenAiChatClient('gpt-4o');
+const messages = [
+  { role: 'user', content: 'Convert 20 degrees Celsius to Fahrenheit.' }
+];
+
+const response = await client.run({
+  messages,
+  tools: [convertTemperatureTool]
+});
+```
+
+When the model decides to use a tool, it returns the function name and input arguments in the response.
+Use the model response to execute the function.
+
+```ts
+const initialResponse = response.data.choices[0].message;
+messages.push(initialResponse);
+let toolMessage: AzureOpenAiChatCompletionRequestToolMessage;
+
+if (initialResponse.tool_calls) {
+  const toolCall = initialResponse.tool_calls[0];
+  const name = toolCall.function.name;
+  const args = JSON.parse(toolCall.function.arguments);
+
+  // Execute the function with the provided arguments
+  const toolResult = callFunction(name, args);
+
+  toolMessage = {
+    role: 'tool',
+    content: toolResult,
+    tool_call_id: toolCall.id
+  };
+}
+```
+
+The `callFunction` function routes the calls to the actual implementations.
+
+```ts
+function callFunction(name: string, args: any): string {
+  switch (name) {
+    case 'convert_temperature_to_fahrenheit':
+      return convertTemperatureToFahrenheit(args.temperature);
+    default:
+      throw new Error(`Function: ${name} not found!`);
+  }
+}
+
+function convertTemperatureToFahrenheit(temperature: number): string {
+  return `The temperature in Fahrenheit is ${(temperature * 9) / 5 + 32}°F.`;
+}
+```
+
+Send the function result back to the model to get it's final response:
+
+```ts
+const finalResponse = await client.run({
+  messages: [...messages, toolMessage],
+  tools: [convertTemperatureTool]
+});
+
+console.log(finalResponse.getContent());
+```

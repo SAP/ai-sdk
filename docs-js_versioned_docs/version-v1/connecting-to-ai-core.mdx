@@ -1,0 +1,117 @@
+---
+id: connecting-to-ai-core
+title: Connecting to AI Core
+hide_title: false
+hide_table_of_contents: false
+description: How to connect to AI Core in BTP using a wide variety of credentials.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - btp
+  - ai core
+---
+
+The SAP Cloud SDK for AI uses the [Destination concept of the SAP Cloud SDK](https://sap.github.io/cloud-sdk/docs/js/features/connectivity/destinations) to connect to AI Core.
+This allows for a seamless integration in SAP BTP and offers a wide variety of managing the credentials for the connection.
+
+## Using a Service Binding
+
+By default, the SAP Cloud SDK for AI will look for an `aicore` service binding in the environment of the application.
+
+When running on SAP BTP, [create an instance of the AI Core service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-service-instance) and bind it to your application.
+
+- In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
+- In Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
+
+If no service binding is found and no destination is explicitly provided, the SDK throws an exception:
+
+```txt
+Could not find service credentials for AI Core. Please check the service binding.
+```
+
+To run the code outside of SAP BTP (e.g., locally), provide the necessary credentials manually.
+
+### Providing a Service Binding Locally
+
+For local development, you can provide the service credentials locally in several ways.
+
+#### Using CAP Hybrid Testing
+
+When developing a [CAP application](https://cap.cloud.sap/docs/), you can use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach.
+The following command will bind the credential of your AI Core service instance:
+
+```bash
+cds bind -2 AICORE_INSTANCE_NAME
+```
+
+Then run the application with the hybrid profile:
+
+```bash
+cds-tsx watch --profile hybrid
+```
+
+#### Using the `AICORE_SERVICE_KEY` Environment Variable
+
+You can provide the service credential in the `AICORE_SERVICE_KEY` environment variable.
+SAP Cloud SDK for AI will read it through `process.env.AICORE_SERVICE_KEY` variable.
+
+[Create a service key](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-service-key) for your AI Core service instance and copy the resulting JSON object.
+
+Next, set the environment variable `AICORE_SERVICE_KEY`, e.g., by creating a `.env` file with the following content:
+
+```txt
+AICORE_SERVICE_KEY='{
+    "clientid": "...",
+    ...
+}'
+```
+
+Load the `.env` file by using [dotenv](https://www.npmjs.com/package/dotenv) or running `node --env-file=.env ...`.
+
+For NextJS, see [this documentation](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables).
+
+## Using a Destination
+
+### Using the SAP BTP Destination Service
+
+You can define a destination in the SAP BTP Destination Service and use that to connect to SAP AI Core.
+
+<details>
+<summary>How to create a Destination in the SAP BTP Cockpit</summary>
+
+1. [Create a service key for your AI Core service instance](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-service-key).
+
+2. Create a new Destination in the SAP BTP Cockpit with the following properties:
+
+   - **Name**: `my-aicore`
+   - **Type**: `HTTP`
+   - **URL**: `[serviceurls.AI_API_URL]`
+   - **Proxy Type**: `Internet`
+   - **Authentication**: `OAuth2ClientCredentials`
+   - **Client ID**: `[clientid]`
+   - **Client Secret**: `[clientsecret]`
+   - **Token Service URL Type**: `Dedicated`
+   - **Token Service URL**: `[url]/oauth/token`
+
+   Fill in the values for URL, client ID, client secret, and token service URL from the service key JSON.
+   Make sure to add `/oauth/token` in the token service URL.
+
+</details>
+
+:::tip
+If you are using CAP, you can again use Hybrid Testing to bind the destination service to your application when running **locally**.
+:::
+
+Ensure you have created an instance of the SAP BTP Destination Service and bound it to your application.
+
+By default, the fetched destination is cached.
+Check the [Cache Expiration](https://sap.github.io/cloud-sdk/docs/js/features/connectivity/destination-cache#cache-expiration) section of the SAP Cloud SDK documentation for more details.
+
+This destination can be used later when initializing a client or calling the `execute()` method.
+
+### Creating a Custom Destination
+
+You can register a destination for AI Core programmatically.
+For more details, refer to the [Register Destination](https://sap.github.io/cloud-sdk/docs/js/features/connectivity/destinations#register-destination) section of the SAP Cloud SDK documentation.
