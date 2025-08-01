@@ -224,7 +224,7 @@ module.exports = {
             label: 'v1',
             badge: false
           },
-          '2.0.0': {
+          'v2': {
             label: 'v2',
             banner: 'unreleased',
             badge: true
