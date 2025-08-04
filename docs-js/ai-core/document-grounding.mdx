@@ -88,7 +88,39 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
 ).execute();
 ```
 
+### Get Pipeline Status
+
+```ts
+const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
+    {
+      $top: 10
+    },
+    {
+      'AI-Resource-Group': 'ai-sdk-js-e2e'
+    }
+  ).execute();
+
+  const createPipelineResponse = await PipelinesApi.createPipeline(
+    {
+      configuration:{
+        destination: 'my-destination'
+      },
+      type: 'MSSharePoint'
+    },
+   {
+    'AI-Resource-Group': 'ai-sdk-js-e2e'
+   } 
+  ).execute();
+
+
+  const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus('7b17e2ab-4ecc-448e-837f-2c10c9359925', {
+    'AI-Resource-Group': 'ai-sdk-js-e2e'
+    }
+  ).execute();
+```
+
 ### Retrieval Search
+
 ```ts
   const response: RetrievalSearchResults = RetrievalApi.search(
     {
