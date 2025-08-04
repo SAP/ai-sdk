@@ -59,9 +59,9 @@ https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-i
 
 Set up an MCP server and define the `get_weather` tool using the free [Open-Meteo](https://open-meteo.com/) Weather API to fetch weather data.
 
-  ```js reference
-  https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
-  ```
+```js reference
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
+```
 
 To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://langchain-ai.github.io/langgraphjs/agents/mcp/?h=mcp#use-mcp-tools).
 
@@ -75,6 +75,7 @@ Initialize the client and add tools using the `buildTools()` method.
 Set up a `ToolNode` for routing tool calls.
 
 <!-- vale off -->
+
 <Tabs 
   groupId="client"
   defaultValue="orchestration"
@@ -84,9 +85,9 @@ Set up a `ToolNode` for routing tool calls.
   ]}>
 
 <TabItem value="openai">
-```js reference
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L44-L55
-```
+  ```js reference
+  https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L44-L55
+  ```
 </TabItem>
 
 <TabItem value="orchestration">
@@ -99,19 +100,20 @@ const tools = [...getMcpTools, getRestaurantsTool];
 
 // Create a model
 const model = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o-mini',
-    model_params: {
-      temperature: 0.7
-    }
-  }
+llm: {
+model_name: 'gpt-4o-mini',
+model_params: {
+temperature: 0.7
+}
+}
 });
 
 // create a model with access to the tools
 const modelWithTools = model.bindTools(tools);
 
 const toolNode = new ToolNode(tools);
-```
+
+````
 
 </TabItem>
 </Tabs>
@@ -123,7 +125,7 @@ Configure a `StateGraph` that routes between `agent` → `tool` → `agent`, and
 
 ```js reference
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L57-L89
-```
+````
 
 ## Build the Workflow
 
@@ -245,23 +247,23 @@ Assistant: I'm glad you like the itinerary! If you have any more questions or ne
 <details>
   <summary>Travel Itinerary Planner Agent</summary>
 
-  <Tabs>
-    <TabItem value="Itinerary Planner">
-     ```js reference
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts
-```
-    </TabItem>
-    <TabItem value="MCP Adapter">
-        ```js reference
-  https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-adapter.ts
-  ```
-    </TabItem>
-    <TabItem value="Weather MCP Server">
-        ```js reference
-  https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
-  ```
-    </TabItem>
-  </Tabs>
+<Tabs>
+  <TabItem value="Itinerary Planner">
+    ```js reference
+    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts
+    ```
+  </TabItem>
+  <TabItem value="MCP Adapter">
+    ```js reference
+    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-adapter.ts
+    ```
+  </TabItem>
+  <TabItem value="Weather MCP Server">
+    ```js reference
+    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
+    ```
+  </TabItem>
+</Tabs>
 
 </details>
 

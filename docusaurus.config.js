@@ -25,9 +25,7 @@ module.exports = {
   organizationName: 'SAP',
   projectName: 'ai-sdk',
   trailingSlash: false,
-  themes: [
-    'docusaurus-theme-github-codeblock',
-  ],
+  themes: ['docusaurus-theme-github-codeblock'],
   themeConfig: {
     colorMode: {
       respectPrefersColorScheme: true,
@@ -173,10 +171,10 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} SAP SE or an SAP affiliate company. All rights reserved.`
     },
     codeblock: {
-            showGithubLink: true,
-            githubLinkLabel: 'View on GitHub',
-            showRunmeLink: false,
-        },
+      showGithubLink: true,
+      githubLinkLabel: 'View on GitHub',
+      showRunmeLink: false
+    }
   },
   presets: [
     [
