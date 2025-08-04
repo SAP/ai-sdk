@@ -74,6 +74,7 @@ https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-
 Initialize the client and add tools using the `buildTools()` method.
 Set up a `ToolNode` for routing tool calls.
 
+<!-- vale off -->
 <Tabs 
   groupId="client"
   defaultValue="orchestration"
@@ -115,6 +116,7 @@ const toolNode = new ToolNode(tools);
 </TabItem>
 </Tabs>
 
+<!-- vale on -->
 ## Define Agent Logic and LangGraph Flow
 
 Configure a `StateGraph` that routes between `agent` → `tool` → `agent`, and uses intelligent routing to determine when to ask for human input or end the conversation.
