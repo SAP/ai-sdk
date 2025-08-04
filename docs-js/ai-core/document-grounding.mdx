@@ -88,6 +88,28 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
 ).execute();
 ```
 
+### Retrieval Search
+```ts
+  const response: RetrievalSearchResults = RetrievalApi.search(
+    {
+      query: "What is SAP Cloud SDK for AI?",
+      filters: [
+        {
+          id: 'my-filter',
+          searchConfiguration: {
+            maxChunkCount: 10
+          },
+          dataRepositories: ['*'],
+          dataRepositoryType: 'vector'
+        }
+      ] 
+    },
+    {
+      'AI-Resource-Group': 'ai-sdk-js-e2e'
+    }
+  ).execute();
+```
+
 ### Custom Destination
 
 When calling the `execute()` method, it is possible to provide a custom destination for your SAP AI Core instance.
