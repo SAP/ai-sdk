@@ -47,7 +47,7 @@ Alternatively, create a resource group via AI API by referring to the [Creating 
 
 ### Get Pipeline Status
 
-You can see below how to list pipelines, create one and see its status. 
+You can see below how to list pipelines, create one and see its status.
 Please refer to [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipeline-api-a9badce6a4da4df68e98549d64aa2217) for more detail.
 
 ```ts
@@ -62,26 +62,27 @@ const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
 
 const createPipelineResponse = await PipelinesApi.createPipeline(
   {
-    configuration:{
+    configuration: {
       destination: 'my-destination'
     },
     type: 'MSSharePoint'
   },
   {
-  'AI-Resource-Group': 'default'
-  } 
+    'AI-Resource-Group': 'default'
+  }
 ).execute();
 
-
-const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus('pipeline-id', {
-  'AI-Resource-Group': 'default'
+const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus(
+  'pipeline-id',
+  {
+    'AI-Resource-Group': 'default'
   }
 ).execute();
 ```
 
 ### Create a Collection
 
-The following shows how to create a collection using Vector API. 
+The following shows how to create a collection using Vector API.
 For more detail, refer to [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-0358c5ca839d4cf7b4982dbcbc1ba7ff).
 
 ```ts
@@ -130,13 +131,13 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
 
 ### Retrieval Search
 
-See the following code sample for searching document grounding data with a query. 
+See the following code sample for searching document grounding data with a query.
 Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api) for more detail.
 
 ```ts
 const response: RetrievalSearchResults = RetrievalApi.search(
   {
-    query: "What is SAP Cloud SDK for AI?",
+    query: 'What is SAP Cloud SDK for AI?',
     filters: [
       {
         id: 'my-filter',
@@ -146,7 +147,7 @@ const response: RetrievalSearchResults = RetrievalApi.search(
         dataRepositories: ['*'],
         dataRepositoryType: 'vector'
       }
-    ] 
+    ]
   },
   {
     'AI-Resource-Group': 'default'
@@ -156,7 +157,7 @@ const response: RetrievalSearchResults = RetrievalApi.search(
 
 ### Orchestration Grounding
 
-Below, you will find the sample code on how you can use the grounding service via orchestration. 
+Below, you will find the sample code on how you can use the grounding service via orchestration.
 See also [grounding on orchestration](https://sap.github.io/ai-sdk/docs/js/orchestration/chat-completion#grounding).
 
 ```ts
@@ -193,7 +194,6 @@ const chatResponse = await orchestrationClient.chatCompletion({
   }
 });
 ```
-
 
 ### Custom Destination
 
