@@ -25,7 +25,7 @@ module.exports = {
   organizationName: 'SAP',
   projectName: 'ai-sdk',
   trailingSlash: false,
-  themes: ['docusaurus-theme-github-codeblock'],
+  themes: ['@saucelabs/theme-github-codeblock'],
   themeConfig: {
     colorMode: {
       respectPrefersColorScheme: true,

@@ -53,19 +53,19 @@ The `get_restaurants` tool uses mocked data for simplicity.
 Replace with real API calls to integrate live data.
 :::
 
-```js reference
+```js reference referenceLinkText=" " title="Weather tool definition"
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L23-L42
 ```
 
 Set up an MCP server and define the `get_weather` tool using the free [Open-Meteo](https://open-meteo.com/) Weather API to fetch weather data.
 
-```js reference
+```js reference referenceLinkText=" " title="Weather MCP Server"
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
 ```
 
 To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://langchain-ai.github.io/langgraphjs/agents/mcp/?h=mcp#use-mcp-tools).
 
-```js reference
+```js reference referenceLinkText=" " title="MCP Adapter"
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-adapter.ts
 ```
 
@@ -85,7 +85,7 @@ Set up a `ToolNode` for routing tool calls.
   ]}>
 
 <TabItem value="openai">
-  ```js reference
+  ```js reference referenceLinkText=" " title="Initialize Client"
   https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L44-L55
   ```
 </TabItem>
@@ -123,13 +123,13 @@ const toolNode = new ToolNode(tools);
 
 Configure a `StateGraph` that routes between `agent` → `tool` → `agent`, and uses intelligent routing to determine when to ask for human input or end the conversation.
 
-```js reference
+```js reference referenceLinkText=" " title="Configure Agent flow"
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L57-L89
 ```
 
 ## Build the Workflow
 
-```js reference
+```js reference referenceLinkText=" " title="Build the workflow"
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L90-L101
 ```
 
@@ -147,7 +147,7 @@ The following example simulates a full interaction, with detailed console output
 3. It handles follow-up requests and modifications based on user input.
 4. The conversation continues until the user is satisfied.
 
-```js reference
+```js reference referenceLinkText=" " title="Call the agent with initial message"
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L102-L118
 ```
 
@@ -177,7 +177,7 @@ The LLM response includes tool calls to gather this information:
 
 The agent executes these tool calls through the `tools` node to gather the necessary data, then returns to the agent node to generate a natural language response with the complete itinerary.
 
-```js reference
+```js reference referenceLinkText=" " 
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L120-L121
 ```
 
@@ -207,7 +207,7 @@ next:  [ 'askHuman' ]
 
 Provide the response by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
 
-```js reference
+```js reference referenceLinkText=" " 
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L123-L128
 ```
 
@@ -234,7 +234,7 @@ Does this itinerary suit your preferences, or would you like further adjustments
 
 The agent loop ends when the user expresses satisfaction with the proposed itinerary.
 
-```js reference
+```js reference referenceLinkText=" " 
 https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L130-L137
 ```
 
@@ -249,17 +249,17 @@ Assistant: I'm glad you like the itinerary! If you have any more questions or ne
 
 <Tabs>
   <TabItem value="Itinerary Planner">
-    ```js reference
+    ```js reference referenceLinkText="View on GitHub"
     https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts
     ```
   </TabItem>
   <TabItem value="MCP Adapter">
-    ```js reference
+    ```js reference referenceLinkText="View on GitHub"
     https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-adapter.ts
     ```
   </TabItem>
   <TabItem value="Weather MCP Server">
-    ```js reference
+    ```js reference referenceLinkText="View on GitHub"
     https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
     ```
   </TabItem>
