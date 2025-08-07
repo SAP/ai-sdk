@@ -172,8 +172,9 @@ public class SpringAiAgenticWorkflowService {
   public String runAgent(String userInput) {
 
     //    Configure chat memory
-    var memory = new InMemoryChatMemory();
-    var advisor = new MessageChatMemoryAdvisor(memory);
+    val repository = new InMemoryChatMemoryRepository();
+    val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+    val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
     //    Add (mocked) tools
