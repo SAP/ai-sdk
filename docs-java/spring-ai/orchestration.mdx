@@ -16,13 +16,19 @@ keywords:
 This guide provides examples of how to use our Spring AI integration with our Orchestration client in SAP AI Core
 for chat completion tasks using the SAP AI SDK for Java.
 
-First, add the Spring AI dependency to your `pom.xml`:
+First, add the following dependencies to your `pom.xml`:
 
 ```xml
 <dependency>
     <groupId>org.springframework.ai</groupId>
     <artifactId>spring-ai-core</artifactId>
     <version>1.0.0-M5</version>
+</dependency>
+
+<dependency>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>orchestration</artifactId>
+    <version>${ai-sdk.version}</version>
 </dependency>
 ...
 <repository>
@@ -65,12 +71,12 @@ Configure Orchestration modules within Spring AI:
 ChatModel client = new OrchestrationChatModel();
 OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-val masking =
+var masking =
     DpiMasking.anonymization()
         .withEntities(DPIEntities.EMAIL, DPIEntities.ADDRESS, DPIEntities.LOCATION);
 
-val opts = new OrchestrationChatOptions(config.withMaskingConfig(masking));
-val prompt =
+var opts = new OrchestrationChatOptions(config.withMaskingConfig(masking));
+var prompt =
     new Prompt(
         "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai",
         opts);
@@ -183,9 +189,9 @@ ChatModel client = new OrchestrationChatModel();
 OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
-val memory = new InMemoryChatMemory();
-val advisor = new MessageChatMemoryAdvisor(memory);
-val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+var memory = new InMemoryChatMemory();
+var advisor = new MessageChatMemoryAdvisor(memory);
+var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 Prompt prompt1 = new Prompt("What is the capital of France?", defaultOptions);
 String content1 = cl.prompt(prompt1).call().content();
@@ -240,3 +246,70 @@ ChatResponse response = client.call(prompt);
 ```
 
 For more information on prompt registry, we refer to the corresponding [documentation](../ai-core/prompt-registry).
+
+## Model Context Protocol (MCP) Integration
+
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) enables AI models to interact with external tools and resources, expanding their capabilities beyond simple text generation.
+MCP servers can be used together with the SAP AI SDK seamlessly through to the existing [integration with Spring AI](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html).
+
+### Prerequisites
+
+Add the Spring MCP auto configuration dependency:
+
+```xml
+<dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-autoconfigure-mcp-client</artifactId>
+    <scope>runtime</scope>
+    <version>1.0.0</version>
+</dependency>
+```
+
+## Configure an MCP Client
+
+To use MCP with the SAP AI SDK for Java, you need to configure an MCP client in your application.
+For this example, we configure a client for the [file system MCP server](https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem).
+Note that you need to have `npx` installed for this particular example.
+
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        # Type of client: SYNC or ASYNC
+        type: SYNC
+        stdio:
+          connections:
+            # Configuration for file system access, uses the current working directory
+            localFS:
+              command: npx
+              args:
+                - '-y'
+                - '@modelcontextprotocol/server-filesystem'
+                - '.'
+              env:
+                DEBUG: 'true'
+```
+
+For more information on how to configure clients, refer to the [Spring MCP documentation](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html).
+
+### Using MCP with Orchestration
+
+Once you've configured the MCP client, you can auto-wire the tools into your class:
+
+```java
+@Autowired
+ToolCallbackProvider toolCallbackProvider;
+```
+
+These tools can now be used in requests to the Orchestration service [like any other tool](#tool-calling):
+
+```java
+OrchestrationChatOptions options;
+options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
+
+// optionally, enable automated tool execution
+options.setInternalToolExecutionEnabled(true);
+```
+
+For more information also refer to the [sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
