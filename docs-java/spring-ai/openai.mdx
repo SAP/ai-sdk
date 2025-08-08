@@ -21,25 +21,19 @@ First, add the Spring AI dependency to your `pom.xml`:
 ```xml
 <dependency>
     <groupId>org.springframework.ai</groupId>
-    <artifactId>spring-ai-core</artifactId>
-    <version>1.0.0-M5</version>
+    <artifactId>spring-ai-commons</artifactId>
+    <version>1.0.0</version>
 </dependency>
-...
-<repository>
-    <snapshots>
-        <enabled>true</enabled>
-    </snapshots>
-    <id>spring-milestones</id>
-    <name>Spring Milestones</name>
-    <url>https://repo.spring.io/milestone</url>
-</repository>
+<dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-model</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
-:::note Spring AI Milestone Version
-Note that currently no stable version of Spring AI exists just yet.
-The SAP AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
-
-Please be aware that future versions of the SAP AI SDK may increase the Spring AI version.
+:::note Spring AI Version
+As of version `1.10.0` the minimum required version for Spring AI is `1.0.0`.
+Please reefer the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for details on how to upgrade from a previous milestone version.
 :::
 
 ## Embedding
