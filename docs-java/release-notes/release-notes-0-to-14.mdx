@@ -33,7 +33,7 @@
     - `getFilterDetails()`: Returns a map of all filter details.
     - `getAzureContentSafetyInput()` and `getAzureContentSafetyInput()` : Returns Azure Content Safety filter scores
     - `getLlamaGuard38b()`: Returns LlamaGuard filter scores
-- [Document Grounding] Extend pipline operations, notably:
+- [Document Grounding] Extend `PipelineApi` operations, notably:
   - Added new pipeline creation requests for SDM and WorkZone with `SDMPipelineCreateRequest` and `WorkZonePipelineCreateRequest`.
   - S3 and SFTP pipeline configurations extended with `S3Configuration` and `SFTPConfiguration` for including data sources.
   - Support `/pipelines/trigger` endpoint to trigger pipelines on-demand via `PipelinesApi#manualTriggerPipeline()`.
