@@ -35,6 +35,7 @@ This approach will allow patch-level updates while preventing potentially breaki
 
 ## Usage
 
+Before using the Document Grounding module, ensure that you have checked all the prerequisites outlined in the [overview](../overview-cloud-sdk-for-ai-js#prerequisites).
 The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core document grounding service.
 In addition to the examples below, you can find more sample code [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts).
 
@@ -44,7 +45,45 @@ This label can be set in SAP AI Launchpad while creating the resource group.
 Alternatively, create a resource group via AI API by referring to the [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-ai-data-management?locale=en-US) guide.
 :::
 
+### Get Pipeline Status
+
+You can see below how to list pipelines, create one and see its status.
+Please refer to [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipeline-api-a9badce6a4da4df68e98549d64aa2217) for more detail.
+
+```ts
+const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
+  {
+    $top: 10
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+
+const createPipelineResponse = await PipelinesApi.createPipeline(
+  {
+    configuration: {
+      destination: 'my-destination'
+    },
+    type: 'MSSharePoint'
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+
+const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus(
+  'pipeline-id',
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+```
+
 ### Create a Collection
+
+The following shows how to create a collection using Vector API.
+For more detail, refer to [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-0358c5ca839d4cf7b4982dbcbc1ba7ff).
 
 ```ts
 const response = await VectorApi.createCollection(
@@ -64,6 +103,8 @@ const collectionId = (response.headers.location as string).split('/').at(-2);
 ```
 
 ### Create a Document
+
+The following shows how to create a document using Vector API.
 
 ```ts
 const response: DocumentsListResponse = await VectorApi.createDocuments(
@@ -86,6 +127,72 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
     'AI-Resource-Group': 'default'
   }
 ).execute();
+```
+
+### Retrieval Search
+
+See the following code sample for searching document grounding data with a query.
+Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api) for more detail.
+
+```ts
+const response: RetrievalSearchResults = RetrievalApi.search(
+  {
+    query: 'What is SAP Cloud SDK for AI?',
+    filters: [
+      {
+        id: 'my-filter',
+        searchConfiguration: {
+          maxChunkCount: 10
+        },
+        dataRepositories: ['*'],
+        dataRepositoryType: 'vector'
+      }
+    ]
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+```
+
+### Orchestration Grounding
+
+Below, you will find the sample code on how you can use the grounding service via orchestration.
+See also [grounding on orchestration](https://sap.github.io/ai-sdk/docs/js/orchestration/chat-completion#grounding).
+
+```ts
+const orchestrationClient = new OrchestrationClient(
+  {
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    grounding: buildDocumentGroundingConfig({
+      input_params: ['groundingRequest'],
+      output_param: 'groundingOutput',
+      filters: [
+        {
+          data_repository_type: 'vector',
+          data_repositories: ['*']
+        }
+      ]
+    })
+  },
+  { resourceGroup: 'default' }
+);
+
+const chatResponse = await orchestrationClient.chatCompletion({
+  messages: [
+    {
+      role: 'user',
+      content:
+        'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+    }
+  ],
+  inputParams: {
+    groundingRequest: 'What is SAP Cloud SDK for AI?'
+  }
+});
 ```
 
 ### Custom Destination
