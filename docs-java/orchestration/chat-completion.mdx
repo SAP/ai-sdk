@@ -265,11 +265,11 @@ var result =
 
 - **Input Filter**:
   If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
-  An `OrchestrationInputFilterException` will be thrown.
+  An `OrchestrationFilterException.Input` will be thrown.
 
 - **Output Filter**:
   If the response message violates the output filter policy, the `chatCompletion` call will complete without exception.
-  The convenience method `getContent()` on the resulting object will throw an `OrchestrationOutputFilterException` upon invocation.
+  The convenience method `getContent()` on the resulting object will throw an `OrchestrationFilterException.Output` upon invocation.
   The low level API under `getOriginalResponse()` will not throw an exception.
 
 - To obtain diagnostic information for filter violation, you may call `getFilterDetails()`, `getAzureContentSafetyInput()`, `getAzureContentSafetyOutput()` or `getLlamaGuard38b()` on the exception as relevant.
