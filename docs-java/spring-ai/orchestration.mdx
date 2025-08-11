@@ -189,8 +189,9 @@ ChatModel client = new OrchestrationChatModel();
 OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
-var memory = new InMemoryChatMemory();
-var advisor = new MessageChatMemoryAdvisor(memory);
+var repository = new InMemoryChatMemoryRepository();
+var memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+var advisor = MessageChatMemoryAdvisor.builder(memory).build();
 var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 Prompt prompt1 = new Prompt("What is the capital of France?", defaultOptions);
