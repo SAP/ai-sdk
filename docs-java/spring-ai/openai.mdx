@@ -56,7 +56,8 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 The OpenAI client is integrated in Spring AI classes:
 
 ```java
-ChatModel client = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL));
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+ChatModel client = new OpenAiChatModel(openAiClient);
 OpenAiChatOptions opts = new OpenAiChatOptions();
 
 Prompt prompt = new Prompt("What is the capital of France?", opts);
@@ -70,7 +71,8 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
 ```java
-ChatModel client = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL));
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+ChatModel client = new OpenAiChatModel(openAiClient);
 OpenAiChatOptions opts = new OpenAiChatOptions();
 
 Prompt prompt = new Prompt("Can you give me the first 100 numbers of the Fibonacci sequence?", opts);
@@ -110,7 +112,8 @@ class WeatherMethod {
 Then pass your tool to the model as follows.
 
 ```java
-ChatModel client = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL));
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+ChatModel client = new OpenAiChatModel(openAiClient);
 OpenAiChatOptions opts = new OpenAiChatOptions();
 
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
@@ -127,7 +130,8 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 Create a Spring AI `ChatClient` from our `OpenAiChatModel` and add a chat memory advisor like so:
 
 ```java
-ChatModel client = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL));
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+ChatModel client = new OpenAiChatModel(openAiClient);
 OpenAiChatOptions opts = new OpenAiChatOptions();
 
 var repository = new InMemoryChatMemoryRepository();
@@ -144,4 +148,4 @@ String content2 = cl.prompt(prompt2).call().content();
 // chat memory will remember that the user is inquiring about France.
 ```
 
-Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).
