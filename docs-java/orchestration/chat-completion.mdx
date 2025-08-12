@@ -265,12 +265,14 @@ var result =
 
 - **Input Filter**:
   If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
-  An `OrchestrationClientException` will be thrown.
+  An `OrchestrationFilterException.Input` will be thrown.
 
 - **Output Filter**:
   If the response message violates the output filter policy, the `chatCompletion` call will complete without exception.
-  The convenience method `getContent()` on the resulting object will throw an `OrchestrationClientException` upon invocation.
+  The convenience method `getContent()` on the resulting object will throw an `OrchestrationFilterException.Output` upon invocation.
   The low level API under `getOriginalResponse()` will not throw an exception.
+
+- To obtain diagnostic information for filter violation, you may call `getFilterDetails()`, `getAzureContentSafetyInput()`, `getAzureContentSafetyOutput()` or `getLlamaGuard38b()` on the exception as relevant.
 
 You will find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating response handling with filters.
 
