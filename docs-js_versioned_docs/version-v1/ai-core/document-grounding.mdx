@@ -35,7 +35,6 @@ This approach will allow patch-level updates while preventing potentially breaki
 
 ## Usage
 
-Before using the Document Grounding module, ensure that you have checked all the prerequisites outlined in the [overview](../overview-cloud-sdk-for-ai-js#prerequisites).
 The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core document grounding service.
 In addition to the examples below, you can find more sample code [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts).
 
@@ -47,8 +46,8 @@ Alternatively, create a resource group via AI API by referring to the [Creating 
 
 ### Get Pipeline Status
 
-You can see below how to list pipelines, create one and see its status.
-Please refer to [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipeline-api-a9badce6a4da4df68e98549d64aa2217) for more detail.
+The following examples show how to list pipelines, create a new pipeline, and view its current status.
+Refer to the [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipelines-api) for more details.
 
 ```ts
 const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
@@ -82,8 +81,8 @@ const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus(
 
 ### Create a Collection
 
-The following shows how to create a collection using Vector API.
-For more detail, refer to [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-0358c5ca839d4cf7b4982dbcbc1ba7ff).
+The following example shows how to create a collection using Vector API.
+For more details, refer to the [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-).
 
 ```ts
 const response = await VectorApi.createCollection(
@@ -104,7 +103,7 @@ const collectionId = (response.headers.location as string).split('/').at(-2);
 
 ### Create a Document
 
-The following shows how to create a document using Vector API.
+The following example shows how to create a document using Vector API.
 
 ```ts
 const response: DocumentsListResponse = await VectorApi.createDocuments(
@@ -131,8 +130,8 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
 
 ### Retrieval Search
 
-See the following code sample for searching document grounding data with a query.
-Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api) for more detail.
+The following example shows how to search results using Retrieve API.
+Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api) for more details.
 
 ```ts
 const response: RetrievalSearchResults = RetrievalApi.search(
@@ -157,43 +156,7 @@ const response: RetrievalSearchResults = RetrievalApi.search(
 
 ### Orchestration Grounding
 
-Below, you will find the sample code on how you can use the grounding service via orchestration.
-See also [grounding on orchestration](https://sap.github.io/ai-sdk/docs/js/orchestration/chat-completion#grounding).
-
-```ts
-const orchestrationClient = new OrchestrationClient(
-  {
-    // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
-    },
-    grounding: buildDocumentGroundingConfig({
-      input_params: ['groundingRequest'],
-      output_param: 'groundingOutput',
-      filters: [
-        {
-          data_repository_type: 'vector',
-          data_repositories: ['*']
-        }
-      ]
-    })
-  },
-  { resourceGroup: 'default' }
-);
-
-const chatResponse = await orchestrationClient.chatCompletion({
-  messages: [
-    {
-      role: 'user',
-      content:
-        'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-    }
-  ],
-  inputParams: {
-    groundingRequest: 'What is SAP Cloud SDK for AI?'
-  }
-});
-```
+Refer to the [grounding on orchestration](../orchestration/chat-completion#grounding) for the implementation.
 
 ### Custom Destination
 
