@@ -41,13 +41,13 @@ In addition to the examples below, you can find more sample code [here](https://
 :::tip
 If you define a custom resource group, ensure that it has the label `document-grounding: true` in order to use the document grounding service.
 This label can be set in SAP AI Launchpad while creating the resource group.
-Alternatively, create a resource group via AI API by referring to the [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-ai-data-management?locale=en-US) guide.
+Alternatively, create a resource group via AI API by referring to the [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-grounding-e32efa5402154101b4cc05c03ef5be09) guide.
 :::
 
 ### Get Pipeline Status
 
 The following examples show how to list pipelines, create a new pipeline, and view its current status.
-Refer to the [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipelines-api) for more details.
+Refer to the [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipelines-api-d8cc0e369f994091b95a6d80aeadbc7f) for more details.
 
 ```ts
 const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
@@ -82,7 +82,7 @@ const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus(
 ### Create a Collection
 
 The following example shows how to create a collection using Vector API.
-For more details, refer to the [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-).
+For more details, refer to the [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-08e3d008addb4362986c73ff0151638c).
 
 ```ts
 const response = await VectorApi.createCollection(
@@ -131,7 +131,7 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
 ### Retrieval Search
 
 The following example shows how to search results using Retrieve API.
-Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api) for more details.
+Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api-281e8cf31d654b108a6e128a4a6cdbae) for more details.
 
 ```ts
 const response: RetrievalSearchResults = RetrievalApi.search(
