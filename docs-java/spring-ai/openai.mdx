@@ -29,11 +29,21 @@ First, add the Spring AI dependency to your `pom.xml`:
     <artifactId>spring-ai-model</artifactId>
     <version>1.0.0</version>
 </dependency>
+<dependency>
+    <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+    <artifactId>openai</artifactId>
+    <version>1.0.0</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-client-chat</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
 :::note Spring AI Version
 As of version `1.10.0` the minimum required version for Spring AI is `1.0.0`.
-Please reefer the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for details on how to upgrade from a previous milestone version.
+Please refer to the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for details on how to upgrade from a previous milestone version.
 :::
 
 ## Embedding
@@ -56,11 +66,10 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 The OpenAI client is integrated in Spring AI classes:
 
 ```java
-OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
 ChatModel client = new OpenAiChatModel(openAiClient);
-OpenAiChatOptions opts = new OpenAiChatOptions();
 
-Prompt prompt = new Prompt("What is the capital of France?", opts);
+Prompt prompt = new Prompt("What is the capital of France?");
 ChatResponse response = client.call(prompt);
 ```
 
@@ -71,12 +80,11 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
 ```java
-OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
 ChatModel client = new OpenAiChatModel(openAiClient);
-OpenAiChatOptions opts = new OpenAiChatOptions();
 
-Prompt prompt = new Prompt("Can you give me the first 100 numbers of the Fibonacci sequence?", opts);
-ChatResponse response = client.call(prompt);
+Prompt prompt = new Prompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
+Flux <ChatResponse> response = client.stream(prompt);
 ```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).
@@ -112,9 +120,9 @@ class WeatherMethod {
 Then pass your tool to the model as follows.
 
 ```java
-OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
 ChatModel client = new OpenAiChatModel(openAiClient);
-OpenAiChatOptions opts = new OpenAiChatOptions();
+DefaultToolCallingChatOptions opts = new DefaultToolCallingChatOptions();
 
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
 
@@ -130,20 +138,19 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 Create a Spring AI `ChatClient` from our `OpenAiChatModel` and add a chat memory advisor like so:
 
 ```java
-OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
 ChatModel client = new OpenAiChatModel(openAiClient);
-OpenAiChatOptions opts = new OpenAiChatOptions();
 
 var repository = new InMemoryChatMemoryRepository();
 var memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
 var advisor = MessageChatMemoryAdvisor.builder(memory).build();
 var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
-Prompt prompt1 = new Prompt("What is the capital of France?", opts);
+Prompt prompt1 = new Prompt("What is the capital of France?");
 String content1 = cl.prompt(prompt1).call().content();
 // content1 is "Paris"
 
-Prompt prompt2 = new Prompt("And what is the typical food there?", opts);
+Prompt prompt2 = new Prompt("And what is the typical food there?");
 String content2 = cl.prompt(prompt2).call().content();
 // chat memory will remember that the user is inquiring about France.
 ```
