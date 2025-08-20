@@ -92,6 +92,7 @@ Set up a `ToolNode` for routing tool calls.
 </TabItem>
 
 <TabItem value="orchestration">
+
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
@@ -101,10 +102,10 @@ const tools = [...getMcpTools, getRestaurantsTool];
 
 // Create a model
 const model = new OrchestrationClient({
-llm: {
-  model_name: 'gpt-4o-mini',
-  model_params: {
-    temperature: 0.7
+  llm: {
+    model_name: 'gpt-4o-mini',
+    model_params: {
+      temperature: 0.7
     }
   }
 });
@@ -113,13 +114,13 @@ llm: {
 const modelWithTools = model.bindTools(tools);
 
 const toolNode = new ToolNode(tools);
-
 ```
 
 </TabItem>
 </Tabs>
 
 <!-- vale on -->
+
 ## Define Agent Logic and LangGraph Flow
 
 Configure a `StateGraph` that routes between `agent` → `tool` → `agent`, and uses intelligent routing to determine when to ask for human input or end the conversation.
@@ -178,7 +179,7 @@ The LLM response includes tool calls to gather this information:
 
 The agent executes these tool calls through the `tools` node to gather the necessary data, then returns to the agent node to generate a natural language response with the complete itinerary.
 
-```js reference referenceLinkText=" " 
+```js reference referenceLinkText=" "
 https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L123-L124
 ```
 
@@ -208,7 +209,7 @@ next:  [ 'askHuman' ]
 
 Provide the response by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
 
-```js reference referenceLinkText=" " 
+```js reference referenceLinkText=" "
 https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L126-L131
 ```
 
@@ -235,7 +236,7 @@ Does this itinerary suit your preferences, or would you like further adjustments
 
 The agent loop ends when the user expresses satisfaction with the proposed itinerary.
 
-```js reference referenceLinkText=" " 
+```js reference referenceLinkText=" "
 https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L133-L140
 ```
 
