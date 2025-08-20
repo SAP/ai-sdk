@@ -19,26 +19,37 @@ for chat completion tasks using the SAP AI SDK for Java.
 First, add the Spring AI dependency to your `pom.xml`:
 
 ```xml
-<dependency>
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-bom</artifactId>
+      <version>${spring-ai.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
+<dependencies>
+  <dependency>
     <groupId>org.springframework.ai</groupId>
     <artifactId>spring-ai-commons</artifactId>
-    <version>1.0.0</version>
-</dependency>
-<dependency>
+  </dependency>
+  <dependency>
     <groupId>org.springframework.ai</groupId>
     <artifactId>spring-ai-model</artifactId>
-    <version>1.0.0</version>
-</dependency>
-<dependency>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-client-chat</artifactId>
+  </dependency>
+  <dependency>
     <groupId>com.sap.ai.sdk.foundationmodels</groupId>
     <artifactId>openai</artifactId>
     <version>${ai-sdk.version}</version>
-</dependency>
-<dependency>
-    <groupId>org.springframework.ai</groupId>
-    <artifactId>spring-ai-client-chat</artifactId>
-    <version>1.0.0</version>
-</dependency>
+  </dependency>
+</dependencies>
 ```
 
 :::note Spring AI Version
@@ -122,11 +133,11 @@ Then pass your tool to the model as follows.
 ```java
 OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
 ChatModel client = new OpenAiChatModel(openAiClient);
-DefaultToolCallingChatOptions opts = new DefaultToolCallingChatOptions();
+var options = new DefaultToolCallingChatOptions();
 
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
 
-Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", opts);
+Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
 ChatResponse response = client.call(prompt);
 ```

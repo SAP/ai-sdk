@@ -19,26 +19,37 @@ for chat completion tasks using the SAP AI SDK for Java.
 First, add the following dependencies to your `pom.xml`:
 
 ```xml
-<dependency>
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-bom</artifactId>
+      <version>${spring-ai.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
+<dependencies>
+  <dependency>
     <groupId>org.springframework.ai</groupId>
     <artifactId>spring-ai-commons</artifactId>
-    <version>1.0.0</version>
-</dependency>
-<dependency>
+  </dependency>
+  <dependency>
     <groupId>org.springframework.ai</groupId>
     <artifactId>spring-ai-model</artifactId>
-    <version>1.0.0</version>
-</dependency>
-<dependency>
+  </dependency>
+  <dependency>
     <groupId>org.springframework.ai</groupId>
     <artifactId>spring-ai-client-chat</artifactId>
-    <version>1.0.0</version>
-</dependency>
-<dependency>
+  </dependency>
+  <dependency>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>orchestration</artifactId>
     <version>${ai-sdk.version}</version>
-</dependency>
+  </dependency>
+</dependencies>
 ```
 
 :::note Spring AI Version
