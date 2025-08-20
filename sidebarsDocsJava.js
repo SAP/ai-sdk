@@ -36,6 +36,11 @@ module.exports = {
         'ai-core/prompt-registry'
       ]
     },
+    {
+      type: 'category',
+      label: 'Tutorials',
+      items: ['tutorials/agentic-workflows']
+    },
     'release-notes',
     'frequently-asked-questions',
     {
