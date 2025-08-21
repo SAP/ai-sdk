@@ -185,7 +185,7 @@ var promptResponse =
                 "resource-group",// usually "default"
                 false,
                 PromptTemplateSubstitutionRequest.create()
-                    .inputParams(Map.of("inputExample", "input parameters")));
+                    .inputParams(Map.of("parameter1", "value1")));
 
 List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
 var prompt = new Prompt(messages);
