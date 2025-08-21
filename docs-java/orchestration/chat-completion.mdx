@@ -149,6 +149,18 @@ Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub ca
 
 Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
 
+## Custom Headers
+
+To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OrchestrationClient`.
+
+```java
+var client = new OrchestrationClient();
+var customHeader = new Header("foo", "bar");
+
+var result = client.withHeader(customHeader).chatCompletion(prompt, config);
+```
+
+
 ## Templating
 
 Use a prepared [**template**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating) and execute requests with by passing only the input parameters:

@@ -132,6 +132,18 @@ var destination = new AiCoreService()
 OpenAiClient.withCustomDestination(destination);
 ```
 
+## Custom Headers
+
+To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OpenAIClient`.
+
+```java
+var client = new OpenAIClient();
+var customHeader = new Header("foo", "bar");
+
+var result = client.withHeader(customHeader).chatCompletion("Hello World! Why is this phrase so famous?");
+```
+
+
 ## Message history
 
 **Since v1.4.0**
