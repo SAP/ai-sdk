@@ -36,6 +36,10 @@ Add the following dependency to your `pom.xml` file:
     <artifactId>prompt-registry</artifactId>
     <version>${ai-sdk.version}</version>
 </dependency>
+<dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-model</artifactId>
+</dependency>
 ```
 
 See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml)
@@ -155,6 +159,38 @@ Delete a specific version of the prompt template, for imperatively managed promp
 PromptClient client = new PromptClient();
 
 PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId())
+```
+
+Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
+
+## Using Templates in SpringAI
+
+You can use prompt templates with input parameters in your Spring AI application.
+
+```java
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
+ChatModel client = new OpenAiChatModel(openAiClient);
+
+var repository = new InMemoryChatMemoryRepository();
+var memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+var advisor = MessageChatMemoryAdvisor.builder(memory).build();
+var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+
+var promptResponse =
+        new PromptClient()
+            .parsePromptTemplateByNameVersion(
+                "categorization",
+                "0.0.1",
+                "template_name",
+                "default",
+                false,
+                PromptTemplateSubstitutionRequest.create()
+                    .inputParams(Map.of("inputExample", "input parameters")));
+
+List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
+var prompt = new Prompt(messages);
+
+Generation response = cl.prompt(prompt).call().chatResponse().getResult();
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
