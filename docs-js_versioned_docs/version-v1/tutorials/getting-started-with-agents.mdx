@@ -29,80 +29,52 @@ The assistant performs these steps:
 
 ## Prerequisites
 
-Refer to prerequisites outlined [here](../../overview-cloud-sdk-for-ai-js#prerequisites).
+Refer to the prerequisites outlined [here](../../overview-cloud-sdk-for-ai-js#prerequisites).
 
-This tutorial assumes you have a basic understanding of TypeScript, LLMs and LangChain concepts.
+This tutorial assumes a basic understanding of TypeScript, LLMs, and LangChain concepts.
 
 ## Installation
 
 Install the following dependencies:
 
 ```bash
-npm install @sap-ai-sdk/langchain langchain @langchain/langgraph @langchain/core zod
+npm install @sap-ai-sdk/langchain langchain @langchain/langgraph @langchain/core @langchain/mcp-adapters @modelcontextprotocol/sdk zod
 ```
 
-## Define Mock Tools
+## Define Tools
 
-Define tools:
+The following tools are defined:
 
-- `get_weather` for returning weather by city
-- `get_restaurants` for city-based restaurant recommendations
+- `get_weather` for returning weather by city.
+- `get_restaurants` for city-based restaurant recommendations.
 
 :::info
-This example uses mocked data for simplicity.
-Replace the tools' implementation with real API calls to integrate live data.
+The `get_restaurants` tool uses mocked data for simplicity.
+Replace with real API calls to integrate live data.
 :::
 
-```ts
-import { tool } from '@langchain/core/tools';
-import { z } from 'zod';
+```js reference referenceLinkText=" " title="Restaurant tool definition"
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L23-L42
+```
 
-const mockWeatherData: Record<
-  string,
-  { temperature: string; condition: string }
-> = {
-  paris: { temperature: '22°C', condition: 'Mild and pleasant' },
-  reykjavik: { temperature: '3°C', condition: 'Cold and windy' }
-};
+Set up an MCP server and define the `get_weather` tool using the free [Open-Meteo](https://open-meteo.com/) Weather API to fetch weather data.
 
-const mockRestaurantData: Record<string, string[]> = {
-  paris: ['Le Comptoir du Relais', "L'As du Fallafel", 'Breizh Café'],
-  reykjavik: ['Dill Restaurant', 'Fish Market', 'Grillmarkaðurinn']
-};
+```js reference referenceLinkText=" " title="Weather MCP Server"
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
+```
 
-const getWeatherTool = tool(
-  async ({ city }) => {
-    const weather = mockWeatherData[city.toLowerCase()];
-    return weather
-      ? `Current weather in ${city}: ${weather.temperature}, ${weather.condition}`
-      : `Weather data not available for ${city}.`;
-  },
-  {
-    name: 'get_weather',
-    description: 'Get current weather information for a city',
-    schema: z.object({ city: z.string().describe('The city name') })
-  }
-);
+To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://langchain-ai.github.io/langgraphjs/agents/mcp/?h=mcp#use-mcp-tools).
 
-const getRestaurantsTool = tool(
-  async ({ city }) => {
-    const restaurants = mockRestaurantData[city.toLowerCase()];
-    return restaurants
-      ? `Popular restaurants in ${city}: ${restaurants.join(', ')}`
-      : `No restaurant data available for ${city}.`;
-  },
-  {
-    name: 'get_restaurants',
-    description: 'Get restaurant recommendations for a city',
-    schema: z.object({ city: z.string().describe('The city name') })
-  }
-);
+```js reference referenceLinkText=" " title="MCP Adapter"
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-adapter.ts
 ```
 
 ## Setup the Agent
 
 Initialize the client and add tools using the `buildTools()` method.
 Set up a `ToolNode` for routing tool calls.
+
+<!-- vale off -->
 
 <Tabs 
   groupId="client"
@@ -111,34 +83,21 @@ Set up a `ToolNode` for routing tool calls.
     {label: "Orchestration Client", value: "orchestration"},
     {label: "OpenAI Client", value: "openai"}
   ]}>
+
 <TabItem value="openai">
-
-```ts
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
-import { ToolNode } from '@langchain/langgraph/prebuilt';
-
-const tools = [getWeatherTool, getRestaurantsTool];
-
-// Create a model
-const model = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
-  temperature: 0.7
-});
-
-// create a model with access to the tools
-const modelWithTools = model.bindTools(tools);
-
-const toolNode = new ToolNode(tools);
-```
-
+  ```js reference referenceLinkText=" " title="Initialize Client"
+  https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L44-L56
+  ```
 </TabItem>
+
 <TabItem value="orchestration">
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
+import { getMcpTools } from '../mcp/mcp-adapter.js';
 
-const tools = [getWeatherTool, getRestaurantsTool];
+const tools = [...getMcpTools, getRestaurantsTool];
 
 // Create a model
 const model = new OrchestrationClient({
@@ -159,69 +118,20 @@ const toolNode = new ToolNode(tools);
 </TabItem>
 </Tabs>
 
+<!-- vale on -->
+
 ## Define Agent Logic and LangGraph Flow
 
 Configure a `StateGraph` that routes between `agent` → `tool` → `agent`, and uses intelligent routing to determine when to ask for human input or end the conversation.
 
-```ts
-import {
-  StateGraph,
-  MessagesAnnotation,
-  MemorySaver,
-  START,
-  interrupt,
-  END
-} from '@langchain/langgraph';
-import { AIMessage } from '@langchain/core/messages';
-
-async function shouldContinueAgent({
-  messages
-}: typeof MessagesAnnotation.State) {
-  const lastMessage = messages.at(-1) as AIMessage;
-
-  // If there are tool calls, go to tools
-  if (lastMessage.tool_calls?.length) {
-    return 'tools';
-  }
-  // Check if agent's message is a farewell (indicating user was satisfied)
-  const result = await model.invoke([
-    new SystemMessage(
-      'You are a classifier. Respond with exactly "FAREWELL" if this is a farewell/goodbye message wishing someone happy travels. Respond with exactly "CONTINUE" if the conversation should continue.'
-    ),
-    new HumanMessage(`Assistant message: "${lastMessage.content}"`)
-  ]);
-
-  return result.content === 'FAREWELL' ? END : 'askHuman';
-}
-
-async function askHuman() {
-  // This is where the actual interrupt happens
-  const humanResponse: string = interrupt(
-    `Do you want to adjust the itinerary?`
-  );
-  return { messages: [new HumanMessage(humanResponse)] };
-}
-
-async function callModel({ messages }: typeof MessagesAnnotation.State) {
-  const response = await model.invoke(messages);
-  return { messages: [response] };
-}
+```js reference referenceLinkText=" " title="Configure Agent flow"
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L58-L89
 ```
 
 ## Build the Workflow
 
-```ts
-const workflow = new StateGraph(MessagesAnnotation)
-  .addNode('agent', callModel)
-  .addNode('tools', toolNode)
-  .addNode('askHuman', askHuman)
-  .addConditionalEdges('agent', shouldContinue, ['tools', 'askHuman', END])
-  .addEdge('tools', 'agent')
-  .addEdge('askHuman', 'agent')
-  .addEdge(START, 'agent');
-
-const memory = new MemorySaver();
-const app = workflow.compile({ checkpointer: memory });
+```js reference referenceLinkText=" " title="Build the workflow"
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L91-L101
 ```
 
 :::note
@@ -238,26 +148,8 @@ The following example simulates a full interaction, with detailed console output
 3. It handles follow-up requests and modifications based on user input.
 4. The conversation continues until the user is satisfied.
 
-```ts
-import { HumanMessage, SystemMessage } from '@langchain/core/messages';
-import { Command } from '@langchain/langgraph';
-
-const config = { configurable: { thread_id: 'conv-1' } };
-
-// Initial system prompt and user message
-const initMessages = [
-  new SystemMessage(
-    `You are a helpful travel assistant.
-        You will generate a 3-item itinerary based on a provided city. You should use weather forecast and restaurant recommendations when creating the itinerary.
-        After presenting the itinerary, ask the user if they are satisfied with it or if they want to make changes.`
-  ),
-  new HumanMessage(
-    "I'm traveling to Paris. Can you help me prepare an itinerary?"
-  )
-];
-
-try {
-  let response = await app.invoke({ messages: initMessages }, config);
+```js reference referenceLinkText=" " title="Call the agent with initial message"
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L103-L119
 ```
 
 When the agent receives the initial request, it first determines that it needs both weather and restaurant data to create a comprehensive itinerary.
@@ -286,9 +178,8 @@ The LLM response includes tool calls to gather this information:
 
 The agent executes these tool calls through the `tools` node to gather the necessary data, then returns to the agent node to generate a natural language response with the complete itinerary.
 
-```ts
-console.log('Assistant:', response.messages.at(-1)?.content);
-console.log('next: ', (await app.getState(config)).next);
+```js reference referenceLinkText=" "
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L121-L122
 ```
 
 ```console
@@ -317,13 +208,8 @@ next:  [ 'askHuman' ]
 
 Provide the response by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
 
-```ts
-response = await app.invoke(
-  new Command({ resume: 'Can you suggest something more outdorsy?' }),
-  config
-);
-
-console.log('Assistant:', response.messages.at(-1).content);
+```js reference referenceLinkText=" "
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L124-L129
 ```
 
 The assistant responds with an updated itinerary:
@@ -349,14 +235,8 @@ Does this itinerary suit your preferences, or would you like further adjustments
 
 The agent loop ends when the user expresses satisfaction with the proposed itinerary.
 
-```ts
-  response = await app.invoke(new Command({ resume: 'Great! Looks perfect' }), config);
-
-  console.log('Assistant:', response.messages.at(-1)?.content);
-
-  } catch (error) {
-    console.error('Error:', error);
-  }
+```js reference referenceLinkText=" "
+https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L131-L138
 ```
 
 ```console
@@ -366,165 +246,25 @@ Assistant: I'm glad you like the itinerary! If you have any more questions or ne
 ## Full Code
 
 <details>
-<summary>Travel Itinerary Planner Agent</summary>
+  <summary>Travel Itinerary Planner Agent</summary>
 
-```ts
-import {
-  StateGraph,
-  MessagesAnnotation,
-  MemorySaver,
-  START,
-  END,
-  interrupt,
-  Command
-} from '@langchain/langgraph';
-import { ToolNode } from '@langchain/langgraph/prebuilt';
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
-import { HumanMessage, SystemMessage } from '@langchain/core/messages';
-import { tool } from '@langchain/core/tools';
-import { z } from 'zod';
-import type { AIMessage } from '@langchain/core/messages';
-/**
- * This example demonstrates how to create a travel itinerary assistant using LangGraph.
- * The assistant can check the weather and recommend restaurants based on the city provided.
- * It uses tools to fetch weather and restaurant data, and maintains conversation context.
- */
-const mockWeatherData: Record<
-  string,
-  { temperature: string; condition: string }
-> = {
-  paris: { temperature: '22°C', condition: 'Mild and pleasant' },
-  reykjavik: { temperature: '3°C', condition: 'Cold and windy' }
-};
-
-const mockRestaurantData: Record<string, string[]> = {
-  paris: ['Le Comptoir du Relais', "L'As du Fallafel", 'Breizh Café'],
-  reykjavik: ['Dill Restaurant', 'Fish Market', 'Grillmarkaðurinn']
-};
-
-const getWeatherTool = tool(
-  async ({ city }) => {
-    const weather = mockWeatherData[city.toLowerCase()];
-    return weather
-      ? `Current weather in ${city}: ${weather.temperature}, ${weather.condition}`
-      : `Weather data not available for ${city}.`;
-  },
-  {
-    name: 'get_weather',
-    description: 'Get current weather information for a city',
-    schema: z.object({ city: z.string().describe('The city name') })
-  }
-);
-
-const getRestaurantsTool = tool(
-  async ({ city }) => {
-    const restaurants = mockRestaurantData[city.toLowerCase()];
-    return restaurants
-      ? `Popular restaurants in ${city}: ${restaurants.join(', ')}`
-      : `No restaurant data available for ${city}.`;
-  },
-  {
-    name: 'get_restaurants',
-    description: 'Get restaurant recommendations for a city',
-    schema: z.object({ city: z.string().describe('The city name') })
-  }
-);
-
-// Define the tools for the agent to use
-const tools = [getWeatherTool, getRestaurantsTool];
-const toolNode = new ToolNode(tools);
-
-// Create a model
-const model = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
-  temperature: 0.7
-});
-
-// create a model with access to the tools
-const modelWithTools = model.bindTools(tools);
-
-async function shouldContinueAgent({
-  messages
-}: typeof MessagesAnnotation.State) {
-  const lastMessage = messages.at(-1) as AIMessage;
-
-  // If there are tool calls, go to tools
-  if (lastMessage.tool_calls?.length) {
-    return 'tools';
-  }
-  // Check if agent's message is a farewell (indicating user was satisfied)
-  const result = await model.invoke([
-    new SystemMessage(
-      'You are a classifier. Respond with exactly "FAREWELL" if this is a farewell/goodbye message wishing someone happy travels. Respond with exactly "CONTINUE" if the conversation should continue.'
-    ),
-    new HumanMessage(`Assistant message: "${lastMessage.content}"`)
-  ]);
-
-  return result.content === 'FAREWELL' ? END : 'askHuman';
-}
-
-async function askHuman() {
-  // This is where the actual interrupt happens
-  const humanResponse: string = interrupt(
-    'Do you want to adjust the itinerary?'
-  );
-  return { messages: [new HumanMessage(humanResponse)] };
-}
-
-async function callModel({ messages }: typeof MessagesAnnotation.State) {
-  const response = await modelWithTools.invoke(messages);
-  return { messages: [response] };
-}
-
-const workflow = new StateGraph(MessagesAnnotation)
-  .addNode('agent', callModel)
-  .addNode('tools', toolNode)
-  .addNode('askHuman', askHuman)
-  .addConditionalEdges('agent', shouldContinueAgent, ['tools', 'askHuman', END])
-  .addEdge('tools', 'agent')
-  .addEdge('askHuman', 'agent')
-  .addEdge(START, 'agent');
-
-const memory = new MemorySaver();
-const app = workflow.compile({ checkpointer: memory });
-
-const config = { configurable: { thread_id: 'conv-1' } };
-
-// Initial system prompt and user message
-const initMessages = [
-  new SystemMessage(
-    `You are a helpful travel assistant.  
-        You will generate a 3-item itinerary based on a provided city. You should use weather forecast and restaurant recommendations when creating the itinerary.
-        After presenting the itinerary, ask the user if they are satisfied with it or if they want to make changes.`
-  ),
-  new HumanMessage(
-    "I'm traveling to Paris. Can you help me prepare an itinerary?"
-  )
-];
-
-// Start the agent with initial messages
-try {
-  let response = await app.invoke({ messages: initMessages }, config);
-
-  console.log('Assistant:', response.messages.at(-1)?.content);
-  console.log('next: ', (await app.getState(config)).next);
-
-  response = await app.invoke(
-    new Command({ resume: 'Can you suggest something more outdoorsy?' }),
-    config
-  );
-
-  console.log('Assistant:', response.messages.at(-1)?.content);
-
-  response = await app.invoke(
-    new Command({ resume: 'Great! Looks perfect' }),
-    config
-  );
-  console.log('Assistant:', response.messages.at(-1)?.content);
-} catch (error) {
-  console.error('Error:', error);
-}
-```
+<Tabs>
+  <TabItem value="Itinerary Planner">
+    ```js reference referenceLinkText="View on GitHub"
+    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts
+    ```
+  </TabItem>
+  <TabItem value="MCP Adapter">
+    ```js reference referenceLinkText="View on GitHub"
+    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-adapter.ts
+    ```
+  </TabItem>
+  <TabItem value="Weather MCP Server">
+    ```js reference referenceLinkText="View on GitHub"
+    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
+    ```
+  </TabItem>
+</Tabs>
 
 </details>
 
