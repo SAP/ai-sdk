@@ -155,9 +155,8 @@ To add custom headers to single or groups of your LLM calls, you can use the `.w
 
 ```java
 var client = new OrchestrationClient();
-var customHeader = new Header("foo", "bar");
 
-var result = client.withHeader(customHeader).chatCompletion(prompt, config);
+var result = client.withHeader("foo", "bar").chatCompletion(prompt, config);
 ```
 
 ## Templating
