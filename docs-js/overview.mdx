@@ -58,7 +58,17 @@ Additionally, refer to the [sample code](https://github.com/SAP/ai-sdk-js/tree/m
 
 To use the SAP Cloud SDK for AI in a JavaScript / TypeScript application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
 
-- A project with **Node.js v20 or higher** and **native ESM** support.
+- A project using **Node.js v20+** with **native ESM** support.
+
+ :::tip Node.js Version Recommendations
+Node.js v20 is supported but **approaching end-of-life (EOL).**  
+➡️ We strongly recommend upgrading to **Node.js v22 (Active LTS)** or **v24 (Current)** for long-term support, security updates, and improved ESM/CommonJS interoperability.
+
+If your project is still using CommonJS, you can consume ESM modules via:  
+- **Dynamic `import()`** (all versions)  
+- **`require()`** [(experimental, v20.19+)](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require)
+:::
+
 - Access to an **SAP AI Core Service** instance. Refer to [enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Ensure either an [Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) or [OpenAI model](<(https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)>) deployment is available.
   - Alternatively, you can create a deployment using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
