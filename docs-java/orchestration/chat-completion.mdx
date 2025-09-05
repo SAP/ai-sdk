@@ -154,9 +154,8 @@ Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs o
 Use a prepared [**template**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating) and execute requests with by passing only the input parameters:
 
 ```java
-var template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-var templatingConfig =
-        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
+var message = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
+var templatingConfig = TemplateConfig.create().withMessages(message);
 var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
 var inputParams = Map.of("language", "German");
@@ -240,13 +239,14 @@ var filterStrict = new AzureContentFilter()
                 .hate(ALLOW_SAFE)
                 .selfHarm(ALLOW_SAFE)
                 .sexual(ALLOW_SAFE)
-    .violence(ALLOW_SAFE);
+                .violence(ALLOW_SAFE)
+                .promptShield(true);
 
 var filterLoose = new AzureContentFilter()
                 .hate(ALLOW_SAFE_LOW_MEDIUM)
                 .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
                 .sexual(ALLOW_SAFE_LOW_MEDIUM)
-    .violence(ALLOW_SAFE_LOW_MEDIUM);
+                .violence(ALLOW_SAFE_LOW_MEDIUM);
 
 // choose Llama Guard filter or/and Azure filter
 var llamaGuardFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
@@ -259,16 +259,20 @@ var result =
     new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ````
 
+**Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks.
+
 ### Behavior of Input and Output Filters
 
 - **Input Filter**:
   If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
-  An `OrchestrationClientException` will be thrown.
+  An `OrchestrationFilterException.Input` will be thrown.
 
 - **Output Filter**:
   If the response message violates the output filter policy, the `chatCompletion` call will complete without exception.
-  The convenience method `getContent()` on the resulting object will throw an `OrchestrationClientException` upon invocation.
+  The convenience method `getContent()` on the resulting object will throw an `OrchestrationFilterException.Output` upon invocation.
   The low level API under `getOriginalResponse()` will not throw an exception.
+
+- To obtain diagnostic information for filter violation, you may call `getFilterDetails()`, `getAzureContentSafetyInput()`, `getAzureContentSafetyOutput()` or `getLlamaGuard38b()` on the exception as relevant.
 
 You will find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating response handling with filters.
 
@@ -326,6 +330,26 @@ var result = client.chatCompletion(prompt, configWithGrounding);
 ```
 
 In this example, the AI model is provided with additional context in the form of grounding information.
+
+### Grounding via SharePoint
+
+Files stored in a SharePoint can be used as the base for the grounding.
+A guide on how to setup a SharePoint for this can be found in this [SAP wiki](https://wiki.one.int.sap/wiki/pages/viewpage.action?spaceKey=AI&title=SharePoint+with+client+credential).
+In order to then use the SharePoint for grounding in your code, you can add its corresponding data repository ID to the `DocumentGroundingFilter` object.
+
+```java
+var dataRepositoryId = "SharePoint ID here";
+var filter =
+    DocumentGroundingFilter.create()
+        .dataRepositoryType(DataRepositoryType.VECTOR)
+        .dataRepositories(List.of(dataRepositoryId));
+var groundingConfig = Grounding.create().filters(filter);
+var prompt = groundingConfig.createGroundingPrompt("What is the information stored in the sharepoint?");
+var configWithGrounding = config.withGrounding(groundingConfig);
+var result = client.chatCompletion(prompt, configWithGrounding);
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
 ### Grounding via _help.sap.com_
 
@@ -478,7 +502,7 @@ var configWithResponseSchema =
         config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
 var prompt = new OrchestrationPrompt(Message.user("Some message."));
-var response = client.chatCompletion(prompt, configWithTemplate).getContent();
+TestClass response = client.chatCompletion(prompt, configWithTemplate).asEntity(TestClass.class);
 ```
 
 Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`.

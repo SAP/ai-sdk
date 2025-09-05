@@ -149,4 +149,5 @@ pseudonymization
 LLM
 LLMs
 AIMessage
+[Aa]gentic
 [Oo]penai

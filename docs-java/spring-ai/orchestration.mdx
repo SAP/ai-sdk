@@ -19,33 +19,42 @@ for chat completion tasks using the SAP AI SDK for Java.
 First, add the following dependencies to your `pom.xml`:
 
 ```xml
-<dependency>
-    <groupId>org.springframework.ai</groupId>
-    <artifactId>spring-ai-core</artifactId>
-    <version>1.0.0-M5</version>
-</dependency>
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-bom</artifactId>
+      <version>${spring-ai.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
 
-<dependency>
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-commons</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-model</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-client-chat</artifactId>
+  </dependency>
+  <dependency>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>orchestration</artifactId>
     <version>${ai-sdk.version}</version>
-</dependency>
-...
-<repository>
-    <snapshots>
-        <enabled>true</enabled>
-    </snapshots>
-    <id>spring-milestones</id>
-    <name>Spring Milestones</name>
-    <url>https://repo.spring.io/milestone</url>
-</repository>
+  </dependency>
+</dependencies>
 ```
 
-:::note Spring AI Milestone Version
-Note that currently no stable version of Spring AI exists just yet.
-The SAP AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
-
-Please be aware that future versions of the SAP AI SDK may increase the Spring AI version.
+:::note Spring AI Version
+As of version `1.10.0` the minimum required version for Spring AI is `1.0.0`.
+Please refer to the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for details on how to upgrade from a previous milestone version.
 :::
 
 ## Chat Completion
@@ -189,8 +198,9 @@ ChatModel client = new OrchestrationChatModel();
 OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
-var memory = new InMemoryChatMemory();
-var advisor = new MessageChatMemoryAdvisor(memory);
+val repository = new InMemoryChatMemoryRepository();
+val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+val advisor = MessageChatMemoryAdvisor.builder(memory).build();
 var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 Prompt prompt1 = new Prompt("What is the capital of France?", defaultOptions);
