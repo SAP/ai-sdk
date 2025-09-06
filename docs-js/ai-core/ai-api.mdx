@@ -155,3 +155,18 @@ By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
+
+### Resolve a Deployment URL
+
+Use `resolveDeploymentUrl()` function to get the inference endpoint URL of a deployment that matches the given criteria.
+
+```ts
+import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api';
+
+async function getDeploymentUrl() {
+  return await resolveDeploymentUrl({
+    scenarioId: 'foundation-models',
+    model: { name: 'gpt-4o' }
+  });
+}
+```
