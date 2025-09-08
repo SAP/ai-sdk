@@ -793,7 +793,8 @@ const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
 });
 ```
 
-Alternatively, you can manually specify a deployment ID using the `deploymentId` property. This is useful when you AI core API does not work, but orchestration is working.
+Alternatively, you can manually specify a deployment ID using the `deploymentId` property.
+This is useful when you AI Core API does not work, but orchestration is working.
 
 ```ts
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
@@ -801,7 +802,8 @@ const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
 });
 ```
 
-The `deploymentConfig` parameter accepts either a `ResourceGroupConfig` or a `DeploymentIdConfig`, but not both simultaneously. Use the option that best fits your deployment setup.
+The `deploymentConfig` parameter accepts either a `ResourceGroupConfig` or a `DeploymentIdConfig`, but not both simultaneously.
+Use the option that best fits your deployment setup.
 
 Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create and manage deployments for orchestration.
 
