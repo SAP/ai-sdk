@@ -43,7 +43,9 @@ const orchestrationClient = new OrchestrationClient({
       name: 'gpt-4o'
     },
     prompt: {
-      template: [{ role: 'user', content: 'Answer the question: {{?question}}' }]
+      template: [
+        { role: 'user', content: 'Answer the question: {{?question}}' }
+      ]
     }
   }
 });

@@ -447,22 +447,22 @@ const orchestrationClient = new OrchestrationClient({
 
 const response = await orchestrationClient.chatCompletion({
   messages: [
-      {
-        role: 'user', // only user role supports image_url
-        content: [
-          {
-            type: 'text',
-            text: 'What is the content of the image?'
-          },
-          {
-            type: 'image_url',
-            image_url: {
-              url: '{{?imageUrl}}'
-            }
+    {
+      role: 'user', // only user role supports image_url
+      content: [
+        {
+          type: 'text',
+          text: 'What is the content of the image?'
+        },
+        {
+          type: 'image_url',
+          image_url: {
+            url: '{{?imageUrl}}'
           }
-        ]
-      }
-    ],
+        }
+      ]
+    }
+  ],
   placeholderValues: {
     imageUrl: 'IMAGE_URL'
   }
@@ -711,7 +711,7 @@ const orchestrationClient = new OrchestrationClient({
       name: 'gpt-4o'
     }
   },
-  translation:{
+  translation: {
     input: inputTranslation,
     output: outputTranslation
   }
