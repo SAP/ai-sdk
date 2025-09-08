@@ -562,7 +562,10 @@ Pass the categories as arguments to the function to enable them.
 import { buildLlamaGuard38BFilter } from '@sap-ai-sdk/orchestration';
 
 const inputFilter = buildLlamaGuard38BFilter('input', ['self_harm']);
-const outputFilter = buildLlamaGuard38BFilter('output', ['self_harm', 'violence']);
+const outputFilter = buildLlamaGuard38BFilter('output', [
+  'self_harm',
+  'violence'
+]);
 ```
 
 ## Data Masking
