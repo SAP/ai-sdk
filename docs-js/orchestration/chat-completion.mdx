@@ -443,8 +443,8 @@ The following example demonstrates how to use content filtering with the orchest
 See the sections below for details on the available content filters and how to build them.
 
 ```ts
-const inputFilter: FilterConfig = ... // Use a build function to create an input content filter
-const outputFilter: FilterConfig = ... // Use a build function to create an output content filter
+const inputFilter: InputFilterConfig = ... // Use a build function to create an input content filter
+const outputFilter: OutputFilterConfig = ... // Use a build function to create an output content filter
 
 const orchestrationClient = new OrchestrationClient({
   llm,
@@ -479,7 +479,9 @@ See the [Error Handling](../error-handling) page for more details.
 
 ### Azure Content Filter
 
-Use `buildAzureContentSafetyFilter()` function to build an Azure content filter. Input and output filters are differentiated; use `input` to build input filter configuration and `output` to build output filter configuration. The `prompt_shield` option is only available for Azure input filters.
+Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
+Input and output filters are differentiated; use `input` to build input filter configuration and `output` to build output filter configuration.
+The `prompt_shield` option is only available for input filters.
 Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
 
 | Severity Level          | Azure Threshold Value |
@@ -506,7 +508,8 @@ const outputFilter = buildAzureContentSafetyFilter('output', {
 
 ### Llama Guard Filter
 
-Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter. Input and output filters are differentiated; use `input` to build input filter configuration and `output` to build output filter configuration.
+Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
+Input and output filters are differentiated; use `input` to build input filter configuration and `output` to build output filter configuration.
 
 Available categories can be found with autocompletion.
 Pass the categories as arguments to the function to enable them.
@@ -514,8 +517,8 @@ Pass the categories as arguments to the function to enable them.
 ```ts
 import { buildLlamaGuardFilter } from '@sap-ai-sdk/orchestration';
 
-const inputFilter = buildLlamaGuardFilter('input', 'hate', 'violent_crimes');
-const outputFilter = buildLlamaGuardFilter('output', 'hate', 'violent_crimes');
+const inputFilter = buildLlamaGuardFilter('input', ['self_harm']);
+const outputFilter = buildLlamaGuardFilter('output', ['self_harm', 'violence']);
 ```
 
 ## Data Masking
