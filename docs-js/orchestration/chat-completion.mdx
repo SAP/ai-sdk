@@ -552,17 +552,17 @@ const outputFilter = buildAzureContentSafetyFilter('output', {
 
 ### Llama Guard Filter
 
-Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
+Use `buildLlamaGuard38BFilter()` function to build a Llama Guard 3 8B content filter.
 Input and output filters are differentiated; use `input` to build input filter configuration and `output` to build output filter configuration.
 
 Available categories can be found with autocompletion.
 Pass the categories as arguments to the function to enable them.
 
 ```ts
-import { buildLlamaGuardFilter } from '@sap-ai-sdk/orchestration';
+import { buildLlamaGuard38BFilter } from '@sap-ai-sdk/orchestration';
 
-const inputFilter = buildLlamaGuardFilter('input', ['self_harm']);
-const outputFilter = buildLlamaGuardFilter('output', ['self_harm', 'violence']);
+const inputFilter = buildLlamaGuard38BFilter('input', ['self_harm']);
+const outputFilter = buildLlamaGuard38BFilter('output', ['self_harm', 'violence']);
 ```
 
 ## Data Masking
@@ -648,8 +648,10 @@ const orchestrationClient = new OrchestrationClient({
     }
   },
   grounding: buildDocumentGroundingConfig({
-    input_params: ['groundingRequest'],
-    output_param: 'groundingOutput',
+    placeholders: {
+      input: ['groundingRequest'],
+      output: 'groundingOutput'
+    },
     // metadata_params: ['PARAM_NAME']
     filters: [
       {
@@ -793,7 +795,7 @@ const toolCalls = response.getToolCalls();
 
 Streaming request can be aborted using the `AbortController` API.
 In case of an error, SAP Cloud SDK for AI will automatically close the stream.
-It can also be manually aborted if an `AbortController` object was provided when calling the `stream()` method.
+It can also be manually aborted if an `AbortSignal` object was provided when calling the `stream()` method.
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
@@ -812,7 +814,7 @@ const response = await orchestrationClient.stream(
     ],
     placeholderValues: { country: 'France' }
   },
-  controller
+  controller.signal
 );
 
 // Abort the streaming request after one second
