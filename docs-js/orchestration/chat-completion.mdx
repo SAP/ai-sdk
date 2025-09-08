@@ -781,18 +781,29 @@ Set the `llm` property to `null` to not send any LLM streaming options.
 When initializing a client with JSON module config, it is not possible to provide streaming options.
 :::
 
-## Custom Resource Group
+## Custom Deployment Configuration
 
 By default, you should have an orchestration deployment in the `default` [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups).
 
 If you have deployed the orchestration service in a different resource group, you can specify the resource group name in the `resourceGroup` property when creating the client.
-Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create a deployment for orchestration.
 
 ```ts
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
   resourceGroup: 'my-custom-resource-group'
 });
 ```
+
+Alternatively, you can manually specify a deployment ID using the `deploymentId` property. This is useful when you AI core API does not work, but orchestration is working.
+
+```ts
+const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
+  deploymentId: 'my-custom-deployment-id'
+});
+```
+
+The `deploymentConfig` parameter accepts either a `ResourceGroupConfig` or a `DeploymentIdConfig`, but not both simultaneously. Use the option that best fits your deployment setup.
+
+Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create and manage deployments for orchestration.
 
 ## Custom Request Configuration
 
