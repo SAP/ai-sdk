@@ -443,16 +443,17 @@ The following example demonstrates how to use content filtering with the orchest
 See the sections below for details on the available content filters and how to build them.
 
 ```ts
-const filter: FilterConfig = ... // Use a build function to create a content filter
+const inputFilter: FilterConfig = ... // Use a build function to create an input content filter
+const outputFilter: FilterConfig = ... // Use a build function to create an output content filter
 
 const orchestrationClient = new OrchestrationClient({
   llm,
   filtering: {
     input: {
-      filters: [filter] // Multiple filters can be applied
+      filters: [inputFilter] // Multiple filters can be applied
     },
     output: {
-      filters: [filter]
+      filters: [outputFilter]
     }
   }
 });
@@ -478,7 +479,7 @@ See the [Error Handling](../error-handling) page for more details.
 
 ### Azure Content Filter
 
-Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
+Use `buildAzureContentSafetyFilter()` function to build an Azure content filter. Input and output filters are differentiated; use `input` to build input filter configuration and `output` to build output filter configuration. The `prompt_shield` option is only available for Azure input filters.
 Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
 
 | Severity Level          | Azure Threshold Value |
@@ -491,15 +492,21 @@ Each category of the filter can be assigned a specific severity level, which cor
 ```ts
 import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
 
-const filter = buildAzureContentSafetyFilter({
-  Hate: 'ALLOW_SAFE_LOW',
-  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+const inputFilter = buildAzureContentSafetyFilter('input', {
+  hate: 'ALLOW_SAFE_LOW',
+  violence: 'ALLOW_SAFE_LOW_MEDIUM',
+  prompt_shield: true
+});
+
+const outputFilter = buildAzureContentSafetyFilter('output', {
+  hate: 'ALLOW_SAFE',
+  violence: 'ALLOW_SAFE_LOW_MEDIUM'
 });
 ```
 
 ### Llama Guard Filter
 
-Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
+Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter. Input and output filters are differentiated; use `input` to build input filter configuration and `output` to build output filter configuration.
 
 Available categories can be found with autocompletion.
 Pass the categories as arguments to the function to enable them.
@@ -507,7 +514,8 @@ Pass the categories as arguments to the function to enable them.
 ```ts
 import { buildLlamaGuardFilter } from '@sap-ai-sdk/orchestration';
 
-const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
+const inputFilter = buildLlamaGuardFilter('input', 'hate', 'violent_crimes');
+const outputFilter = buildLlamaGuardFilter('output', 'hate', 'violent_crimes');
 ```
 
 ## Data Masking
@@ -629,17 +637,23 @@ The module supports SAP's Document Translation service and allows translating bo
 The target language is mandatory, while source language will be auto-detected if not provided.
 
 For available translation options, consult the [list of supported languages](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d) to identify compatible language pairs.
+Input and output translation configurations are differentiated; use `input` to build the input configuration and `output` to build the output configuration.
 
 ```ts
-const translationConfig = buildTranslationConfig({
+const inputTranslation = buildTranslationConfig('input', {
+  sourceLanguage: 'en-US',
+  targetLanguage: 'de-DE'
+});
+
+const outputTranslation = buildTranslationConfig('output', {
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE'
 });
 
 const orchestrationClient = new OrchestrationClient({
   llm,
-  inputTranslation: translationConfig,
-  outputTranslation: translationConfig
+  inputTranslation,
+  outputTranslation
 });
 
 const response = orchestrationClient.chatCompletion({
