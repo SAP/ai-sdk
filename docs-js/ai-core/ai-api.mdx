@@ -158,15 +158,13 @@ For more information about configuring a destination, refer to the [Using a Dest
 
 ### Resolve a Deployment URL
 
-Use `resolveDeploymentUrl()` function to get the inference endpoint URL of a deployment that matches the given criteria.
+Use `resolveDeploymentUrl()` method to get the inference endpoint URL of a deployment that matches the given criteria.
 
 ```ts
 import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api';
 
-async function getDeploymentUrl() {
-  return await resolveDeploymentUrl({
-    scenarioId: 'foundation-models',
-    model: { name: 'gpt-4o' }
-  });
-}
+const deploymentUrl = await resolveDeploymentUrl({
+  scenarioId: 'foundation-models',
+  model: { name: 'gpt-4o' }
+});
 ```
