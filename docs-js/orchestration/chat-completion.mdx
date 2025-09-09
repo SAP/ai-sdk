@@ -798,7 +798,7 @@ This is useful when you AI Core API does not work, but orchestration is working.
 
 ```ts
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
-  deploymentId: 'my-custom-deployment-id'
+  deploymentId: 'my-custom-deployment-id' as any
 });
 ```
 
