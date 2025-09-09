@@ -783,9 +783,9 @@ When initializing a client with JSON module config, it is not possible to provid
 
 ## Custom Deployment Configuration
 
-By default, you should have an orchestration deployment in the `default` [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups).
+By default, there should be an orchestration deployment in the `default` [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups).
 
-If you have deployed the orchestration service in a different resource group, you can specify the resource group name in the `resourceGroup` property when creating the client.
+If the orchestration service has been deployed in a different resource group, it is possible to specify the resource group name in the `resourceGroup` property when creating the client.
 
 ```ts
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
@@ -793,17 +793,16 @@ const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
 });
 ```
 
-Alternatively, you can manually specify a deployment ID using the `deploymentId` property.
-This is useful when you AI Core API does not work, but orchestration is working.
+Alternatively, it is possible to manually specify a deployment ID using the `deploymentId` property.
+By providing a deployment ID, it is possible to bypass the resolution process and use the specified deployment directly.
+When using a deployment ID, it is also necessary to specify the corresponding resource group to ensure proper functionality.
+When using the default resource group, the `resourceGroup` property can be omitted:
 
 ```ts
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
   deploymentId: 'my-custom-deployment-id' as any
 });
 ```
-
-The `deploymentConfig` parameter accepts either a `ResourceGroupConfig` or a `DeploymentIdConfig`, but not both simultaneously.
-Use the option that best fits your deployment setup.
 
 Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create and manage deployments for orchestration.
 
