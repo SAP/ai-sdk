@@ -2,6 +2,11 @@ module.exports = {
   docsJsSidebar: [
     'overview-cloud-sdk-for-ai-js',
     'getting-started',
+    {
+      type: 'category',
+      label: 'Guides',
+      items: ['upgrade-to-v2']
+    },
     'connecting-to-ai-core',
     {
       type: 'category',
