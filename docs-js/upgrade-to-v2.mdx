@@ -14,13 +14,15 @@ keywords:
   - v2
 ---
 
-This document guides you through upgrading from version 1 to version 2 of the SAP Cloud SDK for AI packages. 
+This document guides you through upgrading from version 1 to version 2 of the SAP Cloud SDK for AI packages.
 It covers all breaking changes and migration steps required for the upgrade.
 Version 2 introduces significant structural changes to align with updated service APIs and improve the overall developer experience.
 
 ## Update Your Project Dependencies
 
-Search for occurrences of `@sap-ai-sdk/[some module]` in your `package.json` files. Replace the version numbers with `^2`. Run `npm install` or similar to install the dependencies and update the lock file.
+Search for occurrences of `@sap-ai-sdk/[some module]` in your `package.json` files.
+Replace the version numbers with `^2`.
+Run `npm install` or similar to install the dependencies and update the lock file.
 
 ```json
 {
@@ -43,7 +45,8 @@ Search for occurrences of `@sap-ai-sdk/[some module]` in your `package.json` fil
 }
 ```
 
-Running your tests or deploying your application might fail at this point if you need to adapt to any breaking changes. We recommend updating your applications in one commit or pull request and making sure everything still works using your existing test suite.
+Running your tests or deploying your application might fail at this point if you need to adapt to any breaking changes.
+We recommend updating your applications in one commit or pull request and making sure everything still works using your existing test suite.
 
 ## Breaking Changes
 
@@ -81,7 +84,9 @@ const response = await azureOpenAiChatClient.stream(
 
 #### Type Import Changes
 
-Generated types are no longer exported from `@sap-ai-sdk/foundation-models`. For frequently used types in most cases, they remain available from the public exports. For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
+Generated types are no longer exported from `@sap-ai-sdk/foundation-models`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
 
 **v1:**
 
@@ -115,7 +120,8 @@ import type {
 
 #### Chat Completion Parameter Type
 
-The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly. Use the new `AzureOpenAiChatCompletionParameters` type instead.
+The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly.
+Use the new `AzureOpenAiChatCompletionParameters` type instead.
 
 **v1:**
 
@@ -141,7 +147,8 @@ const request: AzureOpenAiChatCompletionParameters = {
 
 #### Response Object Data Property Changes
 
-The `data` property in response objects is renamed to `_data`. Prefer using the provided getter methods instead of accessing the data object directly.
+The `data` property in response objects is renamed to `_data`.
+Prefer using the provided getter methods instead of accessing the data object directly.
 
 **Affected Response Classes:**
 
@@ -177,7 +184,9 @@ const response = await orchestrationClient.stream(
 
 #### Type Import Changes
 
-Generated types are no longer exported from `@sap-ai-sdk/orchestration`. For frequently used types in most cases, they remain available from the public exports. For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
+Generated types are no longer exported from `@sap-ai-sdk/orchestration`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
 
 **v1:**
 
@@ -212,7 +221,8 @@ import type {
 
 #### Response Object Data Property Changes
 
-The `data` property in response objects is renamed to `_data`. Prefer using the provided getter methods instead of accessing the data object directly.
+The `data` property in response objects is renamed to `_data`.
+Prefer using the provided getter methods instead of accessing the data object directly.
 
 **Affected Response Classes:**
 
@@ -376,7 +386,8 @@ buildDocumentGroundingConfig({
 
 #### Removed Functions
 
-The deprecated `buildAzureContentFilter()` function has been removed in v2. Use `buildAzureContentSafetyFilter()` instead.
+The deprecated `buildAzureContentFilter()` function has been removed in v2.
+Use `buildAzureContentSafetyFilter()` instead.
 
 **v1:**
 
@@ -401,7 +412,9 @@ const filter = buildAzureContentSafetyFilter('input', {
 
 #### Azure Content Filter Changes
 
-The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations. This change allows input and output filters to have different configuration options, such as the `prompt_shield` property that is only available for input filters. Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
+The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations.
+This change allows input and output filters to have different configuration options, such as the `prompt_shield` property that is only available for input filters.
+Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 **v1:**
 
@@ -436,7 +449,8 @@ buildAzureContentSafetyFilter('output', {
 
 #### Llama Guard Filter Changes
 
-The `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()` function. It now requires a `type` parameter as the first argument to distinguish between `input` and `output` filter configurations, and accepts categories as an array instead of individual parameters.
+The `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()` function.
+It now requires a `type` parameter as the first argument to distinguish between `input` and `output` filter configurations, and accepts categories as an array instead of individual parameters.
 
 **v1:**
 
