@@ -14,9 +14,9 @@ keywords:
   - v2
 ---
 
-This document guides you through upgrading from version 1.x to version 2.x of the SAP Cloud SDK for AI packages. It covers all breaking changes and migration steps required for the upgrade.
-
-Version 2.x introduces significant structural changes to align with updated service APIs and improve the overall developer experience.
+This document guides you through upgrading from version 1 to version 2 of the SAP Cloud SDK for AI packages. 
+It covers all breaking changes and migration steps required for the upgrade.
+Version 2 introduces significant structural changes to align with updated service APIs and improve the overall developer experience.
 
 ## Update Your Project Dependencies
 
@@ -54,6 +54,7 @@ Running your tests or deploying your application might fail at this point if you
 The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
 
 **v1:**
+
 ```ts
 const controller = new AbortController();
 const response = await azureOpenAiChatClient.stream(
@@ -61,11 +62,12 @@ const response = await azureOpenAiChatClient.stream(
     messages: [{ role: 'user', content: 'Hello' }],
     max_tokens: 100
   },
-  controller  // Pass the controller
+  controller // Pass the controller
 );
 ```
 
 **v2:**
+
 ```ts
 const controller = new AbortController();
 const response = await azureOpenAiChatClient.stream(
@@ -73,7 +75,7 @@ const response = await azureOpenAiChatClient.stream(
     messages: [{ role: 'user', content: 'Hello' }],
     max_tokens: 100
   },
-  controller.signal  // Pass the signal instead
+  controller.signal // Pass the signal instead
 );
 ```
 
@@ -82,23 +84,25 @@ const response = await azureOpenAiChatClient.stream(
 Generated types are no longer exported from `@sap-ai-sdk/foundation-models`. For frequently used types in most cases, they remain available from the public exports. For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
 
 **v1:**
+
 ```ts
-import type { 
+import type {
   AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiCreateChatCompletionResponse 
+  AzureOpenAiCreateChatCompletionResponse
 } from '@sap-ai-sdk/foundation-models';
 ```
 
 **v2:**
+
 ```ts
 // Generated types must be imported from internal
-import type { 
+import type {
   AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiCreateChatCompletionResponse 
+  AzureOpenAiCreateChatCompletionResponse
 } from '@sap-ai-sdk/foundation-models/internal.js';
 
 // Frequently used types remain available from main package
-import type { 
+import type {
   AzureOpenAiChatCompletionTool,
   AzureOpenAiFunctionObject,
   AzureOpenAiChatCompletionRequestMessage,
@@ -114,6 +118,7 @@ import type {
 The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly. Use the new `AzureOpenAiChatCompletionParameters` type instead.
 
 **v1:**
+
 ```ts
 import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
 
@@ -124,6 +129,7 @@ const request: AzureOpenAiCreateChatCompletionRequest = {
 ```
 
 **v2:**
+
 ```ts
 import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
 
@@ -138,6 +144,7 @@ const request: AzureOpenAiChatCompletionParameters = {
 The `data` property in response objects is renamed to `_data`. Prefer using the provided getter methods instead of accessing the data object directly.
 
 **Affected Response Classes:**
+
 - `AzureOpenAiChatCompletionResponse`
 - `AzureOpenAiChatCompletionStreamChunkResponse`
 - `AzureOpenAiEmbeddingResponse`
@@ -149,20 +156,22 @@ The `data` property in response objects is renamed to `_data`. Prefer using the 
 The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
 
 **v1:**
+
 ```ts
 const controller = new AbortController();
 const response = await orchestrationClient.stream(
   { messages: [{ role: 'user', content: 'Hello' }] },
-  controller  // Pass the controller
+  controller // Pass the controller
 );
 ```
 
 **v2:**
+
 ```ts
 const controller = new AbortController();
 const response = await orchestrationClient.stream(
   { messages: [{ role: 'user', content: 'Hello' }] },
-  controller.signal  // Pass the signal instead
+  controller.signal // Pass the signal instead
 );
 ```
 
@@ -171,23 +180,25 @@ const response = await orchestrationClient.stream(
 Generated types are no longer exported from `@sap-ai-sdk/orchestration`. For frequently used types in most cases, they remain available from the public exports. For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
 
 **v1:**
+
 ```ts
-import type { 
+import type {
   CompletionPostResponse,
-  LlmChoice 
+  LlmChoice
 } from '@sap-ai-sdk/orchestration';
 ```
 
 **v2:**
+
 ```ts
 // Generated types must be imported from internal
-import type { 
+import type {
   CompletionPostResponse,
-  LlmChoice 
+  LlmChoice
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 // Frequently used types remain available from main package
-import type { 
+import type {
   ChatMessage,
   SystemChatMessage,
   UserChatMessage,
@@ -204,6 +215,7 @@ import type {
 The `data` property in response objects is renamed to `_data`. Prefer using the provided getter methods instead of accessing the data object directly.
 
 **Affected Response Classes:**
+
 - `OrchestrationResponse`
 - `OrchestrationStreamResponse`
 - `OrchestrationStreamChunkResponse`
@@ -213,6 +225,7 @@ The `data` property in response objects is renamed to `_data`. Prefer using the 
 The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.
 
 **v1:**
+
 ```ts
 const config = {
   llm: {
@@ -228,6 +241,7 @@ const config = {
 ```
 
 **v2:**
+
 ```ts
 const config = {
   promptTemplating: {
@@ -251,6 +265,7 @@ Several parameter names have been updated for consistency.
 ##### Input Parameters
 
 **v1:**
+
 ```ts
 orchestrationClient.chatCompletion({
   inputParams: { country: 'France' }
@@ -258,6 +273,7 @@ orchestrationClient.chatCompletion({
 ```
 
 **v2:**
+
 ```ts
 orchestrationClient.chatCompletion({
   placeholderValues: { country: 'France' }
@@ -267,6 +283,7 @@ orchestrationClient.chatCompletion({
 ##### Model Configuration
 
 **v1:**
+
 ```ts
 llm: {
   model_name: 'gpt-4o',
@@ -275,6 +292,7 @@ llm: {
 ```
 
 **v2:**
+
 ```ts
 promptTemplating: {
   model: {
@@ -289,6 +307,7 @@ promptTemplating: {
 The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
 
 **v1:**
+
 ```ts
 const config = {
   stream: true,
@@ -299,6 +318,7 @@ const config = {
 ```
 
 **v2:**
+
 ```ts
 const config = {
   streamOptions: {
@@ -313,17 +333,19 @@ const config = {
 The response structure has been updated with new property names.
 
 **v1:**
+
 ```ts
 // Response properties
-response.orchestration_result
-response.module_results
+response.orchestration_result;
+response.module_results;
 ```
 
 **v2:**
+
 ```ts
 // Response properties
-response.final_result
-response.intermediate_results
+response.final_result;
+response.intermediate_results;
 ```
 
 #### Grounding Configuration
@@ -331,6 +353,7 @@ response.intermediate_results
 The grounding configuration structure has been updated to use `placeholders` instead of separate `input_params` and `output_param`.
 
 **v1:**
+
 ```ts
 buildDocumentGroundingConfig({
   input_params: ['groundingInput'],
@@ -340,6 +363,7 @@ buildDocumentGroundingConfig({
 ```
 
 **v2:**
+
 ```ts
 buildDocumentGroundingConfig({
   placeholders: {
@@ -355,6 +379,7 @@ buildDocumentGroundingConfig({
 The deprecated `buildAzureContentFilter()` function has been removed in v2. Use `buildAzureContentSafetyFilter()` instead.
 
 **v1:**
+
 ```ts
 // This function is deprecated and removed in v2
 const filter = buildAzureContentFilter({
@@ -364,9 +389,11 @@ const filter = buildAzureContentFilter({
 ```
 
 **v2:**
+
 ```ts
 // Use this function instead
-const filter = buildAzureContentSafetyFilter('input', { // For output filter, use type 'output'
+const filter = buildAzureContentSafetyFilter('input', {
+  // For output filter, use type 'output'
   hate: 'ALLOW_SAFE',
   violence: 'ALLOW_SAFE_LOW_MEDIUM'
 });
@@ -377,16 +404,18 @@ const filter = buildAzureContentSafetyFilter('input', { // For output filter, us
 The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations. This change allows input and output filters to have different configuration options, such as the `prompt_shield` property that is only available for input filters. Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 **v1:**
+
 ```ts
 buildAzureContentSafetyFilter({
   Hate: 'ALLOW_SAFE',
   SelfHarm: 'ALLOW_SAFE_LOW',
   Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   Violence: 'ALLOW_ALL'
-})
+});
 ```
 
 **v2:**
+
 ```ts
 // For input filters
 buildAzureContentSafetyFilter('input', {
@@ -394,7 +423,7 @@ buildAzureContentSafetyFilter('input', {
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   violence: 'ALLOW_ALL'
-})
+});
 
 // For output filters
 buildAzureContentSafetyFilter('output', {
@@ -402,7 +431,7 @@ buildAzureContentSafetyFilter('output', {
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   violence: 'ALLOW_ALL'
-})
+});
 ```
 
 #### Llama Guard Filter Changes
@@ -410,11 +439,13 @@ buildAzureContentSafetyFilter('output', {
 The `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()` function. It now requires a `type` parameter as the first argument to distinguish between `input` and `output` filter configurations, and accepts categories as an array instead of individual parameters.
 
 **v1:**
+
 ```ts
 buildLlamaGuardFilter('self_harm');
 ```
 
 **v2:**
+
 ```ts
 // For input filters
 buildLlamaGuard38BFilter('input', ['self_harm', 'violence']);
@@ -428,6 +459,7 @@ buildLlamaGuard38BFilter('output', ['self_harm', 'violence']);
 The `buildTranslationConfig()` function now requires a `type` parameter as the first argument to distinguish between input and output translation configurations.
 
 **v1:**
+
 ```ts
 buildTranslationConfig({
   sourceLanguage: 'en-US',
@@ -436,6 +468,7 @@ buildTranslationConfig({
 ```
 
 **v2:**
+
 ```ts
 // For input translation
 buildTranslationConfig('input', {
@@ -457,6 +490,7 @@ buildTranslationConfig('output', {
 The LangChain orchestration configuration follows the same structural changes as the core orchestration package.
 
 **v1:**
+
 ```ts
 const config: LangChainOrchestrationModuleConfig = {
   llm: {
@@ -470,6 +504,7 @@ const config: LangChainOrchestrationModuleConfig = {
 ```
 
 **v2:**
+
 ```ts
 const config: LangChainOrchestrationModuleConfig = {
   promptTemplating: {
@@ -489,6 +524,7 @@ const config: LangChainOrchestrationModuleConfig = {
 Input parameters for LangChain orchestration calls have been updated.
 
 **v1:**
+
 ```ts
 await orchestrationClient.invoke(messages, {
   inputParams: { country: 'France' }
@@ -496,6 +532,7 @@ await orchestrationClient.invoke(messages, {
 ```
 
 **v2:**
+
 ```ts
 await orchestrationClient.invoke(messages, {
   placeholderValues: { country: 'France' }
@@ -507,13 +544,15 @@ await orchestrationClient.invoke(messages, {
 LangChain message responses now use updated property names for intermediate results.
 
 **v1:**
+
 ```ts
 // Access module results in response
-message.additional_kwargs.module_results
+message.additional_kwargs.module_results;
 ```
 
 **v2:**
+
 ```ts
 // Access intermediate results in response
-message.additional_kwargs.intermediate_results
+message.additional_kwargs.intermediate_results;
 ```
