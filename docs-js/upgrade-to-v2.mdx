@@ -36,6 +36,7 @@ We recommend updating your applications in one commit or pull request and making
 The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -50,6 +51,7 @@ const response = await azureOpenAiChatClient.stream(
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -70,6 +72,7 @@ For frequently used types in most cases, they remain available from the public e
 For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -80,6 +83,7 @@ import type {
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -107,6 +111,7 @@ The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly
 Use the new `AzureOpenAiChatCompletionParameters` type instead.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -119,6 +124,7 @@ const request: AzureOpenAiCreateChatCompletionRequest = {
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -150,6 +156,7 @@ In v2, the orchestration package targets v2 of the [Orchestration service](https
 The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -161,6 +168,7 @@ const response = await orchestrationClient.stream(
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -178,6 +186,7 @@ For frequently used types in most cases, they remain available from the public e
 For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -188,6 +197,7 @@ import type {
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -226,6 +236,7 @@ Prefer using the provided getter methods instead of accessing the data object di
 The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -243,6 +254,7 @@ const config = {
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -268,6 +280,7 @@ Several parameter names have been updated for consistency.
 ##### Input Parameters
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -277,6 +290,7 @@ orchestrationClient.chatCompletion({
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -288,6 +302,7 @@ orchestrationClient.chatCompletion({
 ##### Model Configuration
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -298,6 +313,7 @@ llm: {
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -309,11 +325,57 @@ promptTemplating: {
 }
 ```
 
+##### Prompt Registry Template Reference
+
+Due to the consolidation of `llm` and `templating` into `promptTemplating`, move your Prompt Registry template reference from `templating.template_ref` to `promptTemplating.prompt.template_ref`.
+
+Change from:
+
+**v1:**
+
+```ts
+const config = {
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: {}
+  },
+  templating: {
+    template_ref: {
+      name: 'my-get-capital-template',
+      scenario: 'my-scenario',
+      version: '0.0.1'
+    }
+  }
+};
+```
+
+to:
+
+**v2:**
+
+```ts
+const config = {
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    },
+    prompt: {
+      template_ref: {
+        name: 'my-get-capital-template',
+        scenario: 'my-scenario',
+        version: '0.0.1'
+      }
+    }
+  }
+};
+```
+
 #### Global Streaming Configuration
 
 The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -326,6 +388,7 @@ const config = {
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -342,6 +405,7 @@ const config = {
 The response structure has been updated with new property names.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -351,6 +415,7 @@ response.module_results;
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -364,6 +429,7 @@ response.intermediate_results;
 The grounding configuration structure has been updated to use `placeholders` instead of separate `input_params` and `output_param`.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -375,6 +441,7 @@ buildDocumentGroundingConfig({
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -393,6 +460,7 @@ The deprecated `buildAzureContentFilter()` function has been removed in v2.
 Use `buildAzureContentSafetyFilter()` instead.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -404,6 +472,7 @@ const filter = buildAzureContentFilter({
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -422,6 +491,7 @@ This change allows input and output filters to have different configuration opti
 Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -434,6 +504,7 @@ buildAzureContentSafetyFilter({
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -461,6 +532,7 @@ The `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFi
 It now requires a `type` parameter as the first argument to distinguish between `input` and `output` filter configurations, and accepts categories as an array instead of individual parameters.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -468,6 +540,7 @@ buildLlamaGuardFilter('self_harm');
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -483,6 +556,7 @@ buildLlamaGuard38BFilter('output', ['self_harm', 'violence']);
 The `buildTranslationConfig()` function now requires a `type` parameter as the first argument to distinguish between input and output translation configurations.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -493,6 +567,7 @@ buildTranslationConfig({
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -516,6 +591,7 @@ buildTranslationConfig('output', {
 The LangChain orchestration configuration follows the same structural changes as the core orchestration package.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -531,6 +607,7 @@ const config: LangChainOrchestrationModuleConfig = {
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -552,6 +629,7 @@ const config: LangChainOrchestrationModuleConfig = {
 Input parameters for LangChain orchestration calls have been updated.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -561,6 +639,7 @@ await orchestrationClient.invoke(messages, {
 ```
 
 to:
+
 **v2:**
 
 ```ts
@@ -574,6 +653,7 @@ await orchestrationClient.invoke(messages, {
 LangChain message responses now use updated property names for intermediate results.
 
 Change from:
+
 **v1:**
 
 ```ts
@@ -582,6 +662,7 @@ message.additional_kwargs.module_results;
 ```
 
 to:
+
 **v2:**
 
 ```ts
