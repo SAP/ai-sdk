@@ -795,11 +795,10 @@ const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
 
 Additionally, it is possible to manually specify a deployment ID using the `deploymentId` property instead of letting the SDK resolve it.
 Make sure to set a correct resource group, in which the deployment was created.
-When using the default resource group, the `resourceGroup` property can be omitted:
 
 ```ts
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
-  deploymentId: 'my-custom-deployment-id' as any
+  deploymentId: 'my-custom-deployment-id'
 });
 ```
 
