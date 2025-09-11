@@ -697,7 +697,7 @@ The module supports SAP's Document Translation service and allows translating bo
 The target language is mandatory, while source language will be auto-detected if not provided.
 
 For available translation options, consult the [list of supported languages](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d) to identify compatible language pairs.
-Input and output translation configurations are differentiated; use `input` to build the input configuration and `output` to build the output configuration.
+Input and output translation configurations are differentiated. Set the `type` parameter to `input` to build the input configuration and `output` to build the output configuration.
 
 ```ts
 const inputTranslation = buildTranslationConfig('input', {
