@@ -524,7 +524,8 @@ See the [Error Handling](../error-handling) page for more details.
 ### Azure Content Filter
 
 Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
-Input and output filters are differentiated. Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
+Input and output filters are differentiated.
+Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
 The `prompt_shield` option is only available for input filters.
 Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
 
@@ -553,7 +554,8 @@ const outputFilter = buildAzureContentSafetyFilter('output', {
 ### Llama Guard Filter
 
 Use `buildLlamaGuard38BFilter()` function to build a Llama Guard 3 8B content filter.
-Input and output filters are differentiated. Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
+Input and output filters are differentiated.
+Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
 
 Available categories can be found with autocompletion.
 Pass the categories as an array to the function to enable them.
@@ -697,7 +699,8 @@ The module supports SAP's Document Translation service and allows translating bo
 The target language is mandatory, while source language will be auto-detected if not provided.
 
 For available translation options, consult the [list of supported languages](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d) to identify compatible language pairs.
-Input and output translation configurations are differentiated. Set the `type` parameter to `input` to build the input configuration and `output` to build the output configuration.
+Input and output translation configurations are differentiated.
+Set the `type` parameter to `input` to build the input configuration and `output` to build the output configuration.
 
 ```ts
 const inputTranslation = buildTranslationConfig('input', {
