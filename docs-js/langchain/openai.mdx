@@ -156,15 +156,16 @@ It can also be manually aborted if an `AbortSignal` object associated with an `A
 ```ts
 const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 const controller = new AbortController();
-const { signal } = controller;
-const response = await client.stream([
-  {
-    role: 'user',
-    content:
-      'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
-  },
-  { signal }
-]);
+const response = await client.stream(
+  [
+    {
+      role: 'user',
+      content:
+        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+    }
+  ],
+  { signal: controller.signal }
+);
 
 // Abort the streaming request after one second
 setTimeout(() => {

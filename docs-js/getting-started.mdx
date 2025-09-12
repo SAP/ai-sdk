@@ -38,11 +38,15 @@ Initialize an orchestration client with an LLM model and a prompt template.
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o'
-  },
-  templating: {
-    template: [{ role: 'user', content: 'Answer the question: {{?question}}' }]
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    },
+    prompt: {
+      template: [
+        { role: 'user', content: 'Answer the question: {{?question}}' }
+      ]
+    }
   }
 });
 ```
@@ -52,7 +56,7 @@ The value replaces the `{{?question}}` placeholder in the template.
 
 ```ts
 const response = await orchestrationClient.chatCompletion({
-  inputParams: {
+  placeholderValues: {
     question: 'Why is the phrase "Hello world!" so famous?'
   }
 });
