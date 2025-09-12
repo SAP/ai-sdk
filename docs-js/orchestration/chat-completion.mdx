@@ -71,7 +71,9 @@ console.log(JSON.stringify(response.getTokenUsage()));
 
 The following sections provide detailed configuration for each module.
 
-## LLM Configuration
+## Prompt Templating
+
+### LLM Configuration
 
 Choose the LLM by setting the `name` property in the `promptTemplating.model` configuration.
 Optionally, define `version` (default: `latest`) and `params` for custom settings.
@@ -90,7 +92,7 @@ const promptTemplating = {
 };
 ```
 
-## Harmonized API
+### Harmonized API
 
 The [Harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api?locale=en-US) lets you use different foundation models without the need to change the client code.
 You can switch from one LLM to another easily like the example below.
@@ -127,9 +129,9 @@ Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub ca
 
 Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
 
-## Templating
+### Template Configuration
 
-Use the orchestration client with the `promptTemplating` configuration to define a static prompt.
+Use the orchestration client with the `promptTemplating.prompt.template` configuration to define a static prompt.
 This prompt can include placeholders, which are replaced with values from `placeholderValues` during a `chatCompletion()` method call.
 This setup is useful when the base structure of your prompt remains the same across requests.
 
@@ -153,7 +155,7 @@ const response = await orchestrationClient.chatCompletion({
 ```
 
 :::info
-The `template` messages defined in the client configuration are static - they are always included in every `chatCompletion()` request.
+The `promptTemplating.prompt.template` messages defined in the client configuration are static - they are always included in every `chatCompletion()` request.
 For more dynamic prompts, i.e., you want to vary the full message list per request without re-initializing the client, use the `messages` property instead.
 :::
 
@@ -221,7 +223,7 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const response = orchestrationClient.chatCompletion({
+const response = await orchestrationClient.chatCompletion({
   placeholderValues: { country: 'France' }
 });
 ```
@@ -231,7 +233,7 @@ If the YAML is invalid or does not conform to the schema, an error will be throw
 
 This [section](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-declarative#procedure) shows the format in which a prompt template can be defined.
 
-## Function Calling
+### Function Calling
 
 Define and pass [tool definitions](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/tool-calling) to enable the model to call specific functions.
 Here's an example of temperature conversion using tool calls:
@@ -333,7 +335,7 @@ const finalResponse = await client.chatCompletion({
 console.log(finalResponse.getContent());
 ```
 
-## Response Format
+### Response Format
 
 For general response formatting, use the `response_format` parameter.
 It is useful when model is **not calling a tool** and should still return a structured response.
@@ -390,7 +392,7 @@ const response_format: ResponseFormatJsonSchema = {
 };
 ```
 
-## Message History
+### Message History
 
 The orchestration service supports chat completion with message history.
 This allows the model to remember previous messages in the conversation, enabling a more coherent and context-aware interaction.
@@ -427,7 +429,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-## Image Recognition
+### Image Recognition
 
 Many models in the orchestration service have image recognition capabilities, meaning the models can take images as input and answer questions about them.
 
@@ -725,7 +727,7 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const response = orchestrationClient.chatCompletion({
+const response = await orchestrationClient.chatCompletion({
   messages: [
     {
       role: 'user',
