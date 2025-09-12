@@ -159,6 +159,47 @@ PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.get
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
 
+## Using Templates in SpringAI
+
+You can use prompt templates with input parameters in your Spring AI application.
+
+Add the following dependency to your `pom.xml` file:
+
+```xml
+<dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-model</artifactId>
+</dependency>
+```
+
+```java
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
+ChatModel client = new OpenAiChatModel(openAiClient);
+
+var repository = new InMemoryChatMemoryRepository();
+var memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+var advisor = MessageChatMemoryAdvisor.builder(memory).build();
+var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+
+var promptResponse =
+        new PromptClient()
+            .parsePromptTemplateByNameVersion(
+                "scenario",
+                "0.0.1",
+                "template_name",
+                "resource-group",// usually "default"
+                false,
+                PromptTemplateSubstitutionRequest.create()
+                    .inputParams(Map.of("parameter1", "value1")));
+
+List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
+var prompt = new Prompt(messages);
+
+Generation response = cl.prompt(prompt).call().chatResponse().getResult();
+```
+
+Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
+
 ## Locally Test a Prompt Template
 
 Note that you can also locally test a prompt, without needing it to be deployed in the Prompt Registry.
