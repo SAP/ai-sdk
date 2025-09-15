@@ -528,7 +528,6 @@ See the [Error Handling](../error-handling) page for more details.
 Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
 Input and output filters are differentiated.
 Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
-The `prompt_shield` option is only available for input filters, which enables prompt attack detection.
 Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
 
 | Severity Level          | Azure Threshold Value |
@@ -537,6 +536,16 @@ Each category of the filter can be assigned a specific severity level, which cor
 | `ALLOW_SAFE_LOW`        | 2                     |
 | `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
 | `ALLOW_ALL`             | 6                     |
+
+#### Prompt Attack Detection
+
+A prompt attack is a malicious input that is designed to bypass a model's safety mechanisms or override previous instructions.
+Prompt attacks can lead to the generation of harmful content or the execution of malicious actions.
+
+The Azure Content Safety service also supports prompt attack detection for input text via a prompt shield configuration.
+Set the `prompt_shield` property to `true` to enable the detection.
+This option is only available for input filters.
+For more information, refer to [Prompt Shields in Azure AI Content Safety](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection).
 
 ```ts
 import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
