@@ -400,7 +400,6 @@ const filter = buildAzureContentSafetyFilter('input', {
 #### Azure Content Filter Changes
 
 The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations.
-This change allows input and output filters to have different configuration options, such as the `prompt_shield` property that is only available for input filters.
 Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 Change from **v1:**
@@ -422,8 +421,7 @@ buildAzureContentSafetyFilter('input', {
   hate: 'ALLOW_SAFE',
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
-  violence: 'ALLOW_ALL',
-  prompt_shield: true // Only available for input
+  violence: 'ALLOW_ALL'
 });
 
 // For output filters
