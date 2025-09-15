@@ -1,9 +1,9 @@
 ---
-id: upgrade-to-v2
-title: Upgrade to Version 2
+id: upgrade-guide
+title: Upgrade Guide
 hide_title: false
 hide_table_of_contents: false
-description: Guide for upgrading from SAP Cloud SDK for AI v1 to v2
+description: Guide for upgrading from SAP Cloud SDK for AI
 keywords:
   - sap
   - cloud
@@ -16,15 +16,8 @@ keywords:
 
 This document guides you through upgrading from version 1 to version 2 of the SAP Cloud SDK for AI packages.
 It covers all breaking changes and migration steps required for the upgrade.
-Version 2 introduces significant structural changes to align with updated service APIs and improve the overall developer experience.
 
-- [Update Your Project Dependencies](#update-your-project-dependencies)
-- [Adapt all Breaking Changes](#adapt-all-breaking-changes)
-  - [Package `@sap-ai-sdk/foundation-models`](#package-sap-ai-sdkfoundation-models)
-  - [Package `@sap-ai-sdk/orchestration`](#package-sap-ai-sdkorchestration)
-  - [Package `@sap-ai-sdk/langchain`](#package-sap-ai-sdklangchain)
-
-## Update Your Project Dependencies
+## Update Dependencies
 
 Search for occurrences of `@sap-ai-sdk/[some module]` in your `package.json` files.
 Replace the version numbers with `^2`.
@@ -33,11 +26,46 @@ Run `npm install` or similar to install the dependencies and update the lock fil
 Running your tests or deploying your application might fail at this point if you need to adapt to any breaking changes.
 We recommend updating your applications in one commit or pull request and making sure everything still works using your existing test suite.
 
-## Adapt all Breaking Changes
 
-### Package `@sap-ai-sdk/foundation-models`
+## `@sap-ai-sdk/foundation-models`
 
-#### Stream Method Parameter Change
+### Type Import
+
+Generated types are no longer exported from `@sap-ai-sdk/foundation-models`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
+
+Change from **v1:**
+
+```ts
+import type {
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiCreateChatCompletionResponse
+} from '@sap-ai-sdk/foundation-models';
+```
+
+to **v2:**
+
+```ts
+// Generated types must be imported from internal
+import type {
+  AzureOpenAiChatCompletionParameters,
+  AzureOpenAiCreateChatCompletionResponse
+} from '@sap-ai-sdk/foundation-models/internal.js';
+
+// Frequently used types remain available from main package
+import type {
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiFunctionObject,
+  AzureOpenAiChatCompletionRequestMessage,
+  AzureOpenAiChatCompletionRequestSystemMessage,
+  AzureOpenAiChatCompletionRequestUserMessage,
+  AzureOpenAiChatCompletionRequestAssistantMessage,
+  AzureOpenAiChatCompletionRequestToolMessage
+} from '@sap-ai-sdk/foundation-models';
+```
+
+### Stream Controller
 
 The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
 
@@ -67,43 +95,7 @@ const response = await azureOpenAiChatClient.stream(
 );
 ```
 
-#### Type Import Changes
-
-Generated types are no longer exported from `@sap-ai-sdk/foundation-models`.
-For frequently used types in most cases, they remain available from the public exports.
-For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
-
-Change from **v1:**
-
-```ts
-import type {
-  AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiCreateChatCompletionResponse
-} from '@sap-ai-sdk/foundation-models';
-```
-
-to **v2:**
-
-```ts
-// Generated types must be imported from internal
-import type {
-  AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiCreateChatCompletionResponse
-} from '@sap-ai-sdk/foundation-models/internal.js';
-
-// Frequently used types remain available from main package
-import type {
-  AzureOpenAiChatCompletionTool,
-  AzureOpenAiFunctionObject,
-  AzureOpenAiChatCompletionRequestMessage,
-  AzureOpenAiChatCompletionRequestSystemMessage,
-  AzureOpenAiChatCompletionRequestUserMessage,
-  AzureOpenAiChatCompletionRequestAssistantMessage,
-  AzureOpenAiChatCompletionRequestToolMessage
-} from '@sap-ai-sdk/foundation-models';
-```
-
-#### Chat Completion Parameter Type
+### Chat Completion Parameter Type
 
 The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly.
 Use the new `AzureOpenAiChatCompletionParameters` type instead.
@@ -130,7 +122,7 @@ const request: AzureOpenAiChatCompletionParameters = {
 };
 ```
 
-#### Response Object Data Property Changes
+### Response Object Data Property
 
 The `data` property in response objects is renamed to `_data`.
 Prefer using the provided getter methods instead of accessing the data object directly.
@@ -141,35 +133,11 @@ Prefer using the provided getter methods instead of accessing the data object di
 - `AzureOpenAiChatCompletionStreamChunkResponse`
 - `AzureOpenAiEmbeddingResponse`
 
-### Package `@sap-ai-sdk/orchestration`
+## `@sap-ai-sdk/orchestration`
 
 In v2, the orchestration package targets v2 of the [Orchestration service](https://api.sap.com/api/ORCHESTRATION_API_v2/overview).
 
-#### Stream Method Parameter Change
-
-The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
-
-Change from **v1:**
-
-```ts
-const controller = new AbortController();
-const response = await orchestrationClient.stream(
-  { messages: [{ role: 'user', content: 'Hello' }] },
-  controller // Pass the controller
-);
-```
-
-to **v2:**
-
-```ts
-const controller = new AbortController();
-const response = await orchestrationClient.stream(
-  { messages: [{ role: 'user', content: 'Hello' }] },
-  controller.signal // Pass the signal instead
-);
-```
-
-#### Type Import Changes
+### Type Import
 
 Generated types are no longer exported from `@sap-ai-sdk/orchestration`.
 For frequently used types in most cases, they remain available from the public exports.
@@ -206,7 +174,31 @@ import type {
 } from '@sap-ai-sdk/orchestration';
 ```
 
-#### Response Object Data Property Changes
+### Stream Controller
+
+The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
+
+Change from **v1:**
+
+```ts
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  { messages: [{ role: 'user', content: 'Hello' }] },
+  controller // Pass the controller
+);
+```
+
+to **v2:**
+
+```ts
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  { messages: [{ role: 'user', content: 'Hello' }] },
+  controller.signal // Pass the signal instead
+);
+```
+
+### Response Object Data Property
 
 The `data` property in response objects is renamed to `_data`.
 Prefer using the provided getter methods instead of accessing the data object directly.
@@ -217,7 +209,7 @@ Prefer using the provided getter methods instead of accessing the data object di
 - `OrchestrationStreamResponse`
 - `OrchestrationStreamChunkResponse`
 
-#### Module Configuration Structure
+### Module Configuration Structure
 
 The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module as `model` and `prompt` properties respectively.
 
@@ -255,11 +247,9 @@ const config = {
 };
 ```
 
-#### Parameter Name Changes
+### Chat Completion Parameter
 
-Several parameter names have been updated for consistency.
-
-##### Input Parameters
+The `inputParams` property for chat completion calls has been renamed to `placeholderValues`.
 
 Change from **v1:**
 
@@ -277,29 +267,7 @@ orchestrationClient.chatCompletion({
 });
 ```
 
-##### Model Configuration
-
-Change from **v1:**
-
-```ts
-llm: {
-  model_name: 'gpt-4o',
-  model_params: { temperature: 0.7 }
-}
-```
-
-to **v2:**
-
-```ts
-promptTemplating: {
-  model: {
-    name: 'gpt-4o',
-    params: { temperature: 0.7 }
-  }
-}
-```
-
-#### Global Streaming Configuration
+### Global Streaming Configuration
 
 The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
 
@@ -325,7 +293,7 @@ const config = {
 };
 ```
 
-#### Response Structure Changes
+### Response Structure
 
 The response structure has been updated with new property names.
 
@@ -345,7 +313,7 @@ response.final_result;
 response.intermediate_results;
 ```
 
-#### Grounding Configuration
+### Grounding Configuration
 
 The grounding configuration structure has been updated to use `placeholders` instead of separate `input_params` and `output_param`.
 
@@ -371,7 +339,7 @@ buildDocumentGroundingConfig({
 });
 ```
 
-#### Removed Functions
+### Removed Functions
 
 The deprecated `buildAzureContentFilter()` function has been removed in v2.
 Use `buildAzureContentSafetyFilter()` instead.
@@ -397,7 +365,7 @@ const filter = buildAzureContentSafetyFilter('input', {
 });
 ```
 
-#### Azure Content Filter Changes
+### Azure Content Filter
 
 The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations.
 Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
@@ -433,7 +401,7 @@ buildAzureContentSafetyFilter('output', {
 });
 ```
 
-#### Llama Guard Filter Changes
+### Llama Guard Filter
 
 The `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()` function.
 It now requires a `type` parameter as the first argument to distinguish between `input` and `output` filter configurations, and accepts categories as an array instead of individual parameters.
@@ -454,7 +422,7 @@ buildLlamaGuard38BFilter('input', ['self_harm', 'violence']);
 buildLlamaGuard38BFilter('output', ['self_harm', 'violence']);
 ```
 
-#### Translation Configuration Changes
+### Translation Configuration
 
 The `buildTranslationConfig()` function now requires a `type` parameter as the first argument to distinguish between input and output translation configurations.
 
@@ -483,9 +451,9 @@ buildTranslationConfig('output', {
 });
 ```
 
-### Package `@sap-ai-sdk/langchain`
+## `@sap-ai-sdk/langchain`
 
-#### Configuration Structure
+### Configuration Structure
 
 The LangChain orchestration configuration follows the same structural changes as the core orchestration package.
 
@@ -519,7 +487,7 @@ const config: LangChainOrchestrationModuleConfig = {
 };
 ```
 
-#### Parameter Changes
+### Invoke Parameter
 
 Input parameters for LangChain orchestration calls have been updated.
 
@@ -539,7 +507,7 @@ await orchestrationClient.invoke(messages, {
 });
 ```
 
-#### Response Property Changes
+### Response Property
 
 LangChain message responses now use updated property names for intermediate results.
 
