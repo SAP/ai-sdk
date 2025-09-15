@@ -220,6 +220,7 @@ Prefer using the provided getter methods instead of accessing the data object di
 #### Module Configuration Structure
 
 The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.
+In the new structure, the `templating` module is renamed to `prompt`.
 
 Change from **v1:**
 
@@ -254,6 +255,8 @@ const config = {
   }
 };
 ```
+
+As part of the configuration structure change, all properties previously in `templating`: `template`, `tools`, `template_ref`, `defaults`, and `response_format` are now located in `promptTemplating.prompt`.
 
 #### Parameter Name Changes
 
@@ -297,47 +300,6 @@ promptTemplating: {
     params: { temperature: 0.7 }
   }
 }
-```
-
-##### Prompt Registry Template Reference
-
-Due to the consolidation of `llm` and `templating` into `promptTemplating`, move Prompt Registry template reference from `templating.template_ref` to `promptTemplating.prompt.template_ref`.
-
-Change from **v1:**
-
-```ts
-const config = {
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: {}
-  },
-  templating: {
-    template_ref: {
-      name: 'my-get-capital-template',
-      scenario: 'my-scenario',
-      version: '0.0.1'
-    }
-  }
-};
-```
-
-to **v2:**
-
-```ts
-const config = {
-  promptTemplating: {
-    model: {
-      name: 'gpt-4o'
-    },
-    prompt: {
-      template_ref: {
-        name: 'my-get-capital-template',
-        scenario: 'my-scenario',
-        version: '0.0.1'
-      }
-    }
-  }
-};
 ```
 
 #### Global Streaming Configuration
@@ -397,7 +359,7 @@ buildDocumentGroundingConfig({
   input_params: ['groundingInput'],
   output_param: 'groundingOutput',
   filters: [...]
-})
+});
 ```
 
 to **v2:**
@@ -409,7 +371,7 @@ buildDocumentGroundingConfig({
     output: 'groundingOutput'
   },
   filters: [...]
-})
+});
 ```
 
 #### Removed Functions
@@ -580,59 +542,6 @@ to **v2:**
 await orchestrationClient.invoke(messages, {
   placeholderValues: { country: 'France' }
 });
-```
-
-#### Stream Method Parameter Change
-
-The stream() method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
-
-Change from **v1:**
-
-```ts
-const controller = new AbortController();
-const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o'
-  }
-};
-
-const client = new OrchestrationClient(orchestrationConfig);
-const response = await client.stream(
-  [
-    {
-      role: 'user',
-      content:
-        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
-    }
-  ],
-  controller
-);
-```
-
-to **v2:**
-
-```ts
-const orchestrationConfig: LangChainOrchestrationModuleConfig = {
-  promptTemplating: {
-    model: {
-      name: 'gpt-4o'
-    }
-  }
-};
-
-const client = new OrchestrationClient(orchestrationConfig);
-const response = await client.stream(
-  [
-    {
-      role: 'user',
-      content:
-        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
-    }
-  ],
-  {
-    signal: controller.signal
-  }
-);
 ```
 
 #### Response Property Changes
