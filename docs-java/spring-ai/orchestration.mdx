@@ -180,9 +180,9 @@ ChatModel client = new OrchestrationChatModel();
 OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
-options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+opts.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
 
-Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", opts);
 
 ChatResponse response = client.call(prompt);
 ```
@@ -203,11 +203,11 @@ val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).
 val advisor = MessageChatMemoryAdvisor.builder(memory).build();
 var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
-Prompt prompt1 = new Prompt("What is the capital of France?", defaultOptions);
+Prompt prompt1 = new Prompt("What is the capital of France?", opts);
 String content1 = cl.prompt(prompt1).call().content();
 // content1 is "Paris"
 
-Prompt prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
+Prompt prompt2 = new Prompt("And what is the typical food there?", opts);
 String content2 = cl.prompt(prompt2).call().content();
 // chat memory will remember that the user is inquiring about France.
 ```
@@ -229,10 +229,10 @@ var client = new OrchestrationChatModel();
 
 var schema = ResponseJsonSchema.fromType(Translation.class);
 var template = TemplateConfig.create().withJsonSchemaResponse(schema);
-var options = new OrchestrationChatOptions(config.withTemplateConfig(template));
+var opts = new OrchestrationChatOptions(config.withTemplateConfig(template));
 
 var prompt =
-  new Prompt("How do I say 'AI is going to revolutionize the world' in dutch?", options);
+  new Prompt("How do I say 'AI is going to revolutionize the world' in dutch?", opts);
 
 Translation translation = client.call(prompt).entity(Translation.class);
 ```
@@ -249,8 +249,8 @@ You can use prompt templates stored in a prompt registry in your Spring AI appli
 ChatModel client = new OrchestrationChatModel();
 
 var template = TemplateConfig.reference().byScenario("scenario").name("name").version("1.0.0");
-var options = new OrchestrationChatOptions(config.withTemplateConfig(template));
-var prompt = new Prompt(List.of(), options);
+var opts = new OrchestrationChatOptions(config.withTemplateConfig(template));
+var prompt = new Prompt(List.of(), opts);
 
 ChatResponse response = client.call(prompt);
 ```
@@ -319,11 +319,11 @@ ToolCallbackProvider toolCallbackProvider;
 These tools can now be used in requests to the Orchestration service [like any other tool](#tool-calling):
 
 ```java
-OrchestrationChatOptions options;
-options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
+OrchestrationChatOptions opts;
+opts.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
 
 // optionally, enable automated tool execution
-options.setInternalToolExecutionEnabled(true);
+opts.setInternalToolExecutionEnabled(true);
 ```
 
 For more information also refer to the [sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
