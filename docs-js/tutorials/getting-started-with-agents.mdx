@@ -137,13 +137,17 @@ https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itin
 ```js reference referenceLinkText=" " title="Build the workflow"
 https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L93-L103
 ```
+
 :::note
 Using [`MemorySaver`](https://langchain-ai.github.io/langgraphjs/how-tos/persistence/?h=memory+saver#add-memory) allows sharing context across multiple interactions in a single conversational thread (`conv-1`).
 In this example, it enables the agent to remember the previously mentioned city.
 :::
 
-<img src={useBaseUrl("img/Langgraph-State.png")} alt="LangGraph Flow" className="center" />
-
+<img
+  src={useBaseUrl('img/Langgraph-State.png')}
+  alt="LangGraph Flow"
+  className="center"
+/>
 
 ## Run the assistant
 

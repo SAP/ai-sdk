@@ -16,7 +16,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-
 ## Introduction
 
 In this tutorial, you'll build a simple travel assistant agent using a LangChain Client, either `OrchestrationClient` or `AzureOpenAiChatClient` from the `@sap-ai-sdk/langchain` package alongside `LangGraph`.
@@ -141,8 +140,11 @@ Using [`MemorySaver`](https://langchain-ai.github.io/langgraphjs/how-tos/persist
 In this example, it enables the agent to remember the previously mentioned city.
 :::
 
-<img src={useBaseUrl("img/Langgraph-State.png")} alt="LangGraph Flow" className="center" />
-
+<img
+  src={useBaseUrl('img/Langgraph-State.png')}
+  alt="LangGraph Flow"
+  className="center"
+/>
 
 ## Run the assistant
 
