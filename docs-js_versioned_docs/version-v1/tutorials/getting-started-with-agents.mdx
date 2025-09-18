@@ -14,6 +14,8 @@ keywords:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 
 ## Introduction
 
@@ -138,6 +140,9 @@ https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-i
 Using [`MemorySaver`](https://langchain-ai.github.io/langgraphjs/how-tos/persistence/?h=memory+saver#add-memory) allows sharing context across multiple interactions in a single conversational thread (`conv-1`).
 In this example, it enables the agent to remember the previously mentioned city.
 :::
+
+<img src={useBaseUrl("img/Langgraph-State.png")} alt="LangGraph Flow" className="center" />
+
 
 ## Run the assistant
 
