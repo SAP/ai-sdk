@@ -29,15 +29,17 @@ $ npm install @sap-ai-sdk/orchestration
 ## Quick Start
 
 Initialize a client with proper orchestration configuration for each module.
-Below is an example for configuring the mandatory `llm` module.
+Below is an example for configuring the mandatory `promptTemplating` module.
 In addition, you can find more sample code [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o'
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
   }
 });
 ```
@@ -69,24 +71,28 @@ console.log(JSON.stringify(response.getTokenUsage()));
 
 The following sections provide detailed configuration for each module.
 
-## LLM Configuration
+## Prompt Templating
 
-Choose the LLM by setting the `model_name` property in `llm` module configuration.
-Optionally, define `model_version` (default: `latest`) and `model_params` for custom settings.
+### LLM Configuration
+
+Choose the LLM by setting the `name` property in the `promptTemplating.model` configuration.
+Optionally, define `version` (default: `latest`) and `params` for custom settings.
 
 ```ts
-const llm: LlmModuleConfig = {
-  model_name: 'gpt-4o',
-  model_version: '2024-08-06', // optional
-  model_params: {
-    // optional
-    max_tokens: 50,
-    temperature: 0.1
+const promptTemplating = {
+  model: {
+    name: 'gpt-4o',
+    version: '2024-08-06', // optional
+    params: {
+      // optional
+      max_tokens: 50,
+      temperature: 0.1
+    }
   }
 };
 ```
 
-## Harmonized API
+### Harmonized API
 
 The [Harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api?locale=en-US) lets you use different foundation models without the need to change the client code.
 You can switch from one LLM to another easily like the example below.
@@ -94,14 +100,18 @@ You can switch from one LLM to another easily like the example below.
 ```javascript
 // Original config for using GPT 4o
 /*
-const llm: LlmModuleConfig = {
-  model_name: 'gpt-4o'
+const promptTemplating = {
+  model: {
+    name: 'gpt-4o'
+  }
 };
 */
 
 // Switch to Claude 3.5 Sonnet
-const llm: LlmModuleConfig = {
-  model_name: 'anthropic--claude-3.5-sonnet'
+const promptTemplating = {
+  model: {
+    name: 'anthropic--claude-3.5-sonnet'
+  }
 };
 ```
 
@@ -119,38 +129,48 @@ Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub ca
 
 Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
 
-## Templating
+### Template Configuration
 
-Use the orchestration client with the `templating` configuration to define a static prompt.
-This prompt can include placeholders, which are replaced with values from `inputParams` during a `chatCompletion()` method call.
+Use the orchestration client with the `promptTemplating.prompt.template` configuration to define a static prompt.
+This prompt can include placeholders, which are replaced with values from `placeholderValues` during a `chatCompletion()` method call.
 This setup is useful when the base structure of your prompt remains the same across requests.
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating: {
-    template: [
-      { role: 'user', content: 'What is the capital of {{?country}}?' }
-    ]
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    },
+    prompt: {
+      template: [
+        { role: 'user', content: 'What is the capital of {{?country}}?' }
+      ]
+    }
   }
 });
 
 const response = await orchestrationClient.chatCompletion({
-  inputParams: { country: 'France' }
+  placeholderValues: { country: 'France' }
 });
 ```
 
 :::info
-The `template` messages defined in the client configuration are static - they are always included in every `chatCompletion()` request.
+The `promptTemplating.prompt.template` messages defined in the client configuration are static - they are always included in every `chatCompletion()` request.
 For more dynamic prompts, i.e., you want to vary the full message list per request without re-initializing the client, use the `messages` property instead.
 :::
 
 ```ts
-const orchestrationClient = new OrchestrationClient({ llm });
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  }
+});
 
 const response = await orchestrationClient.chatCompletion({
   messages: [{ role: 'user', content: 'What is the capital of {{?country}}?' }],
-  inputParams: { country: 'France' }
+  placeholderValues: { country: 'France' }
 });
 ```
 
@@ -160,18 +180,22 @@ You can define template content within the templating configuration, or refer to
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating: {
-    template_ref: {
-      name: 'my-get-capital-template',
-      scenario: 'my-scenario',
-      version: '0.0.1'
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    },
+    prompt: {
+      template_ref: {
+        name: 'my-get-capital-template',
+        scenario: 'my-scenario',
+        version: '0.0.1'
+      }
     }
   }
 });
 
 const response = orchestrationClient.chatCompletion({
-  inputParams: { country: 'France' }
+  placeholderValues: { country: 'France' }
 });
 ```
 
@@ -180,7 +204,7 @@ For details on storing a template in the Prompt Registry, refer to [this guide](
 
 ### Local Prompt Template
 
-You can define the template in a YAML file and pass its content as a string to the `templating` property.
+You can define the template in a YAML file and pass its content as a string to the `promptTemplating.prompt` property.
 This is useful for testing a prompt template locally before storing it in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry).
 
 ```ts
@@ -191,12 +215,16 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const yamlTemplate = readFileSync('./path/to/prompt-template.yaml', 'utf-8');
 
 const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating: yamlTemplate
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    },
+    prompt: yamlTemplate
+  }
 });
 
-const response = orchestrationClient.chatCompletion({
-  inputParams: { country: 'France' }
+const response = await orchestrationClient.chatCompletion({
+  placeholderValues: { country: 'France' }
 });
 ```
 
@@ -205,7 +233,7 @@ If the YAML is invalid or does not conform to the schema, an error will be throw
 
 This [section](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-declarative#procedure) shows the format in which a prompt template can be defined.
 
-## Function Calling
+### Function Calling
 
 Define and pass [tool definitions](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/tool-calling) to enable the model to call specific functions.
 Here's an example of temperature conversion using tool calls:
@@ -239,11 +267,13 @@ Initialize the client and send the initial request with the tool definition:
 
 ```ts
 const client = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o'
-  },
-  templating: {
-    tools: [convertTemperatureTool]
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    },
+    prompt: {
+      tools: [convertTemperatureTool]
+    }
   }
 });
 
@@ -305,7 +335,7 @@ const finalResponse = await client.chatCompletion({
 console.log(finalResponse.getContent());
 ```
 
-## Response Format
+### Response Format
 
 For general response formatting, use the `response_format` parameter.
 It is useful when model is **not calling a tool** and should still return a structured response.
@@ -362,7 +392,7 @@ const response_format: ResponseFormatJsonSchema = {
 };
 ```
 
-## Message History
+### Message History
 
 The orchestration service supports chat completion with message history.
 This allows the model to remember previous messages in the conversation, enabling a more coherent and context-aware interaction.
@@ -370,7 +400,13 @@ This allows the model to remember previous messages in the conversation, enablin
 Provide the message history in the `messagesHistory` parameter when calling the `chatCompletion()` method.
 
 ```ts
-const orchestrationClient = new OrchestrationClient({ llm });
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  }
+});
 
 const response = await orchestrationClient.chatCompletion({
   messages: [{ role: 'user', content: 'What is my name?' }],
@@ -393,7 +429,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-## Image Recognition
+### Image Recognition
 
 Many models in the orchestration service have image recognition capabilities, meaning the models can take images as input and answer questions about them.
 
@@ -403,27 +439,33 @@ Attempting to use `image_url` in non-user messages will result in an error.
 :::
 
 ```ts
-const orchestrationClient = new OrchestrationClient({ llm });
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  }
+});
 
 const response = await orchestrationClient.chatCompletion({
   messages: [
-      {
-        role: 'user', // only user role supports image_url
-        content: [
-          {
-            type: 'text',
-            text: 'What is the content of the image?'
-          },
-          {
-            type: 'image_url',
-            image_url: {
-              url: '{{?imageUrl}}'
-            }
+    {
+      role: 'user', // only user role supports image_url
+      content: [
+        {
+          type: 'text',
+          text: 'What is the content of the image?'
+        },
+        {
+          type: 'image_url',
+          image_url: {
+            url: '{{?imageUrl}}'
           }
-        ]
-      }
-    ]
-  inputParams: {
+        }
+      ]
+    }
+  ],
+  placeholderValues: {
     imageUrl: 'IMAGE_URL'
   }
 });
@@ -443,16 +485,21 @@ The following example demonstrates how to use content filtering with the orchest
 See the sections below for details on the available content filters and how to build them.
 
 ```ts
-const filter: FilterConfig = ... // Use a build function to create a content filter
+const inputFilter: InputFilterConfig = ... // Use a build function to create an input content filter
+const outputFilter: OutputFilterConfig = ... // Use a build function to create an output content filter
 
 const orchestrationClient = new OrchestrationClient({
-  llm,
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  },
   filtering: {
     input: {
-      filters: [filter] // Multiple filters can be applied
+      filters: [inputFilter] // Multiple filters can be applied
     },
     output: {
-      filters: [filter]
+      filters: [outputFilter]
     }
   }
 });
@@ -479,6 +526,8 @@ See the [Error Handling](../error-handling) page for more details.
 ### Azure Content Filter
 
 Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
+Input and output filters are differentiated.
+Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
 Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
 
 | Severity Level          | Azure Threshold Value |
@@ -488,26 +537,48 @@ Each category of the filter can be assigned a specific severity level, which cor
 | `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
 | `ALLOW_ALL`             | 6                     |
 
+#### Prompt Attack Detection
+
+A prompt attack is a malicious input that is designed to bypass a model's safety mechanisms or override previous instructions.
+Prompt attacks can lead to the generation of harmful content or the execution of malicious actions.
+
+The Azure Content Safety service also supports prompt attack detection for input text via a prompt shield configuration.
+Set the `prompt_shield` property to `true` to enable the detection.
+This option is only available for input filters.
+For more information, refer to [Prompt Shields in Azure AI Content Safety](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection).
+
 ```ts
 import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
 
-const filter = buildAzureContentSafetyFilter({
-  Hate: 'ALLOW_SAFE_LOW',
-  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+const inputFilter = buildAzureContentSafetyFilter('input', {
+  hate: 'ALLOW_SAFE_LOW',
+  violence: 'ALLOW_SAFE_LOW_MEDIUM',
+  prompt_shield: true
+});
+
+const outputFilter = buildAzureContentSafetyFilter('output', {
+  hate: 'ALLOW_SAFE',
+  violence: 'ALLOW_SAFE_LOW_MEDIUM'
 });
 ```
 
 ### Llama Guard Filter
 
-Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
+Use `buildLlamaGuard38BFilter()` function to build a Llama Guard 3 8B content filter.
+Input and output filters are differentiated.
+Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
 
 Available categories can be found with autocompletion.
-Pass the categories as arguments to the function to enable them.
+Pass the categories as an array to the function to enable them.
 
 ```ts
-import { buildLlamaGuardFilter } from '@sap-ai-sdk/orchestration';
+import { buildLlamaGuard38BFilter } from '@sap-ai-sdk/orchestration';
 
-const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
+const inputFilter = buildLlamaGuard38BFilter('input', ['self_harm']);
+const outputFilter = buildLlamaGuard38BFilter('output', [
+  'self_harm',
+  'violence'
+]);
 ```
 
 ## Data Masking
@@ -521,7 +592,11 @@ See the sections below for details on the available masking providers and how to
 const maskingProvider: MaskingProviderConfig = ... // Use a build function to create a masking provider
 
 const orchestrationClient = new OrchestrationClient({
-  llm,
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  },
   masking: {
     masking_providers: [maskingProvider] // Multiple masking providers can be applied
   }
@@ -535,7 +610,7 @@ const response = await orchestrationClient.chatCompletion({
         'Please write an email to {{?user}} ({{?email}}) about the amazing capabilities of SAP AI Core!'
     }
   ],
-  inputParams: { user: 'Jane Doe', email: 'jane.doe@example.com' }
+  placeholderValues: { user: 'Jane Doe', email: 'jane.doe@example.com' }
 });
 ```
 
@@ -583,10 +658,16 @@ Use `buildDocumentGroundingConfig()` function to build configuration for documen
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
-  llm,
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  },
   grounding: buildDocumentGroundingConfig({
-    input_params: ['groundingRequest'],
-    output_param: 'groundingOutput',
+    placeholders: {
+      input: ['groundingRequest'],
+      output: 'groundingOutput'
+    },
     // metadata_params: ['PARAM_NAME']
     filters: [
       {
@@ -606,7 +687,7 @@ const response = await orchestrationClient.chatCompletion({
         'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
     }
   ],
-  inputParams: {
+  placeholderValues: {
     groundingRequest: 'Give me a short introduction of SAP AI Core.'
   }
 });
@@ -629,20 +710,33 @@ The module supports SAP's Document Translation service and allows translating bo
 The target language is mandatory, while source language will be auto-detected if not provided.
 
 For available translation options, consult the [list of supported languages](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d) to identify compatible language pairs.
+Input and output translation configurations are differentiated.
+Set the `type` parameter to `input` to build the input configuration and `output` to build the output configuration.
 
 ```ts
-const translationConfig = buildTranslationConfig({
+const inputTranslation = buildTranslationConfig('input', {
+  sourceLanguage: 'en-US',
+  targetLanguage: 'de-DE'
+});
+
+const outputTranslation = buildTranslationConfig('output', {
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE'
 });
 
 const orchestrationClient = new OrchestrationClient({
-  llm,
-  inputTranslation: translationConfig,
-  outputTranslation: translationConfig
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  },
+  translation: {
+    input: inputTranslation,
+    output: outputTranslation
+  }
 });
 
-const response = orchestrationClient.chatCompletion({
+const response = await orchestrationClient.chatCompletion({
   messages: [
     {
       role: 'user',
@@ -676,7 +770,7 @@ After consuming the stream, call the helper methods to get the finish reason and
 
 ```ts
 const response = await orchestrationClient.stream({
-  inputParams: { country: 'France' }
+  placeholderValues: { country: 'France' }
 });
 
 for await (const chunk of response.stream) {
@@ -718,10 +812,16 @@ const toolCalls = response.getToolCalls();
 
 Streaming request can be aborted using the `AbortController` API.
 In case of an error, SAP Cloud SDK for AI will automatically close the stream.
-It can also be manually aborted if an `AbortController` object was provided when calling the `stream()` method.
+It can also be manually aborted if an `AbortSignal` object was provided when calling the `stream()` method.
 
 ```ts
-const orchestrationClient = new OrchestrationClient({ llm });
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  }
+});
 
 const controller = new AbortController();
 const response = await orchestrationClient.stream(
@@ -729,9 +829,9 @@ const response = await orchestrationClient.stream(
     messages: [
       { role: 'user', content: 'Give a long history of {{?country}}?' }
     ],
-    inputParams: { country: 'France' }
+    placeholderValues: { country: 'France' }
   },
-  controller
+  controller.signal
 );
 
 // Abort the streaming request after one second
@@ -763,7 +863,7 @@ const response = orchestrationClient.stream(
     messages: [
       { role: 'user', content: 'Give a long history of {{?country}}?' }
     ],
-    inputParams: { country: 'France' }
+    placeholderValues: { country: 'France' }
   },
   controller,
   {
@@ -781,18 +881,28 @@ Set the `llm` property to `null` to not send any LLM streaming options.
 When initializing a client with JSON module config, it is not possible to provide streaming options.
 :::
 
-## Custom Resource Group
+## Custom Deployment Configuration
 
-By default, you should have an orchestration deployment in the `default` [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups).
+By default, there should be an orchestration deployment in the `default` [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups).
 
-If you have deployed the orchestration service in a different resource group, you can specify the resource group name in the `resourceGroup` property when creating the client.
-Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create a deployment for orchestration.
+If the orchestration service has been deployed in a different resource group, it is possible to specify the resource group name in the `resourceGroup` property when creating the client.
 
 ```ts
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
   resourceGroup: 'my-custom-resource-group'
 });
 ```
+
+Additionally, it is possible to manually specify a deployment ID using the `deploymentId` property instead of letting the SDK resolve it.
+Make sure to set a correct resource group, in which the deployment was created.
+
+```ts
+const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
+  deploymentId: 'my-custom-deployment-id'
+});
+```
+
+Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create and manage deployments for orchestration.
 
 ## Custom Request Configuration
 

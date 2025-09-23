@@ -27,8 +27,10 @@ Refer to [Orchestration Chat Completion](../orchestration/chat-completion) for m
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
 const config: OrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o'
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
   }
 };
 const client = new OrchestrationClient(config);
@@ -62,7 +64,7 @@ Pass a message history and, in most cases, input parameters for the orchestratio
 const systemMessage = new SystemMessage('Be a helpful assistant!');
 const history = [systemMessage];
 const response = await client.invoke(history, {
-  inputParams: { subject: 'Paris' }
+  placeholderValues: { subject: 'Paris' }
 });
 ```
 
@@ -79,8 +81,10 @@ The orchestration service currently doesn't support multiple choices during stre
 
 ```ts
 const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o'
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
   }
 };
 
@@ -122,8 +126,10 @@ It can also be manually aborted if an `AbortSignal` object associated with an `A
 
 ```ts
 const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o'
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
   }
 };
 

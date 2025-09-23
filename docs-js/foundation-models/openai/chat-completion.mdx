@@ -132,7 +132,7 @@ const toolCalls = response.getToolCalls();
 
 Streaming request can be aborted using the `AbortController` API.
 In case of an error, SAP Cloud SDK for AI will automatically close the stream.
-Additionally, it can be aborted manually by calling the `stream()` method with an `AbortController` object.
+Additionally, it can be aborted manually by calling the `stream()` method with an `AbortSignal` object.
 
 ```ts
 const controller = new AbortController();
@@ -145,7 +145,7 @@ const response = await client.stream(
       }
     ]
   },
-  controller
+  controller.signal
 );
 
 // Abort the streaming request after one second
