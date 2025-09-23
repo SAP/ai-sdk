@@ -170,7 +170,7 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const response = orchestrationClient.chatCompletion({
+const response = await orchestrationClient.chatCompletion({
   inputParams: { country: 'France' }
 });
 ```
@@ -195,7 +195,7 @@ const orchestrationClient = new OrchestrationClient({
   templating: yamlTemplate
 });
 
-const response = orchestrationClient.chatCompletion({
+const response = await orchestrationClient.chatCompletion({
   inputParams: { country: 'France' }
 });
 ```
@@ -277,7 +277,7 @@ if (initialResponse & initialResponse.tool_calls) {
 }
 ```
 
-The `callFunction` function routes the calls to the actual function implementations.
+The `callFunction()` function routes the calls to the actual function implementations.
 
 ```ts
 function callFunction(name: string, args: any): string {
@@ -294,7 +294,7 @@ function convertTemperatureToFahrenheit(temperature: number): string {
 }
 ```
 
-Send the function result back to the model to get it's final response:
+Send the function result back to the model to get its final response:
 
 ```ts
 const finalResponse = await client.chatCompletion({
@@ -308,7 +308,7 @@ console.log(finalResponse.getContent());
 ## Response Format
 
 For general response formatting, use the `response_format` parameter.
-It is useful when model is **not calling a tool** and should still return a structured response.
+It is useful when the model is **not calling a tool** and should still return a structured response.
 
 The example below returns a JSON Schema with `strict` set to `true` to let the response adhere to the schema definition.
 
@@ -382,7 +382,7 @@ const response = await orchestrationClient.chatCompletion({
     },
     {
       role: 'user',
-      content: 'Hi! Im Bob'
+      content: "Hi! I'm Bob"
     },
     {
       role: 'assistant',
@@ -642,7 +642,7 @@ const orchestrationClient = new OrchestrationClient({
   outputTranslation: translationConfig
 });
 
-const response = orchestrationClient.chatCompletion({
+const response = await orchestrationClient.chatCompletion({
   messages: [
     {
       role: 'user',
