@@ -1,11 +1,4 @@
-const {
-  
-  ProvidePlugin
-
-
-
-
-} = require('webpack');
+const { ProvidePlugin } = require('webpack');
 
 // We have to polyfill some Node APIs because Docusaurus migrated to Webpack 5
 // This is mainly required because of remark related modules which don't load otherwise
