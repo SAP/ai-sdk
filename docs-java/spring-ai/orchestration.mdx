@@ -237,6 +237,18 @@ var prompt =
 Translation translation = cl.prompt(prompt).call().entity(Translation.class);
 ```
 
+<details>
+  <summary>Tip: For more reliability, add this format </summary>
+
+  ```java
+  var client = new OrchestrationChatModel();
+  var schema = ResponseJsonSchema.fromType(Translation.class);
+  var template = TemplateConfig.create().withJsonSchemaResponse(schema);
+  var opts = new OrchestrationChatOptions(config.withTemplateConfig(template));
+  ```
+
+</details>
+
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
 For detailed information on setting a response format, check the corresponding [Documentation for Orchestration](../orchestration/chat-completion#response-format).
