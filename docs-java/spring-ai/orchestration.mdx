@@ -238,10 +238,9 @@ Translation translation = cl.prompt(prompt).call().entity(Translation.class);
 ```
 
 <details>
-  <summary>Tip: For more reliability, add this format </summary>
+  <summary>Tip: For more reliability, add this config </summary>
 
 ```java
-var client = new OrchestrationChatModel();
 var schema = ResponseJsonSchema.fromType(Translation.class);
 var template = TemplateConfig.create().withJsonSchemaResponse(schema);
 var opts = new OrchestrationChatOptions(config.withTemplateConfig(template));
