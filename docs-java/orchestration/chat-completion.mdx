@@ -405,7 +405,8 @@ It's possible to pass a stream of chat completion delta elements, e.g. from the 
 This is a blocking example for streaming and printing directly to the console:
 
 ```java
-String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+val msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+val prompt = new OrchestrationPrompt(msg);
 
 // try-with-resources on stream ensures the connection will be closed
 try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
@@ -419,6 +420,20 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+
+### Streaming Configuration
+
+The `OrchestrationModuleConfig config` offers parameters to customize streaming behavior.
+
+```java
+config = config.withStreamConfig(
+  new OrchestrationStreamConfig()
+    .withFilterOverlap(100)        // default:0,     Number of preceding characters additionally considered for sequential output filtering
+    .withChunkSize(500)            // default:null   Number of tokens to accumulate when streaming in a single chunk.
+    .withDelimiters(List.of("\n")) // default:empty  Custom delimiter for chunks
+);
+```
+
 
 ## Using Images
 
