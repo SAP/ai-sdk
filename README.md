@@ -1,6 +1,7 @@
 # SAP Cloud SDK for AI documentation portal
 
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk)](https://api.reuse.software/info/github.com/SAP/ai-sdk)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/SAP/ai-sdk)
 
 This repository contains sources for the [SAP Cloud SDK for AI Documentation](https://sap.github.io/ai-sdk/).
 
