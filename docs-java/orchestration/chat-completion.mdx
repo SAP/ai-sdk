@@ -309,6 +309,30 @@ var result =
 
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
+## Custom Masking
+
+Use the [**data masking module**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking) to anonymize personal information in the input:
+
+```java
+var regex = "patient_id_[0-9]+";
+var replacement = "REDACTED_ID";
+var maskingConfig =
+    DpiMasking.anonymization().withRegex(regex,replacement);
+var configWithMasking = config.withMaskingConfig(maskingConfig);
+
+var systemMessage = Message.system("Repeat following messages");
+var userMessage = Message.user("""
+                 The patient id is patient_id_123.
+                 """);
+
+var prompt = new OrchestrationPrompt(systemMessage, userMessage);
+
+var result =
+    new OrchestrationClient().chatCompletion(prompt, configWithMasking);
+```
+
+In this example, the input will be masked before the call to the LLM and will remain masked in the output.
+
 ## Grounding
 
 Use the [**grounding module**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding) to provide additional context to the AI model.
