@@ -272,6 +272,21 @@ For more information on prompt registry, we refer to the corresponding [document
 
 Please see this [documentation](../ai-core/prompt-registry#using-templates-in-springai).
 
+## Embeddings
+
+You can use the `OrchestrationSpringAiEmbeddingModel` to generate embeddings via Orchestration.
+Simply provide the the model name and the input text as follows:
+
+```java
+EmbeddingOptions options = EmbeddingOptionsBuilder.builder()
+    .withModel("text-embedding-3-small").build();
+
+var model = new OrchestrationSpringAiEmbeddingModel(options);
+float[] embedding = model.embed("Hi Orchestration!");
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
 ## Model Context Protocol (MCP) Integration
 
 The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) enables AI models to interact with external tools and resources, expanding their capabilities beyond simple text generation.
