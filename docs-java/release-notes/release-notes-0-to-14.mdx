@@ -5,7 +5,7 @@
 ### 🔧 Compatibility Notes
 
 - Breaking change:
-  - `CompletionPostRequest` is now an interface instead of a class. 
+  - `CompletionPostRequest` is now an interface instead of a class.
     For all previous use-cases, it should be substitutable with the new class `CompletionRequestConfiguration`.
     - `OrchestrationClient.toCompletionPostRequest()` now returns `CompletionRequestConfiguration`.
     - `OrchestrationClient.streamChatCompletionDeltas()` takes `CompletionRequestConfiguration` as an input now.
@@ -37,11 +37,11 @@
     +                  SAPDocumentTranslationOutputConfig.create()
     +                      .targetLanguage(
     +                          SAPDocumentTranslationOutputTargetLanguage.create("de-DE"))
-                           .sourceLanguage("en-US"))); 
+                           .sourceLanguage("en-US")));
     ```
 - [Orchestration] Deprecated models `OrchestrationAiModel.CLAUDE_3_OPUS` and `OrchestrationAiModel.CLAUDE_3_5_SONNET`.
   - Replacement are respectively `OrchestrationAiModel.CLAUDE_4_OPUS` and `OrchestrationAiModel.CLAUDE_4_SONNET`.
-- Inner record classes and their creator methods in  model interfaces are renamed to be more descriptive and type-specific.
+- Inner record classes and their creator methods in model interfaces are renamed to be more descriptive and type-specific.
   - eg: `InnerString` -> `ListOfStrings`, `create()` -> `createListOfStrings()`
 
 ### ✨ New Functionality
@@ -51,7 +51,7 @@
   - Added `OrchestrationEmbeddingModel` with `TEXT_EMBEDDING_3_SMALL`, `TEXT_EMBEDDING_3_LARGE`, `AMAZON_TITAN_EMBED_TEXT` and `NVIDIA_LLAMA_32_NV_EMBEDQA_1B` embedding models.
   - Introduced `OrchestrationEmbeddingRequest` for building requests fluently and `OrchestrationEmbeddingResponse#getEmbeddingVectors()` to retrieve embeddings.
 - [Orchestration] Added new model `OrchestrationAiModel.MISTRAL_MEDIUM_INSTRUCT`.
-  
+
 ### 📈 Improvements
 
 - [Orchestration] Added new API `DpiMasking#withRegex` to apply custom masking patterns.
