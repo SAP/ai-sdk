@@ -274,14 +274,15 @@ Please see this [documentation](../ai-core/prompt-registry#using-templates-in-sp
 
 ## Embeddings
 
-You can use the `OrchestrationSpringAiEmbeddingModel` to generate embeddings via Orchestration.
+You can use the `OrchestrationSpringEmbeddingModel` to generate embeddings via Orchestration.
 Please provide the model name and the input text as follows:
 
 ```java
 EmbeddingOptions options = EmbeddingOptionsBuilder.builder()
-    .withModel("text-embedding-3-small").build();
+    .withModel(OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL.name())
+    .build();
 
-var model = new OrchestrationSpringAiEmbeddingModel(options);
+var model = new OrchestrationSpringEmbeddingModel(options);
 float[] embedding = model.embed("Hi Orchestration!");
 ```
 
