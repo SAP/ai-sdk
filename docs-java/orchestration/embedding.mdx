@@ -1,0 +1,101 @@
+---
+id: embedding
+title: Embedding
+hide_title: false
+hide_table_of_contents: false
+description: How to use the SAP AI SDK for Java to perform embedding tasks using Orchestration models deployed on SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+---
+
+## Introduction
+
+This guide demonstrates how to use the SAP AI SDK for Java to perform embedding tasks using Orchestration models deployed on SAP AI Core.
+
+:::warning
+All classes under any of the `...model` packages are generated from an OpenAPI specification.
+This means that these model classes are not guaranteed to be stable and may change with future releases.
+They are safe to use, but may require updates even in minor releases.
+:::
+
+## Prerequisites
+
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](../../overview-cloud-sdk-for-ai-java#general-requirements).
+Additionally, include the necessary Maven dependency in your project.
+
+### Maven Dependencies
+
+Add the following dependency to your `pom.xml` file:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>orchestration</artifactId>
+        <version>${ai-sdk.version}</version>
+    </dependency>
+</dependencies>
+```
+
+See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml)
+
+## Usage
+
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
+
+<!-- prettier-ignore-start-->
+
+- **A Deployed Orchestration Model in SAP AI Core**
+
+  - Refer
+    to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration)
+    for setup instructions.
+  - In case the model is deployed in a custom resource group, refer to [this section](chat-completion#create-a-client-and-choose-an-llm).
+  - <details>
+    <summary>Example deployed model from the AI Core <code>/deployments</code> endpoint</summary>
+
+    ```json
+    {
+      "id": "d123456abcdefg",
+      "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d123456abcdefg",
+      "configurationId": "12345-123-123-123-123456abcdefg",
+      "configurationName": "orchestration",
+      "scenarioId": "orchestration",
+      "status": "RUNNING",
+      "statusMessage": null,
+      "targetStatus": "RUNNING",
+      "lastOperation": "CREATE",
+      "latestRunningConfigurationId": "12345-123-123-123-123456abcdefg",
+      "ttl": null,
+      "createdAt": "2024-08-05T16:17:29Z",
+      "modifiedAt": "2024-08-06T06:32:50Z",
+      "submissionTime": "2024-08-05T16:17:40Z",
+      "startTime": "2024-08-05T16:18:41Z",
+      "completionTime": null
+    }
+    ```
+
+    </details>
+
+<!-- prettier-ignore-end-->
+
+## Embedding
+
+**Since v1.11.0**
+
+Get the embeddings of a text input in list of float values:
+
+```java
+var request = OrchestrationEmbeddingRequest
+    .forModel(TEXT_EMBEDDING_3_SMALL)
+    .forInputs("I am John Doe")
+    .asDocument() // Optionally optimize for document content
+
+OrchestrationEmbeddingResponse response = client.embed(request);
+float[] embedding = response.getEmbeddingVectors().get(0);
+```
+
+See [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for more features including masking of sensitive data.
