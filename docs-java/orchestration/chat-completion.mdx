@@ -576,21 +576,27 @@ The following sample will translate the prompt into English, send it to the LLM,
 ```java
 var prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel?");
 
-var configWithTranslation =
-    config
-        .withInputTranslationConfig(
-            SAPDocumentTranslation.create()
-                .type(SAP_DOCUMENT_TRANSLATION)
-                .config(SAPDocumentTranslationConfig.create().targetLanguage("en-US")))
-        .withOutputTranslationConfig(
-            SAPDocumentTranslation.create()
-                .type(SAP_DOCUMENT_TRANSLATION)
-                .config(SAPDocumentTranslationConfig.create().targetLanguage("de-DE")));
+var inputConfig = SAPDocumentTranslationInputConfig.create()
+        .targetLanguage("en-US")
+        .applyTo(null);
+var inputTranslation = SAPDocumentTranslationInput.create()
+        .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
+        .config(inputConfig);
+var outputConfig = SAPDocumentTranslationOutputConfig.create()
+        .targetLanguage(SAPDocumentTranslationOutputTargetLanguage.create("de-DE"));
+var outputTranslation = SAPDocumentTranslationOutput.create()
+        .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
+        .config(outputConfig);
+var configWithTranslation = config
+        .withInputTranslationConfig(inputTranslation)
+        .withOutputTranslationConfig(outputTranslation);
 
 var response = client.chatCompletion(prompt, configWithTranslation);
 ```
 
 You can also optionally specify the source language, **the source-target pair has to be in the [list](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).**
+
+Note that setting `SAPDocumentTranslationInputConfig.applyTo()` to either `null` or to an actual value is necessary.
 
 You will find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
