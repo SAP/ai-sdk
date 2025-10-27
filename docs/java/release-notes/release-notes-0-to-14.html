@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">release-notes-0-to-14 | SAP Cloud SDK for AI</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://sap.github.io/ai-sdk/docs/java/release-notes/release-notes-0-to-14"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-docs-java-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-docs-java-current"><meta data-rh="true" property="og:title" content="release-notes-0-to-14 | SAP Cloud SDK for AI"><meta data-rh="true" name="description" content="1.12.0 - October 17, 2025"><meta data-rh="true" property="og:description" content="1.12.0 - October 17, 2025"><link data-rh="true" rel="icon" href="/ai-sdk/img/AI-SDK-Logo.svg"><link data-rh="true" rel="canonical" href="https://sap.github.io/ai-sdk/docs/java/release-notes/release-notes-0-to-14"><link data-rh="true" rel="alternate" href="https://sap.github.io/ai-sdk/docs/java/release-notes/release-notes-0-to-14" hreflang="en"><link data-rh="true" rel="alternate" href="https://sap.github.io/ai-sdk/docs/java/release-notes/release-notes-0-to-14" hreflang="x-default"><link data-rh="true" rel="preconnect" href="https://E4A268JVO0-dsn.algolia.net" crossorigin="anonymous"><link rel="search" type="application/opensearchdescription+xml" title="SAP Cloud SDK for AI" href="/ai-sdk/opensearch.xml"><link rel="stylesheet" href="/ai-sdk/assets/css/styles.d9a753cb.css">
-<script src="/ai-sdk/assets/js/runtime~main.c68eeb26.js" defer="defer"></script>
-<script src="/ai-sdk/assets/js/main.0740b071.js" defer="defer"></script>
+<script src="/ai-sdk/assets/js/runtime~main.a631a9d5.js" defer="defer"></script>
+<script src="/ai-sdk/assets/js/main.8eb50001.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -94,18 +94,18 @@ Please note: depending on the error response, these methods may return <code>nul
 </ul>
 </li>
 <li class="">[Orchestration] Deprecated <code>OrchestrationAiModel.IBM_GRANITE_13B_CHAT</code> with no replacement.</li>
-<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/release-notes/spring-ai/openai">Introduced SpringAI integration with our OpenAI client.</a>
+<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/spring-ai/openai">Introduced SpringAI integration with our OpenAI client.</a>
 <ul>
 <li class="">Added <code>OpenAiChatModel</code></li>
 </ul>
 </li>
-<li class="">[Prompt Registry] <a class="" href="/ai-sdk/docs/java/release-notes/ai-core/prompt-registry#using-templates-in-springai">Using Prompt Registry Templates in SpringAI.</a>
+<li class="">[Prompt Registry] <a class="" href="/ai-sdk/docs/java/ai-core/prompt-registry#using-templates-in-springai">Using Prompt Registry Templates in SpringAI.</a>
 <ul>
 <li class="">Added <code>SpringAiConverter</code></li>
 </ul>
 </li>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#custom-headers">Added convenience to add custom headers to individual orchestration calls.</a></li>
-<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/release-notes/foundation-models/openai/chat-completion#custom-headers">Added convenience to add custom headers to individual LLM calls.</a></li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#custom-headers">Added convenience to add custom headers to individual orchestration calls.</a></li>
+<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers">Added convenience to add custom headers to individual LLM calls.</a></li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-fixed-issues-1">🐛 Fixed Issues<a href="#-fixed-issues-1" class="hash-link" aria-label="Direct link to 🐛 Fixed Issues" title="Direct link to 🐛 Fixed Issues" translate="no">​</a></h3>
 <ul>
@@ -185,7 +185,7 @@ Please note: depending on the error response, these methods may return <code>nul
 <ul>
 <li class="">
 <p>The old OpenAI client (v1.0.0) is being deprecated in favor of the new OpenAI client (v1.4.0).
-<a class="" href="/ai-sdk/docs/java/release-notes/foundation-models/openai/chat-completion">See the documentation for more details</a></p>
+<a class="" href="/ai-sdk/docs/java/foundation-models/openai/chat-completion">See the documentation for more details</a></p>
 </li>
 <li class="">
 <p>Generated classes for the following service specifications are subject to change:</p>
@@ -245,7 +245,7 @@ Please note: depending on the error response, these methods may return <code>nul
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-3">✨ New Functionality<a href="#-new-functionality-3" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
-<li class="">[Orchestration] Added support for <a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#json_schema">transforming a JSON output into an entity</a></li>
+<li class="">[Orchestration] Added support for <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#json_schema">transforming a JSON output into an entity</a></li>
 <li class="">[Orchestration] Added <code>AzureContentFilter#promptShield()</code> available for input filtering.</li>
 <li class="">[Orchestration] Added new models for <code>OrchestrationAiModel</code>: <code>GEMINI_2_5_FLASH</code>, <code>GEMINI_2_5_PRO</code>, <code>ALEPHALPHA_PHARIA_1_7B_CONTROL</code>, <code>OPENAI_O4_MINI</code>, <code>CLAUDE_4_OPUS</code>, <code>CLAUDE_4_SONNET</code>, <code>OPENAI_O3</code>.</li>
 </ul>
@@ -262,11 +262,11 @@ Please note: depending on the error response, these methods may return <code>nul
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-4">✨ New Functionality<a href="#-new-functionality-4" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
-<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/release-notes/foundation-models/openai/chat-completion#executing-tool-calls">Add convenience for tool definition, parsing function calls and tool execution</a></li>
+<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/foundation-models/openai/chat-completion#executing-tool-calls">Add convenience for tool definition, parsing function calls and tool execution</a></li>
 <li class="">[OpenAI] Added the following new models: <code>o4-mini</code>, <code>o3</code>, <code>gpt-4.1</code>, <code>gpt-4.1-nano</code>, and <code>gpt-4.1-mini</code></li>
 <li class="">[Orchestration] Added new model DeepSeek-R1: <code>OrchestrationAiModel.DEEPSEEK_R1</code></li>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/spring-ai/orchestration#tool-calling">Tool execution fully enabled</a></li>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#translation">Added translation</a></li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/spring-ai/orchestration#tool-calling">Tool execution fully enabled</a></li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#translation">Added translation</a></li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-fixed-issues-4">🐛 Fixed Issues<a href="#-fixed-issues-4" class="hash-link" aria-label="Direct link to 🐛 Fixed Issues" title="Direct link to 🐛 Fixed Issues" translate="no">​</a></h3>
 <ul>
@@ -285,7 +285,7 @@ Please note: depending on the error response, these methods may return <code>nul
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-5">✨ New Functionality<a href="#-new-functionality-5" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#locally-test-a-prompt-template">Added support to locally test prompt template files</a></li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#locally-test-a-prompt-template">Added support to locally test prompt template files</a></li>
 <li class="">[Orchestration] Added new models:<!-- -->
 <ul>
 <li class=""><code>OrchestrationAiModel.CLAUDE_3_7_SONNET</code></li>
@@ -298,22 +298,22 @@ Please note: depending on the error response, these methods may return <code>nul
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.6.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-6">✨ New Functionality<a href="#-new-functionality-6" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
-<li class="">[Prompt Registry] <a class="" href="/ai-sdk/docs/java/release-notes/ai-core/prompt-registry">Add Prompt Registry client</a>
+<li class="">[Prompt Registry] <a class="" href="/ai-sdk/docs/java/ai-core/prompt-registry">Add Prompt Registry client</a>
 <ul>
 <li class=""><code>com.sap.ai.sdk:prompt-registry:1.6.0</code></li>
 </ul>
 </li>
-<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/release-notes/foundation-models/openai/chat-completion#executing-tool-calls">Add convenience for tool call execution</a></li>
+<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/foundation-models/openai/chat-completion#executing-tool-calls">Add convenience for tool call execution</a></li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="150---march-13-2025">1.5.0 - March 13, 2025<a href="#150---march-13-2025" class="hash-link" aria-label="Direct link to 1.5.0 - March 13, 2025" title="Direct link to 1.5.0 - March 13, 2025" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.5.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-7">✨ New Functionality<a href="#-new-functionality-7" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/spring-ai/orchestration#chat-memory">Add Spring AI Chat Memory support</a></li>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#templating">Prompt templates can be consumed from registry.</a></li>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#mask-grounding">Masking is now available on grounding.</a></li>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#grounding-via-helpsapcom">Grounding via <em>help.sap.com</em> is enabled.</a></li>
-<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/release-notes/spring-ai/openai#embedding">Spring AI integration for embedding calls.</a></li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/spring-ai/orchestration#chat-memory">Add Spring AI Chat Memory support</a></li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#templating">Prompt templates can be consumed from registry.</a></li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#mask-grounding">Masking is now available on grounding.</a></li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#grounding-via-helpsapcom">Grounding via <em>help.sap.com</em> is enabled.</a></li>
+<li class="">[OpenAI] <a class="" href="/ai-sdk/docs/java/spring-ai/openai#embedding">Spring AI integration for embedding calls.</a></li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="140---february-28-2025">1.4.0 - February 28, 2025<a href="#140---february-28-2025" class="hash-link" aria-label="Direct link to 1.4.0 - February 28, 2025" title="Direct link to 1.4.0 - February 28, 2025" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.4.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
@@ -330,15 +330,15 @@ Use <code>Message.user(String)</code>, <code>Message.user(ImageItem)</code>, or 
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-8">✨ New Functionality<a href="#-new-functionality-8" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/spring-ai/orchestration#tool-calling">Add Spring AI tool calling</a>.</li>
-<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#response-format">Add new convenient methods to set the response format for Orchestration.</a></li>
-<li class="">[Document Grounding] <a class="" href="/ai-sdk/docs/java/release-notes/ai-core/document-grounding">Add Document Grounding Client</a>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/spring-ai/orchestration#tool-calling">Add Spring AI tool calling</a>.</li>
+<li class="">[Orchestration] <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#response-format">Add new convenient methods to set the response format for Orchestration.</a></li>
+<li class="">[Document Grounding] <a class="" href="/ai-sdk/docs/java/ai-core/document-grounding">Add Document Grounding Client</a>
 <ul>
 <li class=""><code>com.sap.ai.sdk:document-grounding:1.4.0</code></li>
 </ul>
 </li>
 <li class="">[OpenAI] New generated model classes introduced for <em>AzureOpenAI</em> specification dated 2024-10-21.</li>
-<li class="">[OpenAI] Introducing <a class="" href="/ai-sdk/docs/java/release-notes/foundation-models/openai/chat-completion#new-user-interface-v140">new user interface</a> for chat completion wrapping the generated model classes.<!-- -->
+<li class="">[OpenAI] Introducing <a class="" href="/ai-sdk/docs/java/foundation-models/openai/chat-completion">new user interface</a> for chat completion wrapping the generated model classes.<!-- -->
 <ul>
 <li class=""><code>OpenAiChatCompletionRequest</code> and <code>OpenAiChatCompletionResponse</code>&#x27; for high level request and response handling.</li>
 <li class=""><code>OpenAiUserMessage</code>, <code>OpenAiSystemMessage</code>, <code>OpenAiAssistantMessage</code> and <code>OpenAiToolMessage</code> for message creation for different content types.</li>
@@ -358,9 +358,9 @@ Use <code>Message.user(String)</code>, <code>Message.user(ImageItem)</code>, or 
 <li class="">Upgrade to release 2502a of AI Core.</li>
 <li class="">Orchestration:<!-- -->
 <ul>
-<li class=""><a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#filtering">Add <code>LlamaGuardFilter</code></a>.</li>
-<li class=""><a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#using-images">Convenient methods to create messages containing images and multiple text inputs</a></li>
-<li class=""><a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#response-format">Enable setting the response format</a></li>
+<li class=""><a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#filtering">Add <code>LlamaGuardFilter</code></a>.</li>
+<li class=""><a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#using-images">Convenient methods to create messages containing images and multiple text inputs</a></li>
+<li class=""><a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#response-format">Enable setting the response format</a></li>
 </ul>
 </li>
 </ul>
@@ -376,8 +376,8 @@ Most variables or methods previously typed as <code>ChatMessage</code> in <code>
 <ul>
 <li class="">New Orchestration features:<!-- -->
 <ul>
-<li class=""><a class="" href="/ai-sdk/docs/java/release-notes/spring-ai/orchestration">Spring AI integration</a></li>
-<li class=""><a class="" href="/ai-sdk/docs/java/release-notes/orchestration/chat-completion#grounding">Add Grounding configuration convenience</a></li>
+<li class=""><a class="" href="/ai-sdk/docs/java/spring-ai/orchestration">Spring AI integration</a></li>
+<li class=""><a class="" href="/ai-sdk/docs/java/orchestration/chat-completion#grounding">Add Grounding configuration convenience</a></li>
 <li class="">Images are now supported as input in newly introduced <code>MultiChatMessage</code>.</li>
 <li class=""><code>MultiChatMessage</code> also allows for multiple content items (text or image) in one object.</li>
 <li class="">Grounding input can be masked with <code>DPIConfig</code>.</li>
