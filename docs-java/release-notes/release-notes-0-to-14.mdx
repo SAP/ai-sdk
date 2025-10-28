@@ -67,7 +67,6 @@
 ### 🔧 Compatibility Notes
 
 - [Prompt Registry] breaking changes:
-
   - `Template` has been renamed to `PromptTemplate`.
   - Some endpoints have a new parameter `String aiResourceGroupScope` which can be set to `null`.
 
@@ -155,7 +154,6 @@
 - The old OpenAI client (v1.0.0) is being deprecated in favor of the new OpenAI client (v1.4.0).
   [See the documentation for more details](/docs/java/foundation-models/openai/chat-completion)
 - Generated classes for the following service specifications are subject to change:
-
   - core
   - openai
   - orchestration
@@ -171,11 +169,9 @@
   - `CLAUDE_3_SONNET` is replaced by `CLAUDE_4_SONNET`.
   - `MIXTRAL_8X7B_INSTRUCT_V01` is replaced by `MISTRAL_SMALL_INSTRUCT`.
 - [OpenAI] Deprecated : `GPT_4`.
-
   - `GPT_4`is replaced by : `GPT_40`or `GPT_41`.
 
 - [Prompt Registry] Resource group has been added as a optional parameter to all endpoints. Set it to `"default"` if it was not set before. Examples:
-
   - `client.importPromptTemplate(File)` --> `client.importPromptTemplate("default", File)`.
   - `client.parsePromptTemplateById(id, false, inputParams)` --> `client.parsePromptTemplateById(id, "default", false, inputParams)`.
 
