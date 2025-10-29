@@ -224,6 +224,7 @@ The following example uses the `Translation` class:
 public record Translation(
   @JsonProperty(required = true) String translation,
   @JsonProperty(required = true) String language) {}
+// ⚠️ @JsonProperty(required = true) is necessary for the schema generation
 
 ChatModel client = new OrchestrationChatModel();
 OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
