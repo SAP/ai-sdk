@@ -531,7 +531,7 @@ In order to do that, add a JSON schema to the configuration as shown below and t
 
 ```java
 static class TestClass {
-  @JsonProperty(required = true)  // <-- this is necessary for the schema generation
+  @JsonProperty(required = true)  // <-- ⚠️ this is necessary for the schema generation
   private String stringField;
 
   @JsonProperty(required = true)
@@ -551,7 +551,7 @@ var prompt = new OrchestrationPrompt(Message.user("Some message."));
 TestClass response = client.chatCompletion(prompt, configWithTemplate).asEntity(TestClass.class);
 ```
 
-Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`.
+Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)` and annotate schema fields with `@JsonProperty(required = true)`.
 Not all schemas are possible for OpenAI in strict mode.
 See [here](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) for more information.
 
