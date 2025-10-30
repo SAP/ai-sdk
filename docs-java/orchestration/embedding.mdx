@@ -99,3 +99,9 @@ float[] embedding = response.getEmbeddingVectors().get(0);
 ```
 
 See [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for more features including masking of sensitive data.
+
+:::tip Integration with CAP
+
+In case you are using CAP, you can use the above code together with the native support for the [HANA Vector Store](https://cap.cloud.sap/docs/guides/databases-hana#vector-embeddings).
+
+:::
