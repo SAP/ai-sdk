@@ -17,7 +17,7 @@ The `@sap-ai-sdk/langchain` packages provides `AzureOpenAiChatClient` and `Azure
 
 ## Client Initialization
 
-Both clients reuse the Azure OpenAI clients from `@sap-ai-sdk/foundation-models` and implement [LangChain's interface](https://js.langchain.com/docs/introduction).
+Both clients reuse the Azure OpenAI clients from `@sap-ai-sdk/foundation-models` and implement [LangChain's interface](https://docs.langchain.com/oss/javascript/langchain/models).
 Therefore, the client initialization combines the configuration of the foundation model and LangChain options.
 
 Similar to the foundation model clients, the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` LangChain clients can be initialized with model name and, by default, the latest model version.
@@ -184,14 +184,14 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 
 LangChain offers a unified way to connect tools to language models.
 Use the `bindTools()` method to define the set of tools a model can access.
-For more details, see the [official LangChain documentation on tool binding](https://js.langchain.com/docs/concepts/tool_calling/#tool-binding).
+For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling).
 For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents#define-tools).
 
 ### Structured Output
 
 It is often useful to have a model return output that matches a specific schema.
 This schema can be defined using either a [Zod](https://zod.dev/) schema or an OpenAI-style JSON schema.
-For more details on structured output, refer to the [official LangChain documentation on structured output](https://js.langchain.com/docs/how_to/structured_output/#the-.withstructuredoutput-method).
+For more details on structured output, refer to the [official LangChain documentation on structured output](https://docs.langchain.com/oss/javascript/langchain/models#structured-outputs).
 Below is an example using `json_schema` response type and passing in a Zod schema.
 
 ```ts
