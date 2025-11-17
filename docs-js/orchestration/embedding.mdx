@@ -76,10 +76,9 @@ Embedding items returned by `getEmbeddings()` have the shape:
 `{ object: 'embedding', index: number, embedding: number[] | string }`.
 
 Access number vector embeddings as follows:
+
 ```ts
-const embedding = embeddingResult
-  .getEmbeddings()
-  .map(item => item.embedding);
+const embedding = embeddingResult.getEmbeddings().map(item => item.embedding);
 ```
 
 - When the provider returns numeric vectors, each element in `embedding` is a `number[]`.
