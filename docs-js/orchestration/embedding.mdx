@@ -64,6 +64,27 @@ console.log(JSON.stringify(usage));
 - `input` can be a single string or an array of strings for batch embedding.
 - `type` can be set to optimize embeddings for a given task (`'text' | 'document' | 'query'`). Defaults to `'text'`.
 
+Use the following convenience methods for handling embedding responses:
+
+- `getEmbeddings()` returns an array of embedding items: `{ object: 'embedding', index: number, embedding: number[] | string }`.
+- `getTokenUsage()` provides token usage details for the embeddings request.
+- `getIntermediateResults()` returns orchestration module intermediate results (if present), for example masking diagnostics.
+
+## Response Object and Numeric Embeddings
+
+Embedding items returned by `getEmbeddings()` have the shape:
+`{ object: 'embedding', index: number, embedding: number[] | string }`.
+
+Access number vector embeddings as follows:
+```ts
+const embedding = embeddingResult
+  .getEmbeddings()
+  .map(item => item.embedding);
+```
+
+- When the provider returns numeric vectors, each element in `embedding` is a `number[]`.
+- If your provider returns base64 strings instead, decode them according to the provider’s format or request numeric vectors via `embeddings.model.params` when supported (for example, `encoding_format: 'float'`).
+
 ## Batch Embedding
 
 Pass an array of strings to embed multiple inputs at once. The returned `data` array preserves order with the `index` field.
