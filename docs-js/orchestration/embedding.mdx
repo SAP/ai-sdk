@@ -1,0 +1,238 @@
+---
+id: embedding
+title: Embedding
+hide_title: false
+hide_table_of_contents: false
+description: How to use the SAP Cloud SDK for AI to generate embeddings using the Orchestration service on SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - orchestration
+  - embedding
+---
+
+The `@sap-ai-sdk/orchestration` package provides a client for the orchestration service of SAP AI Core.
+Use the orchestration embedding client to generate vector embeddings from text inputs using a harmonized API across embedding models.
+You can optionally enable orchestration modules such as [masking](#masking-sensitive-data) for PII protection.
+
+Find more details about the orchestration workflow in the SAP Help Portal:
+- Orchestration overview: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow
+- Harmonized API: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api
+
+See also: [Chat Completion](./chat-completion)
+
+## Installation
+
+```
+$ npm install @sap-ai-sdk/orchestration
+```
+
+## Quick Start
+
+Initialize the `OrchestrationEmbeddingClient` with the embedding model configuration.
+Then call `embed()` with your input.
+
+```ts
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+
+const embeddingClient = new OrchestrationEmbeddingClient({
+  embeddings: {
+    model: {
+      name: 'text-embedding-3-large',
+      // version: 'latest',         // optional
+      // params: { dimensions: 4 }  // optional, model-specific parameters
+    }
+  }
+});
+
+const response = await embeddingClient.embed({
+  input: 'AI is fascinating',
+  // type: 'text' // optional: 'text' | 'document' | 'query' (default: 'text')
+});
+
+// Access the embedding vectors and usage
+const data = response.getEmbeddings(); // [{ object: 'embedding', index: 0, embedding: number[] | base64-string }]
+const usage = response.getTokenUsage(); // token usage information
+
+console.log(data[0].embedding);
+console.log(JSON.stringify(usage));
+```
+
+- `input` can be a single string or an array of strings for batch embedding.
+- `type` can be set to optimize embeddings for a given task (`'text' | 'document' | 'query'`). Defaults to `'text'`.
+
+## Batch Embedding
+
+Pass an array of strings to embed multiple inputs at once. The returned `data` array preserves order with the `index` field.
+
+```ts
+const response = await embeddingClient.embed({
+  input: ['First text to embed', 'Second text to embed'],
+  type: 'text'
+});
+
+for (const item of response.getEmbeddings()) {
+  console.log(item.index, item.embedding.length);
+}
+```
+
+## Choosing an Embedding Model
+
+Set the model in `embeddings.model.name`.
+Thanks to the harmonized API, you can use different providers without changing your client code. Example:
+
+```ts
+const embeddingClient = new OrchestrationEmbeddingClient({
+  embeddings: {
+    model: {
+      // Example OpenAI model:
+      name: 'text-embedding-3-large'
+      // Example alternative (if available on your Generative AI Hub tenant):
+      // name: 'vertexai--textembedding-gecko'
+      // name: 'mistral--mistral-embed'
+    }
+  }
+});
+```
+
+Refer to your SAP Generative AI Hub tenant for the list of available embedding models and identifiers.
+
+## Masking Sensitive Data
+
+Use the masking module to anonymize or pseudonymize sensitive information (PII) before it is sent to the embedding model.
+
+```ts
+import { OrchestrationEmbeddingClient, buildDpiMaskingProvider } from '@sap-ai-sdk/orchestration';
+
+const client = new OrchestrationEmbeddingClient({
+  embeddings: {
+    model: { name: 'text-embedding-3-large' }
+  },
+  masking: {
+    masking_providers: [
+      buildDpiMaskingProvider({
+        method: 'anonymization',
+        entities: ['profile-email', 'profile-person']
+      })
+    ]
+  }
+});
+
+const res = await client.embed({
+  input: 'Hello, my name is Alice Johnson and my email is alice.johnson@company.com.',
+  type: 'text'
+});
+
+console.log(res.getEmbeddings()[0].embedding);
+```
+
+## Deployment Configuration
+
+By default, the SDK resolves the orchestration deployment in the `default` resource group.
+If you use a different resource group or want to target a specific deployment, pass a deployment configuration as the second constructor argument.
+
+```ts
+// Using a custom resource group
+const clientA = new OrchestrationEmbeddingClient(
+  {
+    embeddings: { model: { name: 'text-embedding-3-large' } }
+  },
+  { resourceGroup: 'my-custom-resource-group' }
+);
+
+// Using an explicit deployment ID
+const clientB = new OrchestrationEmbeddingClient(
+  {
+    embeddings: { model: { name: 'text-embedding-3-large' } }
+  },
+  { deploymentId: 'my-custom-deployment-id' }
+);
+```
+
+## Custom Destination
+
+Optionally, provide a custom destination as the third constructor argument to control how requests are sent.
+
+```ts
+const client = new OrchestrationEmbeddingClient(
+  { embeddings: { model: { name: 'text-embedding-3-large' } } },
+  undefined,
+  { destinationName: 'my-destination', useCache: true }
+);
+```
+
+For more details on destinations, see [Using a Destination](../connecting-to-ai-core#using-a-destination).
+
+## Custom Request Configuration
+
+Add custom headers or query parameters by passing a `CustomRequestConfig` as the second parameter to `embed()`.
+
+```ts
+const response = await embeddingClient.embed(
+  {
+    input: 'Vectorize this text'
+  },
+  {
+    headers: { 'x-custom-header': 'custom-value' },
+    params: {
+      // Add custom query params if needed
+    }
+  }
+);
+```
+
+## Token Usage and Intermediate Results
+
+- `getTokenUsage()` returns usage information for the embeddings request.
+- `getIntermediateResults()` returns orchestration module intermediate results (if present), such as masking diagnostics.
+
+```ts
+const response = await embeddingClient.embed({ input: 'Some text' });
+
+console.log(response.getTokenUsage());
+console.log(response.getIntermediateResults());
+```
+
+## Example: Vectorizing for RAG
+
+A minimal example showing how you might compute embeddings and store them externally for retrieval.
+
+```ts
+type VectorRow = { id: string; vector: number[] };
+
+async function embedAndStore(inputs: string[]): Promise<VectorRow[]> {
+  const client = new OrchestrationEmbeddingClient({
+    embeddings: { model: { name: 'text-embedding-3-large' } }
+  });
+
+  const res = await client.embed({ input: inputs, type: 'document' });
+  const vectors = res.getEmbeddings();
+
+  // Persist in your vector store of choice
+  return vectors.map(v => ({ id: String(v.index), vector: v.embedding as number[] }));
+}
+```
+
+## Error Handling
+
+Embedding requests may fail due to invalid configuration, unavailable deployments, quota limits, or provider errors.
+Wrap calls in `try/catch` and consult the cause for more details.
+
+```ts
+try {
+  await embeddingClient.embed({ input: '...' });
+} catch (error: any) {
+  console.error(error.message);
+  console.error(error.cause?.response?.data); // orchestration/provider error details if available
+}
+```
+
+See [Error Handling](../error-handling) for general guidance.
+
+## Notes
+
+- Streaming is not applicable to embedding endpoints.
+- When using `params` in the model configuration, supported fields depend on the chosen model/provider (for example, `dimensions`).
+- For production workloads, consider [masking](#masking-sensitive-data) and proper [deployment configuration](#deployment-configuration).
