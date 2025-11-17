@@ -17,7 +17,7 @@ The `@sap-ai-sdk/langchain` packages provides `OrchestrationClient` client for L
 
 ## Client Initialization
 
-The client reuses the orchestration client from `@sap-ai-sdk/orchestration` and implements [LangChain's interface](https://js.langchain.com/docs/introduction).
+The client reuses the orchestration client from `@sap-ai-sdk/orchestration` and implements [LangChain's interface](https://docs.langchain.com/oss/javascript/langchain/models).
 Therefore, the client initialization combines the configuration of the orchestration client and LangChain options.
 
 Similar to the orchestration client, the `OrchestrationClient` LangChain client can be initialized with an orchestration configuration.
@@ -164,7 +164,7 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 
 LangChain offers a unified way to connect tools to language models.
 Use the `bindTools()` method to define the set of tools a model can access.
-For more details, see the [official LangChain documentation on tool binding](https://js.langchain.com/docs/concepts/tool_calling/#tool-binding).
+For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling).
 For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents#define-tools).
 
 ## Resilience
