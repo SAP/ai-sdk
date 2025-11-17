@@ -18,6 +18,7 @@ Use the orchestration embedding client to generate vector embeddings from text i
 You can optionally enable orchestration modules such as [masking](#masking-sensitive-data) for PII protection.
 
 Find more details about the orchestration workflow in the SAP Help Portal:
+
 - Orchestration overview: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow
 - Harmonized API: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api
 
@@ -40,7 +41,7 @@ import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
 const embeddingClient = new OrchestrationEmbeddingClient({
   embeddings: {
     model: {
-      name: 'text-embedding-3-large',
+      name: 'text-embedding-3-large'
       // version: 'latest',         // optional
       // params: { dimensions: 4 }  // optional, model-specific parameters
     }
@@ -48,7 +49,7 @@ const embeddingClient = new OrchestrationEmbeddingClient({
 });
 
 const response = await embeddingClient.embed({
-  input: 'AI is fascinating',
+  input: 'AI is fascinating'
   // type: 'text' // optional: 'text' | 'document' | 'query' (default: 'text')
 });
 
@@ -104,7 +105,10 @@ Refer to your SAP Generative AI Hub tenant for the list of available embedding m
 Use the masking module to anonymize or pseudonymize sensitive information (PII) before it is sent to the embedding model.
 
 ```ts
-import { OrchestrationEmbeddingClient, buildDpiMaskingProvider } from '@sap-ai-sdk/orchestration';
+import {
+  OrchestrationEmbeddingClient,
+  buildDpiMaskingProvider
+} from '@sap-ai-sdk/orchestration';
 
 const client = new OrchestrationEmbeddingClient({
   embeddings: {
@@ -121,7 +125,8 @@ const client = new OrchestrationEmbeddingClient({
 });
 
 const res = await client.embed({
-  input: 'Hello, my name is Alice Johnson and my email is alice.johnson@company.com.',
+  input:
+    'Hello, my name is Alice Johnson and my email is alice.johnson@company.com.',
   type: 'text'
 });
 
@@ -211,7 +216,10 @@ async function embedAndStore(inputs: string[]): Promise<VectorRow[]> {
   const vectors = res.getEmbeddings();
 
   // Persist in your vector store of choice
-  return vectors.map(v => ({ id: String(v.index), vector: v.embedding as number[] }));
+  return vectors.map(v => ({
+    id: String(v.index),
+    vector: v.embedding as number[]
+  }));
 }
 ```
 
