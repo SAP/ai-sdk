@@ -58,6 +58,11 @@ const createPipelineResponse = await PipelinesApi.createPipeline(
   {
     configuration: {
       destination: 'my-destination'
+      sharepoint: {
+        site: {
+          name: 'sharepoint-site-name'
+        }
+      }
     },
     type: 'MSSharePoint'
   },
