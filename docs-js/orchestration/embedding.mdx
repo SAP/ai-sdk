@@ -75,7 +75,8 @@ Access vector embeddings as follows:
 const embeddings = response.getEmbeddings().map(item => item.embedding);
 ```
 
-When the provider returns numeric vectors, each element in `embeddings` is a `number[]`.
+If the provider returns numeric vectors, each element in `embeddings` is a `number[]`.
+Most providers will return numeric vectors unless configured differently.
 
 ## Batch Embedding
 
