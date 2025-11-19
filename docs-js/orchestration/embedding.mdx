@@ -60,7 +60,7 @@ const usage = response.getTokenUsage();
 
 Use the following convenience methods for handling embedding responses:
 
-- The `getEmbeddings()` method returns an array of embedding items: `{ object: 'embedding', index: number, embedding: number[] | string }`.
+- The `getEmbeddings()` method returns an array of embedding items: `{ object: 'embedding', index: number, embedding: number[] | string }[]`.
 - The `getTokenUsage()` method provides token usage details for the embeddings request.
 - The `getIntermediateResults()` method returns orchestration module intermediate results (if present), such as masking diagnostics.
 
