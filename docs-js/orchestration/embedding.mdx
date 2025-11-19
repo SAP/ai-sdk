@@ -81,7 +81,8 @@ Most providers will return numeric vectors unless configured differently.
 ## Batch Embedding
 
 Pass an array of strings to embed multiple inputs at once.
-The array returned by `getEmbeddings()` preserves the order with the `index` field.
+The array returned by `getEmbeddings()` includes an `index` field.
+Use the index to correlate the embeddings to the input array order
 
 ```ts
 const response = await embeddingClient.embed({
