@@ -147,6 +147,7 @@ const response = await client.embed({
 });
 
 const embeddings = response.getEmbeddings().map(item => item.embedding);
+const maskingDiagnostics = response.getIntermediateResults();
 console.log(embeddings);
 ```
 
