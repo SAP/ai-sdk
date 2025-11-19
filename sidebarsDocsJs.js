@@ -6,7 +6,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Orchestration',
-      items: ['orchestration/chat-completion']
+      items: ['orchestration/chat-completion', 'orchestration/embedding']
     },
     {
       type: 'category',
