@@ -696,7 +696,7 @@ const response = await orchestrationClient.chatCompletion({
 By default, the optional filter property `data_repository_type` is set to `vector`.
 Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
 
-Set `metadata_params` property with an array of parameter names to include [Metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/metadata) in the grounding result, which can be mentioned when writing the prompt.
+Set `metadata_params` property with an array of parameter names to include [Metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/contextualized-retrieval-using-metadata-and-vector-search?locale=en-US) in the grounding result, which can be mentioned when writing the prompt.
 If set the value to `'*'`, all metadata will be included.
 
 Set `data_repositories` property with an array of repository IDs to search in specific data repositories.
