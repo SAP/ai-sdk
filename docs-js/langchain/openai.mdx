@@ -203,7 +203,9 @@ const llm = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 const joke = z.object({
   setup: z.string().meta({ description: 'The setup of the joke' }),
   punchline: z.string().meta({ description: 'The punchline to the joke' }),
-  rating: z.number().meta({ description: 'How funny the joke is, from 1 to 10' })
+  rating: z
+    .number()
+    .meta({ description: 'How funny the joke is, from 1 to 10' })
 });
 
 const structuredLlm = llm.withStructuredOutput(joke, {
