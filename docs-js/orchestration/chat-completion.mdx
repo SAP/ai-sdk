@@ -751,7 +751,8 @@ const response = await orchestrationClient.chatCompletion({
 The `applyTo` property in the translation configuration allows you to specify which messages in the conversation should be translated. This provides granular control over translation in multi-turn conversations.
 
 This selector is optional and allows specifying:
-- `category` - Can be either `placeholders` or   `template_roles`;
+
+- `category` - Can be either `placeholders` or `template_roles`;
 - `items` - Array of specific placeholder or role names to apply the translation to;
 - `source_language` (optional) - Source language for the items.
 
@@ -762,11 +763,11 @@ const inputTranslation = buildTranslationConfig('input', {
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE',
   applyTo: [
-        {
-          category: 'placeholders',
-          items: ['user_input'],
-          source_language: 'de-DE'
-        }
+    {
+      category: 'placeholders',
+      items: ['user_input'],
+      source_language: 'de-DE'
+    }
   ]
 });
 
@@ -774,11 +775,11 @@ const outputTranslation = buildTranslationConfig('output', {
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE',
   applyTo: [
-      {
-        category: 'placeholders',
-        items: ['user_input'],
-        source_language: 'de-DE'
-      }
+    {
+      category: 'placeholders',
+      items: ['user_input'],
+      source_language: 'de-DE'
+    }
   ]
 });
 ```
