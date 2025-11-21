@@ -564,10 +564,10 @@ const outputFilter = buildAzureContentSafetyFilter('output', {
 
 #### Protected material code
 
-Protected material code detection identifies and safeguards against the inclusion of proprietary or copyrighted programming content in user inputs.
-This scan proactively monitors for protected code snippets, software libraries, source code, algorithms, and other intellectual property sourced from known GitHub repositories, preventing unauthorized use or potential legal issues in AI-generated responses.
+Protected material code detection identifies and safeguards against the inclusion of proprietary or copyrighted programming content in AI-generated responses.
+This scan proactively monitors for protected code snippets, software libraries, source code, algorithms, and other intellectual property sourced from known GitHub repositories, preventing unauthorized use or potential legal issues.
 To enable protected material code detection, set the `protected_material_code` property to `true` in the Azure content safety input filter configuration.
-This options is only available for output filter configuration.
+It is only supported for output filter configuration.
 For more information, refer to [Azure AI Content Safety Protected Material Detection](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/protected-material).
 
 ```ts
