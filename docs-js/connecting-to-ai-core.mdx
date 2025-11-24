@@ -29,7 +29,7 @@ When running on SAP BTP (Cloud Foundry, Kyma, Gardener), _bind_ the AI Core serv
 - In Kubernetes / Kyma environments, you have to use the [SAP BTP Service Operator](https://github.com/SAP/sap-btp-service-operator?tab=readme-ov-file#sap-business-technology-platform-sap-btp-service-operator-for-kubernetes) to create the binding.
   That will create a Kubernetes secret, which must be mounted to the application pod.
   By default, the expected mount path is `/etc/secrets/sapcp/aicore/<instance-name>`
-  For more information refer to [the documentation from xsenv](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
+  For more information refer to [the documentation from `@sap/xsenv`](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
 
 If no service binding is found and no destination is explicitly provided, the SDK throws an exception:
 
