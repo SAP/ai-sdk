@@ -38,13 +38,7 @@ Could not find service credentials for AI Core. Please check the service binding
 ```
 
 :::tip
-You can verify your service binding setup by running:
-
-```javascript
-var xsenv = require('@sap/xsenv');
-console.log(xsenv.readServices({ label: 'aicore' }));
-```
-
+Since SAP Cloud SDK for AI uses `@sap/xsenv` for reading the service binding, refer to [`@sap/xsenv`](https://www.npmjs.com/package/@sap/xsenv?activeTab=readme) for more information about service lookup, `VCAP_SERVICES` environment variables in Cloud Foundry, secret mounting path in Kyma / Kubernetes and many more.
 :::
 
 ### Providing a Service Binding Locally
