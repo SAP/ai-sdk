@@ -26,7 +26,7 @@ The SAP Cloud SDK for AI uses [**@sap/xsenv**](https://www.npmjs.com/package/@sa
 When running on SAP BTP (Cloud Foundry, Kyma, Gardener), _bind_ the AI Core service instance to your application.
 
 - In Cloud Foundry, binding the service will result in the AI Core credentials being included in the `VCAP_SERVICES` environment variable.
-- In Kubernetes / Kyma environments, you have to use the [BTP Service Operator](https://github.com/SAP/sap-btp-service-operator?tab=readme-ov-file#sap-business-technology-platform-sap-btp-service-operator-for-kubernetes) to create the binding.
+- In Kubernetes / Kyma environments, you have to use the [SAP BTP Service Operator](https://github.com/SAP/sap-btp-service-operator?tab=readme-ov-file#sap-business-technology-platform-sap-btp-service-operator-for-kubernetes) to create the binding.
   That will create a Kubernetes secret, which must be mounted to the application pod.
   By default, the expected mount path is `/etc/secrets/sapcp/aicore/<instance-name>`
   For more information refer to [the documentation from xsenv](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
