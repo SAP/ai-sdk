@@ -16,14 +16,20 @@ keywords:
 The SAP Cloud SDK for AI uses the [Destination concept of the SAP Cloud SDK](https://sap.github.io/cloud-sdk/docs/js/features/connectivity/destinations) to connect to AI Core.
 This allows for a seamless integration in SAP BTP and offers a wide variety of managing the credentials for the connection.
 
+Prerequisite for using the SAP Cloud SDK for AI is to have an [instance of the AI Core service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-service-instance) created.
+
 ## Using a Service Binding
 
 By default, the SAP Cloud SDK for AI will look for an `aicore` service binding in the environment of the application.
+The SAP Cloud SDK for AI uses [**@sap/xsenv**](https://www.npmjs.com/package/@sap/xsenv) to read the service binding.
 
-When running on SAP BTP, [create an instance of the AI Core service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-service-instance) and bind it to your application.
+When running on SAP BTP (Cloud Foundry, Kyma, Gardener), _bind_ the AI Core service instance to your application.
 
-- In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
-- In Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
+- In Cloud Foundry, binding the service will result in the AI Core credentials being included in the `VCAP_SERVICES` environment variable.
+- In Kubernetes / Kyma environments, you have to use the [BTP Service Operator](https://github.com/SAP/sap-btp-service-operator?tab=readme-ov-file#sap-business-technology-platform-sap-btp-service-operator-for-kubernetes) to create the binding.
+  That will create a Kubernetes secret, which must be mounted to the application pod.
+  By default, the expected mount path is `/etc/secrets/sapcp/aicore/<instance-name>`
+  For more information refer to [the documentation from xsenv](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
 
 If no service binding is found and no destination is explicitly provided, the SDK throws an exception:
 
@@ -31,7 +37,15 @@ If no service binding is found and no destination is explicitly provided, the SD
 Could not find service credentials for AI Core. Please check the service binding.
 ```
 
-To run the code outside of SAP BTP (e.g., locally), provide the necessary credentials manually.
+:::tip
+You can verify your service binding setup by running:
+
+```javascript
+var xsenv = require('@sap/xsenv');
+console.log(xsenv.readServices({ label: 'aicore' }));
+```
+
+:::
 
 ### Providing a Service Binding Locally
 
