@@ -208,9 +208,9 @@ Prompt templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-a
 By default, prompts are stored in the `tenant` scope, making them accessible across all resource groups within the tenant, ensuring broad availability.
 
 Alternatively, you can use the `resource_group` scope to store prompts specific to a particular resource group.
-This is useful when different teams needs isolated prompt templates, that they do not want to share with other teams in the same tenant.
+This is useful when prompt templates need to be isolated and should not be shared with others in the same tenant.
 
-To reference a scoped prompt template, specify the `scope` property in the `template_ref` alongside either the ID or name, scenario, and version.
+To reference a scoped prompt template, specify the `scope` property in the `template_ref` alongside either the template `id` or template `name`, `scenario`, and `version`.
 When using a non-default resource group, make sure to also provide the `resourceGroup` parameter in the client deployment config.
 
 ```ts
@@ -231,6 +231,10 @@ const orchestrationClient = new OrchestrationClient(
     }
   },
   {
+    // langchain options
+  },
+  {
+    // deployment config
     resourceGroup: 'my-resource-group'
   }
 );
