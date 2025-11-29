@@ -411,12 +411,10 @@ import * as z from 'zod/v4';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration';
 
-const countryCapitalSchema = z
-  .object({
-    country_name: z.string(),
-    capital: z.string()
-  })
-  .strict();
+const countryCapitalSchema = z.strictObject({
+  country_name: z.string(),
+  capital: z.string()
+});
 
 const response_format: ResponseFormatJsonSchema = {
   type: 'json_schema',
