@@ -203,19 +203,19 @@ const response = await client.run({
 console.log(response.getContent());
 ```
 
-You can also define JSON schema using [Zod](https://zod.dev/) schema as shown below:
+You can also define JSON schema using [Zod](https://zod.dev/) schema.
+We recommend using Zod v4 for full compatibility with this package.
+If you're upgrading from an earlier version, refer to the [Zod v4 migration guide](https://zod.dev/v4/changelog) and pay attention to breaking changes like the switch from `describe('...')` to `meta({ description: '...' })`.
 
 ```ts
 import * as z from 'zod';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { AzureOpenAiResponseFormatJsonSchema } from '@sap-ai-sdk/foundation-models';
 
-const countryCapitalSchema = z
-  .object({
-    population: z.number(),
-    capital: z.string()
-  })
-  .strict();
+const countryCapitalSchema = z.strictObject({
+  population: z.number(),
+  capital: z.string()
+});
 
 const response_format: AzureOpenAiResponseFormatJsonSchema = {
   type: 'json_schema',
