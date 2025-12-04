@@ -803,14 +803,15 @@ const outputTranslation = buildTranslationConfig('output', {
 
 #### Automatic Target Language Inference
 
-By detecting the the source language from tanslation, the output translation can automatically repond in the user's original language.
+By detecting the source language from translation, the output translation can automatically respond in the user's original language.
 There is no need to specify a fixed target language, instead reference the `applyTo` item from the input translation.
 
 For more information check out (this)[https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation-48be058d01bd4df2a82e5430561e6f44#automatic-target-language-inference] link.
 
 #### Chat History Control
 
-By default, chat history messages are translated. If chat history message translation is not neccessary, set the `translateMessagesHistory` to `false`.
+By default, chat history messages are translated. 
+If chat history message translation is not necessary, set the `translateMessagesHistory` to `false`.
 
 ```JSON
     const translationConfig = buildTranslationConfig('input', {
