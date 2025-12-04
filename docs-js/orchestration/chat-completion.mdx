@@ -748,25 +748,41 @@ const response = await orchestrationClient.chatCompletion({
 
 ### ApplyTo Selector
 
-The `applyTo` property in the translation configuration allows you to specify which messages in the conversation should be translated. This provides granular control over translation in multi-turn conversations.
+The `applyTo` property in the translation configuration allows you to selectively translate which messages or parts of messages in the conversation should be translated.
+This provides granular control over translation in multi-turn conversations.
 
 This selector is optional and allows specifying:
-- `category` - Can be either `placeholders` or   `template_roles`;
-- `items` - Array of specific placeholder or role names to apply the translation to;
-- `source_language` (optional) - Source language for the items.
 
-When selector is not defined, the system translates all applicable content without selective filtering.
+- `category` - Can be either `placeholders` or `template_roles`;
+- `items` - Array of specific placeholder or role names to apply the translation to;
+- `sourceLanguage` (optional) - Source language for the items. If not specified, the detected language will be applied.
+
+When no `applyTo` selector is defined, the system translates all applicable content without selective filtering.
+For more information about this feature please refer to [this](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-translation#loio152a5f4796f9493d98323786571356bf__section_rck_4gp_2hc) link.
+
+#### Placeholders
+
+The `placeholders` category allows translating specific placeholder values from the `placeholderValues` parameter of the `chatCompletion()` method.
+
+#### Template Roles
+
+The `template_roles` category allows translating template messages with specific message roles, such as `user`, `assistant`, or `system` messages in the prompt.
 
 ```ts
 const inputTranslation = buildTranslationConfig('input', {
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE',
   applyTo: [
-        {
-          category: 'placeholders',
-          items: ['user_input'],
-          source_language: 'de-DE'
-        }
+    {
+      category: 'placeholders',
+      items: ['country'],
+      sourceLanguage: 'en-US'
+    },
+    {
+      category: 'placeholders',
+      items: ['groundingRequest'],
+      sourceLanguage: 'de-DE'
+    }
   ]
 });
 
@@ -774,11 +790,11 @@ const outputTranslation = buildTranslationConfig('output', {
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE',
   applyTo: [
-      {
-        category: 'placeholders',
-        items: ['user_input'],
-        source_language: 'de-DE'
-      }
+    {
+      category: 'template_roles',
+      items: ['user', 'assistant'],
+      sourceLanguage: 'de-DE'
+    }
   ]
 });
 ```
