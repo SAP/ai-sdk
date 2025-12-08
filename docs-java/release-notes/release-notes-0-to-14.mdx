@@ -1,3 +1,114 @@
+## 1.13.0 - October 30, 2025
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.13.0)
+
+### ✨ New Functionality
+
+- [Orchestration] Introduced Spring AI integration for embeddings generation with the new `OrchestrationSpringAiEmbeddingModel` class.
+
+### 📈 Improvements
+
+- [Core] If the AI Core credentials used are missing an explicit `credential-type` but `clientid` and `clientsecret` are present then `"credential-type": "binding-secret"` is inferred automatically.
+- [Core] Log message about "service key in environment variable" to `INFO` level only once.
+
+## 1.12.0 - October 17, 2025
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.12.0)
+
+### 🔧 Compatibility Notes
+
+- Breaking change:
+  - `CompletionPostRequest` is now an interface instead of a class.
+    For all previous use-cases, it should be substitutable with the new class `CompletionRequestConfiguration`.
+    - `OrchestrationClient.toCompletionPostRequest()` now returns `CompletionRequestConfiguration`.
+    - `OrchestrationClient.streamChatCompletionDeltas()` takes `CompletionRequestConfiguration` as an input now.
+  - Two fields in `OrchestrationModuleConfig` changed:
+    - `inputTranslationConfig` is now of type `SAPDocumentTranslationInput`
+    - `outputTranslationConfig` is now of type `SAPDocumentTranslationOutput`
+  - When using `OrchestrationModuleConfig.withInputTranslationConfig()` and `OrchestrationModuleConfig.withOutputTranslationConfig()` consider the following diff (note, especially, that setting `.applyTo()` to either `null` or to an actual value is necessary):
+    ```diff
+    var config = new OrchestrationModuleConfig("some prompt");
+    config
+           .withInputTranslationConfig(
+    -          SAPDocumentTranslation.create()
+    -              .type(SAP_DOCUMENT_TRANSLATION)
+    -              .config(SAPDocumentTranslationConfig.create().targetLanguage("en-US")))
+    +          SAPDocumentTranslationInput.create()
+    +              .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
+    +              .config(
+    +                    SAPDocumentTranslationInputConfig.create()
+    +                        .targetLanguage("en-US")
+    +                        .applyTo(null)))
+            .withOutputTranslationConfig(
+    -          SAPDocumentTranslation.create()
+    -              .type(SAP_DOCUMENT_TRANSLATION)
+    +          SAPDocumentTranslationOutput.create()
+    +              .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
+                   .config(
+    -                  SAPDocumentTranslationConfig.create()
+    -                      .targetLanguage("de-DE")
+    +                  SAPDocumentTranslationOutputConfig.create()
+    +                      .targetLanguage(
+    +                          SAPDocumentTranslationOutputTargetLanguage.create("de-DE"))
+                           .sourceLanguage("en-US")));
+    ```
+- [Orchestration] Deprecated models `OrchestrationAiModel.CLAUDE_3_OPUS` and `OrchestrationAiModel.CLAUDE_3_5_SONNET`.
+  - Replacement are respectively `OrchestrationAiModel.CLAUDE_4_OPUS` and `OrchestrationAiModel.CLAUDE_4_SONNET`.
+- Inner record classes and their creator methods in model interfaces are renamed to be more descriptive and type-specific.
+  - eg: `InnerString` -> `ListOfStrings`, `create()` -> `createListOfStrings()`
+
+### ✨ New Functionality
+
+- [Orchestration] For streaming, add convenience configuration for output-filter-overlap, chunk-size, and delimiters via `OrchestrationModuleConfig#withStreamConfig`.
+- [Orchestration] Added embedding generation support with new `OrchestrationClient#embed()` methods.
+  - Added `OrchestrationEmbeddingModel` with `TEXT_EMBEDDING_3_SMALL`, `TEXT_EMBEDDING_3_LARGE`, `AMAZON_TITAN_EMBED_TEXT` and `NVIDIA_LLAMA_32_NV_EMBEDQA_1B` embedding models.
+  - Introduced `OrchestrationEmbeddingRequest` for building requests fluently and `OrchestrationEmbeddingResponse#getEmbeddingVectors()` to retrieve embeddings.
+- [Orchestration] Added new model `OrchestrationAiModel.MISTRAL_MEDIUM_INSTRUCT`.
+
+### 📈 Improvements
+
+- [Orchestration] Added new API `DpiMasking#withRegex` to apply custom masking patterns.
+
+### 🐛 Fixed Issues
+
+- [Orchestration] Tool calling works on all models
+
+## 1.11.0 - September 12, 2025
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.11.0)
+
+### 🔧 Compatibility Notes
+
+- [Prompt Registry] breaking changes:
+  - `Template` has been renamed to `PromptTemplate`.
+  - Some endpoints have a new parameter `String aiResourceGroupScope` which can be set to `null`.
+
+  For more details please refer to the [sample code](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java).
+
+### ✨ New Functionality
+
+- Extend `OpenAiClientException` and `OrchestrationClientException` to retrieve error diagnostics information received
+  from remote service.
+  New available accessors for troubleshooting: `getErrorResponse()`, `getHttpResponse()` and, `getHttpRequest()`.
+  Please note: depending on the error response, these methods may return `null` if the information is not available.
+- [OpenAI] Added new models for `OpenAiModel`: `GPT_5`, `GPT_5_MINI` and `GPT_5_NANO`.
+- [Orchestration] Added new models for `OrchestrationAiModel`: `GPT_5`, `GPT_5_MINI` and
+  `GPT_5_NANO`.
+- [Orchestration] Deprecated models for `OrchestrationAiModel`: `GEMINI_1_5_PRO` and
+  `OrchestrationAiModel.GEMINI_1_5_FLASH`
+  - Replacement are `GEMINI_2_5_PRO` and `GEMINI_2_5_FLASH`.
+- [Orchestration] Deprecated `OrchestrationAiModel.IBM_GRANITE_13B_CHAT` with no replacement.
+- [OpenAI] [Introduced SpringAI integration with our OpenAI client.](/docs/java/spring-ai/openai)
+  - Added `OpenAiChatModel`
+- [Prompt Registry] [Using Prompt Registry Templates in SpringAI.](/docs/java/ai-core/prompt-registry#using-templates-in-springai)
+  - Added `SpringAiConverter`
+- [Orchestration] [Added convenience to add custom headers to individual orchestration calls.](/docs/java/orchestration/chat-completion#custom-headers)
+- [OpenAI] [Added convenience to add custom headers to individual LLM calls.](/docs/java/foundation-models/openai/chat-completion#custom-headers)
+
+### 🐛 Fixed Issues
+
+- [Orchestration] Fixed getting `OrchestrationFilterException.Input` for bad requests with input filter.
+
 ## 1.10.0 - August 08, 2025
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.10.0)
@@ -54,9 +165,8 @@
 ### 🔧 Compatibility Notes
 
 - The old OpenAI client (v1.0.0) is being deprecated in favor of the new OpenAI client (v1.4.0).
-  [See the documentation for more details](foundation-models/openai/chat-completion)
+  [See the documentation for more details](/docs/java/foundation-models/openai/chat-completion)
 - Generated classes for the following service specifications are subject to change:
-
   - core
   - openai
   - orchestration
@@ -72,11 +182,9 @@
   - `CLAUDE_3_SONNET` is replaced by `CLAUDE_4_SONNET`.
   - `MIXTRAL_8X7B_INSTRUCT_V01` is replaced by `MISTRAL_SMALL_INSTRUCT`.
 - [OpenAI] Deprecated : `GPT_4`.
-
   - `GPT_4`is replaced by : `GPT_40`or `GPT_41`.
 
 - [Prompt Registry] Resource group has been added as a optional parameter to all endpoints. Set it to `"default"` if it was not set before. Examples:
-
   - `client.importPromptTemplate(File)` --> `client.importPromptTemplate("default", File)`.
   - `client.parsePromptTemplateById(id, false, inputParams)` --> `client.parsePromptTemplateById(id, "default", false, inputParams)`.
 
@@ -87,7 +195,7 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] Added support for [transforming a JSON output into an entity](orchestration/chat-completion#json_schema)
+- [Orchestration] Added support for [transforming a JSON output into an entity](/docs/java/orchestration/chat-completion#json_schema)
 - [Orchestration] Added `AzureContentFilter#promptShield()` available for input filtering.
 - [Orchestration] Added new models for `OrchestrationAiModel`: `GEMINI_2_5_FLASH`, `GEMINI_2_5_PRO`, `ALEPHALPHA_PHARIA_1_7B_CONTROL`, `OPENAI_O4_MINI`, `CLAUDE_4_OPUS`, `CLAUDE_4_SONNET`, `OPENAI_O3`.
 
@@ -106,11 +214,11 @@
 
 ### ✨ New Functionality
 
-- [OpenAI] [Add convenience for tool definition, parsing function calls and tool execution](foundation-models/openai/chat-completion#executing-tool-calls)
+- [OpenAI] [Add convenience for tool definition, parsing function calls and tool execution](/docs/java/foundation-models/openai/chat-completion#executing-tool-calls)
 - [OpenAI] Added the following new models: `o4-mini`, `o3`, `gpt-4.1`, `gpt-4.1-nano`, and `gpt-4.1-mini`
 - [Orchestration] Added new model DeepSeek-R1: `OrchestrationAiModel.DEEPSEEK_R1`
-- [Orchestration] [Tool execution fully enabled](spring-ai/orchestration#tool-calling)
-- [Orchestration] [Added translation](orchestration/chat-completion#translation)
+- [Orchestration] [Tool execution fully enabled](/docs/java/spring-ai/orchestration#tool-calling)
+- [Orchestration] [Added translation](/docs/java/orchestration/chat-completion#translation)
 
 ### 🐛 Fixed Issues
 
@@ -128,7 +236,7 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] [Added support to locally test prompt template files](orchestration/chat-completion#locally-test-a-prompt-template)
+- [Orchestration] [Added support to locally test prompt template files](/docs/java/orchestration/chat-completion#locally-test-a-prompt-template)
 - [Orchestration] Added new models:
   - `OrchestrationAiModel.CLAUDE_3_7_SONNET`
   - `OrchestrationAiModel.GEMINI_2_0_FLASH`
@@ -140,9 +248,9 @@
 
 ### ✨ New Functionality
 
-- [Prompt Registry] [Add Prompt Registry client](ai-core/prompt-registry)
+- [Prompt Registry] [Add Prompt Registry client](/docs/java/ai-core/prompt-registry)
   - `com.sap.ai.sdk:prompt-registry:1.6.0`
-- [OpenAI] [Add convenience for tool call execution](foundation-models/openai/chat-completion#executing-tool-calls)
+- [OpenAI] [Add convenience for tool call execution](/docs/java/foundation-models/openai/chat-completion#executing-tool-calls)
 
 ## 1.5.0 - March 13, 2025
 
@@ -150,11 +258,11 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] [Add Spring AI Chat Memory support](spring-ai/orchestration#chat-memory)
-- [Orchestration] [Prompt templates can be consumed from registry.](orchestration/chat-completion#templating)
-- [Orchestration] [Masking is now available on grounding.](orchestration/chat-completion#mask-grounding)
-- [Orchestration] [Grounding via _help.sap.com_ is enabled.](orchestration/chat-completion#grounding-via-helpsapcom)
-- [OpenAI] [Spring AI integration for embedding calls.](spring-ai/openai#embedding)
+- [Orchestration] [Add Spring AI Chat Memory support](/docs/java/spring-ai/orchestration#chat-memory)
+- [Orchestration] [Prompt templates can be consumed from registry.](/docs/java/orchestration/chat-completion#templating)
+- [Orchestration] [Masking is now available on grounding.](/docs/java/orchestration/chat-completion#mask-grounding)
+- [Orchestration] [Grounding via _help.sap.com_ is enabled.](/docs/java/orchestration/chat-completion#grounding-via-helpsapcom)
+- [OpenAI] [Spring AI integration for embedding calls.](/docs/java/spring-ai/openai#embedding)
 
 ## 1.4.0 - February 28, 2025
 
@@ -170,12 +278,12 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] [Add Spring AI tool calling](spring-ai/orchestration#tool-calling).
-- [Orchestration] [Add new convenient methods to set the response format for Orchestration.](orchestration/chat-completion#response-format)
-- [Document Grounding] [Add Document Grounding Client](ai-core/document-grounding)
+- [Orchestration] [Add Spring AI tool calling](/docs/java/spring-ai/orchestration#tool-calling).
+- [Orchestration] [Add new convenient methods to set the response format for Orchestration.](/docs/java/orchestration/chat-completion#response-format)
+- [Document Grounding] [Add Document Grounding Client](/docs/java/ai-core/document-grounding)
   - `com.sap.ai.sdk:document-grounding:1.4.0`
 - [OpenAI] New generated model classes introduced for _AzureOpenAI_ specification dated 2024-10-21.
-- [OpenAI] Introducing [new user interface](foundation-models/openai/chat-completion#new-user-interface-v140) for chat completion wrapping the generated model classes.
+- [OpenAI] Introducing [new user interface](/docs/java/foundation-models/openai/chat-completion) for chat completion wrapping the generated model classes.
   - `OpenAiChatCompletionRequest` and `OpenAiChatCompletionResponse`' for high level request and response handling.
   - `OpenAiUserMessage`, `OpenAiSystemMessage`, `OpenAiAssistantMessage` and `OpenAiToolMessage` for message creation for different content types.
   - `OpenAiToolChoice` for configuring chat completion requests with tool selection strategy.
@@ -193,9 +301,9 @@
 
 - Upgrade to release 2502a of AI Core.
 - Orchestration:
-  - [Add `LlamaGuardFilter`](orchestration/chat-completion#filtering).
-  - [Convenient methods to create messages containing images and multiple text inputs](orchestration/chat-completion#using-images)
-  - [Enable setting the response format](orchestration/chat-completion#response-format)
+  - [Add `LlamaGuardFilter`](/docs/java/orchestration/chat-completion#filtering).
+  - [Convenient methods to create messages containing images and multiple text inputs](/docs/java/orchestration/chat-completion#using-images)
+  - [Enable setting the response format](/docs/java/orchestration/chat-completion#response-format)
 
 ## 1.2.0 - January 30, 2025
 
@@ -210,8 +318,8 @@
 ### ✨ New Functionality
 
 - New Orchestration features:
-  - [Spring AI integration](spring-ai/orchestration)
-  - [Add Grounding configuration convenience](orchestration/chat-completion#grounding)
+  - [Spring AI integration](/docs/java/spring-ai/orchestration)
+  - [Add Grounding configuration convenience](/docs/java/orchestration/chat-completion#grounding)
   - Images are now supported as input in newly introduced `MultiChatMessage`.
   - `MultiChatMessage` also allows for multiple content items (text or image) in one object.
   - Grounding input can be masked with `DPIConfig`.

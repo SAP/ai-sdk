@@ -14,6 +14,7 @@ keywords:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Introduction
 
@@ -29,7 +30,7 @@ The assistant performs these steps:
 
 ## Prerequisites
 
-Refer to the prerequisites outlined [here](../../overview-cloud-sdk-for-ai-js#prerequisites).
+Refer to the prerequisites outlined [here](../overview-cloud-sdk-for-ai-js#prerequisites).
 
 This tutorial assumes a basic understanding of TypeScript, LLMs, and LangChain concepts.
 
@@ -64,7 +65,7 @@ For API usage terms, visit [Open-Meteo License](https://open-meteo.com/en/licens
 https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/weather-mcp-server.ts#L4-L60
 ```
 
-To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://langchain-ai.github.io/langgraphjs/agents/mcp/?h=mcp#use-mcp-tools).
+To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://docs.langchain.com/oss/javascript/langchain/mcp#use-mcp-tools).
 
 ```js reference referenceLinkText=" " title="MCP Adapter"
 https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/mcp-adapter.ts#L3-L23
@@ -77,7 +78,7 @@ Set up a `ToolNode` for routing tool calls.
 
 <!-- vale off -->
 
-<Tabs 
+<Tabs
   groupId="client"
   defaultValue="orchestration"
   values={[
@@ -102,10 +103,12 @@ const tools = [...getMcpTools, getRestaurantsTool];
 
 // Create a model
 const model = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o-mini',
-    model_params: {
-      temperature: 0.7
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o-mini',
+      params: {
+        temperature: 0.7
+      }
     }
   }
 });
@@ -136,9 +139,15 @@ https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itin
 ```
 
 :::note
-Using [`MemorySaver`](https://langchain-ai.github.io/langgraphjs/how-tos/persistence/?h=memory+saver#add-memory) allows sharing context across multiple interactions in a single conversational thread (`conv-1`).
+Using [`MemorySaver`](https://docs.langchain.com/oss/javascript/langgraph/persistence) allows sharing context across multiple interactions in a single conversational thread (`conv-1`).
 In this example, it enables the agent to remember the previously mentioned city.
 :::
+
+<img
+  src={useBaseUrl('img/Langgraph-State.png')}
+  alt="LangGraph Flow"
+  className="center"
+/>
 
 ## Run the assistant
 
@@ -278,4 +287,4 @@ This tutorial demonstrates how to implement a simple agent workflow using:
 - Interrupting the flow with a human tool via `interrupt()` and handling it inside the graph.
 - Maintaining context across interactions with `MemorySaver`.
 
-Explore additional capabilities and patterns in [LangGraph documentation](https://langchain-ai.github.io/langgraphjs/tutorials/quickstart/).
+Explore additional capabilities and patterns in [LangGraph documentation](https://docs.langchain.com/oss/javascript/langgraph/quickstart/).

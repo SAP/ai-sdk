@@ -149,6 +149,16 @@ Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub ca
 
 Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
 
+## Custom Headers
+
+To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OrchestrationClient`.
+
+```java
+var client = new OrchestrationClient();
+
+var result = client.withHeader("foo", "bar").chatCompletion(prompt, config);
+```
+
 ## Templating
 
 Use a prepared [**template**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating) and execute requests with by passing only the input parameters:
@@ -297,6 +307,28 @@ var result =
     new OrchestrationClient().chatCompletion(prompt, configWithMasking);
 ```
 
+In this example, the input will be masked before the call to the LLM and will get unmasked in the output.
+
+### Custom Masking
+
+Use the [**data masking module**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking) to anonymize personal information in the input:
+
+```java
+var regex = "patient_id_[0-9]+";
+var replacement = "REDACTED_ID";
+var maskingConfig =
+    DpiMasking.anonymization().withRegex(regex,replacement);
+var configWithMasking = config.withMaskingConfig(maskingConfig);
+
+var systemMessage = Message.system("Repeat following messages");
+var userMessage = Message.user("The patient id is patient_id_123.");
+
+var prompt = new OrchestrationPrompt(systemMessage, userMessage);
+
+var result =
+    new OrchestrationClient().chatCompletion(prompt, configWithMasking);
+```
+
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
 ## Grounding
@@ -395,7 +427,8 @@ It's possible to pass a stream of chat completion delta elements, e.g. from the 
 This is a blocking example for streaming and printing directly to the console:
 
 ```java
-String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+val msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+val prompt = new OrchestrationPrompt(msg);
 
 // try-with-resources on stream ensures the connection will be closed
 try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
@@ -409,6 +442,19 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+
+### Streaming Configuration
+
+The `OrchestrationModuleConfig config` offers parameters to customize streaming behavior.
+
+```java
+config = config.withStreamConfig(
+  new OrchestrationStreamConfig()
+    .withFilterOverlap(100)        // default:0,     Number of preceding characters additionally considered for sequential output filtering
+    .withChunkSize(500)            // default:null   Number of tokens to accumulate when streaming in a single chunk.
+    .withDelimiters(List.of("\n")) // default:empty  Custom delimiter for chunks
+);
+```
 
 ## Using Images
 
@@ -485,7 +531,7 @@ In order to do that, add a JSON schema to the configuration as shown below and t
 
 ```java
 static class TestClass {
-  @JsonProperty(required = true)  // <-- this is necessary for the schema generation
+  @JsonProperty(required = true)  // <-- ⚠️ this is necessary for the schema generation
   private String stringField;
 
   @JsonProperty(required = true)
@@ -505,7 +551,7 @@ var prompt = new OrchestrationPrompt(Message.user("Some message."));
 TestClass response = client.chatCompletion(prompt, configWithTemplate).asEntity(TestClass.class);
 ```
 
-Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`.
+Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)` and annotate schema fields with `@JsonProperty(required = true)`.
 Not all schemas are possible for OpenAI in strict mode.
 See [here](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) for more information.
 
@@ -544,21 +590,27 @@ The following sample will translate the prompt into English, send it to the LLM,
 ```java
 var prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel?");
 
-var configWithTranslation =
-    config
-        .withInputTranslationConfig(
-            SAPDocumentTranslation.create()
-                .type(SAP_DOCUMENT_TRANSLATION)
-                .config(SAPDocumentTranslationConfig.create().targetLanguage("en-US")))
-        .withOutputTranslationConfig(
-            SAPDocumentTranslation.create()
-                .type(SAP_DOCUMENT_TRANSLATION)
-                .config(SAPDocumentTranslationConfig.create().targetLanguage("de-DE")));
+var inputConfig = SAPDocumentTranslationInputConfig.create()
+        .targetLanguage("en-US")
+        .applyTo(null);
+var inputTranslation = SAPDocumentTranslationInput.create()
+        .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
+        .config(inputConfig);
+var outputConfig = SAPDocumentTranslationOutputConfig.create()
+        .targetLanguage(SAPDocumentTranslationOutputTargetLanguage.create("de-DE"));
+var outputTranslation = SAPDocumentTranslationOutput.create()
+        .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
+        .config(outputConfig);
+var configWithTranslation = config
+        .withInputTranslationConfig(inputTranslation)
+        .withOutputTranslationConfig(outputTranslation);
 
 var response = client.chatCompletion(prompt, configWithTranslation);
 ```
 
 You can also optionally specify the source language, **the source-target pair has to be in the [list](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).**
+
+Note that setting `SAPDocumentTranslationInputConfig.applyTo()` to either `null` or to an actual value is necessary.
 
 You will find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 

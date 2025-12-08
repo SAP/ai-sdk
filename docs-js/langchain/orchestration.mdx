@@ -17,7 +17,7 @@ The `@sap-ai-sdk/langchain` packages provides `OrchestrationClient` client for L
 
 ## Client Initialization
 
-The client reuses the orchestration client from `@sap-ai-sdk/orchestration` and implements [LangChain's interface](https://js.langchain.com/docs/introduction).
+The client reuses the orchestration client from `@sap-ai-sdk/orchestration` and implements [LangChain's interface](https://docs.langchain.com/oss/javascript/langchain/models).
 Therefore, the client initialization combines the configuration of the orchestration client and LangChain options.
 
 Similar to the orchestration client, the `OrchestrationClient` LangChain client can be initialized with an orchestration configuration.
@@ -27,8 +27,10 @@ Refer to [Orchestration Chat Completion](../orchestration/chat-completion) for m
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
 const config: OrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o'
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
   }
 };
 const client = new OrchestrationClient(config);
@@ -62,7 +64,7 @@ Pass a message history and, in most cases, input parameters for the orchestratio
 const systemMessage = new SystemMessage('Be a helpful assistant!');
 const history = [systemMessage];
 const response = await client.invoke(history, {
-  inputParams: { subject: 'Paris' }
+  placeholderValues: { subject: 'Paris' }
 });
 ```
 
@@ -79,8 +81,10 @@ The orchestration service currently doesn't support multiple choices during stre
 
 ```ts
 const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o'
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
   }
 };
 
@@ -122,22 +126,26 @@ It can also be manually aborted if an `AbortSignal` object associated with an `A
 
 ```ts
 const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o'
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
   }
 };
 
 const client = new OrchestrationClient(orchestrationConfig);
 const controller = new AbortController();
 const { signal } = controller;
-const response = await client.stream([
-  {
-    role: 'user',
-    content:
-      'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
-  },
+const response = await client.stream(
+  [
+    {
+      role: 'user',
+      content:
+        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+    }
+  ],
   { signal }
-]);
+);
 
 // Abort the streaming request after one second
 setTimeout(() => {
@@ -156,8 +164,8 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 
 LangChain offers a unified way to connect tools to language models.
 Use the `bindTools()` method to define the set of tools a model can access.
-For more details, see the [official LangChain documentation on tool binding](https://js.langchain.com/docs/concepts/tool_calling/#tool-binding).
-For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents/langchain#define-mock-tools).
+For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling).
+For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents#define-tools).
 
 ## Resilience
 

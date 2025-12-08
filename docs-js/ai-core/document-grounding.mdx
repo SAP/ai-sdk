@@ -12,11 +12,6 @@ keywords:
   - grounding
 ---
 
-:::warning
-This package is still in **beta** and is subject to breaking changes.
-Use it with caution.
-:::
-
 The `@sap-ai-sdk/document-grounding` package incorporates generative AI document grounding capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 ## Installation
@@ -41,10 +36,53 @@ In addition to the examples below, you can find more sample code [here](https://
 :::tip
 If you define a custom resource group, ensure that it has the label `document-grounding: true` in order to use the document grounding service.
 This label can be set in SAP AI Launchpad while creating the resource group.
-Alternatively, create a resource group via AI API by referring to the [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-ai-data-management?locale=en-US) guide.
+Alternatively, create a resource group via AI API by referring to the [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-grounding-e32efa5402154101b4cc05c03ef5be09) guide.
 :::
 
+### Get Pipeline Status
+
+The following examples show how to list pipelines, create a new pipeline, and view its current status.
+Refer to the [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipelines-api-d8cc0e369f994091b95a6d80aeadbc7f) for more details.
+
+```ts
+const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
+  {
+    $top: 10
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+
+const createPipelineResponse = await PipelinesApi.createPipeline(
+  {
+    configuration: {
+      destination: 'my-destination'
+      sharepoint: {
+        site: {
+          name: 'sharepoint-site-name'
+        }
+      }
+    },
+    type: 'MSSharePoint'
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+
+const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus(
+  'pipeline-id',
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+```
+
 ### Create a Collection
+
+The following example shows how to create a collection using Vector API.
+For more details, refer to the [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-08e3d008addb4362986c73ff0151638c).
 
 ```ts
 const response = await VectorApi.createCollection(
@@ -64,6 +102,8 @@ const collectionId = (response.headers.location as string).split('/').at(-2);
 ```
 
 ### Create a Document
+
+The following example shows how to create a document using Vector API.
 
 ```ts
 const response: DocumentsListResponse = await VectorApi.createDocuments(
@@ -87,6 +127,36 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
   }
 ).execute();
 ```
+
+### Retrieval Search
+
+The following example shows how to search results using Retrieve API.
+Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api-281e8cf31d654b108a6e128a4a6cdbae) for more details.
+
+```ts
+const response: RetrievalSearchResults = RetrievalApi.search(
+  {
+    query: 'What is SAP Cloud SDK for AI?',
+    filters: [
+      {
+        id: 'my-filter',
+        searchConfiguration: {
+          maxChunkCount: 10
+        },
+        dataRepositories: ['*'],
+        dataRepositoryType: 'vector'
+      }
+    ]
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+```
+
+### Use Grounding in Orchestration
+
+Refer to [Orchestration Grounding](../orchestration/chat-completion#grounding) for usage details.
 
 ### Custom Destination
 

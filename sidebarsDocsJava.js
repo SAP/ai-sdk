@@ -6,7 +6,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Orchestration',
-      items: ['orchestration/chat-completion']
+      items: ['orchestration/chat-completion', 'orchestration/embedding']
     },
     {
       type: 'category',
@@ -39,7 +39,14 @@ module.exports = {
     {
       type: 'category',
       label: 'Tutorials',
-      items: ['tutorials/agentic-workflows']
+      items: [
+        'tutorials/agentic-workflows',
+        {
+          type: 'link',
+          label: 'TechEd: Build Your Own AI Agent',
+          href: 'https://github.com/SAP-samples/teched2025-AI160'
+        }
+      ]
     },
     'release-notes',
     'frequently-asked-questions',

@@ -22,7 +22,7 @@ They are safe to use, but may require updates even in minor releases.
 :::
 
 <details>
-<summary>New User Interface (v1.4.0)</summary>
+<summary id="new-user-interface-v140">New User Interface (v1.4.0)</summary>
 
 We're excited to introduce a new user interface for OpenAI chat completions starting with **version 1.4.0**. This update is designed to improve the SAP AI SDK by:
 
@@ -130,6 +130,16 @@ var destination = new AiCoreService()
     .getInferenceDestination("custom-rg")
     .forModel(GPT_4O);
 OpenAiClient.withCustomDestination(destination);
+```
+
+## Custom Headers
+
+To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OpenAIClient`.
+
+```java
+var client = new OpenAIClient();
+
+var result = client.withHeader("foo", "bar").chatCompletion("Hello World! Why is this phrase so famous?");
 ```
 
 ## Message history

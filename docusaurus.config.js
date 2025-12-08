@@ -19,8 +19,8 @@ module.exports = {
   tagline: 'The one-stop shop for integrating AI into SAP Cloud applications.',
   url: 'https://sap.github.io/',
   baseUrl: '/ai-sdk/',
-  onBrokenLinks: 'ignore',
-  onBrokenMarkdownLinks: 'throw',
+  onBrokenLinks: 'throw',
+  markdown: { hooks: { onBrokenMarkdownLinks: 'throw' } },
   favicon: 'img/AI-SDK-Logo.svg',
   organizationName: 'SAP',
   projectName: 'ai-sdk',
@@ -224,16 +224,16 @@ module.exports = {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: require.resolve('./sidebarsDocsJs.js'),
-        lastVersion: 'v1',
+        lastVersion: 'current',
         versions: {
           current: {
             label: 'v2',
-            banner: 'unreleased',
-            badge: true
+            badge: false
           },
           v1: {
             label: 'v1',
-            badge: false
+            banner: 'unmaintained',
+            badge: true
           }
         }
       }

@@ -22,7 +22,7 @@ The application will send a prompt to the AI model and display the generated res
 Refer to prerequisites outlined [here](./overview-cloud-sdk-for-ai-js#prerequisites).
 
 This quickstart assumes you are using the `default` resource group of your AI Core instance.
-If you need to [use a different resource group](orchestration/chat-completion#custom-resource-group), make sure it has an [orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) available.
+If you need to [use a different resource group](orchestration/chat-completion#custom-deployment-configuration), make sure it has an [orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) available.
 
 ### Add `@sap-ai-sdk/orchestration` as a Dependency
 
@@ -38,11 +38,15 @@ Initialize an orchestration client with an LLM model and a prompt template.
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o'
-  },
-  templating: {
-    template: [{ role: 'user', content: 'Answer the question: {{?question}}' }]
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    },
+    prompt: {
+      template: [
+        { role: 'user', content: 'Answer the question: {{?question}}' }
+      ]
+    }
   }
 });
 ```
@@ -52,7 +56,7 @@ The value replaces the `{{?question}}` placeholder in the template.
 
 ```ts
 const response = await orchestrationClient.chatCompletion({
-  inputParams: {
+  placeholderValues: {
     question: 'Why is the phrase "Hello world!" so famous?'
   }
 });
