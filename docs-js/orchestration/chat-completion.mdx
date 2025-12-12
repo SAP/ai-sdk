@@ -202,6 +202,42 @@ const response = await orchestrationClient.chatCompletion({
 A prompt template can be referenced either by ID, or by a combination of name, scenario and version.
 For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
+### Scoped Prompt Registry
+
+Prompt templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) can be scoped to different levels.
+By default, prompts are stored in the `tenant` scope, making them accessible across all resource groups within the tenant, ensuring broad availability.
+
+Alternatively, you can use the `resource_group` scope to store prompts specific to a particular resource group.
+This is useful when prompt templates need to be isolated and should not be shared with others in the same tenant.
+
+To reference a scoped prompt template, specify the `scope` property in the `template_ref` alongside either the template `id` or template `name`, `scenario`, and `version`.
+When using a non-default resource group, make sure to also provide the `resourceGroup` parameter in the client deployment config.
+
+```ts
+const orchestrationClient = new OrchestrationClient(
+  {
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      },
+      prompt: {
+        template_ref: {
+          name: 'my-get-capital-template',
+          scenario: 'my-scenario',
+          version: '0.0.1',
+          scope: 'resource_group' // or 'tenant'
+        }
+      }
+    }
+  },
+  {
+    resourceGroup: 'my-resource-group'
+  }
+);
+```
+
+For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
+
 ### Local Prompt Template
 
 You can define the template in a YAML file and pass its content as a string to the `promptTemplating.prompt` property.
@@ -368,19 +404,24 @@ const templating: TemplatingModuleConfig = {
 };
 ```
 
+:::info
+
+We recommend using Zod v4 for full compatibility with this package.
+If you're upgrading from an earlier version, refer to the [Zod v4 migration guide](https://zod.dev/v4/changelog) and pay attention to breaking changes like the switch from `describe('...')` to `meta({ description: '...' })`
+
+:::
+
 You can also define JSON schema using [Zod](https://zod.dev/) schema as shown below:
 
 ```ts
-import * as z from 'zod/v4';
+import * as z from 'zod';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration';
 
-const countryCapitalSchema = z
-  .object({
-    country_name: z.string(),
-    capital: z.string()
-  })
-  .strict();
+const countryCapitalSchema = z.strictObject({
+  country_name: z.string(),
+  capital: z.string()
+});
 
 const response_format: ResponseFormatJsonSchema = {
   type: 'json_schema',
@@ -559,6 +600,23 @@ const inputFilter = buildAzureContentSafetyFilter('input', {
 const outputFilter = buildAzureContentSafetyFilter('output', {
   hate: 'ALLOW_SAFE',
   violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
+```
+
+#### Protected material detection for code
+
+Protected material code detection identifies and safeguards against the inclusion of proprietary or copyrighted code snippets in AI-generated responses.
+This scan proactively monitors for protected code snippets that match those in software libraries, source code, algorithms, and other intellectual property sourced from known GitHub repositories, preventing unauthorized use or potential legal issues.
+To enable protected material code detection, set the `protected_material_code` property to `true` in the Azure content safety input filter configuration.
+The property is only supported for output filter configurations.
+For more information, refer to [Azure AI Content Safety Protected Material Detection](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/protected-material).
+
+```ts
+import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
+
+const filterConfig = buildAzureContentSafetyFilter('output', {
+  hate: 'ALLOW_SAFE',
+  protected_material_code: true
 });
 ```
 
