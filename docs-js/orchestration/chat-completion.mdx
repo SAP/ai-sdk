@@ -824,7 +824,14 @@ The `placeholders` category allows translating specific placeholder values from 
 
 ##### Template Roles
 
-The `template_roles` category allows translating template messages with specific message roles, such as `user`, `assistant`, or `system` messages in the prompt.
+The `template_roles` category allows translating template messages with specific message roles, such as `user`, `assistant`, or `system` or `tool` messages in the prompt.
+
+#### Automatic Target Language Inference
+
+By detecting the source language from translation, the output translation can automatically respond in the user's original language.
+There is no need to specify a fixed target language, instead reference the `applyTo` item from the input translation.
+
+For more information check out [this](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation-48be058d01bd4df2a82e5430561e6f44#automatic-target-language-inference) link.
 
 ```ts
 const inputTranslation = buildTranslationConfig('input', {
@@ -849,20 +856,13 @@ const outputTranslation = buildTranslationConfig('output', {
   targetLanguage: 'de-DE',
   applyTo: [
     {
-      category: 'template_roles',
-      items: ['user', 'assistant'],
-      sourceLanguage: 'de-DE'
+      category: 'placeholders',
+      items: ['country'],
+      sourceLanguage: 'en-US'
     }
   ]
 });
 ```
-
-#### Automatic Target Language Inference
-
-By detecting the source language from translation, the output translation can automatically respond in the user's original language.
-There is no need to specify a fixed target language, instead reference the `applyTo` item from the input translation.
-
-For more information check out [this](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation-48be058d01bd4df2a82e5430561e6f44#automatic-target-language-inference) link.
 
 #### Chat History Control
 
