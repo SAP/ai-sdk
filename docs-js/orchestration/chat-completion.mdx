@@ -406,19 +406,24 @@ const templating: TemplatingModuleConfig = {
 };
 ```
 
+:::info
+
+We recommend using Zod v4 for full compatibility with this package.
+If you're upgrading from an earlier version, refer to the [Zod v4 migration guide](https://zod.dev/v4/changelog) and pay attention to breaking changes like the switch from `describe('...')` to `meta({ description: '...' })`
+
+:::
+
 You can also define JSON schema using [Zod](https://zod.dev/) schema as shown below:
 
 ```ts
-import * as z from 'zod/v4';
+import * as z from 'zod';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration';
 
-const countryCapitalSchema = z
-  .object({
-    country_name: z.string(),
-    capital: z.string()
-  })
-  .strict();
+const countryCapitalSchema = z.strictObject({
+  country_name: z.string(),
+  capital: z.string()
+});
 
 const response_format: ResponseFormatJsonSchema = {
   type: 'json_schema',
