@@ -204,6 +204,10 @@ For details on storing a template in the Prompt Registry, refer to [this guide](
 
 ### Scoped Prompt Registry
 
+:::info Tutorial: Creating Scoped Prompt Templates with Headers
+For a step-by-step guide on creating orchestration deployments and configuring scoped prompt registry templates with custom headers, see the [Using Scoped Prompt Registry Templates with Headers](../tutorials/using-scoped-prompt-registry-templates-with-headers) tutorial.
+:::
+
 Prompt templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) can be scoped to different levels.
 By default, prompts are stored in the `tenant` scope, making them accessible across all resource groups within the tenant, ensuring broad availability.
 
@@ -222,7 +226,7 @@ const orchestrationClient = new OrchestrationClient(
       },
       prompt: {
         template_ref: {
-          name: 'my-get-capital-template',
+          name: 'my-scoped-template',
           scenario: 'my-scenario',
           version: '0.0.1',
           scope: 'resource_group' // or 'tenant'
@@ -235,8 +239,6 @@ const orchestrationClient = new OrchestrationClient(
   }
 );
 ```
-
-For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 ### Local Prompt Template
 
