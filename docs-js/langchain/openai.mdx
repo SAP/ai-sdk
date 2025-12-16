@@ -191,6 +191,8 @@ For a usage example, refer to the [getting started with agents tutorial](../tuto
 
 It is often useful to have a model return output that matches a specific schema.
 This schema can be defined using either a [Zod](https://zod.dev/) schema or an OpenAI-style JSON schema.
+We recommend using Zod v4 for full compatibility with this package.
+If you're upgrading from an earlier version, refer to the [Zod v4 migration guide](https://zod.dev/v4/changelog) and pay attention to breaking changes like the switch from `describe('...')` to `meta({ description: '...' })`.
 For more details on structured output, refer to the [official LangChain documentation on structured output](https://docs.langchain.com/oss/javascript/langchain/models#structured-outputs).
 Below is an example using `json_schema` response type and passing in a Zod schema.
 
@@ -201,9 +203,11 @@ import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 const llm = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 
 const joke = z.object({
-  setup: z.string().describe('The setup of the joke'),
-  punchline: z.string().describe('The punchline to the joke'),
-  rating: z.number().describe('How funny the joke is, from 1 to 10')
+  setup: z.string().meta({ description: 'The setup of the joke' }),
+  punchline: z.string().meta({ description: 'The punchline to the joke' }),
+  rating: z
+    .number()
+    .meta({ description: 'How funny the joke is, from 1 to 10' })
 });
 
 const structuredLlm = llm.withStructuredOutput(joke, {
