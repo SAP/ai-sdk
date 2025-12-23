@@ -154,7 +154,8 @@ const response = await orchestrationClient.chatCompletion({
   messages: [
     {
       role: 'user',
-      content: 'Please explain the following ABAP class definition and its purpose: {{?abapCode}}'
+      content:
+        'Please explain the following ABAP class definition and its purpose: {{?abapCode}}'
     }
   ],
   placeholderValues: {
