@@ -3,7 +3,7 @@ id: abap
 title: SAP ABAP model
 hide_title: false
 hide_table_of_contents: false
-description: How to use the SAP Cloud SDK for AI to perform inferencing on SAP ABAP models using orchestration service from SAP AI Core.
+description: How to use the SAP Cloud SDK for AI to perform inference on SAP ABAP models using orchestration service from SAP AI Core.
 keywords:
   - sap
   - cloud
@@ -12,12 +12,12 @@ keywords:
   - orchestration
   - abap
   - sap abap
-  - inferencing
+  - inference
 ---
 
 The `@sap-ai-sdk/orchestration` package provides a client for the orchestration service of SAP AI Core.
 The orchestration service harmonizes the API of various generative AI models, enabling seamless integration and interaction with different models through a unified interface.
-This includes support for SAP ABAP models, allowing you to perform inferencing on ABAP-based AI capabilities.
+This includes support for SAP ABAP models, allowing you to perform inference on ABAP-based AI capabilities.
 
 Find more details about orchestration workflow [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow-v2).
 
@@ -47,7 +47,7 @@ const orchestrationClient = new OrchestrationClient({
 
 Here, the model name is specified for an SAP ABAP model.
 
-To send an inferencing request, use the `chatCompletion()` method.
+To send an inference request, use the `chatCompletion()` method.
 Use the following convenience methods for handling chat completion response:
 
 - `getContent()` parses the response and returns the model's output as a string.
@@ -66,4 +66,4 @@ console.log(JSON.stringify(response.getTokenUsage()));
 
 ## Example Payloads
 
-For detailed example payloads for inferencing the `sap-abap-1` model, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-abap-1?q=sap+abap).
+For detailed example payloads for using the `sap-abap-1` model, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-abap-1?q=sap+abap).
