@@ -130,6 +130,37 @@ Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub ca
 
 Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
 
+### ABAP Model
+
+SAP-ABAP-1 is a foundation model built by SAP that helps with coding tasks and can be consumed through the Orchestration service.
+It is fine-tuned on a large amount of SAP ABAP code.
+When using this model, Input and Output Filtering is configured by default.
+
+Below is an example for configuring the mandatory `promptTemplating` module.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'sap-abap-1',
+      version: 'latest' //optional
+    }
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  messages: [{ role: 'user', content: 'Hello from SAP ABAP model!' }]
+});
+
+console.log(response.getContent());
+console.log(response.getFinishReason());
+console.log(JSON.stringify(response.getTokenUsage()));
+```
+
+For detailed example payloads for using the `sap-abap-1` model, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-abap-1?q=sap+abap).
+
 ### Template Configuration
 
 Use the orchestration client with the `promptTemplating.prompt.template` configuration to define a static prompt.

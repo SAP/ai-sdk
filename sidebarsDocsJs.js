@@ -6,11 +6,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Orchestration',
-      items: [
-        'orchestration/chat-completion',
-        'orchestration/embedding',
-        'orchestration/abap'
-      ]
+      items: ['orchestration/chat-completion', 'orchestration/embedding']
     },
     {
       type: 'category',
