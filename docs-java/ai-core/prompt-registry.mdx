@@ -16,9 +16,11 @@ keywords:
 This guide provides examples on how to manage the life cycle of your prompts, from design to runtime in [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry).
 
 :::warning
-All classes under any of the `...model` packages are generated from an OpenAPI specification.
-This means that these model classes are not guaranteed to be stable and may change with future releases.
-They are safe to use, but may require updates even in minor releases.
+All classes in the `...model` and `...client` packages are generated from an OpenAPI specification.
+These classes are therefore not guaranteed to be stable and may change in future releases.
+They can be used safely, but even minor releases may require code updates.
+Maintenance and support are limited to ensuring consistency with the service specification.
+No additional convenience API layer is provided.
 :::
 
 ## Prerequisites
