@@ -80,6 +80,8 @@ PipelineStatus status = api.getPipelineStatus(resourceGroupId, pipeline.getPipel
 
 ### Vector API
 
+Document creation:
+
 ```java
 var api = new GroundingClient().vector();
 var resourceGroupId = "default";
@@ -96,6 +98,22 @@ var request = DocumentCreateRequest.create()
       .metadata(DocumentKeyValueListPair.create()
           .key("topic").value("sound")));
 DocumentsListResponse response = api.createDocuments(resourceGroupId, collectionId, request);
+```
+
+Document search:
+
+```java
+String resourceGroup;
+TextSearchRequest textSearch;
+var api = new GroundingClient().vector();
+var result = api.search(resourceGroup, textSearch);
+
+String joinedContent = result.getResults().stream()
+  .flatMap(r -> r.getResults().stream())
+  .flatMap(r -> r.getDocuments().stream())
+  .flatMap(d -> d.getChunks().stream())
+  .map(VectorChunk::getContent)
+  .collect(Collectors.joining());
 ```
 
 Refer to the [GroundingController](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/GroundingController.java) in our Spring Boot application for a complete example.
