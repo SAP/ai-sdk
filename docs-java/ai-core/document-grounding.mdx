@@ -80,6 +80,21 @@ PipelineStatus status = api.getPipelineStatus(resourceGroupId, pipeline.getPipel
 
 ### Vector API
 
+Collection creation:
+
+```
+String resourceGroupId;
+CollectionRequest collectionRequest;
+
+var api = new GroundingClient().vector();
+
+OpenApiResponse documents = api.createCollection(resourceGroupId, collectionRequest);
+Map<String, List<String>> headers = documents.getHeaders();
+
+String locationHeader = headers.get("Location").get(0);
+String collectionId = locationHeader.replaceAll("^.*?/([a-f0-9-]+)/.*?$", "$1");
+```
+
 Document creation:
 
 ```java
@@ -105,6 +120,7 @@ Document search:
 ```java
 String resourceGroup;
 TextSearchRequest textSearch;
+
 var api = new GroundingClient().vector();
 var result = api.search(resourceGroup, textSearch);
 
