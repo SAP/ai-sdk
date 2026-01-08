@@ -590,20 +590,9 @@ The following sample will translate the prompt into English, send it to the LLM,
 ```java
 var prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel?");
 
-var inputConfig = SAPDocumentTranslationInputConfig.create()
-        .targetLanguage("en-US")
-        .applyTo(null);
-var inputTranslation = SAPDocumentTranslationInput.create()
-        .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-        .config(inputConfig);
-var outputConfig = SAPDocumentTranslationOutputConfig.create()
-        .targetLanguage(SAPDocumentTranslationOutputTargetLanguage.create("de-DE"));
-var outputTranslation = SAPDocumentTranslationOutput.create()
-        .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-        .config(outputConfig);
 var configWithTranslation = config
-        .withInputTranslationConfig(inputTranslation)
-        .withOutputTranslationConfig(outputTranslation);
+        .withInputTranslationConfig(TranslationConfig.translateInputTo("en-US"))
+        .withOutputTranslationConfig(TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
 var response = client.chatCompletion(prompt, configWithTranslation);
 ```
