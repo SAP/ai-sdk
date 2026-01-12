@@ -62,17 +62,17 @@ To disable caching, set the `useCache` parameter to `false` together with the `d
 
 For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
 
-## Orchestration Config
+## Orchestration Configuration
 
-Orchestration config allow you to persist complete orchestration configurations in the Prompt Registry.
+The orchestration config API available as part of the prompt registry package allows to persist orchestration configuration.
 These configurations can include prompt templating, content filtering, data masking, grounding, and translation settings.
 Once stored, you can reference them when initializing the `OrchestrationClient` instead of defining the configuration inline.
 
-For more details about orchestration config management, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/orchestration-config-management).
+For more details about orchestration configuration management, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/orchestration-config-management).
 
 ### Create an Orchestration Config
 
-Use the `createUpdateOrchestrationConfig()` method to create or update an orchestration config:
+Use the `createUpdateOrchestrationConfig()` method to create or update an orchestration configuration:
 
 ```ts
 import { OrchestrationConfigsApi } from '@sap-ai-sdk/prompt-registry';
@@ -109,15 +109,15 @@ const response =
 console.log(response.id);
 ```
 
-The response contains the generated `id` property, which uniquely identifies the orchestration config.
+The response contains the generated `id` property, which uniquely identifies the orchestration configuration.
 
 :::note
-To use [streaming](../orchestration/chat-completion#streaming) with an orchestration config, include streaming settings in the `spec` property when creating the config.
+To use [streaming](../orchestration/chat-completion#streaming) with an orchestration configuration, include streaming settings in the `spec` property when creating the configuration.
 :::
 
-### List Orchestration Config
+### List Orchestration Configurations
 
-Use the `listOrchestrationConfigs()` method to retrieve existing orchestration configs:
+Use the `listOrchestrationConfigs()` method to retrieve existing orchestration configurations:
 
 ```ts
 const configs = await OrchestrationConfigsApi.listOrchestrationConfigs({
@@ -125,4 +125,4 @@ const configs = await OrchestrationConfigsApi.listOrchestrationConfigs({
 }).execute();
 ```
 
-To use a stored orchestration config with the `OrchestrationClient`, refer to the [Initialization with Orchestration Config](../orchestration/chat-completion#initialization-with-orchestration-config) section in the chat completion guide.
+To use a stored orchestration configuration with the `OrchestrationClient`, refer to the [Initialization with Orchestration Configuration](../orchestration/chat-completion#initialization-with-orchestration-configuration) section in the chat completion guide.
