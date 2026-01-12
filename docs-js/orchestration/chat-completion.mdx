@@ -125,9 +125,63 @@ Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub ca
 - AWS Amazon Nova
 - GCP VertexAI Gemini
 - Mistral AI
+- SAP ABAP 1
   :::
 
 Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
+
+#### Consuming SAP ABAP 1 Model
+
+SAP-ABAP-1 is a foundation model built by SAP that helps with coding tasks and can be only be consumed through the orchestration service.
+It is fine-tuned on a large amount of SAP ABAP code and is optimized for explaining ABAP code snippets.
+When using this model, input and output filtering is configured by default.
+
+The following example shows how to consume the `sap-abap-1` model:
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'sap-abap-1',
+      version: 'latest' // optional
+    }
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  messages: [
+    {
+      role: 'user',
+      content:
+        'Please explain the following ABAP class definition and its purpose: {{?abapCode}}'
+    }
+  ],
+  placeholderValues: {
+    abapCode: `CLASS zcl_customer_manager DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC.
+
+  PUBLIC SECTION.
+    METHODS: get_customer_data
+      IMPORTING iv_customer_id TYPE kunnr
+      RETURNING VALUE(rs_customer) TYPE zst_customer_data
+      RAISING zcx_customer_not_found.
+
+  PRIVATE SECTION.
+    DATA: lo_customer_db TYPE REF TO zcl_customer_database.
+ENDCLASS.`
+  }
+});
+
+console.log(response.getContent());
+console.log(response.getFinishReason());
+console.log(JSON.stringify(response.getTokenUsage()));
+```
+
+For detailed example payloads and more details, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-abap-1?q=sap+abap).
 
 ### Template Configuration
 
@@ -756,7 +810,7 @@ const response = await orchestrationClient.chatCompletion({
 By default, the optional filter property `data_repository_type` is set to `vector`.
 Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
 
-Set `metadata_params` property with an array of parameter names to include [Metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/metadata) in the grounding result, which can be mentioned when writing the prompt.
+Set `metadata_params` property with an array of parameter names to include [Metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/contextualized-retrieval-using-metadata-and-vector-search?locale=en-US) in the grounding result, which can be mentioned when writing the prompt.
 If set the value to `'*'`, all metadata will be included.
 
 Set `data_repositories` property with an array of repository IDs to search in specific data repositories.
@@ -803,6 +857,79 @@ const response = await orchestrationClient.chatCompletion({
       content: 'Write an abstract for a thriller playing at SAP headquarters.'
     }
   ]
+});
+```
+
+### ApplyTo Selector
+
+The `applyTo` property in the translation configuration allows you to selectively translate which messages or parts of messages in the conversation should be translated.
+This provides granular control over translation in multi-turn conversations.
+
+This selector is optional and allows specifying:
+
+- **`category`**: can be either `placeholders` or `template_roles`.
+- **`items`**: array of specific placeholder or role names to apply the translation to.
+- **`sourceLanguage`** (optional): source language for the items. If not specified, the detected language will be applied.
+
+When you don't define an `applyTo` selector, the system translates all applicable content without selective filtering.
+For more information about this feature, refer to the [translation documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-translation#loio152a5f4796f9493d98323786571356bf__section_rck_4gp_2hc).
+
+##### Placeholders
+
+The `placeholders` category allows translating specific placeholder values from the `placeholderValues` parameter of the `chatCompletion()` method.
+
+##### Template Roles
+
+The `template_roles` category allows translating template messages with specific message roles, such as `user`, `assistant`, `system` or `tool` messages in the prompt.
+
+#### Automatic Target Language Inference
+
+By detecting the source language from translation, the output translation can automatically respond in the user's original language.
+There is no need to specify a fixed target language, instead reference the `applyTo` item from the input translation.
+
+For more information check out [this](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation-48be058d01bd4df2a82e5430561e6f44#automatic-target-language-inference) link.
+
+```ts
+const inputTranslation = buildTranslationConfig('input', {
+  sourceLanguage: 'en-US',
+  targetLanguage: 'de-DE',
+  applyTo: [
+    {
+      category: 'placeholders',
+      items: ['country'],
+      sourceLanguage: 'en-US'
+    },
+    {
+      category: 'placeholders',
+      items: ['groundingRequest'],
+      sourceLanguage: 'de-DE'
+    }
+  ]
+});
+
+const outputTranslation = buildTranslationConfig('output', {
+  sourceLanguage: 'en-US',
+  targetLanguage: 'de-DE',
+  applyTo: [
+    {
+      category: 'placeholders',
+      items: ['country'],
+      sourceLanguage: 'en-US'
+    }
+  ]
+});
+```
+
+#### Chat History Control
+
+By default, chat history messages are translated.
+If chat history message translation is not necessary, set the `translateMessagesHistory` to `false`.
+
+```ts
+const translationConfig = buildTranslationConfig('input', {
+  sourceLanguage: 'de-DE',
+  targetLanguage: 'en-US',
+  translateMessagesHistory: false
 });
 ```
 
