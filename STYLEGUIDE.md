@@ -329,12 +329,10 @@ Follow sentence-style capitalization.
 
 ## Use Block Quotes for Separated Error Messages
 
-Put error messages in block quotes when displaying them outside of a sentence.
+Use block quotes for error messages when displaying them outside of a sentence.
 Follow sentence-style capitalization.
 
-❌
-
-An error like this can occur: `Module not found: Error: Can't resolve 'https' in`
+❌ An error like this can occur: "Module not found: Error: Can't resolve 'https' in`"
 
 ✅
 
@@ -682,7 +680,7 @@ Use lowercase when letter casing is meaningful to the information conveyed by th
 
 ## Slugs
 
-The slug is the the end part of a URL after the backslash: `my-website.com/this-is-my-slug`.
+The slug is the end part of a URL after the backslash: `my-website.com/this-is-my-slug`.
 
 Writing a good slug positively affects our SEO.
 
@@ -692,8 +690,7 @@ Changing the file name could lead to unintended changes to the slug.
 
 ### Do not include base path in the slug
 
-Since our path is already `cloud-sdk/docs/js/*`, do not include the words:
-`sap`, `cloud`, `sdk`, `js`
+Do not include the words `sap`, `cloud`, `sdk`, `js` since our path is already `cloud-sdk/docs/js/*`.
 
 ❌ `release-notes-sap-cloud-sdk-for-javascript-and-typescript'`
 
