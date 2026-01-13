@@ -1,0 +1,124 @@
+---
+id: using-scoped-prompt-registry-templates
+title: Using Scoped Prompt Registry Templates
+sidebar_label: Scoped Prompt Registry Templates
+description: Learn how to create orchestration deployments and use scoped prompt registry templates with custom headers for resource group isolation.
+keywords:
+  - tutorial
+  - orchestration
+  - prompt registry
+  - scoped templates
+  - headers
+  - resource groups
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+## Introduction
+
+This tutorial demonstrates how to use scoped prompt registry templates with custom headers in the SAP AI Core orchestration service.
+Scoped templates isolate prompt templates within specific resource groups, improving security and organizational control.
+Follow these steps to create an orchestration deployment and configure prompt templates with resource-group scoping using custom headers.
+
+## Create a Configuration
+
+If no configuration exists, create a configuration with the following code:
+
+```ts
+const configurationPostData: AiConfigurationBaseData = {
+  name: 'CONFIG_EXAMPLE',
+  executableId: 'orchestration',
+  scenarioId: 'orchestration'
+};
+
+const result: AiConfigurationCreationResponse =
+  await ConfigurationApi.configurationCreate(configurationPostData, {
+    'AI-Resource-Group': 'MY_RESOURCE_GROUP',
+    'AI-Resource-Group-Scope': 'true'
+  }).execute();
+```
+
+## Create an Orchestration Deployment
+
+Create an orchestration deployment for the target resource group if it does not exist already with the following code:
+
+```ts
+const deploymentResponse = await createDeployment(
+  'MY_ORCHESTRATION_CONFIG_ID',
+  'MY_RESOURCE_GROUP'
+);
+```
+
+## Create Prompt Template with Specific Resource Group Scope
+
+Create the prompt template with resource group scoping:
+
+```ts
+const promptTemplate = await PromptTemplatesApi.createUpdatePromptTemplate(
+  {
+    name: 'MY_SCOPED_TEMPLATE',
+    scenario: 'MY_SCENARIO',
+    version: '0.0.1',
+    spec: {
+      template: [
+        {
+          content: 'Hello, world!',
+          role: 'user'
+        }
+      ]
+    }
+  },
+  {
+    'AI-Resource-Group-Scope': 'true',
+    'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+  }
+).execute();
+```
+
+## Consume Scoped Prompt Template in Orchestration client
+
+Create the orchestration client with custom headers for resource group scoping:
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient(
+  {
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      },
+      prompt: {
+        template_ref: {
+          name: 'MY_SCOPED_TEMPLATE',
+          scenario: 'MY_SCENARIO',
+          version: '1.0.0',
+          scope: 'resource_group'
+        }
+      }
+    }
+  },
+  {
+    resourceGroup: 'MY_RESOURCE_GROUP'
+  }
+);
+
+const response = await orchestrationClient.chatCompletion({
+  messages: [{ role: 'user', content: 'Hello, how can I help you?' }]
+});
+```
+
+This configuration scopes the prompt template to the specified resource group and uses the appropriate headers for access control.
+
+## Summary
+
+This tutorial demonstrates how to use scoped prompt registry templates with resource group isolation:
+
+- Creating a configuration with `AI-Resource-Group` and `AI-Resource-Group-Scope` headers for resource group scoping.
+- Creating an orchestration deployment for a specific resource group.
+- Creating a scoped prompt template in the prompt registry with resource group headers.
+- Consuming the scoped template using the `OrchestrationClient` instance with `resourceGroup` header configuration.
+
+Explore additional orchestration capabilities in the [Orchestration documentation](../orchestration/chat-completion).

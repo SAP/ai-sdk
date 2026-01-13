@@ -49,7 +49,7 @@ module.exports = {
       label: 'Tutorials',
       items: [
         'tutorials/getting-started-with-agents',
-        'tutorials/using-scoped-prompt-registry-templates-with-headers',
+        'tutorials/using-scoped-prompt-registry-templates',
         {
           type: 'link',
           label: 'TechEd: Build Your Own AI Agent',
