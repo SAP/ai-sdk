@@ -146,14 +146,15 @@ Items that should NOT be put in code format are listed below:
 
 Always use a language identifier to get syntax highlighting.
 
-❌ 
+❌
+
 ````
 ```
 npm install @sap-cloud-sdk/connectivity
 ```
 ````
 
-✅ 
+✅
 
 ````
 ```bash
@@ -165,14 +166,15 @@ npm install @sap-cloud-sdk/connectivity
 
 Use the plain shell script command without prefix.
 
-❌ 
+❌
+
 ````
 ```bash
 $ npm install @sap-cloud-sdk/connectivity
 ```
 ````
 
-✅ 
+✅
 
 ````
 ```bash
@@ -595,14 +597,12 @@ You should include a circuit-breaker if:
 - The resource is essential in your infrastructure and should be protected.
 - The resource reacts poorly to heavy load.
 
-
 ✅
 
 You should include a circuit-breaker in the following scenarios:
 
 - The resource is essential in your infrastructure and should be protected.
 - The resource reacts poorly to heavy load.
-
 
 ### Start Each List Item With Capital Letter and End With Period
 
@@ -661,13 +661,11 @@ Typical parameters to configure a circuit-breaker are:
 
 ✅
 
-
 Typical parameters to configure a circuit-breaker are:
 
 - **Failure threshold**: failure rate above which the circuit-breaker will open.
 - **Reset timeout**: the time after which the circuit-breaker will close.
 - **Fallback**: some alternative actions you want to perform when the breaker is open.
-
 
 #### Exception: Capital Letter
 
