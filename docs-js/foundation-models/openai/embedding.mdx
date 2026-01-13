@@ -62,7 +62,10 @@ const response = await executeHttpRequest(
 
 ### Timeout
 
-Configure timeout for requests to prevent hanging connections. The default timeout is 10 seconds.
+Configure timeout for requests to prevent hanging connections. 
+The default timeout is 10 seconds.
+
+<!-- vale off -->
 
 ```ts
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
@@ -78,5 +81,7 @@ const response = await executeHttpRequest(
   }
 );
 ```
+
+<!-- vale on -->
 
 For advanced resilience patterns including circuit breaker functionality, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
