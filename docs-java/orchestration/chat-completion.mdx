@@ -648,7 +648,7 @@ Once you stored an Orchestration configuration in Prompt Registry you can refere
 
 ```java
 var reference = OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
-var response = client.chatCompletionUsingReference(reference);
+OrchestrationChatResponse response = client.chatCompletionUsingReference(reference);
 ```
 
 Note that you have to add the necessary templating parameters that are used in your Orchestration configuration.
@@ -662,7 +662,7 @@ var reference =
     OrchestrationConfigReference.fromId("0123")
         .messageHistory(history)
         .templateParameters(parameter);
-return client.chatCompletionUsingReference(reference);
+OrchestrationChatResponse client.chatCompletionUsingReference(reference);
 ```
 
 Note that besides setting the message history and the template parameters, the configuration itself cannot be changed during runtime if it is used via reference from prompt registry.

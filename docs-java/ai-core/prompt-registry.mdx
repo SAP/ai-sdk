@@ -234,14 +234,13 @@ var orchConfig = OrchestrationConfig.create()
                                                 new UserChatMessageContent.InnerString("message"))
                                             .role(UserChatMessage.RoleEnum.USER)))
                             .model(LLMModelDetails.create().name("model-name")))));
-  }
 var postRequest =
       OrchestrationConfigPostRequest.create()
-          .name(NAME)
+          .name("name")
           .version("0.0.1")
-          .scenario("sdk-test-scenario")
+          .scenario("scenario")
           .spec(buildOrchestrationConfig());
-var response = orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+OrchestrationConfigPostResponse response = orchConfigClient.createUpdateOrchestrationConfig(postRequest);
 ```
 
 ### List Orchestration Configurations
@@ -250,5 +249,5 @@ You can list the saved Orchestration configurations as follows.
 
 ```java
 var orchConfigClient = new OrchestrationConfigClient();
-var response = orchConfigClient.listOrchestrationConfigs();
+OrchestrationConfigListResponse response = orchConfigClient.listOrchestrationConfigs();
 ```
