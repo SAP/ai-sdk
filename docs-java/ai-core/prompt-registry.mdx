@@ -205,12 +205,12 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 Note that you can also locally test a prompt, without needing it to be deployed in the Prompt Registry.
 For more information, see [the Orchestration documentation](../orchestration/chat-completion#locally-test-a-prompt-template).
 
-
 ## Orchestration Configurations in Prompt Registry
 
 The orchestration config API available as part of Prompt Registry allows to persist Orchestration configurations.
 Once stored, you can reference and use them through your `OrchestrationClient` instead of defining the configuration during runtime.
-Please refer to the [chapter on chat completion]() for details on how to use a stored Orchestration configuration with your `OrchestrationClient`.
+
+Please refer to the [chapter on chat completion](../orchestration/chat-completion#using-a-prepared-configuration) for details on how to use a stored Orchestration configuration with your `OrchestrationClient`.
 
 For more details about orchestration configuration management, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/orchestration-config-management).
 
@@ -252,4 +252,3 @@ You can list the saved Orchestration configurations as follows.
 var orchConfigClient = new OrchestrationConfigClient();
 var response = orchConfigClient.listOrchestrationConfigs();
 ```
-
