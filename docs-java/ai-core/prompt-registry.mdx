@@ -204,3 +204,52 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 
 Note that you can also locally test a prompt, without needing it to be deployed in the Prompt Registry.
 For more information, see [the Orchestration documentation](../orchestration/chat-completion#locally-test-a-prompt-template).
+
+
+## Orchestration Configurations in Prompt Registry
+
+The orchestration config API available as part of Prompt Registry allows to persist Orchestration configurations.
+Once stored, you can reference and use them through your `OrchestrationClient` instead of defining the configuration during runtime.
+Please refer to the [chapter on chat completion]() for details on how to use a stored Orchestration configuration with your `OrchestrationClient`.
+
+For more details about orchestration configuration management, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/orchestration-config-management).
+
+### Create an Orchestration Configuration
+
+You can create a new Orchestration configuration in Prompt Registry as follows.
+
+```java
+var orchConfigClient = new OrchestrationConfigClient();
+var orchConfig = OrchestrationConfig.create()
+        .modules(
+            OrchestrationConfigModules.createInnerModuleConfigs(
+                ModuleConfigs.create()
+                    .promptTemplating(
+                        PromptTemplatingModuleConfig.create()
+                            .prompt(
+                                Template.create()
+                                    .template(
+                                        UserChatMessage.create()
+                                            .content(
+                                                new UserChatMessageContent.InnerString("message"))
+                                            .role(UserChatMessage.RoleEnum.USER)))
+                            .model(LLMModelDetails.create().name("model-name")))));
+  }
+var postRequest =
+      OrchestrationConfigPostRequest.create()
+          .name(NAME)
+          .version("0.0.1")
+          .scenario("sdk-test-scenario")
+          .spec(buildOrchestrationConfig());
+var response = orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+```
+
+### List Orchestration Configurations
+
+You can list the saved Orchestration configurations as follows.
+
+```java
+var orchConfigClient = new OrchestrationConfigClient();
+var response = orchConfigClient.listOrchestrationConfigs();
+```
+

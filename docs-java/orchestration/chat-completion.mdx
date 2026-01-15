@@ -635,7 +635,41 @@ OrchestrationAiModel customGPT4O =
         .withVersion("2024-05-13");
 ```
 
-## Using a Configuration from AI Launchpad
+## Using a prepared Configuration
+
+There are different ways to create an Orchestration configuration outside the runtime of your application.
+
+### Using a Configuration stored in Prompt Registry
+
+You can create and store Orchestration configurations in Prompt Registry.
+For a guide on how to do that please refer to the chapter on [Prompt Registry]().
+
+Once you stored an Orchestration configuration in Prompt Registry you can reference it either via its ID or via a combination of its scenario, name, and version as follows.
+
+```java
+var reference = OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
+var response = client.chatCompletionUsingReference(reference);
+```
+
+Note that you have to add the necessary templating parameters that are used in your Orchestration configuration.
+Additionally, you can add a list of messages as message history.
+Here is an example that uses both for a stored Orchestration configuration that is referenced via its ID.
+
+```java
+List<Message> history = List.of(new SystemMessage("Your message here."));
+var parameter = Map.of("placeholder", "your value");
+var reference =
+    OrchestrationConfigReference.fromId("0123")
+        .messageHistory(history)
+        .templateParameters(parameter);
+return client.chatCompletionUsingReference(reference);
+```
+
+Note that besides setting the message history and the template parameters, the configuration itself cannot be changed during runtime if it is used via reference from prompt registry.
+
+You can also find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+### Using a Configuration from AI Launchpad
 
 In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
 
