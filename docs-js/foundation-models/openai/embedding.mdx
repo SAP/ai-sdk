@@ -42,24 +42,11 @@ For example, to set a custom retry count:
 <!-- vale off -->
 
 ```ts
-import { retry } from '@sap-cloud-sdk/resilience';
-import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
-import { getDestination } from '@sap-cloud-sdk/connectivity';
-
-const destination = await getDestination('my-ai-core-destination');
-
-const response = await executeHttpRequest(
-  destination,
-  {
-    method: 'GET',
-    url: '/api/executions'
-  },
-  {
-    middleware: [
-      retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
-    ]
-  }
-);
+const response = await client.run(request, {
+  middleware: [
+    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
+  ]
+});
 ```
 
 <!-- vale on -->
@@ -69,19 +56,14 @@ const response = await executeHttpRequest(
 Configure timeout for requests to prevent hanging connections.
 The default timeout is 10 seconds.
 
-```ts
-import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
+<!-- vale off -->
 
-const response = await executeHttpRequest(
-  destination,
-  {
-    method: 'GET',
-    url: '/api/executions'
-  },
-  {
-    timeout: 30000 // 30 seconds
-  }
-);
+```ts
+const response = await client.run(request, {
+  timeout: 30000 // 30 seconds
+});
 ```
+
+<!-- vale on -->
 
 For advanced resilience patterns including circuit breaker functionality, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).

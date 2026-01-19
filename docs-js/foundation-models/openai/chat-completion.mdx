@@ -336,24 +336,20 @@ For example, to set a custom retry count:
 <!-- vale off -->
 
 ```ts
-import { retry } from '@sap-cloud-sdk/resilience';
-import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
-import { getDestination } from '@sap-cloud-sdk/connectivity';
+const request = {
+  messages: [
+    {
+      role: 'user',
+      content: 'Where is the deepest place on earth located?'
+    }
+  ]
+};
 
-const destination = await getDestination('my-ai-core-destination');
-
-const response = await executeHttpRequest(
-  destination,
-  {
-    method: 'GET',
-    url: '/api/executions'
-  },
-  {
-    middleware: [
-      retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
-    ]
-  }
-);
+const response = await client.run(request, {
+  middleware: [
+    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
+  ]
+});
 ```
 
 <!-- vale on -->
@@ -366,18 +362,18 @@ The default timeout is 10 seconds.
 <!-- vale off -->
 
 ```ts
-import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
+const request = {
+  messages: [
+    {
+      role: 'user',
+      content: 'Where is the deepest place on earth located?'
+    }
+  ]
+};
 
-const response = await executeHttpRequest(
-  destination,
-  {
-    method: 'GET',
-    url: '/api/executions'
-  },
-  {
-    timeout: 30000 // 30 seconds
-  }
-);
+const response = await client.run(request, {
+  timeout: 30000 // 30 seconds
+});
 ```
 
 <!-- vale on -->
