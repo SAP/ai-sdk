@@ -42,6 +42,10 @@ For example, to set a custom retry count:
 <!-- vale off -->
 
 ```ts
+const request = {
+  input: 'What is the capital of Germany?'
+};
+
 const response = await client.run(request, {
   middleware: [
     retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
@@ -59,11 +63,35 @@ The default timeout is 10 seconds.
 <!-- vale off -->
 
 ```ts
+const request = {
+  input: 'Create a 10-15 sentence long story involving a train ride.'
+};
+
 const response = await client.run(request, {
   timeout: 30000 // 30 seconds
 });
 ```
 
+### Combining Resilience Patterns
+
+You can combine multiple resilience patterns for comprehensive protection.
+
+<!-- vale off -->
+
+```ts
+const request = {
+  input: 'Generate a creative story about space exploration.'
+};
+
+const response = await client.run(request, {
+  middleware: [
+    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
+    circuitBreaker({ failureThreshold: 5, recoveryTimeout: 60000 }),
+    timeout(30000)
+  ]
+});
+```
+
 <!-- vale on -->
 
-For advanced resilience patterns including circuit breaker functionality, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).

@@ -1215,4 +1215,95 @@ const orchestrationClient = new OrchestrationClient({
 
 <!-- vale on -->
 
-For advanced resilience patterns including circuit breaker functionality, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+### Custom Retry with SAP Cloud SDK Resilience Package
+
+The `@sap-cloud-sdk/resilience` package uses the SAP Cloud SDK for JavaScript HTTP client, which provides additional resilience features to handle transient failures and improve reliability.
+
+For example, to set a custom retry count:
+
+<!-- vale off -->
+
+```ts
+const request = {
+  messages: [
+    { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
+  ]
+};
+
+const response = await orchestrationClient.chatCompletion(request, {
+  middleware: [
+    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
+  ]
+});
+```
+
+<!-- vale on -->
+
+### Timeout with SAP Cloud SDK Resilience Package
+
+Configure timeout for requests to prevent hanging connections.
+The default timeout is 10 seconds.
+
+<!-- vale off -->
+
+```ts
+const response = await orchestrationClient.chatCompletion(request, {
+  timeout: 30000 // 30 seconds
+});
+```
+
+<!-- vale on -->
+
+### Circuit Breaker with SAP Cloud SDK Resilience Package
+
+Use the circuit breaker pattern to prevent cascading failures by temporarily stopping requests to a failing service.
+
+<!-- vale off -->
+
+```ts
+import { circuitBreaker } from '@sap-cloud-sdk/resilience';
+
+const request = {
+  messages: [
+    { role: 'user', content: 'Summarize the benefits of cloud computing.' }
+  ]
+};
+
+const response = await orchestrationClient.chatCompletion(request, {
+  middleware: [
+    circuitBreaker({
+      failureThreshold: 5,
+      recoveryTimeout: 60000,
+      monitoringPeriod: 10000
+    })
+  ]
+});
+```
+
+<!-- vale on -->
+
+### Combining Resilience Patterns with SAP Cloud SDK Resilience Package
+
+You can combine multiple resilience patterns for comprehensive protection.
+
+<!-- vale off -->
+
+```ts
+const request = {
+  messages: [
+    { role: 'user', content: 'Generate a creative story about space exploration.' }
+  ]
+};
+
+const response = await orchestrationClient.chatCompletion(request, {
+  middleware: [
+    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
+    circuitBreaker({ failureThreshold: 5, recoveryTimeout: 60000 }),
+    timeout(30000)
+  ]
+});
+```
+
+<!-- vale on -->
+
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
