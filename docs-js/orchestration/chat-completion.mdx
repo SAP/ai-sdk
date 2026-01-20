@@ -1291,7 +1291,10 @@ You can combine multiple resilience patterns for comprehensive protection.
 ```ts
 const request = {
   messages: [
-    { role: 'user', content: 'Generate a creative story about space exploration.' }
+    {
+      role: 'user',
+      content: 'Generate a creative story about space exploration.'
+    }
   ]
 };
 
