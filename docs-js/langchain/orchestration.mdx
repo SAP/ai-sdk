@@ -169,48 +169,10 @@ For a usage example, refer to the [getting started with agents tutorial](../tuto
 
 ## Resilience
 
-Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
-
 :::note
-When using LangChain clients, configure resilience only through LangChain options.
-Do not apply additional SAP Cloud SDK resilience middleware, as LangChain already provides built-in retry mechanisms.
+The choice between Orchestration Service resilience and SAP Cloud SDK resilience should be made based on the specific requirements of the use case:
+
+Orchestration Service Resilience should be used when resilience is required at the orchestration layer, such as retries or timeouts for orchestration API calls, with a preference for service-level configuration.
+
+SAP Cloud SDK Resilience should be used when advanced resilience patterns, such as circuit breakers, are required, or when consistent fault tolerance is needed across multiple service integrations.
 :::
-
-### Retry
-
-By default, LangChain client retries up to six times with exponential delay.
-To modify this behavior, set the `maxRetries` option during the client initialization.
-
-```ts
-const client = new OrchestrationClient(orchestrationConfig, {
-  maxRetries: 0
-});
-```
-
-:::note
-If the error is caused by input content filtering, the client will throw immediately without retrying.
-:::
-
-### Timeout
-
-By default, no timeout is set in the client.
-To limit the maximum duration for the entire request including retries, specify a timeout in milliseconds when calling the `invoke` method.
-A request that times out will be [retried](#retry) by default.
-
-```ts
-const response = await client.invoke(messageHistory, { timeout: 10000 });
-```
-
-Timeout can also be set for streaming requests.
-
-```ts
-const response = await client.stream(
-  [
-    {
-      role: 'user',
-      content: 'Hello world! Why is this phrase so famous?'
-    }
-  ],
-  { timeout: 1000 }
-);
-```
