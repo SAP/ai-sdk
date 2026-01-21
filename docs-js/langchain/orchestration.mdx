@@ -209,3 +209,39 @@ const response = await client.stream(
   { timeout: 1000 }
 );
 ```
+
+## Agent Integration
+
+The `OrchestrationClient` can be used with LangChain's agent framework through the `createAgent()` function.
+
+:::note
+In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
+:::
+
+### Basic Agent Usage
+
+Create an agent by providing the orchestration client as the model, along with any tools you want the agent to use:
+
+```ts
+import { createAgent } from '@langchain/langgraph/prebuilt';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+const model = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  }
+});
+
+const agent = createAgent({
+  model,
+  tools: []
+});
+
+const agentInputs = {
+  messages: [{ role: 'user', content: 'What is SAP?' }]
+};
+
+const result = await agent.invoke(agentInputs);
+```
