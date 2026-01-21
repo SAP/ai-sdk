@@ -35,8 +35,7 @@ const configurationPostData: AiConfigurationBaseData = {
 
 const result: AiConfigurationCreationResponse =
   await ConfigurationApi.configurationCreate(configurationPostData, {
-    'AI-Resource-Group': 'MY_RESOURCE_GROUP',
-    'AI-Resource-Group-Scope': 'true'
+    'AI-Resource-Group': 'MY_RESOURCE_GROUP'
   }).execute();
 ```
 
@@ -45,9 +44,15 @@ const result: AiConfigurationCreationResponse =
 Create an orchestration deployment for the target resource group if it does not exist already with the following code:
 
 ```ts
+const deploymentPostData: AiDeploymentCreationRequest = {
+      configurationId: '3d2c1b0a'
+    };
+
 const deploymentResponse = await createDeployment(
-  'MY_ORCHESTRATION_CONFIG_ID',
-  'MY_RESOURCE_GROUP'
+  deploymentPostData,
+  {
+    'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+  }
 );
 ```
 
