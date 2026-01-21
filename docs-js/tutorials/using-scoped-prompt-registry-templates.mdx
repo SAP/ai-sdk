@@ -45,15 +45,12 @@ Create an orchestration deployment for the target resource group if it does not 
 
 ```ts
 const deploymentPostData: AiDeploymentCreationRequest = {
-      configurationId: '3d2c1b0a'
-    };
+  configurationId: '3d2c1b0a'
+};
 
-const deploymentResponse = await createDeployment(
-  deploymentPostData,
-  {
-    'AI-Resource-Group': 'MY_RESOURCE_GROUP'
-  }
-);
+const deploymentResponse = await createDeployment(deploymentPostData, {
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+});
 ```
 
 ## Create Prompt Template with Specific Resource Group Scope
