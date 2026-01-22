@@ -54,9 +54,10 @@ To use Vale locally, install it via your package manager.
 
 ```bash
 # macos / linux
-$ brew install vale
+brew install vale
+
 # windows
-$ choco install vale
+choco install vale
 ```
 
 If you use Microsoft Visual Studio Code, you can use the official [Vale plugin](https://marketplace.visualstudio.com/items?itemName=errata-ai.vale-server) to get hints in your editor.
@@ -75,11 +76,13 @@ Please use [ESLint](https://eslint.org) and [Prettier](https://prettier.io/) to 
 
 ```bash
 # Install dependencies including ESLint and Prettier
-$ npm install
+npm install
+
 # Run ESLint and Prettier
-$ npm run lint
+npm run lint
+
 # Fix ESLint and Prettier issues automatically
-$ npm run lint:fix
+npm run lint:fix
 ```
 
 ### External Grammar Checker

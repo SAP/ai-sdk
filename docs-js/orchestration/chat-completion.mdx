@@ -22,8 +22,8 @@ Find more details about orchestration workflow [here](https://help.sap.com/docs/
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/orchestration
+```bash
+npm install @sap-ai-sdk/orchestration
 ```
 
 ## Quick Start
@@ -258,6 +258,10 @@ For details on storing a template in the Prompt Registry, refer to [this guide](
 
 ### Scoped Prompt Registry
 
+:::info Tutorial: Creating Scoped Prompt Templates with Headers
+For a step-by-step guide on creating orchestration deployment and configuring scoped prompt registry templates, see the [Using Scoped Prompt Registry Templates](../tutorials/using-scoped-prompt-registry-templates) tutorial.
+:::
+
 Prompt templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) can be scoped to different levels.
 By default, prompts are stored in the `tenant` scope, making them accessible across all resource groups within the tenant, ensuring broad availability.
 
@@ -276,7 +280,7 @@ const orchestrationClient = new OrchestrationClient(
       },
       prompt: {
         template_ref: {
-          name: 'my-get-capital-template',
+          name: 'my-scoped-template',
           scenario: 'my-scenario',
           version: '0.0.1',
           scope: 'resource_group' // or 'tenant'
@@ -289,8 +293,6 @@ const orchestrationClient = new OrchestrationClient(
   }
 );
 ```
-
-For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 ### Local Prompt Template
 
@@ -808,7 +810,7 @@ const response = await orchestrationClient.chatCompletion({
 By default, the optional filter property `data_repository_type` is set to `vector`.
 Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
 
-Set `metadata_params` property with an array of parameter names to include [Metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/metadata) in the grounding result, which can be mentioned when writing the prompt.
+Set `metadata_params` property with an array of parameter names to include [Metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/contextualized-retrieval-using-metadata-and-vector-search?locale=en-US) in the grounding result, which can be mentioned when writing the prompt.
 If set the value to `'*'`, all metadata will be included.
 
 Set `data_repositories` property with an array of repository IDs to search in specific data repositories.
@@ -1065,6 +1067,55 @@ Set the `llm` property to `null` to not send any LLM streaming options.
 :::note
 When initializing a client with JSON module config, it is not possible to provide streaming options.
 :::
+
+## Initialization with Orchestration Configuration
+
+Instead of defining the orchestration configuration inline, you can reference a stored configuration from the prompt registry.
+This approach enables configuration reuse across applications and centralized management of orchestration settings.
+
+### By Configuration ID
+
+Reference an orchestration configuration by its unique identifier:
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  id: 'c1a4f2e2-BETA-4d2b-9f7a-1234567890ab'
+});
+```
+
+### By Scenario, Name, and Version
+
+Reference an orchestration configuration by its scenario, name, and version:
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  scenario: 'customer-support',
+  name: 'my-orchestration-config',
+  version: '0.0.1'
+});
+```
+
+Once initialized with an orchestration configuration reference, use the client as usual:
+
+```ts
+const response = await orchestrationClient.chatCompletion({
+  placeholderValues: {
+    customerQuestion: 'How do I reset my password?'
+  }
+});
+
+console.log(response.getContent());
+```
+
+:::note
+When using an orchestration configuration reference, [streaming](#streaming) is only available if the stored configuration includes streaming settings.
+:::
+
+For details on creating and managing orchestration configurations, refer to the [Orchestration Configuration](../ai-core/prompt-registry#orchestration-configuration) section in the prompt registry guide.
 
 ## Custom Deployment Configuration
 

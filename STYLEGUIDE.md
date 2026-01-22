@@ -1,11 +1,7 @@
-# Style Guide
+# Style Guide <!-- omit in toc -->
 
 This guide is based on [Google's style guide](https://developers.google.com/style).
 
-## Table of Contents
-
-- [Style Guide](#style-guide)
-  - [Table of Contents](#table-of-contents)
 - [Formatting](#formatting)
   - [Inline Code](#inline-code)
     - [Use Code Font](#use-code-font)
@@ -13,6 +9,9 @@ This guide is based on [Google's style guide](https://developers.google.com/styl
       - [Use Code Format for Method Names](#use-code-format-for-method-names)
       - [Use `Function` vs `Method` Accordingly](#use-function-vs-method-accordingly)
     - [Exceptions](#exceptions)
+  - [Fenced code blocks](#fenced-code-blocks)
+    - [Use language identifier](#use-language-identifier)
+    - [Do not prefix shell script commands with $](#do-not-prefix-shell-script-commands-with-)
   - [Placeholders](#placeholders)
     - [Use Code Format in Italics in Inline Text](#use-code-format-in-italics-in-inline-text)
     - [Use Normal Placeholder Syntax in URL or Inline Code Sample](#use-normal-placeholder-syntax-in-url-or-inline-code-sample)
@@ -39,9 +38,7 @@ This guide is based on [Google's style guide](https://developers.google.com/styl
     - [Don’t Include the Type of UI Element](#dont-include-the-type-of-ui-element)
   - [User Entered Text](#user-entered-text)
   - [Version](#version)
-    <!-- vale off -->
     - [Do Not Use Formats X.Y or X.Y.Z](#do-not-use-formats-xy-or-xyz)
-    <!-- vale on -->
     - [Avoid Using `Currently` and `New`](#avoid-using-currently-and-new)
   - [Paragraphs](#paragraphs)
     - [Use One Sentence per Line](#use-one-sentence-per-line)
@@ -79,7 +76,7 @@ This guide is based on [Google's style guide](https://developers.google.com/styl
     - [Use Function Words](#use-function-words)
     - [Keep It Short](#keep-it-short)
     - [Use Lowercase Letters](#use-lowercase-letters)
-    - [Reference Files By Their Path, Not Their Slug](#reference-files-by-their-path-not-their-slug)
+    - [Reference Files By Their Relative Path, Not Their Slug](#reference-files-by-their-relative-path-not-their-slug)
 
 # Formatting
 
@@ -142,6 +139,48 @@ Items that should NOT be put in code format are listed below:
 - Email addresses
 - [Names of products, services, and organizations](#software-products)
 - URLs that the reader is supposed to follow in a browser
+
+## Fenced code blocks
+
+### Use language identifier
+
+Always use a language identifier to get syntax highlighting.
+
+❌
+
+````
+```
+npm install @sap-cloud-sdk/connectivity
+```
+````
+
+✅
+
+````
+```bash
+npm install @sap-cloud-sdk/connectivity
+```
+````
+
+### Do not prefix shell script commands with $
+
+Use the plain shell script command without prefix.
+
+❌
+
+````
+```bash
+$ npm install @sap-cloud-sdk/connectivity
+```
+````
+
+✅
+
+````
+```bash
+npm install @sap-cloud-sdk/connectivity
+```
+````
 
 ## Placeholders
 
@@ -290,12 +329,10 @@ Follow sentence-style capitalization.
 
 ## Use Block Quotes for Separated Error Messages
 
-Put error messages in block quotes when displaying them outside of a sentence.
+Use block quotes for error messages when displaying them outside of a sentence.
 Follow sentence-style capitalization.
 
-❌
-
-An error like this can occur: `Module not found: Error: Can't resolve 'https' in`
+❌ An error like this can occur: "Module not found: Error: Can't resolve 'https' in`"
 
 ✅
 
@@ -553,33 +590,27 @@ Introduce a list with a complete sentence, **not a partial one that's completed 
 
 ❌
 
-```
 You should include a circuit-breaker if:
 
 - The resource is essential in your infrastructure and should be protected.
 - The resource reacts poorly to heavy load.
-```
 
 ✅
 
-```
 You should include a circuit-breaker in the following scenarios:
 
 - The resource is essential in your infrastructure and should be protected.
 - The resource reacts poorly to heavy load.
-```
 
 ### Start Each List Item With Capital Letter and End With Period
 
 ✅
 
-```
 The introduction of a cache is most effective in the following cases:
 
 - The execution of a method consumes a lot of resources.
 - The method is a pure function, meaning the function arguments contain all the information and no hidden state affects the result of the function.
 - The function is invoked multiple times for the same arguments or context.
-```
 
 #### Exceptions: End Punctuation
 
@@ -597,95 +628,73 @@ Numbered lists follow the same rules that apply to general lists.
 
 ❌
 
-```
 You can obtain the JWT using Postman:
 
-- create a new request
-- go to the "Authorization tab of the request
-- select "OAuth 2.0" as a type
-```
+1. create a new request
+2. go to the "Authorization tab of the request
+3. select "OAuth 2.0" as a type
 
 ✅
 
-```
 To obtain the JWT using Postman, follow these steps:
 
 1. Create a new request.
 2. Go to the **Authorization** tab of the request.
 3. In the **Type** drop-down, select **OAuth 2.0**.
-```
 
 ### Use Description List With Headings for Describing Terms
 
-- Start the term with capital letter and text that follows colons with a lowercase letter.
-- Use bold formatting for the term and punctuation.
-- If term is an attribute, use code font.
-- Use colon and **not dash** to set off a description.
+Start the term with capital letter and text that follows colons with a lowercase letter.
+Use bold formatting for the term and punctuation.
+If term is an attribute, use code font.
+Use colon and **not dash** to set off a description.
 
 ❌
 
-```
 Typical parameters to configure a circuit-breaker are:
 
 - "failure threshold"- Failure rate above which the circuit-breaker will open.
 - "reset timeout"- The time after which the circuit-breaker will close.
 - Fallback- Some alternative actions you want to perform when the breaker is open.
-```
 
 ✅
 
-```
 Typical parameters to configure a circuit-breaker are:
 
 - **Failure threshold**: failure rate above which the circuit-breaker will open.
 - **Reset timeout**: the time after which the circuit-breaker will close.
 - **Fallback**: some alternative actions you want to perform when the breaker is open.
-```
 
 #### Exception: Capital Letter
 
-If the case is an important part of the information conveyed by the list - such as in a list of glossary terms.
+Use lowercase when letter casing is meaningful to the information conveyed by the list, such as in a glossary of terms.
+❌
+
+- `MinTimeout`: initial waiting time for the first retry.
 
 ✅
 
-```
 - `minTimeout`: initial waiting time for the first retry.
-```
-
-<!-- vale off -->
 
 # Search Engine Optimization
 
 ## Slugs
 
-The slug is the the end part of a URL after the backslash:
-
-```
-my-website.com/this-is-my-slug
-```
+The slug is the end part of a URL after the backslash: `my-website.com/this-is-my-slug`.
 
 Writing a good slug positively affects our SEO.
 
 By default, the slug is based on the filename of your MDX document.
-You should overwrite it by setting the `id` in the front matter to avoid unintended changes to the slug,
-which would occur if the filename is changed.
+To overwrite it, adjust the `id` property in the front matter.
+Changing the file name could lead to unintended changes to the slug.
 
 ### Do not include base path in the slug
 
-Since our path is already `cloud-sdk/docs/js/*`, you should not include the words:
-`sap`, `cloud`, `sdk`, `js`
+Do not include the words `sap`, `cloud`, `sdk`, `js` since our path is already `cloud-sdk/docs/js/*`.
 
-❌
+❌ `release-notes-sap-cloud-sdk-for-javascript-and-typescript'`
 
-```
-id: release-notes-sap-cloud-sdk-for-javascript-and-typescript'
-```
-
-✅
-
-```
-id: release-notes
-```
+✅ `release-notes`
 
 ### Include Keywords
 
@@ -693,17 +702,9 @@ A keyword is the search term we want a page to rank for most.
 
 For example, the following would be a slug for the debug page:
 
-❌
+❌ `find-problems-in-the-sap-cloud-sdk`
 
-```
-id: find-problems-in-the-sap-cloud-sdk
-```
-
-✅
-
-```
-id: debugging
-```
+✅ `debugging`
 
 ### Use Function Words
 
@@ -712,17 +713,9 @@ Avoid function words in slugs and only include them if they are needed to clarif
 
 For example, the following would be a slug for a migration page:
 
-❌
+❌ `migrating-from-sap-btp-cloud-foundry-to-a-kubernetes-environment-with-the-sap-cloud-sdk`
 
-```
-id: migrating-from-sap-btp-cloud-foundry-to-a-kubernetes-environment-with-the-sap-cloud-sdk
-```
-
-✅
-
-```
-id: migrate-from-cf-to-kubernetes
-```
+✅ `migrate-from-cf-to-kubernetes`
 
 ### Keep It Short
 
@@ -731,17 +724,9 @@ Therefore remove not only function words but also other unnecessary words.
 
 For example, the following would be a slug for a troubleshooting guide page:
 
-❌
+❌ `how-to-improve-error-messages-in-the-cloud-sdk`
 
-```
-id: how-to-improve-error-messages-in-the-cloud-sdk
-```
-
-✅
-
-```
-id: improve-logging
-```
+✅ `improve-logging`
 
 ### Use Lowercase Letters
 
@@ -749,45 +734,23 @@ Use lowercase letters in slugs.
 
 For example, the following would be a slug for our an FAQ page:
 
-❌
+❌ `Frequently-Asked-Questions`
 
-```
-id: Frequently-Asked-Questions
-```
+✅ `frequently-asked-questions`
 
-✅
+### Reference Files By Their Relative Path, Not Their Slug
 
-```
-id: frequently-asked-questions
-```
-
-### Reference Files By Their Path, Not Their Slug
-
-If you reference files by their path, e.g., `../my-file.mdx`, changes to the `id`, and therefore the slug, will automitcally carry over.
+Reference files by their relative path, e.g., `../my-file.mdx`.
+Changes to the `id` property in the front matter automatically carry over.
 Otherwise you would have to adjust the reference in all files that reference a specific slug.
 
-Therefore you should always reference other files by their relative path.
-Note: Begin relative path with `./` or `../`.
+❌ `see [JWT documentation](../retrieve-jwt)`
+
+✅ `see [JWT documentation](../how-to-retrieve-jwt.mdx)`
+
+Use relative paths with `./` or `../`.
 Not using this notation can result in an old versioned doc linking to the latest doc.
 
-❌
+❌ `the concept of a [destination](features/connectivity/destination.mdx)
 
-```
-... see our [JWT documentation](../retrieve-jwt)
-```
-
-```
-... the concept of a [destination](features/connectivity/destination.mdx)
-```
-
-✅
-
-```
-... see our [JWT documentation](../how-to-retrieve-jwt.mdx)
-```
-
-```
-... the concept of a [destination](./features/connectivity/destination.mdx)
-```
-
-<!-- vale on -->
+✅ `the concept of a [destination](./features/connectivity/destination.mdx)`
