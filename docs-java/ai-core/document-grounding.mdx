@@ -79,9 +79,9 @@ PipelineStatus status = api.getPipelineStatus(resourceGroupId, pipeline.getPipel
 
 ### Vector API
 
-Collection creation:
+#### Collection creation
 
-```
+```java
 String resourceGroupId;
 CollectionRequest collectionRequest;
 
@@ -94,7 +94,7 @@ String locationHeader = headers.get("Location").get(0);
 String collectionId = locationHeader.replaceAll("^.*?/([a-f0-9-]+)/.*?$", "$1");
 ```
 
-Document creation:
+#### Document creation
 
 ```java
 var api = new GroundingClient().vector();
@@ -103,18 +103,17 @@ var resourceGroupId = "default";
 // resolve collection id
 var collectionId = UUID.fromString("12345-123-123-123-0123456abcdef");
 
-var request = DocumentCreateRequest.create()
-  .documents(BaseDocument.create()
-      .chunks(TextOnlyBaseChunk.create()
-          .content("The dog makes _woof_")
-          .metadata(KeyValueListPair.create()
-              .key("animal").value("dog")))
-      .metadata(DocumentKeyValueListPair.create()
-          .key("topic").value("sound")));
+var request =
+    DocumentCreateRequest.create()
+        .documents(BaseDocument.create()
+            .chunks(TextOnlyBaseChunk.create()
+               .content("The dog makes _woof_")
+               .metadata(VectorKeyValueListPair.create().key("animal").value("dog")))
+            .metadata(VectorDocumentKeyValueListPair.create().key("topic").value("sound")));
 DocumentsListResponse response = api.createDocuments(resourceGroupId, collectionId, request);
 ```
 
-Document search:
+#### Document search
 
 ```java
 String resourceGroup;
