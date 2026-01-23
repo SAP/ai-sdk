@@ -1186,6 +1186,14 @@ For more information about configuring a destination, refer to the [Using a Dest
 
 The orchestration service provides built-in resilience features to handle transient failures and improve reliability.
 
+:::note
+The choice between Orchestration Service resilience and SAP Cloud SDK resilience should be made based on the specific requirements of the use case:
+
+Orchestration Service Resilience should be used when resilience is required at the orchestration layer, such as retries or timeouts for orchestration API calls, with a preference for service-level configuration.
+
+SAP Cloud SDK Resilience should be used when advanced resilience patterns, such as circuit breakers, are required, or when consistent fault tolerance is needed across multiple service integrations.
+:::
+
 ### Retry and Timeout
 
 The orchestration service supports built-in retry and timeout configurations through streaming options.

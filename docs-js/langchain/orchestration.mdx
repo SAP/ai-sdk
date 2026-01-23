@@ -169,10 +169,6 @@ For a usage example, refer to the [getting started with agents tutorial](../tuto
 
 ## Resilience
 
-:::note
-The choice between Orchestration Service resilience and SAP Cloud SDK resilience should be made based on the specific requirements of the use case:
-
-Orchestration Service Resilience should be used when resilience is required at the orchestration layer, such as retries or timeouts for orchestration API calls, with a preference for service-level configuration.
-
-SAP Cloud SDK Resilience should be used when advanced resilience patterns, such as circuit breakers, are required, or when consistent fault tolerance is needed across multiple service integrations.
+:::warning
+The Orchestration layer and the SAP Cloud SDK resilience mechanisms should not be combined, or should be integrated only with careful consideration.
 :::
