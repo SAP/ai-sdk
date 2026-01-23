@@ -223,7 +223,7 @@ In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
 Create an agent by providing the orchestration client as the model, along with any tools you want the agent to use:
 
 ```ts
-import { createAgent } from '@langchain/langgraph/prebuilt';
+import { createAgent } from 'langchain';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
 const model = new OrchestrationClient({
