@@ -167,15 +167,13 @@ Use the `bindTools()` method to define the set of tools a model can access.
 For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling).
 For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents#define-tools).
 
-## Agent Integration
+### Basic Agent Usage
 
 The `OrchestrationClient` can be used with LangChain's agent framework through the `createAgent()` function.
 
 :::note
 In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
 :::
-
-### Basic Agent Usage
 
 Create an agent by providing the orchestration client as the model, along with any tools you want the agent to use:
 
