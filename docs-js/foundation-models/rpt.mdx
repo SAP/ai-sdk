@@ -1,0 +1,155 @@
+---
+id: rpt
+title: SAP RPT-1 (Beta)
+hide_title: false
+hide_table_of_contents: false
+description: How to use SAP Cloud SDK for AI to interact with SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - ai core
+  - ai-api
+---
+
+:::important
+This package is currently experimental and subject to change.
+Do not use in production.
+:::
+
+The `@sap-ai-sdk/rpt` package provides a client to interact with SAP's SAP-RPT-1 relational pretrained transformer model, [SAP-RPT-1](https://www.sap.com/products/artificial-intelligence/sap-rpt.html).
+Technically, SAP-RPT-1 is a foundation model, but the client is provided in a separate package.
+
+## Installation
+
+```
+$ npm install @sap-ai-sdk/rpt
+```
+
+## Usage
+
+SAP-RPT-1's purpose is to predict structured business data.
+The following shows the different ways to use the SAP Cloud SDK for AI RPT client to interact with the model.
+
+### Client Initialization
+
+To initialize a client use the `RptClient` constructor.
+All parameters are optional.
+By default, this uses the 'sap-rpt-1-small' model.
+
+```typescript
+import { RptClient } from '@sap-ai-sdk/rpt';
+
+const client = new RptClient();
+```
+
+To use the 'sap-rpt-1-large' model, specify the model name in the constructor:
+
+```typescript
+const client = new RptClient('sap-rpt-1-large');
+```
+
+To configure a model version, deployment ID, resource group or destination follow the instructions in the [Foundation Models documentation](./foundation-models#client-initialization).
+
+### Predict With Schema
+
+To make predictions with a schema, use the `predict()` method.
+Pass the data schema and the prediction data, i.e. prediction configuration and input data, as parameters.
+
+```typescript
+const prediction = await client.predict(
+  // data schema
+  [
+    { name: 'PRODUCT', dtype: 'string' },
+    { name: 'PRICE', dtype: 'numeric' },
+    { name: 'PRODUCTION_DATE', dtype: 'date' },
+    { name: 'ID', dtype: 'string' },
+    { name: 'SALESGROUP', dtype: 'string' }
+  ],
+  // prediction data
+  {
+    prediction_config: {
+      target_columns: [
+        { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]', task_type: 'classification' }
+      ]
+    },
+    index_column: '__row_idx__',
+    rows: [
+      {
+        PRODUCT: 'Laptop',
+        PRICE: 999.99,
+        PRODUCTION_DATE: '2025-01-15',
+        __row_idx__: '35',
+        SALESGROUP: '[PREDICT]'
+      },
+      {
+        PRODUCT: 'Desktop Computer',
+        PRICE: 750.5,
+        PRODUCTION_DATE: '2024-12-02',
+        __row_idx__: '42',
+        SALESGROUP: 'Enterprise Solutions'
+      },
+      ...
+    ]
+  }
+);
+```
+
+The data schema is a list of column definitions, each containing a `name` and a `dtype`.
+The prediction data contains the following properties:
+
+- `prediction_config`: A mandatory configuration to specify the columns to predict, including their names, placeholder values, and task types. The task type can be either `classification` or `regression`.
+- `index_column`: The name of the column that serves as the unique identifier for each row
+- `rows` or `columns`: The input data to make predictions on, either in row-wise or column-wise format.
+
+:::tip
+If you want to assign the schema and prediction data as variables you should initialize the schema with `as const` and use the generic `PredictionData<typeof schema>` type to get the most out of the TypeScript and auto-completion.
+This works without type assertions when passing the data directly to the `predict()` method.
+Example:
+
+```typescript
+const schema = [...] as const;
+const data: PredictionData<typeof schema> = {...};
+
+client.predict(schema, data);
+```
+
+:::
+
+### Predict Without Schema
+
+To make predictions without providing a schema, use the `predictWithoutSchema()` method.
+Pass only the prediction data as a parameter.
+The data schema will be inferred from the input data.
+
+```typescript
+const prediction = await client.predictWithoutSchema(
+  // prediction data
+  {
+    prediction_config: {
+      target_columns: [
+        { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]', task_type: 'classification' }
+      ]
+    },
+    index_column: '__row_idx__',
+    rows: [
+      {
+        PRODUCT: 'Laptop',
+        PRICE: 999.99,
+        PRODUCTION_DATE: '2025-01-15',
+        __row_idx__: '35',
+        SALESGROUP: '[PREDICT]'
+      },
+      {
+        PRODUCT: 'Desktop Computer',
+        PRICE: 750.5,
+        PRODUCTION_DATE: '2024-12-02',
+        __row_idx__: '42',
+        SALESGROUP: 'Enterprise Solutions'
+      },
+      ...
+    ]
+  }
+);
+```
