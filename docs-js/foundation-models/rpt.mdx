@@ -103,9 +103,9 @@ The prediction data contains the following properties:
 - `index_column`: The name of the column that serves as the unique identifier for each row
 - `rows` or `columns`: The input data to make predictions on, either in row-wise or column-wise format.
 
-:::tip
-If you want to assign the schema and prediction data as variables you should initialize the schema with `as const` and use the generic `PredictionData<typeof schema>` type to get the most out of the TypeScript and auto-completion.
-This works without type assertions when passing the data directly to the `predict()` method.
+:::important
+If you want to assign the schema and prediction data as variables you have to initialize the schema with `as const` and use the generic `PredictionData<typeof schema>` type.
+It works without type assertions when passing the data directly to the `predict()` method.
 Example:
 
 ```typescript
