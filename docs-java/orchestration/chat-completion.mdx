@@ -181,6 +181,7 @@ In this case the template is defined with the placeholder `{{?language}}` which 
 Alternatively, you can use already prepared templates from the [**Prompt Registry**](../ai-core/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
 
 #### Tenant Scope Level Approach
+
 ```java
 var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
 var configWithTemplate = config.withTemplateConfig(template);
@@ -192,6 +193,7 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 ```
 
 #### Resource Group Scope Level Approach
+
 ```java
 var resourceGroupId = "ai-sdk-java-e2e";
 var destination = new AiCoreService().getInferenceDestination(resourceGroupId).forScenario("orchestration");
