@@ -43,6 +43,8 @@ See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sd
 
 ## Create a Prompt Template
 
+### Tenant Scope Approach
+
 You can create a reusable prompt for a specific use case, including placeholders that are filled later.
 
 ```java
@@ -67,6 +69,33 @@ var template = PromptTemplatePostRequest.create()
 PromptTemplatePostResponse response = client.createUpdatePromptTemplate(template);
 ```
 
+### Resource Group Scope Approach
+
+```java
+PromptClient client = new PromptClient();
+
+var spec =
+    PromptTemplateSpec.create()
+        .template(
+            SingleChatTemplate.create()
+                .role("system")
+                .content(
+                    "You classify input text into the two following categories: {{?categories}}"),
+            SingleChatTemplate.create().role("user").content("{{?inputExample}}"))
+        .defaults(Map.of("categories", "Finance, Tech, Sports"));
+
+var template = PromptTemplatePostRequest.create()
+    .name("template-name")
+    .version("0.0.1")
+    .scenario("categorization")
+    .spec(spec);
+
+var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
+var resourceGroupScope = "true"; // "true" or "false"
+
+PromptTemplatePostResponse response = client.createUpdatePromptTemplate(template, resourceGroupId, resourceGroupScope);
+```
+
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
 
 ## Update a Prompt Template
@@ -82,6 +111,10 @@ var updatedTemplate = template.spec(updatedSpec);
 
 PromptTemplatePostResponse response = client.createUpdatePromptTemplate(updatedTemplate);
 ```
+
+### Resource Group Scope Approach
+
+Use the same `createUpdatePromptTemplate` method with the updated template details and resource group parameters just like in the creation step.
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
 
@@ -115,11 +148,30 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 
 You can fill a prompt template by ID, or by the combination of name, scenario, and version.
 
+### Tenant Scope Approach
+
 ```java
 PromptClient client = new PromptClient();
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
     "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    false,
+    PromptTemplateSubstitutionRequest.create()
+        .inputParams(Map.of("inputExample", "I love football")));
+```
+
+### Resource Group Scope Approach
+
+```java
+PromptClient client = new PromptClient();
+
+var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
+var resourceGroupScope = "true"; // "true" or "false"
+
+PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
+    "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    resourceGroupId,
+    resourceGroupScope,
     false,
     PromptTemplateSubstitutionRequest.create()
         .inputParams(Map.of("inputExample", "I love football")));
@@ -131,11 +183,25 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 
 You can import a declarative prompt template as a single file export in yaml format.
 
+### Tenant Scope Approach
+
 ```java
 PromptClient client = new PromptClient();
 
 Resource template = new ClassPathResource("prompt-template.yaml");
 PromptTemplatePostResponse response = client.importPromptTemplate(template.getFile());
+```
+
+### Resource Group Scope Approach
+
+```java
+PromptClient client = new PromptClient();
+
+var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
+var resourceGroupScope = "true"; // "true" or "false"
+
+Resource template = new ClassPathResource("prompt-template.yaml");
+PromptTemplatePostResponse response = client.importPromptTemplate(resourceGroupId, resourceGroupScope, template.getFile());
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -150,12 +216,25 @@ Currently not working
 
 ## Delete a Prompt Template
 
+### Tenant Scope Approach
+
 Delete a specific version of the prompt template, for imperatively managed prompt templates only.
 
 ```java
 PromptClient client = new PromptClient();
 
 PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId())
+```
+
+### Resource Group Scope Approach
+
+```java
+PromptClient client = new PromptClient();
+
+var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
+var resourceGroupScope = "true"; // "true" or "false"
+
+PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId(), resourceGroupId, resourceGroupScope);
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
