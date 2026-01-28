@@ -195,11 +195,10 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 #### Resource Group Scope Level Approach
 
 ```java
-var resourceGroupId = "ai-sdk-java-e2e";
-var destination = new AiCoreService().getInferenceDestination(resourceGroupId).forScenario("orchestration");
+var destination = new AiCoreService().getInferenceDestination("resource-group-id").forScenario("orchestration");
 var clientWithResourceGroup = new OrchestrationClient(destination);
 
-var template = TemplateConfig.reference().byId("8bf72116-11ab-41bb-8933-8be56f59cb67").withScope(RESOURCE_GROUP);
+var template = TemplateConfig.reference().byId("id").withScope(RESOURCE_GROUP);
 var configWithTemplate = config.withTemplateConfig(template);
 
 var inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", "What's the latest news on the stock market?");
