@@ -179,6 +179,41 @@ const embeddingClient = new OrchestrationEmbeddingClient(orchestrationConfig, {
 
 Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create and manage deployments for orchestration.
 
+### Request Cancellation
+
+Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when they are no longer needed.
+Pass an `AbortSignal` through the `signal` property of the request configuration parameter.
+
+```ts
+const controller = new AbortController();
+
+const response = embeddingClient.embed(
+  {
+    input: 'AI is fascinating'
+  },
+  { signal: controller.signal }
+);
+
+// Cancel the request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+try {
+  await response;
+} catch (error) {
+  console.error('Request was cancelled:', error.message);
+}
+```
+
+Request cancellation is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
+
+:::note
+HTTP request cancellation may not cancel the request on the orchestration service.
+The cancellation stops the HTTP connection from the client side, but the service may continue processing the request.
+Metering information may not be available for cancelled requests.
+:::
+
 ## Custom Request Configuration
 
 Add custom headers or query parameters by passing a `CustomRequestConfig` as the second parameter to `embed()`.
