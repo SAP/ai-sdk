@@ -180,6 +180,42 @@ for await (const chunk of response) {
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
 
+#### Streaming Configuration
+
+By default, streaming is available via the `stream()` method, but the `invoke()` method does not use streaming internally.
+
+##### Auto-Streaming
+
+Set the `streaming` option to `true` to enable automatic streaming for all requests made with the `invoke()` method:
+
+```ts
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-4o',
+  streaming: true
+});
+
+const response = await client.invoke(messageHistory);
+```
+
+When auto-streaming is enabled, the `invoke()` method uses streaming internally to fetch responses, even though it returns the complete result.
+This option is automatically enabled by LangGraph when a LangGraph-based agent is used with a [streaming mode](https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes) that can output partial responses, such as "updates".
+
+##### Disabling Streaming
+
+Set the `disableStreaming` option to completely disable all streaming functionality:
+
+```ts
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-4o',
+  disableStreaming: true
+});
+
+const response = await client.stream(messageHistory);
+```
+
+When streaming is disabled, both the `invoke()` and `stream()` methods use non-streaming requests internally.
+The `stream()` method will still return an iterable, but it will yield a single chunk containing the complete response.
+
 ### Tool Calling
 
 LangChain offers a unified way to connect tools to language models.
