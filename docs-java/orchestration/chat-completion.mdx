@@ -660,8 +660,8 @@ List<Message> history = List.of(new SystemMessage("Your message here."));
 var parameter = Map.of("placeholder", "your value");
 var reference =
     OrchestrationConfigReference.fromId("0123")
-        .messageHistory(history)
-        .templateParameters(parameter);
+        .withMessageHistory(history)
+        .withTemplateParameters(parameter);
 OrchestrationChatResponse client.chatCompletionUsingReference(reference);
 ```
 
