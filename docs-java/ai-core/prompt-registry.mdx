@@ -116,7 +116,18 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 
 ### Resource Group Scope Approach
 
-Use the same `createUpdatePromptTemplate` method with the updated template details and resource group parameters just like in the creation step.
+```java
+var updatedSpec = spec.defaults(Map.of("categories", "Finance, Tech, Sports, Politics"));
+
+// using the same version will save the old prompt in the history
+// using a new version will create a new prompt with a clean history
+var updatedTemplate = template.spec(updatedSpec);
+
+var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
+var resourceGroupScope = "true";
+
+PromptTemplatePostResponse response = client.createUpdatePromptTemplate(updatedTemplate, resourceGroupId, resourceGroupScope);
+```
 
 ## Get a Prompt Template
 
