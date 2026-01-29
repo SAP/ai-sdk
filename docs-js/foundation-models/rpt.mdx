@@ -76,7 +76,11 @@ const prediction = await client.predictWithSchema(
   {
     prediction_config: {
       target_columns: [
-        { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]', task_type: 'classification' }
+        {
+          name: 'SALESGROUP',
+          prediction_placeholder: '[PREDICT]',
+          task_type: 'classification'
+        }
       ]
     },
     index_column: '__row_idx__',
