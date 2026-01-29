@@ -23,7 +23,8 @@ module.exports = {
             'foundation-models/openai/chat-completion',
             'foundation-models/openai/embedding'
           ]
-        }
+        },
+        'foundation-models/rpt'
       ]
     },
     {
