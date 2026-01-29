@@ -93,7 +93,7 @@ var template = PromptTemplatePostRequest.create()
     .spec(spec);
 
 var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
-var resourceGroupScope = "true"; // "true" or "false"
+var resourceGroupScope = "true";
 
 PromptTemplatePostResponse response = client.createUpdatePromptTemplate(template, resourceGroupId, resourceGroupScope);
 ```
@@ -168,7 +168,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 PromptClient client = new PromptClient();
 
 var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
-var resourceGroupScope = "true"; // "true" or "false"
+var resourceGroupScope = "true";
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
     "212a9b9b-a532-4c1c-8852-bf75de853d74",
@@ -200,7 +200,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 PromptClient client = new PromptClient();
 
 var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
-var resourceGroupScope = "true"; // "true" or "false"
+var resourceGroupScope = "true";
 
 Resource template = new ClassPathResource("prompt-template.yaml");
 PromptTemplatePostResponse response = client.importPromptTemplate(resourceGroupId, resourceGroupScope, template.getFile());
@@ -234,7 +234,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 PromptClient client = new PromptClient();
 
 var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
-var resourceGroupScope = "true"; // "true" or "false"
+var resourceGroupScope = "true";
 
 PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId(), resourceGroupId, resourceGroupScope);
 ```
