@@ -63,6 +63,8 @@ Use the `predictWithSchema()` method to make predictions with a schema explicitl
 Pass the data schema, and the prediction data including the prediction configuration and input data to the method.
 Prefer providing the data schema if it is known instead of relying on the auto-inference solely based on the input data.
 
+For information about custom request options such as compression, custom headers, or timeout, refer to the [Advanced Usage](#advanced-usage) section.
+
 ```typescript
 const prediction = await client.predictWithSchema(
   // Data schema
@@ -146,6 +148,8 @@ To make predictions without providing a schema, use the `predictWithoutSchema()`
 Pass only the prediction data as a parameter.
 The data schema will be inferred from the input data.
 
+For information about custom request options such as compression, custom headers, or timeout, refer to the [Advanced Usage](#advanced-usage) section.
+
 ```typescript
 const prediction = await client.predictWithoutSchema(
   // Prediction data
@@ -179,4 +183,133 @@ const prediction = await client.predictWithoutSchema(
     ]
   }
 );
+```
+
+## Advanced Usage
+
+The RPT client supports advanced features for specialized use cases.
+
+### Request Compression
+
+The RPT client automatically compresses prediction requests to improve performance for large datasets.
+By default, requests with a body of 1024 bytes or larger are automatically compressed using `gzip`.
+
+To customize compression settings, pass a `customRequest` parameter with a `requestCompression` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
+
+```typescript
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  requestCompression: {
+    algorithm: 'zstd', // Use zstd instead of gzip
+    mode: true, // Force compression regardless of payload size
+    autoCompressMinSize: 2048 // Only compress payloads >= 2048 bytes (in 'auto' mode)
+  }
+});
+```
+
+### Custom Request Options
+
+The `customRequest` parameter also supports additional HTTP request configuration options from the SAP Cloud SDK for JavaScript, such as:
+
+- `headers`: Custom HTTP headers.
+- `timeout`: Request timeout in milliseconds.
+- `middlewares`: Custom HTTP middleware functions.
+
+:::warning
+The compression middleware is not applied when you provide custom middlewares.
+Refer to the [Using Request Compression with Custom Middlewares](#using-request-compression-with-custom-middlewares) section for more details.
+:::
+
+Example with custom headers:
+
+```typescript
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  headers: {
+    'x-custom-header': 'value'
+  },
+  timeout: 30000, // 30 seconds
+  requestCompression: {
+    algorithm: 'gzip'
+  }
+});
+```
+
+## Resilience
+
+The `@sap-cloud-sdk/resilience` package provides built-in resilience features to handle transient failures and improve reliability.
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+
+### Retry
+
+The HTTP client automatically retries failed requests on transient errors such as network issues or temporary server errors.
+Customize retry behavior using the resilience library.
+
+Set a custom retry count:
+
+```typescript
+import { retry } from '@sap-cloud-sdk/resilience';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middlewares: [
+    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
+  ],
+  requestCompression: {
+    mode: false // Disable automatic compression when using custom middlewares
+  }
+});
+```
+
+### Timeout
+
+Configure timeout for requests to prevent hanging connections.
+The default timeout is 10 seconds.
+
+```typescript
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  timeout: 30000 // 30 seconds
+});
+```
+
+### Combining Resilience Patterns
+
+Combine multiple resilience patterns for comprehensive protection:
+
+```typescript
+import { retry, timeout, circuitBreaker } from '@sap-cloud-sdk/resilience';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middlewares: [
+    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
+    circuitBreaker({ failureThreshold: 5, recoveryTimeout: 60000 }),
+    timeout(30000)
+  ],
+  requestCompression: {
+    mode: false // Disable automatic compression when using custom middlewares
+  }
+});
+```
+
+### Using Request Compression with Custom Middlewares
+
+:::tip
+Place the compression middleware early in the middleware array, typically before resilience middleware such as retry and timeout.
+This ensures the payload is compressed once and reused across retry attempts.
+:::
+
+When using custom middlewares, automatic compression is disabled.
+To keep compression while using custom middlewares, manually add the compression middleware from `@sap-cloud-sdk/http-client`:
+
+```typescript
+import { retry, timeout } from '@sap-cloud-sdk/resilience';
+import { compressRequest } from '@sap-cloud-sdk/http-client';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middlewares: [
+    compressRequest({ algorithm: 'gzip' }), // Manually add compression middleware
+    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
+    timeout(30000)
+  ],
+  requestCompression: {
+    mode: false // Disable automatic compression to avoid conflicts
+  }
+});
 ```
