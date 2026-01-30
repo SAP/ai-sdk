@@ -23,11 +23,10 @@ Do not use in production.
 :::
 
 The `@sap-ai-sdk/rpt` package provides a client to interact with [SAP-RPT-1](https://www.sap.com/products/artificial-intelligence/sap-rpt.html), SAP’s Relational Pretrained Transformer model.
-Technically, SAP-RPT-1 is a foundation model, but the client is provided in a separate package.
 
 ## Installation
 
-To add the SAP Cloud SDK for AI RPT client to your project, run the following command in your terminal:
+To add the package to your project, run the following command in your terminal:
 
 ```bash
 npm install @sap-ai-sdk/rpt
@@ -120,8 +119,10 @@ The prediction data contains the following properties:
   When set to `true` (default), numeric columns are parsed to float or integer, and dates (`YYYY-MM-DD`) are parsed automatically.
 
 :::important
-When assigning schema and prediction data as variables, initialize the schema with `as const` and use the `PredictionData<typeof schema>` type.
-This is not required when passing data directly to the `predictWithSchema()` method.
+When you store the schema and prediction data in variables, declare the schema with `as const` and use the `PredictionData<typeof schema>` type.
+This enables type inference and accurate IDE autocompletion.
+If you pass the data directly to `predictWithSchema()`, you do not need additional annotations.
+
 Example:
 
 ```typescript
