@@ -55,12 +55,14 @@ To use the 'sap-rpt-1-large' model, specify the model name in the constructor:
 const client = new RptClient('sap-rpt-1-large');
 ```
 
-To configure a model version, deployment ID, resource group or destination follow the instructions in the [Foundation Models documentation](../foundation-models#client-initialization).
+Follow the instructions in the [Foundation Models documentation](./foundation-models#client-initialization)
+ to specify a model version, use a model with an explicit deployment ID, select a specific resource group, or target a custom AI Core instance.
 
 ### Predict With Schema
 
 Use the `predictWithSchema()` method to make predictions with a schema explicitly defined.
-Pass the data schema and the prediction data, i.e. prediction configuration and input data, as parameters.
+Pass the data schema, and the prediction data including the prediction configuration and input data to the method.
+Prefer providing the data schema if it is known instead of relying on the auto-inference solely based on the input data.
 
 ```typescript
 const prediction = await client.predictWithSchema(
@@ -168,7 +170,7 @@ const prediction = await client.predictWithoutSchema(
         __row_idx__: '42',
         SALESGROUP: 'Enterprise Solutions'
       },
-      ...
+      // Additional rows...
     ]
   }
 );
