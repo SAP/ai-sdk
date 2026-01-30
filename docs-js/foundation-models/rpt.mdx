@@ -56,7 +56,7 @@ const client = new RptClient('sap-rpt-1-large');
 ```
 
 Follow the instructions in the [Foundation Models documentation](./foundation-models#client-initialization)
- to specify a model version, use a model with an explicit deployment ID, select a specific resource group, or target a custom AI Core instance.
+to specify a model version, use a model with an explicit deployment ID, select a specific resource group, or target a custom AI Core instance.
 
 ### Predict With Schema
 
@@ -151,7 +151,11 @@ const prediction = await client.predictWithoutSchema(
   {
     prediction_config: {
       target_columns: [
-        { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]', task_type: 'classification' }
+        {
+          name: 'SALESGROUP',
+          prediction_placeholder: '[PREDICT]',
+          task_type: 'classification'
+        }
       ]
     },
     index_column: '__row_idx__',
@@ -169,7 +173,7 @@ const prediction = await client.predictWithoutSchema(
         PRODUCTION_DATE: '2024-12-02',
         __row_idx__: '42',
         SALESGROUP: 'Enterprise Solutions'
-      },
+      }
       // Additional rows...
     ]
   }
