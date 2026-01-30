@@ -179,7 +179,7 @@ const prediction = await client.predictWithoutSchema(
 [Parquet](https://parquet.apache.org) is a tabular file format optimized for data-science workloads.
 To make predictions on Parquet files, use the `predictParquet()` method.
 Pass the Parquet file as a `Blob` along with the prediction configuration.
-You can specify optional arguments such as the index column and data type parsing behavior in the third argument.
+Optional arguments such as `index_column` and `parse_data_types` can be specified in the third parameter.
 
 ```typescript
 import { openAsBlob } from 'node:fs';
