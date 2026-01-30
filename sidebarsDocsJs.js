@@ -23,8 +23,7 @@ module.exports = {
             'foundation-models/openai/chat-completion',
             'foundation-models/openai/embedding'
           ]
-        },
-        'foundation-models/rpt'
+        }
       ]
     },
     {
@@ -45,6 +44,7 @@ module.exports = {
         'ai-core/prompt-registry'
       ]
     },
+    'rpt',
     {
       type: 'category',
       label: 'Tutorials',
