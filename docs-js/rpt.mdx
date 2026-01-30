@@ -180,3 +180,32 @@ const prediction = await client.predictWithoutSchema(
   }
 );
 ```
+
+## Advanced Usage
+
+The RPT client supports advanced features for specialized use cases:
+
+### Predict with Parquet
+
+[Parquet](https://parquet.apache.org) is a tabular file format optimized for data-science workloads.
+To make predictions on Parquet files, use the `predictParquet()` method.
+Pass the Parquet file as a `Blob` along with the prediction configuration.
+Optional arguments such as `index_column` and `parse_data_types` can be specified in the third parameter.
+
+```typescript
+import { RptClient } from '@sap-ai-sdk/rpt';
+import { openAsBlob } from 'node:fs';
+
+const parquetBlob = await openAsBlob('path/to/input-data.parquet');
+const client = new RptClient();
+
+const prediction = await client.predictParquet(parquetBlob, {
+  target_columns: [
+    { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]', task_type: 'classification' }
+  ]
+},
+{
+  index_column: '__row_idx__',
+  parse_data_types: false 
+});
+```
