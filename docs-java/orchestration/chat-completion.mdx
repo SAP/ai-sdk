@@ -686,3 +686,30 @@ new OrchestrationClient().executeRequestFromJsonModuleConfig(prompt, configJson)
 ```
 
 While this is not recommended for long term use, it can be useful for creating demos and PoCs.
+
+## Using Fallback Modules
+
+It is possible to provide multiple `OrchestrationModuleConfig` objects to an Orchestration call instead of a single one.
+The provided configurations are then tried in the order they are given and if a call with one configuration failed, the next in line is used as fallback.
+For more information, see the [AI Core guide on fallback modules](https://help.sap.com/docs/sap-ai-core/generative-ai/orchestration-with-fallbacks?locale=en-US).
+
+To use this feature, you can simply provide multiple `OrchestrationModuleConfig` objects in your (steaming or non-streaming) call.
+
+```java
+var prompt = new OrchestrationPrompt("your prompt");
+
+var workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+var brokenConfig =
+    new OrchestrationModuleConfig()
+        .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+
+var configs = new OrchestrationModuleConfig[] {brokenConfig, workingConfig};
+
+OrchestrationChatResponse result = client.chatCompletion(prompt, configs);
+// or:
+// OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, workingConfig);
+```
+
+In the above example, the call with `brokenConfig` will return an error so another call with `workingConfig` is performed and the (positive) result of this call is returned.
+
+Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
