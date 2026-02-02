@@ -197,11 +197,16 @@ By default, requests with a body of 1024 bytes or larger are automatically compr
 To customize compression settings, pass a `customRequest` parameter with a `requestCompression` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
 
 ```typescript
+import * as zlib from 'zlib';
+
 const prediction = await client.predictWithSchema(schema, predictionData, {
   requestCompression: {
-    algorithm: 'zstd', // Use zstd instead of gzip
-    mode: true, // Force compression regardless of payload size
-    autoCompressMinSize: 2048 // Only compress payloads >= 2048 bytes (in 'auto' mode)
+    algorithm: 'gzip', // Only 'gzip' is currently supported for RPT
+    mode: true, // Force compression regardless of payload size (default 'auto')
+    autoCompressMinSize: 2048 // Only compress payloads >= 2048 bytes in 'auto' mode (default 1024)
+    compressOptions: {
+      level: zlib.constants.Z_BEST_SPEED // Custom compression level
+    }
   }
 });
 ```
@@ -212,11 +217,12 @@ The `customRequest` parameter also supports additional HTTP request configuratio
 
 - `headers`: Custom HTTP headers.
 - `timeout`: Request timeout in milliseconds.
-- `middlewares`: Custom HTTP middleware functions.
+- `middleware`: Custom HTTP middleware functions.
 
 :::warning
-The compression middleware is not applied when you provide custom middlewares.
-Refer to the [Using Request Compression with Custom Middlewares](#using-request-compression-with-custom-middlewares) section for more details.
+
+The compression middleware is automatically prepended to the middleware chain, unless disabled by setting `mode: false`.
+
 :::
 
 Example with custom headers:
@@ -228,7 +234,7 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
   },
   timeout: 30000, // 30 seconds
   requestCompression: {
-    algorithm: 'gzip'
+    mode: true
   }
 });
 ```
@@ -249,11 +255,11 @@ Set a custom retry count:
 import { retry } from '@sap-cloud-sdk/resilience';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
-  middlewares: [
+  middleware: [
     retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
   ],
   requestCompression: {
-    mode: false // Disable automatic compression when using custom middlewares
+    mode: false // Disable automatic compression, compression middleware will not be prepended
   }
 });
 ```
@@ -277,39 +283,10 @@ Combine multiple resilience patterns for comprehensive protection:
 import { retry, timeout, circuitBreaker } from '@sap-cloud-sdk/resilience';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
-  middlewares: [
+  middleware: [
     retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
     circuitBreaker({ failureThreshold: 5, recoveryTimeout: 60000 }),
     timeout(30000)
-  ],
-  requestCompression: {
-    mode: false // Disable automatic compression when using custom middlewares
-  }
-});
-```
 
-### Using Request Compression with Custom Middlewares
-
-:::tip
-Place the compression middleware early in the middleware array, typically before resilience middleware such as retry and timeout.
-This ensures the payload is compressed once and reused across retry attempts.
-:::
-
-When using custom middlewares, automatic compression is disabled.
-To keep compression while using custom middlewares, manually add the compression middleware from `@sap-cloud-sdk/http-client`:
-
-```typescript
-import { retry, timeout } from '@sap-cloud-sdk/resilience';
-import { compressRequest } from '@sap-cloud-sdk/http-client';
-
-const prediction = await client.predictWithSchema(schema, predictionData, {
-  middlewares: [
-    compressRequest({ algorithm: 'gzip' }), // Manually add compression middleware
-    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
-    timeout(30000)
-  ],
-  requestCompression: {
-    mode: false // Disable automatic compression to avoid conflicts
-  }
 });
 ```
