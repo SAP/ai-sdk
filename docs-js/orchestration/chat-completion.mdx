@@ -98,11 +98,9 @@ const promptTemplating = {
 The orchestration service supports module fallback, which allows you to configure multiple complete orchestration module configurations that are tried in sequence until one succeeds.
 This feature is useful for implementing resilience and fallback strategies when working with AI models.
 
-Each configuration in the fallback chain is a full `OrchestrationModuleConfig`, meaning you can customize all aspects of the orchestration for each fallback option, not just the model.
-This includes different [system prompts](#template-configuration), [content filtering](#content-filtering) rules, [data masking](#data-masking) settings, [grounding](#grounding) configurations, and any other orchestration module settings.
-This flexibility allows you to tailor each fallback to different use cases or constraints.
-
-Since different models require different configuration (different parameters, system prompts, or content filtering rules), module fallback provides the necessary flexibility to accommodate these model-specific requirements.
+Each configuration in the fallback chain is a complete `OrchestrationModuleConfig`, allowing you to customize all aspects of orchestration for each fallback option, not just the model.
+This includes [system prompts](#template-configuration), [content filtering](#content-filtering) rules, [data masking](#data-masking) settings, [grounding](#grounding) configurations, and other orchestration module settings.
+This flexibility accommodates model-specific requirements, such as varying parameters, system prompts, or content filtering rules, enabling tailored fallbacks for different use cases or constraints.
 
 Common use cases for module fallback include:
 
@@ -241,11 +239,7 @@ The following additional conditions can trigger fallbacks:
 - Too many requests
 - Internal Service errors
 
-Module fallback is **not** triggered in the following cases.
-The orchestration service will not try the next configuration when:
-
-- Content filters hit in any configuration.
-- Other errors occur, such as invalid input.
+Module fallback is **not** triggered for content‑filter hits or other errors, such as invalid input errors.
 
 ### Harmonized API
 
