@@ -254,6 +254,38 @@ const structuredLlm = llm.withStructuredOutput(joke, {
 const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
 ```
 
+### Basic Agent Usage
+
+The `AzureOpenAiChatClient` can be used with LangChain's agent framework through the `createAgent()` function.
+
+:::note
+In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
+:::
+
+Create an agent by providing the Azure OpenAI chat client as the model, along with any tools you want the agent to use:
+
+<!-- vale off -->
+
+```ts
+import { createAgent } from 'langchain';
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+
+const model = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+
+const agent = createAgent({
+  model,
+  tools: []
+});
+
+const agentInputs = {
+  messages: [{ role: 'user', content: 'What is SAP?' }]
+};
+
+const result = await agent.invoke(agentInputs);
+```
+
+<!-- vale on -->
+
 ## Embedding
 
 The `AzureOpenAiEmbeddingClient` allows embedding text or document chunks (represented as arrays of strings).
@@ -305,6 +337,11 @@ const retriever = vectorStore.asRetriever();
 ## Resilience
 
 Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
+
+:::note
+When using LangChain clients, configure resilience only through LangChain options.
+Do not apply additional SAP Cloud SDK resilience middleware, as LangChain already provides built-in retry mechanisms.
+:::
 
 ### Retry
 

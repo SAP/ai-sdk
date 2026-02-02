@@ -201,7 +201,53 @@ Use the `bindTools()` method to define the set of tools a model can access.
 For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling).
 For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents#define-tools).
 
+### Basic Agent Usage
+
+The `OrchestrationClient` can be used with LangChain's agent framework through the `createAgent()` function.
+
+:::note
+In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
+:::
+
+Create an agent by providing the orchestration client as the model, along with any tools you want the agent to use:
+
+<!-- vale off -->
+
+```ts
+import { createAgent } from 'langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+const model = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  }
+});
+
+const agent = createAgent({
+  model,
+  tools: []
+});
+
+const agentInputs = {
+  messages: [{ role: 'user', content: 'What is SAP?' }]
+};
+
+const result = await agent.invoke(agentInputs);
+```
+
+<!-- vale on -->
+
 ## Resilience
+
+<!-- vale off -->
+
+:::warning
+The Langchain, Orchestration layer and the SAP Cloud SDK resilience mechanisms should not be combined, or should be integrated only with careful consideration.
+:::
+
+<!-- vale on -->
 
 Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
 

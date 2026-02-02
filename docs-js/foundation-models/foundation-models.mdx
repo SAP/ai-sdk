@@ -28,7 +28,7 @@ Refer to prerequisites outlined [here](./overview-cloud-sdk-for-ai-js#prerequisi
 ## Client Initialization
 
 Initialize a client with the model name.
-If model version is not specified, it is set to `latest`.
+If the model version is not specified, it is set to `latest`.
 
 The current available clients are: - `AzureOpenAiChatClient` - `AzureOpenAiEmbeddingClient`
 
@@ -63,9 +63,7 @@ const client = new AzureOpenAiChatClient({
 ```
 
 :::tip
-When initializing a client for using a foundation model, it is equivalent to provide - a combination of model name and model version - or deployment ID
-
-to identify a model within a [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group).
+When initializing a client to use a foundation model, it is equivalent to providing a combination of model name and model version, or a deployment ID to identify a model within a [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group).
 If multiple deployments were created with the same model name and version, the first deployment will be used.
 :::
 
