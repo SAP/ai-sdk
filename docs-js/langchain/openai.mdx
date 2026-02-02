@@ -182,7 +182,7 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 
 #### Streaming Configuration
 
-By default, streaming is available via the `stream()` method, but the `invoke()` method does not use streaming internally.
+By default, the `stream()` method supports streaming, while the `invoke()` method uses non-streaming requests.
 
 ##### Auto-Streaming
 
@@ -197,12 +197,12 @@ const client = new AzureOpenAiChatClient({
 const response = await client.invoke(messageHistory);
 ```
 
-When auto-streaming is enabled, the `invoke()` method uses streaming internally to fetch responses, even though it returns the complete result.
+With auto-streaming enabled, the `invoke()` method uses streaming to retrieve responses, returning the complete result upon completion.
 This option is automatically enabled by LangGraph when a LangGraph-based agent is used with a [streaming mode](https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes) that can output partial responses, such as "updates".
 
 ##### Disabling Streaming
 
-Set the `disableStreaming` option to completely disable all streaming functionality:
+Set the `disableStreaming` option to turn off streaming entirely.
 
 ```ts
 const client = new AzureOpenAiChatClient({
