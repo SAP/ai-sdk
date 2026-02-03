@@ -699,15 +699,16 @@ To use this feature, you can simply provide multiple `OrchestrationModuleConfig`
 var prompt = new OrchestrationPrompt("your prompt");
 
 var workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+var secondWorkingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
 var brokenConfig =
     new OrchestrationModuleConfig()
         .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
 
-var configs = new OrchestrationModuleConfig[] {brokenConfig, workingConfig};
+var fallbackConfigs = new OrchestrationModuleConfig[] {workingConfig, secondWorkingConfig};
 
-OrchestrationChatResponse result = client.chatCompletion(prompt, configs);
+OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, fallbackConfigs);
 // or:
-// OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, workingConfig);
+// OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, workingConfig, secondWorkingConfig);
 ```
 
 In the above example, the call with `brokenConfig` will return an error so another call with `workingConfig` is performed and the (positive) result of this call is returned.
