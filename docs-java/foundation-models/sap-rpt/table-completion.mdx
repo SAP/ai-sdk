@@ -1,0 +1,139 @@
+---
+id: table-completion
+title: Table Completion
+hide_title: false
+hide_table_of_contents: false
+description: How to use the SAP AI SDK for Java to perform table completion tasks using SAP RPT models deployed on SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - rpt
+---
+
+## Introduction
+
+This guide demonstrates how to use the SAP AI SDK for Java to predict targets in structured data using SAP RPT models deployed on SAP AI Core.
+
+:::warning
+All classes under any of the `...generated` package are generated from an OpenAPI specification.
+This means that these model and API classes are not guaranteed to be stable and may change with future releases.
+They are safe to use, but may require updates even in minor releases.
+:::
+
+## Prerequisites
+
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](../../overview-cloud-sdk-for-ai-java#general-requirements).
+Additionally, include the necessary Maven dependency in your project.
+
+### Maven Dependencies
+
+Add the following dependency to your `pom.xml` file:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>sap-rpt</artifactId>
+        <version>${ai-sdk.version}</version>
+    </dependency>
+</dependencies>
+```
+
+See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml)
+
+## Usage
+
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
+
+<!-- prettier-ignore-start-->
+
+- **A Deployed RPT Model in SAP AI Core**
+
+  - Refer
+    to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
+    for setup instructions.
+  - In case the model is deployed in a custom resource group, refer to [this section](#using-a-custom-resource-group).
+  - <details>
+    <summary>Example deployed model from the AI Core <code>/deployments</code> endpoint</summary>
+
+    ```json
+    {
+      "id": "c4dfbfd3bet3d4f1",
+      "createdAt": "2026-01-14T06:29:33Z",
+      "modifiedAt": "2026-01-14T06:29:33Z",
+      "status": "RUNNING",
+      "details": {
+        "scaling": {
+          "backendDetails": {},
+          "backend_details": {}
+        },
+        "resources": {
+          "backendDetails": {
+            "model": {
+              "name": "sap-rpt-1-small",
+              "version": "latest"
+            }
+          },
+          "backend_details": {
+            "model": {
+              "name": "sap-rpt-1-small",
+              "version": "latest"
+            }
+          }
+        }
+      },
+      "scenarioId": "foundation-models",
+      "configurationId": "54fe1b6a-2d4b-4e2f-9f4b-5c8e9f1a2b3c",
+      "latestRunningConfigurationId": "54fe1b6a-2d4b-4e2f-9f4b-5c8e9f1a2b3c",
+      "lastOperation": "CREATE",
+      "targetStatus": "RUNNING",
+      "submissionTime": "2026-01-14T06:30:08Z",
+      "startTime": "2026-01-14T06:31:44Z",
+      "configurationName": "sap-rpt-1-small",
+      "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/c4dfbfd3bet3d4f1"
+    }
+    ```
+    </details>
+
+<!-- prettier-ignore-end-->
+
+## Simple table completion
+
+:::warning
+SAP RPT module is currently in Beta.
+The API may change in future minor releases.
+:::
+
+Predict missing targets in tabular data using `RptClient` with a SAP RPT model.
+
+```java
+List<Map<String, RowsInnerValue>> rows =
+    List.of(
+        Map.of(
+            "fruit", RowsInnerValue.create("Apple"),
+            "category", RowsInnerValue.create("[PREDICT]")),
+        Map.of(
+            "fruit", RowsInnerValue.create("Banana"),
+            "category", RowsInnerValue.create("Tropical")),
+        Map.of(
+            "fruit", RowsInnerValue.create("Mango"),
+            "category", RowsInnerValue.create("Tropical")));
+
+var targetColumns =
+    List.of(
+        TargetColumnConfig.create()
+            .name("category")
+            .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]")));
+
+var request =
+    PredictRequestPayload.create()
+        .predictionConfig(PredictionConfig.create().targetColumns(targetColumns))
+        .rows(rows);
+
+PredictResponsePayload response = RptClient.forModel(SAP_RPT_1_SMALL).tableCompletion(request);
+
+```
+
+Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/RptService.java) including `dataSchema` specification.
