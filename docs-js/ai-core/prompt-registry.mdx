@@ -62,6 +62,12 @@ To disable caching, set the `useCache` parameter to `false` together with the `d
 
 For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
 
+:::note
+When performing resource-group scoped operations or accessing internal resources, you may want to include SAP internal metering headers such as `premium-billing` and `user-context`.
+You can attach these per request via the optional `requestConfig.headers` when calling `.execute()` function.
+See the [Custom Headers](../foundation-models#custom-headers) section on the Foundation Models page for a concrete example.
+:::
+
 ## Orchestration Configuration
 
 The orchestration config API available as part of the prompt registry package allows to persist orchestration configurations.
