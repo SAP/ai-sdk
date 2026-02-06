@@ -180,6 +180,8 @@ In this case the template is defined with the placeholder `{{?language}}` which 
 
 Alternatively, you can use already prepared templates from the [**Prompt Registry**](../ai-core/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
 
+#### Tenant Scope Level Approach
+
 ```java
 var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
 var configWithTemplate = config.withTemplateConfig(template);
@@ -188,6 +190,21 @@ var inputParams = Map.of("language", "Italian", "input", "cloud ERP systems");
 var prompt = new OrchestrationPrompt(inputParams);
 
 var result = client.chatCompletion(prompt, configWithTemplate);
+```
+
+#### Resource Group Scope Level Approach
+
+```java
+var destination = new AiCoreService().getInferenceDestination("resource-group-id").forScenario("orchestration");
+var clientWithResourceGroup = new OrchestrationClient(destination);
+
+var template = TemplateConfig.reference().byId("id").withScope(RESOURCE_GROUP);
+var configWithTemplate = config.withTemplateConfig(template);
+
+var inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", "What's the latest news on the stock market?");
+var prompt = new OrchestrationPrompt(inputParams);
+
+var result = clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
 ```
 
 A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version.
