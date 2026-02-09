@@ -17,9 +17,10 @@ This guide provides examples on how to manage data in [SAP Document Grounding](h
 It's divided into two main sections: Data Ingestion and Data Retrieval.
 
 :::warning
-All classes under any of the `...model` packages are generated from an OpenAPI specification.
-This means that these model classes are not guaranteed to be stable and may change with future releases.
-They are safe to use, but may require updates even in minor releases.
+All classes in the `...model` and `...client` packages are generated from an OpenAPI specification.
+These classes can be used, but no API stability guarantees are provided, even for minor releases.
+Maintenance and support are limited to ensuring consistency with the service specification.
+No additional convenience API layer is provided.
 :::
 
 ## Prerequisites
@@ -78,6 +79,23 @@ PipelineStatus status = api.getPipelineStatus(resourceGroupId, pipeline.getPipel
 
 ### Vector API
 
+#### Collection creation
+
+```java
+String resourceGroupId;
+CollectionRequest collectionRequest;
+
+var api = new GroundingClient().vector();
+
+OpenApiResponse documents = api.createCollection(resourceGroupId, collectionRequest);
+Map<String, List<String>> headers = documents.getHeaders();
+
+String locationHeader = headers.get("Location").get(0);
+String collectionId = locationHeader.replaceAll("^.*?/([a-f0-9-]+)/.*?$", "$1");
+```
+
+#### Document creation
+
 ```java
 var api = new GroundingClient().vector();
 var resourceGroupId = "default";
@@ -85,15 +103,31 @@ var resourceGroupId = "default";
 // resolve collection id
 var collectionId = UUID.fromString("12345-123-123-123-0123456abcdef");
 
-var request = DocumentCreateRequest.create()
-  .documents(BaseDocument.create()
-      .chunks(TextOnlyBaseChunk.create()
-          .content("The dog makes _woof_")
-          .metadata(KeyValueListPair.create()
-              .key("animal").value("dog")))
-      .metadata(DocumentKeyValueListPair.create()
-          .key("topic").value("sound")));
+var request =
+    DocumentCreateRequest.create()
+        .documents(BaseDocument.create()
+            .chunks(TextOnlyBaseChunk.create()
+               .content("The dog makes _woof_")
+               .metadata(VectorKeyValueListPair.create().key("animal").value("dog")))
+            .metadata(VectorDocumentKeyValueListPair.create().key("topic").value("sound")));
 DocumentsListResponse response = api.createDocuments(resourceGroupId, collectionId, request);
+```
+
+#### Document search
+
+```java
+String resourceGroup;
+TextSearchRequest textSearch;
+
+var api = new GroundingClient().vector();
+var result = api.search(resourceGroup, textSearch);
+
+String joinedContent = result.getResults().stream()
+  .flatMap(r -> r.getResults().stream())
+  .flatMap(r -> r.getDocuments().stream())
+  .flatMap(d -> d.getChunks().stream())
+  .map(VectorChunk::getContent)
+  .collect(Collectors.joining());
 ```
 
 Refer to the [GroundingController](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/GroundingController.java) in our Spring Boot application for a complete example.

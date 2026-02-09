@@ -44,6 +44,7 @@ module.exports = {
         'ai-core/prompt-registry'
       ]
     },
+    'rpt',
     {
       type: 'category',
       label: 'Tutorials',
