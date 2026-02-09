@@ -1162,6 +1162,23 @@ const response = await orchestrationClient.chatCompletion(
 );
 ```
 
+Attach SAP internal metering headers to enable internal cost allocation and context propagation.
+Use `premium-billing` to indicate the billing plan or token (e.g., "premium-plan") and `user-context` to pass caller metadata..
+
+```ts
+const response = await orchestrationClient.chatCompletion(
+  {
+    messages: [{ role: 'user', content: 'Generate a report.' }]
+  },
+  {
+    headers: {
+      'premium-billing': 'premium-plan',
+      'user-context': 'userId=12345;role=developer' // or a JSON/base64 string depending on your internal convention
+    }
+  }
+);
+```
+
 ## Custom Destination
 
 When initializing the client, it is possible to provide a custom destination.

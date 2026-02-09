@@ -113,3 +113,27 @@ This can be useful, e.g., to overwrite the API version of Azure OpenAI by defini
   }
 }
 ```
+
+### Custom Headers
+
+You can include SAP internal metering headers (for example, `premium-billing` and `user-context`) using the `requestConfig.headers` property.
+These headers are typically used for internal cost allocation and context propagation.
+
+```ts
+const response = await client.run(
+  {
+    messages: [{ role: 'user', content: 'What is the time in Tokyo?' }]
+  },
+  {
+    requestConfig: {
+      headers: {
+        'premium-billing': 'premium-plan',
+        'user-context': 'userId=12345;role=developer'
+      }
+    }
+  }
+);
+console.log(response.getContent());
+```
+
+To apply these headers globally for all requests, configure them on a destination or when building/initializing the client.
