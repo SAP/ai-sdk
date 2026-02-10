@@ -196,6 +196,8 @@ By default, requests with a body of 1024 bytes or larger are automatically compr
 
 To customize compression settings, pass a `customRequest` parameter with a `requestCompression` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
 
+<!-- vale off -->
+
 ```typescript
 import * as zlib from 'zlib';
 
@@ -210,6 +212,8 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
   }
 });
 ```
+
+<!-- vale on -->
 
 ### Custom Request Options
 
@@ -279,6 +283,8 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
 
 Combine multiple resilience patterns for comprehensive protection:
 
+<!-- vale off -->
+
 ```typescript
 import { retry, timeout, circuitBreaker } from '@sap-cloud-sdk/resilience';
 
@@ -290,3 +296,5 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
 
 });
 ```
+
+<!-- vale on -->
