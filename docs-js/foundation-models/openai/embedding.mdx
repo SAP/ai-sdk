@@ -99,7 +99,8 @@ For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on r
 ### Request Cancellation
 
 Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when they are no longer needed.
-Pass an `AbortSignal` through the `signal` property of the request configuration parameter when calling the `run()` or `stream()` method.
+This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
+Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
 
 ```ts
 const controller = new AbortController();
@@ -123,8 +124,6 @@ try {
   console.error('Request was cancelled:', error.message);
 }
 ```
-
-Request cancellation is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
 
 :::note
 HTTP request cancellation may not cancel the request on the AI service.
