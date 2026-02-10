@@ -293,7 +293,7 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
     retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
     circuitBreaker({ failureThreshold: 5, recoveryTimeout: 60000 }),
     timeout(30000)
-
+  ]
 });
 ```
 
