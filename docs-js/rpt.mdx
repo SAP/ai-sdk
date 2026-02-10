@@ -192,7 +192,7 @@ The RPT client supports advanced features for specialized use cases.
 ### Request Compression
 
 The RPT client automatically compresses prediction requests to improve performance for large datasets.
-By default, requests with a body of 1024 bytes or larger are automatically compressed using `gzip`.
+By default, requests with a body of 1024 bytes or larger are automatically compressed using the `gzip` algorithm.
 
 To customize compression settings, pass a `customRequest` parameter with a `requestCompression` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
 
@@ -205,7 +205,7 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
   requestCompression: {
     algorithm: 'gzip', // Only 'gzip' is currently supported for RPT
     mode: true, // Force compression regardless of payload size (default 'auto')
-    autoCompressMinSize: 2048 // Only compress payloads >= 2048 bytes in 'auto' mode (default 1024)
+    autoCompressMinSize: 2048, // Only compress payloads >= 2048 bytes in 'auto' mode (default 1024)
     compressOptions: {
       level: zlib.constants.Z_BEST_SPEED // Custom compression level
     }
@@ -229,7 +229,7 @@ The compression middleware is automatically prepended to the middleware chain, u
 
 :::
 
-Example with custom headers:
+The following example demonstrates how to include custom HTTP headers in your request configuration:
 
 ```typescript
 const prediction = await client.predictWithSchema(schema, predictionData, {
