@@ -246,7 +246,25 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
 ## Resilience
 
 The `@sap-cloud-sdk/resilience` package provides built-in resilience features to handle transient failures and improve reliability.
+
+For adding basic resilience features, include the `resilience()` middleware in your request configuration to enable default circuit breaker, and timeout middlewares with default settings:
+
+```typescript
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middleware: [...resilience()]
+});
+```
+
+:::tip
+
+Using the `resilience()` function is the recommended way to build resilience-related middleware, it ensures the correct order of middlewares.
+
+:::
+
 For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+
 
 ### Retry
 
@@ -261,10 +279,7 @@ import { retry } from '@sap-cloud-sdk/resilience';
 const prediction = await client.predictWithSchema(schema, predictionData, {
   middleware: [
     retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
-  ],
-  requestCompression: {
-    mode: false // Disable automatic compression, compression middleware will not be prepended
-  }
+  ]
 });
 ```
 
@@ -274,8 +289,17 @@ Configure timeout for requests to prevent hanging connections.
 The default timeout is 10 seconds.
 
 ```typescript
+import { requestCompression } from '@sap-cloud-sdk/http-client';
+import { timeout } from '@sap-cloud-sdk/resilience';
+
 const prediction = await client.predictWithSchema(schema, predictionData, {
-  timeout: 30000 // 30 seconds
+  middleware: [
+    timeout(30000), // 30 seconds
+    requestCompression({ mode: true }) // Compression middleware with custom position in the middleware chain
+  ],
+  requestCompression: {
+    mode: false // Disable automatic compression, compression middleware will not be prepended
+  }
 });
 ```
 
@@ -286,13 +310,15 @@ Combine multiple resilience patterns for comprehensive protection:
 <!-- vale off -->
 
 ```typescript
-import { retry, timeout, circuitBreaker } from '@sap-cloud-sdk/resilience';
+import { resilience } from '@sap-cloud-sdk/resilience';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
   middleware: [
-    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
-    circuitBreaker({ failureThreshold: 5, recoveryTimeout: 60000 }),
-    timeout(30000)
+    ...resilience({
+      timeout: 5000,
+      curcuitBreaker: { failureThreshold: 5, recoveryTimeout: 60000 },
+      retry: 5
+    })
   ]
 });
 ```
