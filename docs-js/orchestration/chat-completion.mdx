@@ -1162,7 +1162,7 @@ const response = await orchestrationClient.chatCompletion(
 );
 ```
 
-Attach SAP internal metering headers to enable internal cost allocation and context propagation.
+Use a custom request configuration to attach SAP internal metering headers to enable internal cost allocation and context propagation.
 Use `premium-billing` to indicate the billing plan or token (e.g., "premium-plan") and `user-context` to pass caller metadata.
 
 ```ts
