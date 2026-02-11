@@ -204,7 +204,7 @@ import * as zlib from 'zlib';
 const prediction = await client.predictWithSchema(schema, predictionData, {
   requestCompression: {
     algorithm: 'gzip', // Only 'gzip' is currently supported for RPT
-    mode: true, // Force compression regardless of payload size (default 'auto')
+    mode: 'always', // Force compression regardless of payload size (default 'auto')
     autoCompressMinSize: 2048, // Only compress payloads >= 2048 bytes in 'auto' mode (default 1024)
     compressOptions: {
       level: zlib.constants.Z_BEST_SPEED // Custom compression level
