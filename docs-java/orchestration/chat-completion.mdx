@@ -257,8 +257,7 @@ var filterLoose = new AzureContentFilter()
                 .hate(ALLOW_SAFE_LOW_MEDIUM)
                 .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
                 .sexual(ALLOW_SAFE_LOW_MEDIUM)
-                .violence(ALLOW_SAFE_LOW_MEDIUM)
-                .protectedMaterialCode(false);
+                .violence(ALLOW_SAFE_LOW_MEDIUM);
 
 // choose Llama Guard filter or/and Azure filter
 var llamaGuardFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
@@ -272,7 +271,7 @@ var result =
 ````
 
 **Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks.
-**Since v1.16.0** The `protectedMaterialCode` has been introduced in `AzureContentFilter` for output filtering to safeguard against unauthorized code disclosure.
+**Since v1.16.0** The `protectedMaterialCode` has been introduced in `AzureContentFilter` for output filtering to safeguard against copyrighted content.
 
 ### Behavior of Input and Output Filters
 
