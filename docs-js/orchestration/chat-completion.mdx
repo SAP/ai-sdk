@@ -1179,6 +1179,33 @@ const response = await orchestrationClient.chatCompletion(
 );
 ```
 
+## Access to Raw HTTP Response
+
+The SAP Cloud SDK for AI provides access to the underlying HTTP response through the `rawResponse` property on response objects.
+Use this for advanced scenarios such as accessing response headers, inspecting HTTP status codes, or debugging.
+
+```ts
+const response = await orchestrationClient.chatCompletion({
+  messages: [{ role: 'user', content: 'Hello World!' }]
+});
+
+// Recommended: Use convenience methods for typical use cases
+console.log(response.getContent());
+
+// Advanced: Access HTTP response details when needed
+console.log(response.rawResponse.status); // HTTP status code
+console.log(response.rawResponse.headers); // Response headers
+console.log(response.rawResponse.data); // Raw response data
+```
+
+:::tip
+For most use cases, prefer the convenience methods like `getContent()`, `getMessages()`, and `getTokenUsage()`.
+Use `rawResponse` only when you need direct access to HTTP-level details.
+:::
+
+The `rawResponse` property is available on chat completion and streaming response objects.
+For embedding responses, access the raw HTTP response through the `response` property.
+
 ## Custom Destination
 
 When initializing the client, it is possible to provide a custom destination.
