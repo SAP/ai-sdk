@@ -85,6 +85,38 @@ Make sure to escape the `$` characters using `\` as `\$` in the client secret an
 See [Referencing Other Variables in Next.js](https://nextjs.org/docs/pages/guides/environment-variables#referencing-other-variables).
 :::
 
+#### Using a Destination Provider Function
+
+:::info
+
+Destination provider functions are only supported in the SAP Cloud SDK **for AI**.
+You will not be able to use this type of destination with the SAP Cloud SDK.
+
+:::
+
+You can also implement a custom destination provider by giving a function that returns a destination.
+This can be useful if you are developing in a desktop application and want to provide the credentials without using environment variables or service bindings.
+
+```ts
+import {
+  transformServiceBindingToDestination,
+  type HttpDestination,
+  type Service
+} from '@sap-cloud-sdk/connectivity';
+
+const destination = async (): Promise<HttpDestination> => {
+  const serviceBinding: Service = {
+    name: 'aicore',
+    label: 'aicore',
+    tags: ['aicore'],
+    credentials: YOUR_SERVICE_CREDENTIALS
+  };
+  return transformServiceBindingToDestination(serviceBinding, {
+    useCache: true
+  }) as Promise<HttpDestination>;
+};
+```
+
 ## Using a Destination
 
 ### Using the SAP BTP Destination Service
