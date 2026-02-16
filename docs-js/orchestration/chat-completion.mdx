@@ -1217,6 +1217,58 @@ Set the `llm` property to `null` to not send any LLM streaming options.
 When initializing a client with JSON module config, it is not possible to provide streaming options.
 :::
 
+#### Module Fallback with Streaming
+
+[Module fallback](#module-fallback) is also supported when using the `stream()` method.
+The service tries each configuration in sequence, and you can access intermediate failures after the stream completes.
+For details on configuring module fallback, see the [Module Fallback section](#module-fallback).
+
+```ts
+const response = await orchestrationClient.stream({
+  messages: [
+    { role: 'user', content: 'Explain quantum computing in simple terms.' }
+  ]
+});
+
+for await (const chunk of response.stream) {
+  console.log(chunk.getDeltaContent());
+}
+
+// Check for fallback attempts after streaming completes
+const failures = response.getIntermediateFailures();
+if (failures) {
+  console.log(`Used ${failures.length} fallback(s) before success`);
+}
+```
+
+:::note
+When providing an array of stream options, the length must match the number of module configurations in the fallback chain.
+Global streaming options like `chunk_size` can only be specified in the first element of the array.
+:::
+
+When using streaming with module fallback, you can also provide different stream options for each configuration in the fallback chain.
+This is useful when different models have different streaming characteristics.
+
+```ts
+const response = await orchestrationClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Tell me a story.' }]
+  },
+  undefined,
+  [
+    // Stream options for first configuration
+    {
+      promptTemplating: { include_usage: true },
+      global: { chunk_size: 100 }
+    },
+    // Stream options for second configuration
+    {
+      promptTemplating: { include_usage: false }
+    }
+  ]
+);
+```
+
 ## Initialization with Orchestration Configuration
 
 Instead of defining the orchestration configuration inline, you can reference a stored configuration from the prompt registry.
