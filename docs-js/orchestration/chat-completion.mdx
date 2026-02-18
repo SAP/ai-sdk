@@ -95,18 +95,18 @@ const promptTemplating = {
 
 ### Module Fallback
 
+:::caution
+
+Module fallback can not be used with streaming chat completion requests yet.
+
+:::
+
 The orchestration service supports module fallback, which allows you to configure multiple complete orchestration module configurations that are tried in sequence until one succeeds.
 This feature is useful for implementing resilience and fallback strategies when working with AI models.
 
 Each configuration in the fallback chain is a complete `OrchestrationModuleConfig`, allowing you to customize all aspects of orchestration for each fallback option, not just the model.
 This includes [system prompts](#template-configuration), [content filtering](#content-filtering) rules, [data masking](#data-masking) settings, [grounding](#grounding) configurations, and other orchestration module settings.
 This flexibility accommodates model-specific requirements, such as varying parameters, system prompts, or content filtering rules, enabling tailored fallbacks for different use cases or constraints.
-
-Common use cases for module fallback include:
-
-- Handling model unavailability by falling back to an alternative model, while keeping full control over other model-specific orchestration settings.
-- Implementing timeout-based fallback for slow model responses (for non-streaming requests), falling back to a faster model or leaner configuration without features like document grounding.
-- Avoiding having to implement retry logic for model unavailability or timeouts in your application code, as the orchestration service handles this internally.
 
 To use module fallback, provide an array of `OrchestrationModuleConfig` objects when initializing the client.
 The orchestration service will try each configuration in order until one succeeds.
@@ -199,8 +199,7 @@ If the request exceeds this timeout in non-streaming scenarios, the orchestratio
 The timeout parameter applies to the individual LLM call, not the entire orchestration request.
 :::
 
-When using module fallback, if any configuration fails (for example, due to model unavailability or timeout), the orchestration service automatically tries the next configuration in the array.
-The `getIntermediateFailures()` method returns information about failed attempts before a successful one was found.
+The `getIntermediateFailures()` method returns information about any failed attempts before a successful response is obtained.
 
 ```ts
 const failures = response.getIntermediateFailures();
@@ -211,25 +210,14 @@ if (failures) {
 }
 ```
 
-Each failure includes:
-
-- `message` describes what went wrong.
-- `code` identifies the type of failure.
-- `location` shows the position in the fallback chain, for example, `config[0]` or `config[1]`.
-
 :::tip
-When using module fallback with different models, the SDK logs a warning if duplicate models are detected in the fallback chain.
+When using module fallback with different models, the SAP Cloud SDK for AI logs a warning if duplicate models are detected in the fallback chain.
 Consider using different models for meaningful fallback behavior.
 :::
 
 #### Module Fallback Conditions
 
 Module fallback is triggered under specific conditions, which may change in future versions of the orchestration service.
-
-**For streaming requests:** Fallback happens before the stream starts.
-The model chosen by the orchestration service will not switch mid-stream.
-
-- The model is not available.
 
 **For non-streaming requests:**
 Fallback may occur even after the request starts being handled by the first provider.
@@ -239,7 +227,7 @@ The following additional conditions can trigger fallbacks:
 - Too many requests
 - Internal Service errors
 
-Module fallback is **not** triggered for content‑filter hits or other errors, such as invalid input errors.
+Module fallback is **not** triggered for content-filter hits or other errors, such as invalid input errors.
 
 ### Harmonized API
 
