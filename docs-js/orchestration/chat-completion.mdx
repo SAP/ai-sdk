@@ -1162,6 +1162,23 @@ const response = await orchestrationClient.chatCompletion(
 );
 ```
 
+Use a custom request configuration to attach SAP internal metering headers to enable internal cost allocation and context propagation.
+Use `premium-billing` to indicate the billing plan or token (e.g., "premium-plan") and `user-context` to pass caller metadata.
+
+```ts
+const response = await orchestrationClient.chatCompletion(
+  {
+    messages: [{ role: 'user', content: 'Generate a report.' }]
+  },
+  {
+    headers: {
+      'premium-billing': 'premium-plan',
+      'user-context': 'userId=12345;role=developer' // or a JSON/base64 string depending on your internal convention
+    }
+  }
+);
+```
+
 ## Custom Destination
 
 When initializing the client, it is possible to provide a custom destination.
@@ -1246,6 +1263,43 @@ const response = await orchestrationClient.chatCompletion(request, {
 ```
 
 <!-- vale on -->
+
+### Request Cancellation
+
+Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when they are no longer needed.
+This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
+Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
+
+```ts
+const controller = new AbortController();
+
+const response = orchestrationClient.chatCompletion(
+  {
+    messages: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ],
+    placeholderValues: { country: 'France' }
+  },
+  { signal: controller.signal }
+);
+
+// Cancel the request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+try {
+  await response;
+} catch (error) {
+  console.error('Request was cancelled:', error.message);
+}
+```
+
+:::note
+HTTP request cancellation may not cancel the request on the orchestration service.
+The cancellation stops the HTTP connection from the client side, but the service may continue processing the request.
+Metering information may not be available for cancelled requests.
+:::
 
 ### Timeout with SAP Cloud SDK Resilience Package
 
