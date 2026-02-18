@@ -95,12 +95,6 @@ const promptTemplating = {
 
 ### Module Fallback
 
-:::caution
-
-Module fallback can not be used with streaming chat completion requests yet.
-
-:::
-
 The orchestration service supports module fallback, which allows you to configure multiple complete orchestration module configurations that are tried in sequence until one succeeds.
 This feature is useful for implementing resilience and fallback strategies when working with AI models.
 
@@ -218,6 +212,11 @@ Consider using different models for meaningful fallback behavior.
 #### Module Fallback Conditions
 
 Module fallback is triggered under specific conditions, which may change in future versions of the orchestration service.
+
+**For streaming requests:** Fallback happens before the stream starts.
+The model chosen by the orchestration service will not switch mid-stream.
+
+- The model is not available.
 
 **For non-streaming requests:**
 Fallback may occur even after the request starts being handled by the first provider.
