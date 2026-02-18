@@ -108,12 +108,6 @@ Each configuration in the fallback chain is a complete `OrchestrationModuleConfi
 This includes [system prompts](#template-configuration), [content filtering](#content-filtering) rules, [data masking](#data-masking) settings, [grounding](#grounding) configurations, and other orchestration module settings.
 This flexibility accommodates model-specific requirements, such as varying parameters, system prompts, or content filtering rules, enabling tailored fallbacks for different use cases or constraints.
 
-Common use cases for module fallback include:
-
-- Handling model unavailability by falling back to an alternative model, while keeping full control over other model-specific orchestration settings.
-- Implementing timeout-based fallback for slow model responses (for non-streaming requests), falling back to a faster model or leaner configuration without features like document grounding.
-- Avoiding having to implement retry logic for model unavailability or timeouts in your application code, as the orchestration service handles this internally.
-
 To use module fallback, provide an array of `OrchestrationModuleConfig` objects when initializing the client.
 The orchestration service will try each configuration in order until one succeeds.
 
@@ -205,8 +199,7 @@ If the request exceeds this timeout in non-streaming scenarios, the orchestratio
 The timeout parameter applies to the individual LLM call, not the entire orchestration request.
 :::
 
-When using module fallback, if any configuration fails (for example, due to model unavailability or timeout), the orchestration service automatically tries the next configuration in the array.
-The `getIntermediateFailures()` method returns information about failed attempts before a successful one was found.
+The `getIntermediateFailures()` method returns information about any failed attempts before a successful response is obtained.
 
 ```ts
 const failures = response.getIntermediateFailures();
@@ -216,12 +209,6 @@ if (failures) {
   });
 }
 ```
-
-Each failure includes:
-
-- `message` describes what went wrong.
-- `code` identifies the type of failure.
-- `location` shows the position in the fallback chain, for example, `config[0]` or `config[1]`.
 
 :::tip
 When using module fallback with different models, the SAP Cloud SDK for AI logs a warning if duplicate models are detected in the fallback chain.
@@ -240,7 +227,7 @@ The following additional conditions can trigger fallbacks:
 - Too many requests
 - Internal Service errors
 
-Module fallback is **not** triggered for content‑filter hits or other errors, such as invalid input errors.
+Module fallback is **not** triggered for content-filter hits or other errors, such as invalid input errors.
 
 ### Harmonized API
 
