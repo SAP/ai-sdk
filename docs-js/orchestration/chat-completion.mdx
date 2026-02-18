@@ -1291,6 +1291,43 @@ const response = await orchestrationClient.chatCompletion(request, {
 
 <!-- vale on -->
 
+### Request Cancellation
+
+Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when they are no longer needed.
+This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
+Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
+
+```ts
+const controller = new AbortController();
+
+const response = orchestrationClient.chatCompletion(
+  {
+    messages: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ],
+    placeholderValues: { country: 'France' }
+  },
+  { signal: controller.signal }
+);
+
+// Cancel the request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+try {
+  await response;
+} catch (error) {
+  console.error('Request was cancelled:', error.message);
+}
+```
+
+:::note
+HTTP request cancellation may not cancel the request on the orchestration service.
+The cancellation stops the HTTP connection from the client side, but the service may continue processing the request.
+Metering information may not be available for cancelled requests.
+:::
+
 ### Timeout with SAP Cloud SDK Resilience Package
 
 Configure timeout for requests to prevent hanging connections.
