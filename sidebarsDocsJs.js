@@ -61,7 +61,7 @@ module.exports = {
     {
       type: 'link',
       label: 'API Reference',
-      href: 'https://sap.github.io/cloud-sdk/api/v4/index.html'
+      href: 'pathname:///api/v2/index.html'
     },
     'error-handling',
     'release-notes',
