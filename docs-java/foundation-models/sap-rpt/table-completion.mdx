@@ -45,6 +45,11 @@ See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sd
 
 ## Usage
 
+:::warning
+SAP RPT module is currently in Beta.
+The API may change in future minor releases.
+:::
+
 In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
 
 <!-- prettier-ignore-start-->
@@ -54,7 +59,6 @@ In addition to the prerequisites above, we assume you have already set up the fo
   - Refer
     to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
     for setup instructions.
-  - In case the model is deployed in a custom resource group, refer to [this section](#using-a-custom-resource-group).
   - <details>
     <summary>Example deployed model from the AI Core <code>/deployments</code> endpoint</summary>
 
@@ -100,11 +104,6 @@ In addition to the prerequisites above, we assume you have already set up the fo
 <!-- prettier-ignore-end-->
 
 ## Simple table completion
-
-:::warning
-SAP RPT module is currently in Beta.
-The API may change in future minor releases.
-:::
 
 Predict missing targets in tabular data using `RptClient` with a SAP RPT model.
 
