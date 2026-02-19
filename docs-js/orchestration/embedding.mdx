@@ -179,6 +179,65 @@ const embeddingClient = new OrchestrationEmbeddingClient(orchestrationConfig, {
 
 Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for more details on how to create and manage deployments for orchestration.
 
+## Access to Raw HTTP Response
+
+The SAP Cloud SDK for AI provides access to the underlying HTTP response through the `response` property on orchestration embedding responses.
+Use this for advanced scenarios such as accessing response headers, inspecting HTTP status codes, or debugging.
+
+```ts
+const response = await client.embed({
+  input:
+    'Hello, my name is Alice Johnson and my email is alice.johnson@company.com.',
+  type: 'text'
+});
+
+// Recommended: Use convenience methods for typical use cases
+console.log(response.getEmbeddings()); // Access embedding vectors
+
+// Advanced: Access HTTP response details when needed
+console.log(response.response.status); // HTTP status code
+console.log(response.response.headers); // Response headers
+console.log(response.response.data); // Raw response data
+```
+
+:::tip
+For most use cases, prefer the convenience methods like `getEmbeddings()`.
+Use `response` only when you need direct access to HTTP-level details.
+
+## Request Cancellation
+
+Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when they are no longer needed.
+This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
+Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
+
+```ts
+const controller = new AbortController();
+
+const response = embeddingClient.embed(
+  {
+    input: 'AI is fascinating'
+  },
+  { signal: controller.signal }
+);
+
+// Cancel the request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+try {
+  await response;
+} catch (error) {
+  console.error('Request was cancelled:', error.message);
+}
+```
+
+:::note
+HTTP request cancellation may not cancel the request on the orchestration service.
+The cancellation stops the HTTP connection from the client side, but the service may continue processing the request.
+Metering information may not be available for cancelled requests.
+:::
+
 ## Custom Request Configuration
 
 Add custom headers or query parameters by passing a `CustomRequestConfig` as the second parameter to `embed()`.
