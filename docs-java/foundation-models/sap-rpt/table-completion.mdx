@@ -137,3 +137,25 @@ PredictResponsePayload response = RptClient.forModel(SAP_RPT_1_SMALL).tableCompl
 ```
 
 Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/RptService.java) including `dataSchema` specification.
+
+## Table Completion with Parquet Files
+
+For larger datasets, you can provide data as a Parquet file instead of constructing the data structure in code.
+
+```java
+var parquetFile = new File("path/to/your/data.parquet");
+
+var targetColumns =
+    List.of(
+        TargetColumnConfig.create()
+            .name("category")
+            .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
+            .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
+
+var predictionConfig = PredictionConfig.create().targetColumns(targetColumns);
+
+PredictResponsePayload response =
+    RptClient.forModel(SAP_RPT_1_SMALL).tableCompletion(parquetFile, predictionConfig);
+```
+
+Please find more examples in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/RptService.java).
