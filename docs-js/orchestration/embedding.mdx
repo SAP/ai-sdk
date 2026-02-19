@@ -204,29 +204,7 @@ console.log(response.response.data); // Raw response data
 For most use cases, prefer the convenience methods like `getEmbeddings()`.
 Use `response` only when you need direct access to HTTP-level details.
 
-## Custom Request Configuration
-
-Add custom headers or query parameters by passing a `CustomRequestConfig` as the second parameter to `embed()`.
-
-```ts
-const response = await embeddingClient.embed(
-  {
-    input: 'Vectorize this text'
-  },
-  {
-    headers: {
-      'x-custom-header': 'custom-value'
-      // Add more headers here
-    },
-    params: {
-      // Add more parameters here
-    }
-    // Add more request configuration here
-  }
-);
-```
-
-### Request Cancellation
+## Request Cancellation
 
 Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when they are no longer needed.
 This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
@@ -259,6 +237,28 @@ HTTP request cancellation may not cancel the request on the orchestration servic
 The cancellation stops the HTTP connection from the client side, but the service may continue processing the request.
 Metering information may not be available for cancelled requests.
 :::
+
+## Custom Request Configuration
+
+Add custom headers or query parameters by passing a `CustomRequestConfig` as the second parameter to `embed()`.
+
+```ts
+const response = await embeddingClient.embed(
+  {
+    input: 'Vectorize this text'
+  },
+  {
+    headers: {
+      'x-custom-header': 'custom-value'
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
+```
 
 ## Custom Destination
 
