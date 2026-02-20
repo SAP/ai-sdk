@@ -235,7 +235,7 @@ var result = new OrchestrationClient().chatCompletion(prompt, config);
 
 ## Filtering
 
-Apply [**input filtering**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering) and [**output filtering**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering) to the chat completion:
+Apply [**input filtering**](https://help.sap.com/docs/sap-ai-core/generative-ai/enhancing-model-consumption-with-input-filtering-75c6d42355924b28905ffe435af93b51) and [**output filtering**](https://help.sap.com/docs/sap-ai-core/generative-ai/enhancing-model-consumption-with-output-filtering-0675b9c77d40467bb2f87b6474e95a80) to the chat completion:
 
 ````java
 var prompt = new OrchestrationPrompt(
@@ -250,7 +250,8 @@ var filterStrict = new AzureContentFilter()
                 .selfHarm(ALLOW_SAFE)
                 .sexual(ALLOW_SAFE)
                 .violence(ALLOW_SAFE)
-                .promptShield(true);
+                .promptShield(true)
+                .protectedMaterialCode(true);
 
 var filterLoose = new AzureContentFilter()
                 .hate(ALLOW_SAFE_LOW_MEDIUM)
@@ -270,6 +271,7 @@ var result =
 ````
 
 **Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks.
+**Since v1.16.0** The `protectedMaterialCode` has been introduced in `AzureContentFilter` for output filtering to safeguard against copyrighted content.
 
 ### Behavior of Input and Output Filters
 
