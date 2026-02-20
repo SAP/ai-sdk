@@ -194,7 +194,7 @@ The RPT client supports advanced features for specialized use cases.
 The RPT client automatically compresses prediction requests to improve performance for large datasets.
 By default, requests with a body of 1024 bytes or larger are automatically compressed using the `gzip` algorithm.
 
-To customize compression settings, pass a `customRequest` parameter with a `requestCompression` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
+To customize compression settings, pass a `customRequest` parameter with a `compress` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
 
 <!-- vale off -->
 
@@ -202,7 +202,7 @@ To customize compression settings, pass a `customRequest` parameter with a `requ
 import * as zlib from 'zlib';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
-  requestCompression: {
+  compress: {
     algorithm: 'gzip', // Only 'gzip' is currently supported for RPT
     mode: 'always', // Force compression regardless of payload size (default 'auto')
     autoCompressMinSize: 2048, // Only compress payloads >= 2048 bytes in 'auto' mode (default 1024)
@@ -237,7 +237,7 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
     'x-custom-header': 'value'
   },
   timeout: 30000, // 30 seconds
-  requestCompression: {
+  compress: {
     mode: true
   }
 });
@@ -288,15 +288,15 @@ Configure timeout for requests to prevent hanging connections.
 The default timeout is 10 seconds.
 
 ```typescript
-import { requestCompression } from '@sap-cloud-sdk/http-client';
+import { compress } from '@sap-cloud-sdk/http-client';
 import { timeout } from '@sap-cloud-sdk/resilience';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
   middleware: [
     timeout(30000), // 30 seconds
-    requestCompression({ mode: true }) // Compression middleware with custom position in the middleware chain
+    compress({ mode: true }) // Compression middleware with custom position in the middleware chain
   ],
-  requestCompression: {
+  compress: {
     mode: false // Disable automatic compression, compression middleware will not be prepended
   }
 });
