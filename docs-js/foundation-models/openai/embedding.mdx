@@ -29,6 +29,31 @@ const response = await client.run({
 const embedding = response.getEmbedding();
 ```
 
+### Access to Raw HTTP Response
+
+The SAP Cloud SDK for AI provides access to the underlying HTTP response through the `rawResponse` property on response objects.
+Use this for advanced scenarios such as accessing response headers, inspecting HTTP status codes, or debugging.
+
+```ts
+const response = await client.run({
+  input: 'AI is fascinating'
+});
+// Recommended: Use convenience methods for typical use cases
+const embedding = response.getEmbedding();
+
+// Advanced: Access HTTP response details when needed
+console.log(response.rawResponse.status); // HTTP status code
+console.log(response.rawResponse.headers); // Response headers
+console.log(response.rawResponse.data); // Raw response data
+```
+
+:::tip
+For most use cases, prefer the convenience methods like `getEmbedding();`.
+Use `rawResponse` only when you need direct access to HTTP-level details.
+:::
+
+The `rawResponse` property is available on embedding response objects.
+
 ## Resilience
 
 The `@sap-cloud-sdk/resilience` package uses the SAP Cloud SDK for JavaScript HTTP client, which provides built-in resilience features to handle transient failures and improve reliability.
