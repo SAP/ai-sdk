@@ -1,3 +1,10 @@
+// Get the current version label from docusaurus config
+const docusaurusConfig = require('./docusaurus.config.js');
+const jsDocsPlugin = docusaurusConfig.plugins.find(
+  plugin => Array.isArray(plugin) && plugin[1]?.id === 'docs-js'
+);
+const currentVersionLabel = jsDocsPlugin?.[1]?.versions?.current?.label || 'v2';
+
 module.exports = {
   docsJsSidebar: [
     'overview-cloud-sdk-for-ai-js',
@@ -61,7 +68,7 @@ module.exports = {
     {
       type: 'link',
       label: 'API Reference',
-      href: 'pathname:///api/v2/index.html'
+      href: `pathname:///api/${currentVersionLabel}/index.html`
     },
     'error-handling',
     'release-notes',
