@@ -168,3 +168,23 @@ const deploymentUrl = await resolveDeploymentUrl({
   model: { name: 'gpt-4o' }
 });
 ```
+
+## Resilience
+
+The `@sap-cloud-sdk/resilience` package uses the SAP Cloud SDK for JavaScript HTTP client, which provides built-in resilience features to handle transient failures and improve reliability.
+
+### Adding resilience
+
+Pass some basic parameters for the creation of the resilience middleware.
+
+```ts
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+const [retry, circuitBreaker, timeout] = resilience({
+  timeout: 5000, // default true with 10 seconds timeout
+  circuitBreaker: false, // default true
+  retry: 3 // default false; set to a number to specify a retry count
+});
+```
+
+For advanced resilience patterns including circuit breaker functionality, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).

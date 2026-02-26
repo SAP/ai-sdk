@@ -19,6 +19,11 @@ module.exports = {
             'foundation-models/openai/chat-completion',
             'foundation-models/openai/embedding'
           ]
+        },
+        {
+          type: 'category',
+          label: 'SAP RPT',
+          items: ['foundation-models/sap-rpt/table-completion']
         }
       ]
     },
@@ -53,7 +58,7 @@ module.exports = {
     {
       type: 'link',
       label: 'Maven Central',
-      href: 'https://central.sonatype.com/search?q=g:com.sap.cloud.sdk*&smo=true'
+      href: 'https://central.sonatype.com/search?q=g:com.sap.ai.sdk*&smo=true'
     }
   ]
 };

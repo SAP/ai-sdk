@@ -1,0 +1,182 @@
+---
+id: rpt
+title: SAP RPT-1 (Beta)
+hide_title: false
+hide_table_of_contents: false
+description: How to use SAP Cloud SDK for AI to interact with the SAP RPT-1 model for Tabular AI on SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - ai core
+  - ai-api
+  - rpt
+  - rpt-1
+  - tabular ai
+  - relational pretrained transformer
+---
+
+:::important
+This package is experimental and subject to change.
+Do not use in production.
+:::
+
+The `@sap-ai-sdk/rpt` package provides a client to interact with [SAP-RPT-1](https://www.sap.com/products/artificial-intelligence/sap-rpt.html), SAP’s Relational Pretrained Transformer model.
+
+## Installation
+
+To add the package to your project, run the following command in your terminal:
+
+```bash
+npm install @sap-ai-sdk/rpt
+```
+
+## Usage
+
+SAP-RPT-1 is a relational pretrained transformer model that delivers accurate predictive insights from structured business data.
+The following shows the different ways to use the RPT client to interact with the model.
+
+### Client Initialization
+
+Initialize a client using `RptClient` constructor with optional parameters.
+By default, the 'sap-rpt-1-small' model is chosen as the prediction model.
+
+```typescript
+import { RptClient } from '@sap-ai-sdk/rpt';
+
+const client = new RptClient();
+```
+
+To use the 'sap-rpt-1-large' model, specify the model name in the constructor:
+
+```typescript
+const client = new RptClient('sap-rpt-1-large');
+```
+
+Follow the instructions in the [Foundation Models documentation](./foundation-models#client-initialization)
+to specify a model version, use a model with an explicit deployment ID, select a specific resource group, or target a custom AI Core instance.
+
+### Predict With Schema
+
+Use the `predictWithSchema()` method to make predictions with a schema explicitly defined.
+Pass the data schema, and the prediction data including the prediction configuration and input data to the method.
+Prefer providing the data schema if it is known instead of relying on the auto-inference solely based on the input data.
+
+```typescript
+const prediction = await client.predictWithSchema(
+  // Data schema
+  [
+    { name: 'PRODUCT', dtype: 'string' },
+    { name: 'PRICE', dtype: 'numeric' },
+    { name: 'PRODUCTION_DATE', dtype: 'date' },
+    { name: 'SALESGROUP', dtype: 'string' }
+  ],
+  // Prediction data
+  {
+    prediction_config: {
+      target_columns: [
+        {
+          name: 'SALESGROUP',
+          prediction_placeholder: '[PREDICT]',
+          task_type: 'classification'
+        }
+      ]
+    },
+    index_column: '__row_idx__',
+    rows: [
+      {
+        PRODUCT: 'Laptop',
+        PRICE: 999.99,
+        PRODUCTION_DATE: '2025-01-15',
+        __row_idx__: '35',
+        SALESGROUP: '[PREDICT]'
+      },
+      {
+        PRODUCT: 'Desktop Computer',
+        PRICE: 750.5,
+        PRODUCTION_DATE: '2024-12-02',
+        __row_idx__: '42',
+        SALESGROUP: 'Enterprise Solutions'
+      }
+      // Additional rows...
+    ]
+  }
+);
+```
+
+The data schema is a list of column definitions, each containing a `name` and a `dtype` properties.
+The prediction data contains the following properties:
+
+- `prediction_config`: A mandatory configuration to specify the columns to predict, including their names, placeholder values, and task types.
+  The task type can be either `classification` or `regression`.
+  If not specified, the model infers the task type based on the column data type.
+- `index_column`: The name of the column that serves as the unique identifier for each row.
+  The index column is returned in the prediction results to allow mapping predictions back to the input data.
+- `rows` or `columns`: The input data to make predictions on.
+  Use `rows` for row-based format or `columns` for column-based format.
+- `parse_data_types`: Optional boolean to control data type parsing.
+  When set to `true` (default), numeric columns are parsed to float or integer, and dates (`YYYY-MM-DD`) are parsed automatically.
+
+:::important
+When you store the schema and prediction data in variables, declare the schema with `as const` and use the `PredictionData<typeof schema>` type.
+This enables type inference and accurate IDE autocompletion.
+If you pass the data directly to `predictWithSchema()`, you do not need additional annotations.
+
+Example:
+
+```typescript
+const schema = [...] as const;
+const data: PredictionData<typeof schema> = {...};
+
+client.predictWithSchema(schema, data);
+```
+
+:::
+
+### Predict Without Schema
+
+:::tip
+
+If the data schema is known, it is recommended to use the [`predictWithSchema()` method](#predict-with-schema) instead.
+
+:::
+
+To make predictions without providing a schema, use the `predictWithoutSchema()` method.
+Pass only the prediction data as a parameter.
+The data schema will be inferred from the input data.
+
+```typescript
+const prediction = await client.predictWithoutSchema(
+  // Prediction data
+  {
+    prediction_config: {
+      target_columns: [
+        {
+          name: 'SALESGROUP',
+          prediction_placeholder: '[PREDICT]',
+          task_type: 'classification'
+        }
+      ]
+    },
+    index_column: '__row_idx__',
+    rows: [
+      {
+        PRODUCT: 'Laptop',
+        PRICE: 999.99,
+        PRODUCTION_DATE: '2025-01-15',
+        __row_idx__: '35',
+        SALESGROUP: '[PREDICT]'
+      },
+      {
+        PRODUCT: 'Desktop Computer',
+        PRICE: 750.5,
+        PRODUCTION_DATE: '2024-12-02',
+        __row_idx__: '42',
+        SALESGROUP: 'Enterprise Solutions'
+      }
+      // Additional rows...
+    ]
+  }
+);
+```
