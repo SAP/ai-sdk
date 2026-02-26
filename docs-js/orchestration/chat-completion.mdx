@@ -1229,12 +1229,11 @@ if (failures) {
 ```
 
 :::note
-When providing an array of stream options, the length must match the number of module configurations in the fallback chain.
-Global streaming options like `chunk_size` can only be specified in the first element of the array.
+Providing streaming option overrides is only possible when your orchestration configuration uses module fallback with more than one configuration.
+Overrides cannot change global options like `chunk_size`, which you can only set in the first configuration.
 :::
 
-When using streaming with module fallback, you can also provide different stream options for each configuration in the fallback chain.
-This is useful when different models have different streaming characteristics.
+When using streaming with module fallback, you can provide streaming option overrides for each configuration in the fallback chain.
 
 ```ts
 const response = await orchestrationClient.stream(
@@ -1242,17 +1241,17 @@ const response = await orchestrationClient.stream(
     messages: [{ role: 'user', content: 'Tell me a story.' }]
   },
   undefined,
-  [
-    // Stream options for first configuration
-    {
-      promptTemplating: { include_usage: true },
-      global: { chunk_size: 100 }
-    },
-    // Stream options for second configuration
-    {
-      promptTemplating: { include_usage: false }
+  {
+    global: { chunk_size: 100 },
+    promptTemplating: { include_usage: false },
+    overrides: {
+      // Config 0 replaces base options fully.
+      0: { promptTemplating: { include_usage: true } },
+      // Config 1 uses base options because no override is provided.
+      // Config 2 replaces base options fully.
+      2: { outputFiltering: { overlap: 50 } }
     }
-  ]
+  }
 );
 ```
 
