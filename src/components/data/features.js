@@ -156,6 +156,17 @@ export const features = [
     }
   },
   {
+    name: 'Orchestration: [Embedding](https://help.sap.com/docs/sap-ai-core/generative-ai/embeddings?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/java/orchestration/embedding)`
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/orchestration/embedding)`
+    }
+  },
+  {
     name: '[AI Core API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/about-ai-api?locale=en-US)',
     java: {
       status: YES,

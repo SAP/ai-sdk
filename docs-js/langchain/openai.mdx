@@ -180,6 +180,42 @@ for await (const chunk of response) {
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
 
+#### Streaming Configuration
+
+By default, the `stream()` method supports streaming, while the `invoke()` method uses non-streaming requests.
+
+##### Auto-Streaming
+
+Set the `streaming` option to `true` to enable automatic streaming for all requests made with the `invoke()` method:
+
+```ts
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-4o',
+  streaming: true
+});
+
+const response = await client.invoke(messageHistory);
+```
+
+With auto-streaming enabled, the `invoke()` method uses streaming to retrieve responses, returning the complete result upon completion.
+This option is automatically enabled by LangGraph when a LangGraph-based agent is used with a [streaming mode](https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes) that can output partial responses, such as "updates".
+
+##### Disabling Streaming
+
+Set the `disableStreaming` option to turn off streaming entirely.
+
+```ts
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-4o',
+  disableStreaming: true
+});
+
+const response = await client.stream(messageHistory);
+```
+
+When streaming is disabled, both the `invoke()` and `stream()` methods use non-streaming requests internally.
+The `stream()` method will still return an iterable, but it will yield a single chunk containing the complete response.
+
 ### Tool Calling
 
 LangChain offers a unified way to connect tools to language models.
@@ -217,6 +253,38 @@ const structuredLlm = llm.withStructuredOutput(joke, {
 
 const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
 ```
+
+### Basic Agent Usage
+
+The `AzureOpenAiChatClient` can be used with LangChain's agent framework through the `createAgent()` function.
+
+:::note
+In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
+:::
+
+Create an agent by providing the Azure OpenAI chat client as the model, along with any tools you want the agent to use:
+
+<!-- vale off -->
+
+```ts
+import { createAgent } from 'langchain';
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+
+const model = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+
+const agent = createAgent({
+  model,
+  tools: []
+});
+
+const agentInputs = {
+  messages: [{ role: 'user', content: 'What is SAP?' }]
+};
+
+const result = await agent.invoke(agentInputs);
+```
+
+<!-- vale on -->
 
 ## Embedding
 
@@ -269,6 +337,11 @@ const retriever = vectorStore.asRetriever();
 ## Resilience
 
 Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
+
+:::note
+When using LangChain clients, configure resilience only through LangChain options.
+Do not apply additional SAP Cloud SDK resilience middleware, as LangChain already provides built-in retry mechanisms.
+:::
 
 ### Retry
 
