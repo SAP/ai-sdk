@@ -1230,7 +1230,7 @@ if (failures) {
 
 :::note
 Providing streaming option overrides is only possible when your orchestration configuration uses module fallback with more than one configuration.
-Overrides cannot change global options like `chunk_size`, which you can only set in the first configuration.
+Overrides cannot change global options like `chunk_size`.
 :::
 
 When using streaming with module fallback, you can provide streaming option overrides for each configuration in the fallback chain.
@@ -1243,7 +1243,7 @@ const response = await orchestrationClient.stream(
   undefined,
   {
     global: { chunk_size: 100 },
-    promptTemplating: { include_usage: false },
+    promptTemplating: { include_usage: false }, // Config inherited by all modules if not overriden.
     overrides: {
       // Config 0 replaces base options fully.
       0: { promptTemplating: { include_usage: true } },
