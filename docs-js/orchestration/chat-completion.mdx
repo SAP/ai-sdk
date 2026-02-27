@@ -1225,6 +1225,11 @@ for await (const chunk of response.stream) {
 const failures = response.getIntermediateFailures();
 if (failures) {
   console.log(`Used ${failures.length} fallback(s) before success`);
+  failures.forEach((failure, index) => {
+    console.log(
+      `Failure ${index + 1} (Code: ${failure.code} at ${failure.location}): ${failure.message}`
+    );
+  });
 }
 ```
 
@@ -1235,6 +1240,12 @@ Overrides cannot change global options like `chunk_size`.
 
 When using streaming with module fallback, you can provide streaming option overrides for each configuration in the fallback chain.
 
+The streaming options structure consists of a `global` object containing options shared across all configurations, such as `chunk_size`.
+It also includes module-specific options, like `promptTemplating` or `outputFiltering`, that apply to all configurations unless overridden, and an optional `overrides` object that maps configuration indices to option overrides.
+When an override is provided for a specific configuration index, it replaces the base module-specific options entirely for that configuration.
+If no override is provided for a configuration, it uses the base options from the top-level properties (everything except `global` and `overrides`).
+Overrides cannot modify global options or contain additional overrides.
+
 ```ts
 const response = await orchestrationClient.stream(
   {
@@ -1242,8 +1253,11 @@ const response = await orchestrationClient.stream(
   },
   undefined,
   {
+    // Global Options
     global: { chunk_size: 100 },
+    // Base Options
     promptTemplating: { include_usage: false }, // Config inherited by all modules if not overriden.
+    // Module-specific overrides
     overrides: {
       // Config 0 replaces base options fully.
       0: { promptTemplating: { include_usage: true } },
