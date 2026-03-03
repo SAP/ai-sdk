@@ -323,6 +323,33 @@ const finalResponse = await client.run({
 console.log(finalResponse.getContent());
 ```
 
+### Access to Raw HTTP Response
+
+The SAP Cloud SDK for AI provides access to the underlying HTTP response through the `rawResponse` property on response objects.
+Use this for advanced scenarios such as accessing response headers, inspecting HTTP status codes, or debugging.
+
+```ts
+const response = await client.run({
+  messages: [{ role: 'user', content: 'Hello World!' }]
+});
+
+// Recommended: Use convenience methods for typical use cases
+console.log(response.getContent());
+
+// Advanced: Access HTTP response details when needed
+console.log(response.rawResponse.status); // HTTP status code
+console.log(response.rawResponse.headers); // Response headers
+console.log(response.rawResponse.data); // Raw response data
+```
+
+:::tip
+For most use cases, prefer the convenience methods like `getContent()` and `getTokenUsage()`.
+Use `rawResponse` only when you need direct access to HTTP-level details.
+:::
+
+The `rawResponse` property is available on chat completion response objects, but not on the streaming response object returned by the `stream()` method.
+If you need access to the raw HTTP response for streaming requests, please open a feature request on our [GitHub repository](https://github.com/SAP/ai-sdk-js/issues/new).
+
 ## Resilience
 
 The `@sap-cloud-sdk/resilience` package uses the SAP Cloud SDK for JavaScript HTTP client, which provides built-in resilience features to handle transient failures and improve reliability.
@@ -379,3 +406,42 @@ const response = await client.run(request, {
 <!-- vale on -->
 
 For advanced resilience patterns including circuit breaker functionality, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+
+### Request Cancellation
+
+Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when they are no longer needed.
+This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
+Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
+
+```ts
+const controller = new AbortController();
+
+const response = client.run(
+  {
+    messages: [
+      {
+        role: 'user',
+        content: 'What is the capital of France?'
+      }
+    ]
+  },
+  { signal: controller.signal }
+);
+
+// Cancel the request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+try {
+  await response;
+} catch (error) {
+  console.error('Request was cancelled:', error.message);
+}
+```
+
+:::note
+HTTP request cancellation may not cancel the request on the AI service.
+The cancellation stops the HTTP connection from the client side, but the service may continue processing the request.
+Metering information may not be available for cancelled requests.
+:::
