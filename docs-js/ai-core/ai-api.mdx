@@ -171,20 +171,38 @@ const deploymentUrl = await resolveDeploymentUrl({
 
 ## Resilience
 
-The `@sap-cloud-sdk/resilience` package uses the SAP Cloud SDK for JavaScript HTTP client, which provides built-in resilience features to handle transient failures and improve reliability.
-
-### Adding resilience
-
-Pass some basic parameters for the creation of the resilience middleware.
+Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
+By default, it enables a circuit breaker and a 10-second timeout.
 
 ```ts
 import { resilience } from '@sap-cloud-sdk/resilience';
 
-const [retry, circuitBreaker, timeout] = resilience({
-  timeout: 5000, // default true with 10 seconds timeout
-  circuitBreaker: false, // default true
-  retry: 3 // default false; set to a number to specify a retry count
-});
+const deployments = await DeploymentApi.deploymentQuery(
+  {},
+  { 'AI-Resource-Group': 'default' }
+).execute({ destinationName: 'my-aicore' }, { middleware: [...resilience()] });
 ```
 
-For advanced resilience patterns including circuit breaker functionality, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+Customize the behavior by passing options:
+
+<!-- vale off -->
+
+```ts
+const deployments = await DeploymentApi.deploymentQuery(
+  {},
+  { 'AI-Resource-Group': 'default' }
+).execute(
+  { destinationName: 'my-aicore' },
+  {
+    middleware: resilience({
+      timeout: 5000, // 5 seconds; true for default 10s, false to disable
+      circuitBreaker: true, // true by default, false to disable
+      retry: 3 // false by default; true for 3 retries, or pass a number
+    })
+  }
+);
+```
+
+<!-- vale on -->
+
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
