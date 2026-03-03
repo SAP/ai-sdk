@@ -359,7 +359,9 @@ By default, it enables a circuit breaker and a 10-second timeout.
 import { resilience } from '@sap-cloud-sdk/resilience';
 
 const request = {
-  messages: [{ role: 'user', content: 'Where is the deepest place on earth located?' }]
+  messages: [
+    { role: 'user', content: 'Where is the deepest place on earth located?' }
+  ]
 };
 
 const response = await client.run(request, {

@@ -1477,7 +1477,9 @@ By default, it enables a circuit breaker and a 10-second timeout.
 import { resilience } from '@sap-cloud-sdk/resilience';
 
 const request = {
-  messages: [{ role: 'user', content: 'Hello World! Why is this phrase so famous?' }]
+  messages: [
+    { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
+  ]
 };
 
 const response = await orchestrationClient.chatCompletion(request, {
@@ -1539,4 +1541,3 @@ HTTP request cancellation may not cancel the request on the orchestration servic
 The cancellation stops the HTTP connection from the client side, but the service may continue processing the request.
 Metering information may not be available for cancelled requests.
 :::
-
