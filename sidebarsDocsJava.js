@@ -19,6 +19,11 @@ module.exports = {
             'foundation-models/openai/chat-completion',
             'foundation-models/openai/embedding'
           ]
+        },
+        {
+          type: 'category',
+          label: 'SAP RPT',
+          items: ['foundation-models/sap-rpt/table-completion']
         }
       ]
     },
