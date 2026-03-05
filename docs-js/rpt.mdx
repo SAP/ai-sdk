@@ -85,21 +85,21 @@ const prediction = await client.predictWithSchema(
         }
       ]
     },
-    index_column: '__row_idx__',
+    index_column: 'ID',
     rows: [
       {
         PRODUCT: 'Laptop',
         PRICE: 999.99,
         PRODUCTION_DATE: '2025-01-15',
-        __row_idx__: '35',
+        ID: '35',
         SALESGROUP: '[PREDICT]'
       },
       {
         PRODUCT: 'Desktop Computer',
         PRICE: 750.5,
         PRODUCTION_DATE: '2024-12-02',
-        __row_idx__: '42',
-        SALESGROUP: 'Enterprise Solutions'
+        ID: '42',
+        SALESGROUP: 'Hardware'
       }
       // Additional rows...
     ]
@@ -140,7 +140,7 @@ client.predictWithSchema(schema, data);
 
 :::tip
 
-If the data schema is known, it is recommended to use the [`predictWithSchema()` method](#predict-with-schema) instead.
+If the data schema is known, it is recommended to use the [`predictWithSchema()`](#predict-with-schema) method instead.
 
 :::
 
@@ -163,21 +163,21 @@ const prediction = await client.predictWithoutSchema(
         }
       ]
     },
-    index_column: '__row_idx__',
+    index_column: 'ID',
     rows: [
       {
         PRODUCT: 'Laptop',
         PRICE: 999.99,
         PRODUCTION_DATE: '2025-01-15',
-        __row_idx__: '35',
+        ID: '35',
         SALESGROUP: '[PREDICT]'
       },
       {
         PRODUCT: 'Desktop Computer',
         PRICE: 750.5,
         PRODUCTION_DATE: '2024-12-02',
-        __row_idx__: '42',
-        SALESGROUP: 'Enterprise Solutions'
+        ID: '42',
+        SALESGROUP: 'Hardware'
       }
       // Additional rows...
     ]
@@ -217,7 +217,7 @@ const prediction = await client.predictParquet(
     ]
   },
   {
-    index_column: '__row_idx__',
+    index_column: 'ID',
     parse_data_types: false
   }
 );
@@ -237,7 +237,6 @@ import * as zlib from 'zlib';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
   compress: {
-    algorithm: 'gzip', // Only 'gzip' is currently supported for RPT
     mode: 'always', // Force compression regardless of payload size (default 'auto')
     autoCompressMinSize: 2048, // Only compress payloads >= 2048 bytes in 'auto' mode (default 1024)
     compressOptions: {
@@ -259,7 +258,7 @@ The `customRequest` parameter also supports additional HTTP request configuratio
 
 :::warning
 
-The compression middleware is automatically prepended to the middleware chain, unless disabled by setting `mode: false`.
+The compression middleware is automatically prepended to the middleware chain, unless disabled by setting `mode: 'never'`.
 
 :::
 
@@ -272,7 +271,7 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
   },
   timeout: 30000, // 30 seconds
   compress: {
-    mode: true
+    mode: 'always'
   }
 });
 ```
