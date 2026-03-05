@@ -95,12 +95,6 @@ const promptTemplating = {
 
 ### Module Fallback
 
-:::caution
-
-Module fallback can not be used with streaming chat completion requests yet.
-
-:::
-
 The orchestration service supports module fallback, which allows you to configure multiple complete orchestration module configurations that are tried in sequence until one succeeds.
 This feature is useful for implementing resilience and fallback strategies when working with AI models.
 
@@ -218,6 +212,11 @@ Consider using different models for meaningful fallback behavior.
 #### Module Fallback Conditions
 
 Module fallback is triggered under specific conditions, which may change in future versions of the orchestration service.
+
+**For streaming requests:** Fallback happens before the stream starts.
+The model chosen by the orchestration service will not switch mid-stream.
+
+- The model is not available.
 
 **For non-streaming requests:**
 Fallback may occur even after the request starts being handled by the first provider.
@@ -1204,6 +1203,71 @@ Set the `llm` property to `null` to not send any LLM streaming options.
 :::note
 When initializing a client with JSON module config, it is not possible to provide streaming options.
 :::
+
+#### Module Fallback with Streaming
+
+[Module fallback](#module-fallback) is also supported when using the `stream()` method.
+The service tries each configuration in sequence, and you can access intermediate failures after the stream completes.
+For details on configuring module fallback, see the [Module Fallback section](#module-fallback).
+
+```ts
+const response = await orchestrationClient.stream({
+  messages: [
+    { role: 'user', content: 'Explain quantum computing in simple terms.' }
+  ]
+});
+
+for await (const chunk of response.stream) {
+  console.log(chunk.getDeltaContent());
+}
+
+// Check for fallback attempts after streaming completes
+const failures = response.getIntermediateFailures();
+if (failures) {
+  console.log(`Used ${failures.length} fallback(s) before success`);
+  failures.forEach((failure, index) => {
+    console.log(
+      `Failure ${index + 1} (Code: ${failure.code} at ${failure.location}): ${failure.message}`
+    );
+  });
+}
+```
+
+:::note
+Providing streaming option overrides is only possible when your orchestration configuration uses module fallback with more than one configuration.
+Overrides cannot change global options like `chunk_size`.
+:::
+
+When using streaming with module fallback, you can provide streaming option overrides for each configuration in the fallback chain.
+
+The streaming options structure consists of a `global` object containing options shared across all configurations, such as `chunk_size`.
+It also includes module-specific options, like `promptTemplating` or `outputFiltering`, that apply to all configurations unless overridden, and an optional `overrides` object that maps configuration indices to option overrides.
+When an override is provided for a specific configuration index, it replaces the base module-specific options entirely for that configuration.
+If no override is provided for a configuration, it uses the base options from the top-level properties (everything except `global` and `overrides`).
+Overrides cannot modify global options or contain additional overrides.
+
+```ts
+const response = await orchestrationClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Tell me a story.' }]
+  },
+  undefined,
+  {
+    // Global Options
+    global: { chunk_size: 100 },
+    // Base Options
+    promptTemplating: { include_usage: false }, // Config inherited by all modules if not overriden.
+    // Module-specific overrides
+    overrides: {
+      // Config 0 replaces base options fully.
+      0: { promptTemplating: { include_usage: true } },
+      // Config 1 uses base options because no override is provided.
+      // Config 2 replaces base options fully.
+      2: { outputFiltering: { overlap: 50 } }
+    }
+  }
+);
+```
 
 ## Initialization with Orchestration Configuration
 

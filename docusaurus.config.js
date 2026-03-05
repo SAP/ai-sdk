@@ -146,7 +146,7 @@ module.exports = {
             },
             {
               label: 'PyPI',
-              href: 'https://pypi.org/project/generative-ai-hub-sdk/'
+              href: 'https://pypi.org/project/sap-ai-sdk-gen/'
             }
           ]
         },
