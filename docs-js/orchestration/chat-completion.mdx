@@ -708,6 +708,80 @@ const response = await orchestrationClient.chatCompletion({
 You can send a single chat completion request with multiple images by defining multiple content blocks with `image_url` type in the template.
 The model will process each image and use the information from all of them to respond.
 
+### File Input
+
+Some models in the orchestration service accept files as input, such as PDFs, CSV files, Word documents, and audio files.
+
+:::note
+
+The `file` content type can only be used in messages with `role: 'user'`.
+Attempting to use `file` in non-user messages will result in an error.
+
+:::
+
+:::note
+
+Orchestration file input support may not match the file input capabilities of each individual model, as the orchestration service may only support a subset of file types for certain models.
+Please always check if the specific file type you want to use is supported by the orchestration service for your chosen model.
+
+:::
+
+The SDK supports two ways to provide file data:
+
+- `type: 'base64'` — provide the raw file bytes as a Node.js `Buffer` or a base64-encoded string, together with the MIME type.
+  The SDK assembles the RFC 2397 data URI (e.g., `data:application/pdf;base64,...`) automatically.
+- `type: 'url'` — provide a public HTTPS URL or an RFC 2397 data URI directly.
+
+It is recommended to provide a `filename` as part of the payload as otherwise the orchestration service may assign a filename.
+
+The following example reads a local PDF file and sends it to the model:
+
+```ts
+import { readFile } from 'node:fs/promises';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+import type { FileContentInput } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'MODEL_NAME' }
+  }
+});
+
+// Pass 'base64' encoding to directly receive a base64 string, avoiding additional work in the SAP Cloud SDK for AI
+const data = await readFile('PATH_TO_FILE', 'base64');
+const file: FileContentInput = {
+  type: 'base64',
+  data,
+  mimeType: 'MIME_TYPE', // e.g., 'application/pdf', 'text/csv', 'audio/mpeg'
+  filename: 'FILENAME' // optional, but recommended
+};
+
+const response = await orchestrationClient.chatCompletion({
+  messages: [
+    {
+      role: 'user', // only user role supports file
+      content: [
+        { type: 'text', text: 'Summarize this document.' },
+        { type: 'file', file }
+      ]
+    }
+  ]
+});
+```
+
+To reference a file by URL instead, set `type: 'url'`:
+
+```ts
+const file: FileContentInput = {
+  type: 'url',
+  url: 'FILE_URL', // public HTTPS URL or RFC 2397 data URI, e.g., data:application/pdf;base64,...
+  filename: 'FILENAME' // optional, but recommended
+};
+```
+
+Not all models support all file types.
+Refer to the model documentation to verify which MIME types are supported.
+
 ## Content Filtering
 
 Configure content filtering to restrict content that is passed to and received from a generative AI model.
