@@ -180,8 +180,13 @@ import { resilience } from '@sap-cloud-sdk/resilience';
 const deployments = await DeploymentApi.deploymentQuery(
   {},
   { 'AI-Resource-Group': 'default' }
-).execute({ destinationName: 'my-aicore' }, { middleware: [...resilience()] });
+).execute({ destinationName: 'my-aicore' }, { middleware: resilience() });
 ```
+
+:::tip
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
+:::
 
 Customize the behavior by passing options:
 

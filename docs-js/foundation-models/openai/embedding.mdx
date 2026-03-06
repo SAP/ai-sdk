@@ -64,9 +64,14 @@ import { resilience } from '@sap-cloud-sdk/resilience';
 
 const response = await client.run(
   { input: 'What is the capital of Germany?' },
-  { middleware: [...resilience()] }
+  { middleware: resilience() }
 );
 ```
+
+:::tip
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
+:::
 
 Customize the behavior by passing options:
 

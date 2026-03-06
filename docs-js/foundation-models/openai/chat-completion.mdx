@@ -365,9 +365,14 @@ const request = {
 };
 
 const response = await client.run(request, {
-  middleware: [...resilience()]
+  middleware: resilience()
 });
 ```
+
+:::tip
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
+:::
 
 Customize the behavior by passing options:
 
