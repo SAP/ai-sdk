@@ -269,21 +269,23 @@ Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub ca
 
 Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs on SAP Generative AI Hub.
 
-#### Consuming Perplexity Sonar Model
+#### Using Citations with Perplexity Sonar Models
 
-Perplexity Sonar is a model provided by Perplexity AI that offers real-time web search capabilities with inline citations.
-When using the Sonar model, responses include citations that reference the sources used to generate the answer, making it ideal for use cases requiring up-to-date information and source transparency.
+Some models provide citations that reference the sources used to generate responses, making them ideal for use cases requiring up-to-date information and source transparency.
+Citations can be accessed using the `getCitations()` method on the response object.
+For details on the citation properties, refer to the [API documentation](#LINK_TO_API_DOCS).
 
-The Sonar model returns citations that can be accessed using the `getCitations()` method on the response object.
 Each citation contains the following properties:
 
-- `ref_id`: Unique identifier for the inline citation
+- `ref_id`: Unique numeric identifier for the inline citation
 - `title`: Title of the cited source
 - `url`: URL of the cited source
-- `start_index`: Start position of the citation in the response text (optional)
-- `end_index`: End position of the citation in the response text (optional)
 
-The following example shows how to use the Sonar model and retrieve citations:
+:::warning
+Citations are currently only supported by Perplexity Sonar models.
+:::
+
+Use the getCitations() method to retrieve citations from the response:
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -291,8 +293,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'sonar',
-      version: 'latest'
+      name: 'sonar'
     }
   }
 });
@@ -316,56 +317,6 @@ if (citations) {
   });
 }
 ```
-
-##### Streaming with Sonar Model
-
-The Sonar model also supports streaming responses.
-Citations are available after the stream completes and can be retrieved using the `getCitations()` method.
-
-```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
-const orchestrationClient = new OrchestrationClient({
-  promptTemplating: {
-    model: {
-      name: 'sonar',
-      version: 'latest'
-    }
-  }
-});
-
-const controller = new AbortController();
-const response = await orchestrationClient.stream(
-  {
-    messages: [
-      {
-        role: 'user',
-        content: 'What are the latest developments in quantum computing?'
-      }
-    ]
-  },
-  controller.signal
-);
-
-// Consume the stream
-for await (const chunk of response.stream) {
-  console.log(chunk.getContent());
-}
-
-// Get citations after stream completes
-const citations = response.getCitations();
-if (citations) {
-  console.log('\nSources:');
-  citations.forEach(citation => {
-    console.log(`- ${citation.title}: ${citation.url}`);
-  });
-}
-```
-
-:::note
-Citations may not always be present in the response depending on the query and whether the model used web sources.
-Always check if citations exist before processing them.
-:::
 
 #### Consuming SAP ABAP 1 Model
 
@@ -1270,6 +1221,24 @@ for await (const chunk of response.stream) {
 
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+### Streaming with Citations
+
+When using models that support citations, citations are available after the stream completes and can be retrieved using the `getCitations()` method.
+
+```ts
+const response = await orchestrationClient.stream('What are the latest developments in quantum computing?');
+
+for await (const chunk of response.stream) {
+  console.log(chunk.getDeltaContent());
+}
+
+// Get citations after stream completes
+const citations = response.getCitations();
+```
+
+:::note Citations may not always be present in the response depending on the query and whether the model used web sources. :::
+
 
 ### Streaming Options
 
