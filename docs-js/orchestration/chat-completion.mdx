@@ -1227,7 +1227,9 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 When using models that support citations, citations are available after the stream completes and can be retrieved using the `getCitations()` method.
 
 ```ts
-const response = await orchestrationClient.stream('What are the latest developments in quantum computing?');
+const response = await orchestrationClient.stream(
+  'What are the latest developments in quantum computing?'
+);
 
 for await (const chunk of response.stream) {
   console.log(chunk.getDeltaContent());
