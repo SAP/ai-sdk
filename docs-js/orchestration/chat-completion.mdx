@@ -734,7 +734,10 @@ The SDK supports two ways to provide file data:
 
 It is recommended to provide a `filename` as part of the payload as otherwise the orchestration service may assign a filename.
 
-The following example reads a local PDF file and sends it to the model:
+The following example reads a local file and sends it to the model.
+Adjust the file path, MIME type and model name as needed, for PDF files use `application/pdf` as MIME type.
+
+<!-- vale off -->
 
 ```ts
 import { readFile } from 'node:fs/promises';
@@ -768,6 +771,7 @@ const response = await orchestrationClient.chatCompletion({
   ]
 });
 ```
+<!-- vale on -->
 
 To reference a file by URL instead, set `type: 'url'`:
 
