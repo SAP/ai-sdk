@@ -642,6 +642,7 @@ The following sample will translate only the given placeholders into English, se
 Note that setting the source language through `withSourceLanguage()` works slightly different when used together with applyTo parameters.
 
 If either `applyToPlaceholders` or `applyToTemplateRoles`were not used, the source language is set for the whole message. If `applyToPlaceholders` is used however, `withSourceLanguage` applies to the most recently added placeholder only. This is why in the below example the source language of the placeholders was set to German, while the source language of the template roles was set to English.
+
 ```java
 var inputParams =
     Map.of("exam_type", "Abitur", "topic", "Deutsche Literatur", "num_questions", "5");
