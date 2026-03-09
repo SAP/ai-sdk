@@ -638,8 +638,10 @@ var response = client.chatCompletion(prompt, configWithTranslation);
 ### Translation using applyTo parameter
 
 The following sample will translate only the given placeholders into English, send it to the LLM, and then translate the output to German.
-Source Language could only be identified on each element in the applyTo list instead of the whole user input since applyTo parameter was used.
 
+Note that setting the source language through `withSourceLanguage()` works slightly different when used together with applyTo parameters.
+
+If either `applyToPlaceholders` or `applyToTemplateRoles`were not used, the source language is set for the whole message. If `applyToPlaceholders` is used however, `withSourceLanguage` applies to the most recently added placeholder only. This is why in the below example the source language of the placeholders was set to German, while the source language of the template roles was set to English.
 ```java
 var inputParams =
     Map.of("exam_type", "Abitur", "topic", "Deutsche Literatur", "num_questions", "5");
@@ -660,7 +662,7 @@ var configWithTranslation = config
               .applyToPlaceholders("exam_type", "topic")
               .withSourceLanguage("de-DE")
               .applyToTemplateRoles(USER, ASSISTANT)
-              .withSourceLanguage("en-US"));
+              .withSourceLanguage("en-US"))
         .withOutputTranslationConfig(TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
 var response = client.chatCompletion(prompt, configWithTranslation);
@@ -668,7 +670,7 @@ var response = client.chatCompletion(prompt, configWithTranslation);
 
 You can also optionally specify the source language, **the source-target pair has to be in the [list](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).**
 
-Note that setting `SAPDocumentTranslationInputConfig.applyTo()` to either `null` as shown in first example or to an actual value as shown in the second example is necessary.
+Note that setting `TranslationConfig.applyTo()` to either `null` as shown in first example or to an actual value as shown in the second example is necessary.
 
 You will find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
