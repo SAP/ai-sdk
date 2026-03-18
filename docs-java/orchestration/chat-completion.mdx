@@ -733,3 +733,19 @@ OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, f
 In the above example, the call with `brokenConfig` will return an error so another call with `workingConfig` is performed and the (positive) result of this call is returned.
 
 Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
+
+## Citations
+
+The Orchestration service can return citations in the response when the LLM provides them,
+such as with Perplexity's Sonar model.
+
+```java
+val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
+val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+return client.chatCompletion(prompt, sonarConfig);
+
+String content = response.getContent();
+List<Citation> citations = response.getOriginalResponse().getFinalResult().getCitations();
+```
+
+Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
