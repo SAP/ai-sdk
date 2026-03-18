@@ -278,81 +278,55 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
 
 ## Resilience
 
-The `@sap-cloud-sdk/resilience` package provides built-in resilience features to handle transient failures and improve reliability.
-
-For adding basic resilience features, include the `resilience()` middleware in your request configuration to enable default circuit breaker, and timeout middlewares with default settings:
+Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
+By default, it enables a circuit breaker and a 10-second timeout.
 
 ```typescript
 import { resilience } from '@sap-cloud-sdk/resilience';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
-  middleware: [...resilience()]
+  middleware: resilience()
 });
 ```
 
 :::tip
-
-Using the `resilience()` function is the recommended way to build resilience-related middleware, it ensures the correct order of middlewares.
-
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
 :::
 
-For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
-
-### Retry
-
-The HTTP client automatically retries failed requests on transient errors such as network issues or temporary server errors.
-Customize retry behavior using the resilience library.
-
-Set a custom retry count:
-
-```typescript
-import { retry } from '@sap-cloud-sdk/resilience';
-
-const prediction = await client.predictWithSchema(schema, predictionData, {
-  middleware: [
-    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
-  ]
-});
-```
-
-### Timeout
-
-Configure timeout for requests to prevent hanging connections.
-The default timeout is 10 seconds.
-
-```typescript
-import { compress } from '@sap-cloud-sdk/http-client';
-import { timeout } from '@sap-cloud-sdk/resilience';
-
-const prediction = await client.predictWithSchema(schema, predictionData, {
-  middleware: [
-    timeout(30000), // 30 seconds
-    compress({ mode: true }) // Compression middleware with custom position in the middleware chain
-  ],
-  compress: {
-    mode: false // Disable automatic compression, compression middleware will not be prepended
-  }
-});
-```
-
-### Combining Resilience Patterns
-
-Combine multiple resilience patterns for comprehensive protection:
+Customize the behavior by passing options:
 
 <!-- vale off -->
 
 ```typescript
-import { resilience } from '@sap-cloud-sdk/resilience';
-
 const prediction = await client.predictWithSchema(schema, predictionData, {
-  middleware: [
-    ...resilience({
-      timeout: 5000,
-      curcuitBreaker: { failureThreshold: 5, recoveryTimeout: 60000 },
-      retry: 5
-    })
-  ]
+  middleware: resilience({
+    timeout: 5000, // 5 seconds; true for default 10s, false to disable
+    circuitBreaker: true, // true by default, false to disable
+    retry: 3 // false by default; true for 3 retries, or pass a number
+  })
 });
 ```
 
 <!-- vale on -->
+
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+
+### Custom Middleware Order
+
+When you need precise control over middleware ordering — for example, placing the compression middleware at a specific position relative to resilience — disable automatic compression and manage the full middleware chain yourself:
+
+```typescript
+import { compress } from '@sap-cloud-sdk/http-client';
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middleware: [
+    ...resilience(),
+    compress({ mode: 'always' }) // Explicit position in the middleware chain
+  ],
+  compress: {
+    mode: 'never' // Disable automatic compression prepending
+  }
+});
+```
