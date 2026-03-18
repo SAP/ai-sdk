@@ -726,11 +726,14 @@ Please always check if the specific file type you want to use is supported by th
 
 :::
 
-The SDK supports two ways to provide file data:
+For file input, the [content block](pathname:///api/v2/types/orchestration_src.FileContent.html) should have `type: 'file'` and include a [`file`](pathname:///api/v2/types/orchestration_src.FileContent.html) object with a `file_data` property containing a URL.
+You can either provide a public HTTPS URL or a data URL with base64 encoded file content.
 
-- `type: 'base64'` — provide the raw file bytes as a Node.js `Buffer` or a base64-encoded string, together with the MIME type.
-  The SDK assembles the RFC 2397 data URI (e.g., `data:application/pdf;base64,...`) automatically.
-- `type: 'url'` — provide a public HTTPS URL or an RFC 2397 data URI directly.
+Data URLs must follow this format:
+
+```
+data:MIME_TYPE;base64,BASE64_ENCODED_FILE_CONTENT
+```
 
 It is recommended to provide a `filename` as part of the payload as otherwise the orchestration service may assign a filename.
 
@@ -742,7 +745,6 @@ Adjust the file path, MIME type and model name as needed, for PDF files use `app
 ```ts
 import { readFile } from 'node:fs/promises';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-import type { FileContentInput } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
@@ -750,14 +752,8 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-// Pass 'base64' encoding to directly receive a base64 string, avoiding additional work in the SAP Cloud SDK for AI
 const data = await readFile('PATH_TO_FILE', 'base64');
-const file: FileContentInput = {
-  type: 'base64',
-  data,
-  mimeType: 'MIME_TYPE', // e.g., 'application/pdf', 'text/csv', 'audio/mpeg'
-  filename: 'FILENAME' // optional, but recommended
-};
+const fileUrl = `data:MIME_TYPE;base64,${data}`;
 
 const response = await orchestrationClient.chatCompletion({
   messages: [
@@ -765,7 +761,7 @@ const response = await orchestrationClient.chatCompletion({
       role: 'user', // only user role supports file
       content: [
         { type: 'text', text: 'Summarize this document.' },
-        { type: 'file', file }
+        { type: 'file', file: { file_data: fileUrl, filename: 'FILENAME' } }
       ]
     }
   ]
@@ -773,19 +769,6 @@ const response = await orchestrationClient.chatCompletion({
 ```
 
 <!-- vale on -->
-
-To reference a file by URL instead, set `type: 'url'`:
-
-```ts
-const file: FileContentInput = {
-  type: 'url',
-  url: 'FILE_URL', // public HTTPS URL or RFC 2397 data URI, e.g., data:application/pdf;base64,...
-  filename: 'FILENAME' // optional, but recommended
-};
-```
-
-Not all models support all file types.
-Refer to the model documentation to verify which MIME types are supported.
 
 ## Content Filtering
 
