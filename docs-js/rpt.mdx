@@ -63,6 +63,8 @@ Use the `predictWithSchema()` method to make predictions with a schema explicitl
 Pass the data schema, and the prediction data including the prediction configuration and input data to the method.
 Prefer providing the data schema if it is known instead of relying on the auto-inference solely based on the input data.
 
+For information about custom request options such as compression, custom headers, or timeout, refer to the [Advanced Usage](#advanced-usage) section.
+
 ```typescript
 const prediction = await client.predictWithSchema(
   // Data schema
@@ -83,21 +85,21 @@ const prediction = await client.predictWithSchema(
         }
       ]
     },
-    index_column: '__row_idx__',
+    index_column: 'ID',
     rows: [
       {
         PRODUCT: 'Laptop',
         PRICE: 999.99,
         PRODUCTION_DATE: '2025-01-15',
-        __row_idx__: '35',
+        ID: '35',
         SALESGROUP: '[PREDICT]'
       },
       {
         PRODUCT: 'Desktop Computer',
         PRICE: 750.5,
         PRODUCTION_DATE: '2024-12-02',
-        __row_idx__: '42',
-        SALESGROUP: 'Enterprise Solutions'
+        ID: '42',
+        SALESGROUP: 'Hardware'
       }
       // Additional rows...
     ]
@@ -138,13 +140,15 @@ client.predictWithSchema(schema, data);
 
 :::tip
 
-If the data schema is known, it is recommended to use the [`predictWithSchema()` method](#predict-with-schema) instead.
+If the data schema is known, it is recommended to use the [`predictWithSchema()`](#predict-with-schema) method instead.
 
 :::
 
 To make predictions without providing a schema, use the `predictWithoutSchema()` method.
 Pass only the prediction data as a parameter.
 The data schema will be inferred from the input data.
+
+For information about custom request options such as compression, custom headers, or timeout, refer to the [Advanced Usage](#advanced-usage) section.
 
 ```typescript
 const prediction = await client.predictWithoutSchema(
@@ -159,24 +163,170 @@ const prediction = await client.predictWithoutSchema(
         }
       ]
     },
-    index_column: '__row_idx__',
+    index_column: 'ID',
     rows: [
       {
         PRODUCT: 'Laptop',
         PRICE: 999.99,
         PRODUCTION_DATE: '2025-01-15',
-        __row_idx__: '35',
+        ID: '35',
         SALESGROUP: '[PREDICT]'
       },
       {
         PRODUCT: 'Desktop Computer',
         PRICE: 750.5,
         PRODUCTION_DATE: '2024-12-02',
-        __row_idx__: '42',
-        SALESGROUP: 'Enterprise Solutions'
+        ID: '42',
+        SALESGROUP: 'Hardware'
       }
       // Additional rows...
     ]
   }
 );
+```
+
+## Advanced Usage
+
+The RPT client supports advanced features for specialized use cases.
+
+### Predict with Parquet
+
+[Parquet](https://parquet.apache.org) is a tabular file format optimized for data-science workloads.
+To make predictions on Parquet files, use the `predictParquet()` method.
+Pass the Parquet file as a `Blob` along with the prediction configuration.
+Optional arguments such as `index_column` and `parse_data_types` can be specified in the third parameter.
+
+```typescript
+import { RptClient } from '@sap-ai-sdk/rpt';
+import { openAsBlob } from 'node:fs';
+
+const parquetBlob = await openAsBlob('path/to/input-data.parquet', {
+  type: 'application/vnd.apache.parquet'
+});
+const client = new RptClient();
+
+const prediction = await client.predictParquet(
+  parquetBlob,
+  {
+    target_columns: [
+      {
+        name: 'SALESGROUP',
+        prediction_placeholder: '[PREDICT]',
+        task_type: 'classification'
+      }
+    ]
+  },
+  {
+    index_column: 'ID',
+    parse_data_types: false
+  }
+);
+```
+
+### Request Compression
+
+The RPT client automatically compresses prediction requests to improve performance for large datasets.
+By default, requests with a body of 1024 bytes or larger are automatically compressed using the `gzip` algorithm.
+
+To customize compression settings, pass a `customRequest` parameter with a `compress` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
+
+<!-- vale off -->
+
+```typescript
+import * as zlib from 'zlib';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  compress: {
+    mode: 'always', // Force compression regardless of payload size (default 'auto')
+    autoCompressMinSize: 2048, // Only compress payloads >= 2048 bytes in 'auto' mode (default 1024)
+    compressOptions: {
+      level: zlib.constants.Z_BEST_SPEED // Custom compression level
+    }
+  }
+});
+```
+
+<!-- vale on -->
+
+### Custom Request Options
+
+The `customRequest` parameter also supports additional HTTP request configuration options from the SAP Cloud SDK for JavaScript, such as:
+
+- `headers`: Custom HTTP headers.
+- `timeout`: Request timeout in milliseconds.
+- `middleware`: Custom HTTP middleware functions.
+
+:::warning
+
+The compression middleware is automatically prepended to the middleware chain, unless disabled by setting `mode: 'never'`.
+
+:::
+
+The following example demonstrates how to include custom HTTP headers in your request configuration:
+
+```typescript
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  headers: {
+    'x-custom-header': 'value'
+  },
+  timeout: 30000, // 30 seconds
+  compress: {
+    mode: 'always'
+  }
+});
+```
+
+## Resilience
+
+Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
+By default, it enables a circuit breaker and a 10-second timeout.
+
+```typescript
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middleware: resilience()
+});
+```
+
+:::tip
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
+:::
+
+Customize the behavior by passing options:
+
+<!-- vale off -->
+
+```typescript
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middleware: resilience({
+    timeout: 5000, // 5 seconds; true for default 10s, false to disable
+    circuitBreaker: true, // true by default, false to disable
+    retry: 3 // false by default; true for 3 retries, or pass a number
+  })
+});
+```
+
+<!-- vale on -->
+
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+
+### Custom Middleware Order
+
+When you need precise control over middleware ordering — for example, placing the compression middleware at a specific position relative to resilience — disable automatic compression and manage the full middleware chain yourself:
+
+```typescript
+import { compress } from '@sap-cloud-sdk/http-client';
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middleware: [
+    ...resilience(),
+    compress({ mode: 'always' }) // Explicit position in the middleware chain
+  ],
+  compress: {
+    mode: 'never' // Disable automatic compression prepending
+  }
+});
 ```

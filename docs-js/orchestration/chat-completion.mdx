@@ -96,12 +96,6 @@ const promptTemplating = {
 
 ### Module Fallback
 
-:::caution
-
-Module fallback can not be used with streaming chat completion requests yet.
-
-:::
-
 The orchestration service supports module fallback, which allows you to configure multiple complete orchestration module configurations that are tried in sequence until one succeeds.
 This feature is useful for implementing resilience and fallback strategies when working with AI models.
 
@@ -219,6 +213,11 @@ Consider using different models for meaningful fallback behavior.
 #### Module Fallback Conditions
 
 Module fallback is triggered under specific conditions, which may change in future versions of the orchestration service.
+
+**For streaming requests:** Fallback happens before the stream starts.
+The model chosen by the orchestration service will not switch mid-stream.
+
+- The model is not available.
 
 **For non-streaming requests:**
 Fallback may occur even after the request starts being handled by the first provider.
@@ -1277,6 +1276,71 @@ Set the `llm` property to `null` to not send any LLM streaming options.
 When initializing a client with JSON module config, it is not possible to provide streaming options.
 :::
 
+#### Module Fallback with Streaming
+
+[Module fallback](#module-fallback) is also supported when using the `stream()` method.
+The service tries each configuration in sequence, and you can access intermediate failures after the stream completes.
+For details on configuring module fallback, see the [Module Fallback section](#module-fallback).
+
+```ts
+const response = await orchestrationClient.stream({
+  messages: [
+    { role: 'user', content: 'Explain quantum computing in simple terms.' }
+  ]
+});
+
+for await (const chunk of response.stream) {
+  console.log(chunk.getDeltaContent());
+}
+
+// Check for fallback attempts after streaming completes
+const failures = response.getIntermediateFailures();
+if (failures) {
+  console.log(`Used ${failures.length} fallback(s) before success`);
+  failures.forEach((failure, index) => {
+    console.log(
+      `Failure ${index + 1} (Code: ${failure.code} at ${failure.location}): ${failure.message}`
+    );
+  });
+}
+```
+
+:::note
+Providing streaming option overrides is only possible when your orchestration configuration uses module fallback with more than one configuration.
+Overrides cannot change global options like `chunk_size`.
+:::
+
+When using streaming with module fallback, you can provide streaming option overrides for each configuration in the fallback chain.
+
+The streaming options structure consists of a `global` object containing options shared across all configurations, such as `chunk_size`.
+It also includes module-specific options, like `promptTemplating` or `outputFiltering`, that apply to all configurations unless overridden, and an optional `overrides` object that maps configuration indices to option overrides.
+When an override is provided for a specific configuration index, it replaces the base module-specific options entirely for that configuration.
+If no override is provided for a configuration, it uses the base options from the top-level properties (everything except `global` and `overrides`).
+Overrides cannot modify global options or contain additional overrides.
+
+```ts
+const response = await orchestrationClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Tell me a story.' }]
+  },
+  undefined,
+  {
+    // Global Options
+    global: { chunk_size: 100 },
+    // Base Options
+    promptTemplating: { include_usage: false }, // Config inherited by all modules if not overriden.
+    // Module-specific overrides
+    overrides: {
+      // Config 0 replaces base options fully.
+      0: { promptTemplating: { include_usage: true } },
+      // Config 1 uses base options because no override is provided.
+      // Config 2 replaces base options fully.
+      2: { outputFiltering: { overlap: 50 } }
+    }
+  }
+);
+```
+
 ## Initialization with Orchestration Configuration
 
 Instead of defining the orchestration configuration inline, you can reference a stored configuration from the prompt registry.
@@ -1476,15 +1540,14 @@ const orchestrationClient = new OrchestrationClient({
 
 <!-- vale on -->
 
-### Custom Retry with SAP Cloud SDK Resilience Package
+### SAP Cloud SDK Resilience Package
 
-The `@sap-cloud-sdk/resilience` package uses the SAP Cloud SDK for JavaScript HTTP client, which provides additional resilience features to handle transient failures and improve reliability.
-
-For example, to set a custom retry count:
-
-<!-- vale off -->
+Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add SDK-level resilience.
+By default, it enables a circuit breaker and a 10-second timeout.
 
 ```ts
+import { resilience } from '@sap-cloud-sdk/resilience';
+
 const request = {
   messages: [
     { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
@@ -1492,13 +1555,32 @@ const request = {
 };
 
 const response = await orchestrationClient.chatCompletion(request, {
-  middleware: [
-    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
-  ]
+  middleware: ...resilience()
+});
+```
+
+:::tip
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
+:::
+
+Customize the behavior by passing options:
+
+<!-- vale off -->
+
+```ts
+const response = await orchestrationClient.chatCompletion(request, {
+  middleware: resilience({
+    timeout: 5000, // 5 seconds; true for default 10s, false to disable
+    circuitBreaker: true, // true by default, false to disable
+    retry: 3 // false by default; true for 3 retries, or pass a number
+  })
 });
 ```
 
 <!-- vale on -->
+
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
 
 ### Request Cancellation
 
@@ -1536,75 +1618,3 @@ HTTP request cancellation may not cancel the request on the orchestration servic
 The cancellation stops the HTTP connection from the client side, but the service may continue processing the request.
 Metering information may not be available for cancelled requests.
 :::
-
-### Timeout with SAP Cloud SDK Resilience Package
-
-Configure timeout for requests to prevent hanging connections.
-The default timeout is 10 seconds.
-
-<!-- vale off -->
-
-```ts
-const response = await orchestrationClient.chatCompletion(request, {
-  timeout: 30000 // 30 seconds
-});
-```
-
-<!-- vale on -->
-
-### Circuit Breaker with SAP Cloud SDK Resilience Package
-
-Use the circuit breaker pattern to prevent cascading failures by temporarily stopping requests to a failing service.
-
-<!-- vale off -->
-
-```ts
-import { circuitBreaker } from '@sap-cloud-sdk/resilience';
-
-const request = {
-  messages: [
-    { role: 'user', content: 'Summarize the benefits of cloud computing.' }
-  ]
-};
-
-const response = await orchestrationClient.chatCompletion(request, {
-  middleware: [
-    circuitBreaker({
-      failureThreshold: 5,
-      recoveryTimeout: 60000,
-      monitoringPeriod: 10000
-    })
-  ]
-});
-```
-
-<!-- vale on -->
-
-### Combining Resilience Patterns with SAP Cloud SDK Resilience Package
-
-You can combine multiple resilience patterns for comprehensive protection.
-
-<!-- vale off -->
-
-```ts
-const request = {
-  messages: [
-    {
-      role: 'user',
-      content: 'Generate a creative story about space exploration.'
-    }
-  ]
-};
-
-const response = await orchestrationClient.chatCompletion(request, {
-  middleware: [
-    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
-    circuitBreaker({ failureThreshold: 5, recoveryTimeout: 60000 }),
-    timeout(30000)
-  ]
-});
-```
-
-<!-- vale on -->
-
-For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
