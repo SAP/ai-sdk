@@ -57,6 +57,12 @@ const client = new RptClient('sap-rpt-1-large');
 Follow the instructions in the [Foundation Models documentation](./foundation-models#client-initialization)
 to specify a model version, use a model with an explicit deployment ID, select a specific resource group, or target a custom AI Core instance.
 
+:::tip
+
+When you use SAP-RPT-1 models, follow the [best practices](#best-practices) to improve performance and prediction accuracy.
+
+:::
+
 ### Predict With Schema
 
 Use the `predictWithSchema()` method to make predictions with a schema explicitly defined.
@@ -119,6 +125,13 @@ The prediction data contains the following properties:
   Use `rows` for row-based format or `columns` for column-based format.
 - `parse_data_types`: Optional boolean to control data type parsing.
   When set to `true` (default), numeric columns are parsed to float or integer, and dates (`YYYY-MM-DD`) are parsed automatically.
+
+:::tip
+
+Use `dtype: 'string'` for identifier-like values such as IDs, postal codes, or category codes, even when they look numeric.
+This preserves exact values and avoids interpolation.
+
+:::
 
 :::important
 When you store the schema and prediction data in variables, declare the schema with `as const` and use the `PredictionData<typeof schema>` type.
@@ -184,6 +197,19 @@ const prediction = await client.predictWithoutSchema(
   }
 );
 ```
+
+## Best Practices
+
+Follow these best practices to improve performance and prediction accuracy when using SAP-RPT-1 models:
+
+- **Provide appropriate level of context**: Use the recommended context length from the [SAP Help Portal](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/sap-rpt-1?locale=en-US#tabular-in-context-learning) when preparing input data.
+- **Follow service best practices**: Refer to the [SAP AI Core best practices documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/example-payloads-for-inferencing-sap-rpt-1?locale=en-US&version=CLOUD#best-practices) for general guidance on optimizing SAP-RPT-1 usage.
+- **Provide a schema when possible**: Use [`predictWithSchema()`](#predict-with-schema) for better performance and more accurate predictions.
+  Explicitly defining the schema helps the model understand your data structure more precisely than auto-inference.
+- **Use string types for identifier-like predictions**: In the provided schema, set identifier-like numeric and categorical columns to `dtype: 'string'` to avoid interpolation.
+  This preserves exact values for columns like IDs, postal codes, or category codes.
+- **Understand string output constraints**: For columns with `dtype: 'string'`, prediction results can only contain values that already exist in the input data.
+  The model treats strings as categorical values and cannot generate new string values that are not present in the input.
 
 ## Advanced Usage
 
