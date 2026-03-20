@@ -193,7 +193,7 @@ The RPT client supports advanced features for specialized use cases.
 
 [Parquet](https://parquet.apache.org) is a tabular file format optimized for data-science workloads.
 To make predictions on Parquet files, use the `predictParquet()` method.
-Pass a `ParquetPayload` object containing the Parquet file, prediction configuration, and optional arguments such as `index_column` and `parse_data_types`.
+Pass a [`ParquetPayload` object](pathname:///api/v2/types/rpt_src.ParquetPayload.html) containing the Parquet file, prediction configuration, and optional arguments such as `index_column` and `parse_data_types`.
 
 ```typescript
 import { RptClient } from '@sap-ai-sdk/rpt';
