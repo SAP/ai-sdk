@@ -202,14 +202,8 @@ const prediction = await client.predictWithoutSchema(
 
 Follow these best practices to improve performance and prediction accuracy when using SAP-RPT-1 models:
 
-- **Provide well-structured data**: Use clean, well-structured data with no gaps.
-  Include only relevant columns for the prediction task to help the model focus on meaningful patterns.
-- **Use clear column metadata**: Use descriptive column names shorter than 100 characters.
-  Keep column descriptions at or below 500 characters when you include them in the schema.
-- **Keep data types consistent**: Use a consistent data type within each column so the model can infer patterns reliably.
-  Consider setting `parse_data_types` to `false` when needed to prevent automatic type conversion.
-- **Provide sufficient context**: Use the recommended context length from [SAP Help Portal](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/sap-rpt-1?locale=en-US#tabular-in-context-learning) when preparing input data.
-  Providing enough context rows helps the model learn patterns and make more accurate predictions.
+- **Provide appropriate level of context**: Use the recommended context length from the [SAP Help Portal](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/sap-rpt-1?locale=en-US#tabular-in-context-learning) when preparing input data.
+- **Follow service best practices**: Refer to the [SAP AI Core best practices documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/example-payloads-for-inferencing-sap-rpt-1?locale=en-US&version=CLOUD#best-practices) for general guidance on optimizing SAP-RPT-1 usage.
 - **Provide a schema when possible**: Use [`predictWithSchema()`](#predict-with-schema) for better performance and more accurate predictions.
   Explicitly defining the schema helps the model understand your data structure more precisely than auto-inference.
 - **Use string types for identifier-like predictions**: In the provided schema, set identifier-like numeric and categorical columns to `dtype: 'string'` to avoid interpolation.
