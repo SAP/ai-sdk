@@ -355,3 +355,18 @@ opts.setInternalToolExecutionEnabled(true);
 ```
 
 For more information also refer to the [sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
+## Custom Headers
+
+To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OrchestrationClient`.
+
+```java
+var clientWithHeader = new OrchestrationClient().withHeader("foo", "bar");
+ChatModel client = new OrchestrationChatModel(clientWithHeader);
+
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
+
+Prompt prompt = new Prompt("What is the capital of France?", opts);
+ChatResponse response = client.call(prompt);
+```

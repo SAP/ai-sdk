@@ -189,3 +189,13 @@ var prompt =
 
 OrchestrationChatResponse response = client.chatCompletion(prompt, configWithGrounding);
 ```
+
+## Custom Headers
+
+To add custom headers to single or groups of your grounding calls, you can use the `.withHeader` method of the `GroundingClient`.
+
+```java
+var client = new GroundingClient():
+
+var result = client.withHeader("foo", "bar").pipelines().getAllPipelines();
+```
