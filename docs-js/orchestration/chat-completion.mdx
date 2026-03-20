@@ -38,7 +38,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   }
 });
@@ -82,12 +82,11 @@ Optionally, define `version` (default: `latest`) and `params` for custom setting
 ```ts
 const promptTemplating = {
   model: {
-    name: 'gpt-4o',
+    name: 'gpt-5',
     version: '2024-08-06', // optional
     params: {
       // optional
       max_tokens: 50,
-      temperature: 0.1
     }
   }
 };
@@ -116,7 +115,7 @@ const orchestrationClient = new OrchestrationClient([
     // Primary configuration with strict filtering and detailed prompt
     promptTemplating: {
       model: {
-        name: 'gpt-4o',
+        name: 'gpt-5',
         params: {
           timeout: 10 // 10 second timeout for the LLM request
         }
@@ -238,7 +237,7 @@ You can switch from one LLM to another easily like the example below.
 /*
 const promptTemplating = {
   model: {
-    name: 'gpt-4o'
+    name: 'gpt-5'
   }
 };
 */
@@ -329,7 +328,7 @@ This setup is useful when the base structure of your prompt remains the same acr
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     },
     prompt: {
       template: [
@@ -353,7 +352,7 @@ For more dynamic prompts, i.e., you want to vary the full message list per reque
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   }
 });
@@ -372,7 +371,7 @@ You can define template content within the templating configuration, or refer to
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     },
     prompt: {
       template_ref: {
@@ -412,7 +411,7 @@ const orchestrationClient = new OrchestrationClient(
   {
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       },
       prompt: {
         template_ref: {
@@ -445,7 +444,7 @@ const yamlTemplate = readFileSync('./path/to/prompt-template.yaml', 'utf-8');
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     },
     prompt: yamlTemplate
   }
@@ -497,7 +496,7 @@ Initialize the client and send the initial request with the tool definition:
 const client = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     },
     prompt: {
       tools: [convertTemperatureTool]
@@ -636,7 +635,7 @@ Provide the message history in the `messagesHistory` parameter when calling the 
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   }
 });
@@ -675,7 +674,7 @@ Attempting to use `image_url` in non-user messages will result in an error.
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   }
 });
@@ -724,7 +723,7 @@ const outputFilter: OutputFilterConfig = ... // Use a build function to create a
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   },
   filtering: {
@@ -844,7 +843,7 @@ const maskingProvider: MaskingProviderConfig = ... // Use a build function to cr
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   },
   masking: {
@@ -910,7 +909,7 @@ Use `buildDocumentGroundingConfig()` function to build configuration for documen
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   },
   grounding: buildDocumentGroundingConfig({
@@ -977,7 +976,7 @@ const outputTranslation = buildTranslationConfig('output', {
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   },
   translation: {
@@ -1141,7 +1140,7 @@ It can also be manually aborted if an `AbortSignal` object was provided when cal
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   }
 });
@@ -1452,7 +1451,7 @@ For example, to configure retry and timeout options:
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     }
   },
   streaming: {

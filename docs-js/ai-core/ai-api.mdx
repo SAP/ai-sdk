@@ -65,13 +65,13 @@ async function createArtifact() {
 ```ts
 async function createConfiguration() {
   const requestBody: ConfigurationBaseData = {
-    name: 'gpt-4o',
+    name: 'gpt-5',
     executableId: 'azure-openai',
     scenarioId: 'foundation-models',
     parameterBindings: [
       {
         key: 'modelName',
-        value: 'gpt-4o'
+        value: 'gpt-5'
       },
       {
         key: 'modelVersion',
@@ -165,7 +165,7 @@ import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api';
 
 const deploymentUrl = await resolveDeploymentUrl({
   scenarioId: 'foundation-models',
-  model: { name: 'gpt-4o' }
+  model: { name: 'gpt-5' }
 });
 ```
 
