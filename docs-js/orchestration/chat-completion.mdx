@@ -189,6 +189,7 @@ console.log(response.getContent());
 The `timeout` parameter in the model configuration sets the maximum time (in seconds) for the LLM request.
 If the request exceeds this timeout in non-streaming scenarios, the orchestration service triggers the fallback to the next configuration.
 The timeout parameter applies to the individual LLM call, not the entire orchestration request.
+For more information on timeouts in orchestration, refer to the [Orchestration Retry and Timeout](#orchestration-retry-and-timeout) section.
 :::
 
 The `getIntermediateFailures()` method returns information about any failed attempts before a successful response is obtained.
