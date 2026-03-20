@@ -117,9 +117,7 @@ const orchestrationClient = new OrchestrationClient([
     promptTemplating: {
       model: {
         name: 'gpt-4o',
-        params: {
-          timeout: 10 // 10 second timeout for the LLM request
-        }
+        timeout: 10 // 10 second timeout for the LLM request
       },
       prompt: {
         template: [
@@ -1439,10 +1437,16 @@ Orchestration Service Resilience should be used when resilience is required at t
 SAP Cloud SDK Resilience should be used when advanced resilience patterns, such as circuit breakers, are required, or when consistent fault tolerance is needed across multiple service integrations.
 :::
 
-### Retry and Timeout
+### Orchestration Retry and Timeout
 
-The orchestration service supports built-in retry and timeout configurations through streaming options.
-These can be configured when initializing the client or when making requests.
+:::info
+
+Models provided by Google Vertex AI currently do not support the Orchestration Service `timeout` and `max_retries` options.
+
+:::
+
+The orchestration service supports built-in retry and timeout configurations on the model configuration.
+These can be configured when initializing the client.
 
 For example, to configure retry and timeout options:
 
@@ -1452,16 +1456,10 @@ For example, to configure retry and timeout options:
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-4o',
+      timeout: 30, // 30 seconds
+      max_retries: 3
     }
-  },
-  streaming: {
-    retry: {
-      maxRetries: 3,
-      backoffType: 'exponential',
-      initialDelay: 1000
-    },
-    timeout: 30000 // 30 seconds
   }
 });
 ```
@@ -1469,6 +1467,12 @@ const orchestrationClient = new OrchestrationClient({
 <!-- vale on -->
 
 ### SAP Cloud SDK Resilience Package
+
+:::info
+
+Some orchestration service resilience features (timeout and retry) are also enabled by default.
+
+:::
 
 Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add SDK-level resilience.
 By default, it enables a circuit breaker and a 10-second timeout.
@@ -1483,7 +1487,7 @@ const request = {
 };
 
 const response = await orchestrationClient.chatCompletion(request, {
-  middleware: ...resilience()
+  middleware: resilience()
 });
 ```
 
