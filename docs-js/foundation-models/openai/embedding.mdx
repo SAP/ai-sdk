@@ -56,65 +56,38 @@ The `rawResponse` property is available on embedding response objects.
 
 ## Resilience
 
-The `@sap-cloud-sdk/resilience` package uses the SAP Cloud SDK for JavaScript HTTP client, which provides built-in resilience features to handle transient failures and improve reliability.
-
-### Retry
-
-The HTTP client automatically retries failed requests on transient errors (e.g., network issues, temporary server errors). You can customize retry behavior using the resilience library.
-
-For example, to set a custom retry count:
-
-<!-- vale off -->
+Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
+By default, it enables a circuit breaker and a 10-second timeout.
 
 ```ts
-const request = {
-  input: 'What is the capital of Germany?'
-};
+import { resilience } from '@sap-cloud-sdk/resilience';
 
-const response = await client.run(request, {
-  middleware: [
-    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 })
-  ]
-});
+const response = await client.run(
+  { input: 'What is the capital of Germany?' },
+  { middleware: resilience() }
+);
 ```
 
-<!-- vale on -->
+:::tip
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
+:::
 
-### Timeout
-
-Configure timeout for requests to prevent hanging connections.
-The default timeout is 10 seconds.
-
-<!-- vale off -->
-
-```ts
-const request = {
-  input: 'Create a 10-15 sentence long story involving a train ride.'
-};
-
-const response = await client.run(request, {
-  timeout: 30000 // 30 seconds
-});
-```
-
-### Combining Resilience Patterns
-
-You can combine multiple resilience patterns for comprehensive protection.
+Customize the behavior by passing options:
 
 <!-- vale off -->
 
 ```ts
-const request = {
-  input: 'Generate a creative story about space exploration.'
-};
-
-const response = await client.run(request, {
-  middleware: [
-    retry({ maxRetries: 3, backoffType: 'exponential', initialDelay: 1000 }),
-    circuitBreaker({ failureThreshold: 5, recoveryTimeout: 60000 }),
-    timeout(30000)
-  ]
-});
+const response = await client.run(
+  { input: 'What is the capital of Germany?' },
+  {
+    middleware: resilience({
+      timeout: 5000, // 5 seconds; true for default 10s, false to disable
+      circuitBreaker: true, // true by default, false to disable
+      retry: 3 // false by default; true for 3 retries, or pass a number
+    })
+  }
+);
 ```
 
 <!-- vale on -->
