@@ -215,11 +215,9 @@ const prediction = await client.predictParquet({
       }
     ]
   },
-  {
-    index_column: 'ID',
-    parse_data_types: false
-  }
-);
+  index_column: 'ID',
+  parse_data_types: false
+});
 ```
 
 ### Request Compression
