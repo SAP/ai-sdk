@@ -272,7 +272,7 @@ Check the [SAP Notes](https://me.sap.com/notes/3437766) for all available LLMs o
 
 Some models provide citations that reference the sources used to generate responses, making them ideal for use cases requiring up-to-date information and source transparency.
 Citations can be accessed using the `getCitations()` method on the response object.
-For details on the citation properties, refer to the [API documentation](#LINK_TO_API_DOCS).
+For details on the citation properties, refer to the [API documentation](pathname:///api/v2/types/orchestration_src.Citation.html).
 
 Each citation contains the following properties:
 
@@ -1224,11 +1224,17 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 ### Streaming with Citations
 
 When using models that support citations, citations are available after the stream completes and can be retrieved using the `getCitations()` method.
+For more information on the citation properties, refer to the [API documentation](pathname:///api/v2/types/orchestration_src.Citation.html).
 
 ```ts
-const response = await orchestrationClient.stream(
-  'What are the latest developments in quantum computing?'
-);
+const response = await orchestrationClient.stream({
+  messages: [
+    {
+      role: 'user',
+      content: 'What are the latest developments in quantum computing?'
+    }
+  ]
+});
 
 for await (const chunk of response.stream) {
   console.log(chunk.getDeltaContent());
