@@ -718,15 +718,15 @@ Attempting to use `file` in non-user messages will result in an error.
 
 :::
 
+For file input, the [content block](pathname:///api/v2/types/orchestration_src.UserChatMessageContentItem.html) should have `type: 'file'` and include a [`file`](pathname:///api/v2/types/orchestration_src.FileContent.html) object with a `file_data` property containing a URL.
+You can either provide a public HTTPS URL or a data URL with base64 encoded file content.
+
 :::note
 
 A model's support for file input via the orchestration service may not match the file input capabilities of each individual model when accessed directly.
 Please always check if the specific file type you want to use is supported via the orchestration service for your chosen model.
 
 :::
-
-For file input, the [content block](pathname:///api/v2/types/orchestration_src.UserChatMessageContentItem.html) should have `type: 'file'` and include a [`file`](pathname:///api/v2/types/orchestration_src.FileContent.html) object with a `file_data` property containing a URL.
-You can either provide a public HTTPS URL or a data URL with base64 encoded file content.
 
 Data URLs must follow this format:
 
