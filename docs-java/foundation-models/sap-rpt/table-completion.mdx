@@ -135,6 +135,7 @@ PredictResponsePayload response = RptClient.forModel(SAP_RPT_1_SMALL).tableCompl
 
 ```
 
+The request payload is always GZIP compressed before sending.
 Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/RptService.java) including `dataSchema` specification.
 
 ## Table Completion with Parquet Files
