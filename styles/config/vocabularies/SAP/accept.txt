@@ -125,6 +125,7 @@ subscribable
 Sandeep
 browserified
 untrusted
+[Nn]ullable
 
 v2
 v4
