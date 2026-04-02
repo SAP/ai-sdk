@@ -87,35 +87,29 @@ Set up a `ToolNode` for routing tool calls.
   ]}>
 
 <TabItem value="openai">
-  ```js reference referenceLinkText=" " title="Initialize Client"
-  https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L46-L58
-  ```
-</TabItem>
-
-<TabItem value="orchestration">
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/langchain';
-import { ToolNode } from '@langchain/langgraph/prebuilt';
-import { mcpClient } from '../mcp/mcp-adapter.js';
-
+// Define the tools for the agent to use
 const tools = [...(await mcpClient.getTools()), getRestaurantsTool];
+const toolNode = new ToolNode(tools);
 
 // Create a model
-const model = new OrchestrationClient({
-  promptTemplating: {
-    name: 'anthropic--claude-4.5-haiku',
-    params: {
-      temperature: 0.7
-    }
-  }
+const model = new AzureOpenAiChatClient({
+  modelName: 'gpt-5-mini',
+  maxRetries: 0
 });
 
 // create a model with access to the tools
 const modelWithTools = model.bindTools(tools);
-
-const toolNode = new ToolNode(tools);
 ```
+
+</TabItem>
+
+<TabItem value="orchestration">
+
+```js reference referenceLinkText=" " title="Initialize Client"
+  https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L46-L63
+  ```
 
 </TabItem>
 </Tabs>
