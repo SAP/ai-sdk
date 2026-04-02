@@ -276,6 +276,106 @@ const structuredLlm = llm.withStructuredOutput(joke, {
 const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
 ```
 
+## Module Fallback
+
+The `OrchestrationClient` supports module fallback, allowing you to configure multiple complete orchestration module configurations that are tried in sequence until one succeeds.
+This feature is useful for implementing resilience and fallback strategies when working with AI models.
+
+Each configuration in the fallback chain is a complete `LangChainOrchestrationModuleConfig`, allowing you to customize all aspects of orchestration for each fallback option.
+This includes system prompts, content filtering rules, data masking settings, grounding configurations, and other orchestration module settings.
+
+To use module fallback, pass an array of `LangChainOrchestrationModuleConfig` objects when initializing the client.
+The orchestration service tries each configuration in order until one succeeds.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
+
+const client = new OrchestrationClient([
+  {
+    // Primary configuration with strict filtering
+    promptTemplating: {
+      model: {
+        name: 'gpt-5',
+        timeout: 10 // 10 seconds timeout for the LLM request on the orchestration server side
+      }
+    },
+    filtering: {
+      input: {
+        filters: [
+          buildAzureContentSafetyFilter('input', {
+            hate: 'ALLOW_SAFE',
+            violence: 'ALLOW_SAFE'
+          })
+        ]
+      }
+    }
+  },
+  {
+    // Fallback configuration: faster model with relaxed filtering
+    promptTemplating: {
+      model: {
+        name: 'amazon--nova-micro'
+      }
+    },
+    filtering: {
+      input: {
+        filters: [
+          buildAzureContentSafetyFilter('input', {
+            hate: 'ALLOW_SAFE_LOW_MEDIUM',
+            violence: 'ALLOW_SAFE_LOW_MEDIUM'
+          })
+        ]
+      }
+    }
+  }
+]);
+
+const response = await client.invoke([
+  { role: 'user', content: 'Write a comprehensive analysis of AI trends.' }
+]);
+```
+
+:::tip
+When using module fallback with different models, the SAP Cloud SDK for AI logs a warning if duplicate models are detected in the fallback chain.
+Consider using different models for meaningful fallback behavior.
+:::
+
+For details on when fallback is triggered, refer to the [Module Fallback Conditions](../orchestration/chat-completion#module-fallback-conditions) section.
+
+### Accessing Intermediate Failures
+
+After a successful response, you can inspect any failed attempts that occurred before the successful configuration was used.
+The intermediate failures are available in the `additional_kwargs` property of the response message.
+
+```ts
+const response = await client.invoke([
+  { role: 'user', content: 'Write a comprehensive analysis of AI trends.' }
+]);
+
+const failures = response.additional_kwargs.intermediate_results;
+if (failures) {
+  failures.forEach(failure => {
+    console.log(`${failure.location}: ${failure.message}`);
+  });
+}
+```
+
+For streaming requests, the intermediate failures are available in the same way on individual chunks.
+
+```ts
+const stream = await client.stream([
+  { role: 'user', content: 'Write a comprehensive analysis of AI trends.' }
+]);
+
+let lastChunk;
+for await (const chunk of stream) {
+  lastChunk = chunk;
+}
+
+const failures = lastChunk?.additional_kwargs.intermediate_results;
+```
+
 ## Resilience
 
 <!-- vale off -->
