@@ -68,7 +68,7 @@ https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/weather
 To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://docs.langchain.com/oss/javascript/langchain/mcp#use-mcp-tools).
 
 ```js reference referenceLinkText=" " title="MCP Adapter"
-https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/mcp-adapter.ts#L3-L23
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/mcp-adapter.ts#L3-L19
 ```
 
 ## Setup the Agent
@@ -97,17 +97,17 @@ Set up a `ToolNode` for routing tool calls.
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
-import { getMcpTools } from '../mcp/mcp-adapter.js';
+import { mcpClient } from '../mcp/mcp-adapter.js';
 
-const tools = [...getMcpTools, getRestaurantsTool];
+const tools = [...(await mcpClient.getTools()), getRestaurantsTool];
 
 // Create a model
 const model = new OrchestrationClient({
   promptTemplating: {
-    model: {
-      name: 'gpt-5',
-      params: {}
-    }
+    name: 'anthropic--claude-4.5-haiku',
+      params: {
+        temperature: 0.7
+      }
   }
 });
 
@@ -127,13 +127,13 @@ const toolNode = new ToolNode(tools);
 Configure a `StateGraph` that routes between `agent` → `tool` → `agent`, and uses intelligent routing to determine when to ask for human input or end the conversation.
 
 ```js reference referenceLinkText=" " title="Configure Agent flow"
-https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L60-L91
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L65-L96
 ```
 
 ## Build the Workflow
 
 ```js reference referenceLinkText=" " title="Build the workflow"
-https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L93-L103
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L98-L108
 ```
 
 :::note
@@ -157,7 +157,7 @@ The following example simulates a full interaction, with detailed console output
 4. The conversation continues until the user is satisfied.
 
 ```js reference referenceLinkText=" " title="Call the agent with initial message"
-https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L105-L121
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L110-L127
 ```
 
 When the agent receives the initial request, it first determines that it needs both weather and restaurant data to create a comprehensive itinerary.
@@ -187,7 +187,7 @@ The LLM response includes tool calls to gather this information:
 The agent executes these tool calls through the `tools` node to gather the necessary data, then returns to the agent node to generate a natural language response with the complete itinerary.
 
 ```js reference referenceLinkText=" "
-https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L123-L124
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L129-L130
 ```
 
 ```console
@@ -217,7 +217,7 @@ next:  [ 'askHuman' ]
 Provide the response by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
 
 ```js reference referenceLinkText=" "
-https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L126-L131
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L132-L137
 ```
 
 The assistant responds with an updated itinerary:
@@ -244,7 +244,7 @@ Does this itinerary suit your preferences, or would you like further adjustments
 The agent loop ends when the user expresses satisfaction with the proposed itinerary.
 
 ```js reference referenceLinkText=" "
-https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L133-L140
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L139-L147
 ```
 
 ```console
@@ -280,7 +280,7 @@ Assistant: I'm glad you like the itinerary! If you have any more questions or ne
 
 This tutorial demonstrates how to implement a simple agent workflow using:
 
-- The `AzureOpenAiChatClient` with `bindTools()` method to integrate external capabilities.
+- The `OrchestrationClient` with `bindTools()` method to integrate external capabilities.
 - Defining a LangGraph `StateGraph` for branching logic and conditional tool use.
 - Interrupting the flow with a human tool via `interrupt()` and handling it inside the graph.
 - Maintaining context across interactions with `MemorySaver`.
