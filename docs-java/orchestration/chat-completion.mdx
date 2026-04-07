@@ -521,18 +521,18 @@ var newMessage = message.withImage("https://url.to/image.jpg", ImageItem.DetailL
 
 Note, that currently only user messages are supported for image attachments.
 
-### Add PDF File Attachment to a Message
+### Add File Attachment to a Message
 
-A pdf file can be added to a message either via a file path or via a base64 encoded string as follows.
+A file can be added to a message either via a file path or via a base64 encoded string as follows.
 
-#### Add PDF via File Path
+#### Add File Attachment via File Path
 
 ```java
 var message = Message.user("What is the title of the topic discussed here?");
 var newMessage = message.withPdf("path/to/sample.pdf");
 ```
 
-#### Add PDF via Base64 Encoded String
+#### Add File Attachment via Base64 Encoded String
 
 ```java
 var message = Message.user("What is the title of the topic discussed here?");
