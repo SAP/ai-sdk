@@ -26,8 +26,8 @@ jobs:
         uses: vale-cli/vale-action@0135b9fe2b3107365569cc3142b9a1c85221ea2f # reviewdog
         with:
           # version of 'vale' to use
-          # see https://github.com/errata-ai/vale for all releases
-          version: 3.0.5
+          # see https://github.com/vale-cli/vale for all releases
+          version: 3.14.1
           # changed files. computed in the step above
           files: ${{ steps.changed-files.outputs.CHANGED_FILES }}
           # the separator for the file list. we are using a comma (see step above)
