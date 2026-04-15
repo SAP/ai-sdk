@@ -8,29 +8,29 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: write
       - uses: actions/checkout@v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
       - uses: actions/setup-node@v6
         with:
           node-version: 20
-      - name: Add key
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          echo "${{ secrets.GH_PAGES_DEPLOY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          cat <<EOT >> ~/.ssh/config
-          Host github.com
-          HostName github.com
-          IdentityFile ~/.ssh/id_rsa
-          EOT
       - name: Release Documentation to GitHub Pages
         env:
-          USE_SSH: true
-          GIT_USER: gh-actions
+          GIT_USER: x-access-token
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          BOT_EMAIL: ${{ secrets.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ secrets.SAP_AI_SDK_BOT_NAME }}
         run: |
-          git config --global user.email "gh-actions@github.com"
-          git config --global user.name "gh-actions"
+          git config user.email "$BOT_EMAIL"
+          git config user.name "$BOT_NAME"
           npm ci
           npx docusaurus deploy
