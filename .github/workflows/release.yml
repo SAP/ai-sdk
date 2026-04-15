@@ -3,7 +3,7 @@ name: Release Cloud SDK documentation
 on:
   push:
     branches: [main]
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   release:
@@ -18,6 +18,8 @@ jobs:
         with:
           node-version: 20
       - name: Release Documentation to GitHub Pages
+        env:
+          GIT_USER: x-access-token
         run: |
           git config --global user.email "gh-actions@github.com"
           git config --global user.name "gh-actions"
