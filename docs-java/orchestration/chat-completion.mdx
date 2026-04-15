@@ -521,25 +521,35 @@ var newMessage = message.withImage("https://url.to/image.jpg", ImageItem.DetailL
 
 Note, that currently only user messages are supported for image attachments.
 
-### Add PDF File Attachment to a Message
+### Add File Attachment to a Message
 
-A PDF file can be added to a message either via a file path or via a base64 encoded string as follows.
+A file can be added to a message either via a file path or via a base64 encoded string as follows.
+Only PDF files are currently supported for file attachments.
 
-#### Add PDF via File Path
-
-```java
-var message = Message.user("What is the title of the topic discussed here?");
-var newMessage = message.withPdf("path/to/sample.pdf");
-```
-
-#### Add PDF via Base64 Encoded String
+#### Add File via Local File Path
 
 ```java
 var message = Message.user("What is the title of the topic discussed here?");
-var newMessage = message.withPdfBase64(base64Data, "sample.pdf");
+var newMessage = message.withFile("path/to/sample.pdf");
 ```
 
-Note, that currently only user messages are supported for PDF file attachments.
+#### Add File via Remote File Path
+
+Filename is an optional parameter to the `withFileUrl` method shown below and could be set to null.
+
+```java
+var message = Message.user("What is the title of the topic discussed here?");
+var newMessage = message.withFileUrl("https://somefile.pdf", "sample.pdf");
+```
+
+#### Add File via Base64 Encoded String
+
+```java
+var message = Message.user("What is the title of the topic discussed here?");
+var newMessage = message.withFileBase64(base64Data, "sample.pdf");
+```
+
+Note, that currently only user messages are supported for file attachments.
 
 ### Add Multiple Text Inputs to a Message
 
