@@ -31,7 +31,7 @@ jobs:
           BOT_EMAIL: ${{ secrets.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ secrets.SAP_AI_SDK_BOT_NAME }}
         run: |
-          git config user.email "$BOT_EMAIL"
-          git config user.name "$BOT_NAME"
+          git config --global user.email "$BOT_EMAIL"
+          git config --global user.name "$BOT_NAME"
           npm ci
           npx docusaurus deploy
