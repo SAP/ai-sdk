@@ -12,13 +12,12 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v6
         with:
           node-version: 20
       - name: Release Documentation to GitHub Pages
-        env:
-          GIT_USER: x-access-token
-          GIT_PASS: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.email "gh-actions@github.com"
           git config --global user.name "gh-actions"
