@@ -37,7 +37,7 @@ Take the `AzureOpenAiChatClient` as an example, use the following code to initia
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
-const client = new AzureOpenAiChatClient('gpt-4o');
+const client = new AzureOpenAiChatClient('gpt-5');
 ```
 
 The deployment ID will be implicitly fetched from the `default` resource group.
@@ -47,7 +47,7 @@ When using other resource groups, you can specify the `resourceGroup` parameter.
 
 ```ts
 const client = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
+  modelName: 'gpt-5',
   // modelVersion: '2024-08-06', // optional
   resourceGroup: 'my-resource-group'
 });
@@ -72,7 +72,7 @@ If multiple deployments were created with the same model name and version, the f
 When initializing the client, it is possible to provide a custom destination for your SAP AI Core instance.
 
 ```ts
-const client = await new AzureOpenAiChatClient('gpt-4o', {
+const client = await new AzureOpenAiChatClient('gpt-5', {
   destinationName: 'my-destination'
 });
 ```

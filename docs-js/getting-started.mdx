@@ -14,7 +14,7 @@ keywords:
 
 ### What You'll Build
 
-In this quickstart, you'll use the OpenAI GPT-4o model via the [Orchestration Service of AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) to generate text.
+In this quickstart, you'll use the OpenAI GPT-5 model via the [Orchestration Service of AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) to generate text.
 The application will send a prompt to the AI model and display the generated response.
 
 ### Prerequisites
@@ -40,7 +40,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     },
     prompt: {
       template: [
