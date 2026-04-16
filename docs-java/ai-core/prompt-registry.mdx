@@ -199,8 +199,8 @@ You can import a declarative prompt template as a single file export in yaml for
 ```java
 PromptClient client = new PromptClient();
 
-Resource template = new ClassPathResource("prompt-template.yaml");
-PromptTemplatePostResponse response = client.importPromptTemplate(template.getFile());
+byte[] template = new ClassPathResource("prompt-template.yaml").getContentAsByteArray();
+PromptTemplatePostResponse response = promptClient.importPromptTemplate("default", null, template);
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
