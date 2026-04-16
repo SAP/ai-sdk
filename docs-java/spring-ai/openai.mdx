@@ -173,3 +173,15 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 You can use prompt templates stored in a prompt registry in your Spring AI application.
 
 Please see this [documentation](../ai-core/prompt-registry#using-templates-in-springai).
+
+## Custom Headers
+
+To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OpenAIClient`.
+
+```java
+var clientWithHeader = new OpenAIClient().withHeader("foo", "bar");
+ChatModel client = new OpenAiChatModel(clientWithHeader);
+
+Prompt prompt = new Prompt("What is the capital of France?");
+ChatResponse response = client.call(prompt);
+```

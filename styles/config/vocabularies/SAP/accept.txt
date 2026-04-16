@@ -47,6 +47,8 @@ ESLint
 CLIs
 GUIDs
 
+applyTo
+
 Blust
 Streifeneder
 
@@ -125,6 +127,7 @@ subscribable
 Sandeep
 browserified
 untrusted
+[Nn]ullable
 
 v2
 v4

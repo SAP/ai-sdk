@@ -623,6 +623,7 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 
 Translate the input or output to [any supported language](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).
 The following sample will translate the prompt into English, send it to the LLM, and then translate the output to German.
+Source Language is identified on the whole user input.
 
 ```java
 var prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel?");
@@ -634,9 +635,45 @@ var configWithTranslation = config
 var response = client.chatCompletion(prompt, configWithTranslation);
 ```
 
+### Translation using applyTo parameter
+
+The following sample will translate only the given placeholders into English, send it to the LLM, and then translate the output to German.
+
+Note that setting the source language through `withSourceLanguage()` works slightly different when used together with applyTo parameters.
+
+If either `applyToPlaceholders` or `applyToTemplateRoles` were not used, the source language is set for the whole message.
+If `applyToPlaceholders` is used however, `withSourceLanguage` applies to the most recently added placeholder only.
+This is why in the below example the source language of the placeholders was set to German, while the source language of the template roles was set to English.
+
+```java
+var inputParams =
+    Map.of("exam_type", "Abitur", "topic", "Deutsche Literatur", "num_questions", "5");
+
+var systemMessage =
+    Message.system("You are an expert study coach creating clear, concise exam notes and practice questions.");
+var userMessage =
+    Message.user("Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
+
+var templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+
+var prompt = new OrchestrationPrompt(inputParams);
+
+var configWithTranslation = config
+        .withTemplateConfig(templatingConfig)
+        .withInputTranslationConfig(
+        TranslationConfig.translateInputTo("en-US")
+              .applyToPlaceholders("exam_type", "topic")
+              .withSourceLanguage("de-DE")
+              .applyToTemplateRoles(USER, ASSISTANT)
+              .withSourceLanguage("en-US"))
+        .withOutputTranslationConfig(TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
+
+var response = client.chatCompletion(prompt, configWithTranslation);
+```
+
 You can also optionally specify the source language, **the source-target pair has to be in the [list](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).**
 
-Note that setting `SAPDocumentTranslationInputConfig.applyTo()` to either `null` or to an actual value is necessary.
+Note that setting `TranslationConfig.applyTo()` to either `null` as shown in first example or to an actual value as shown in the second example is necessary.
 
 You will find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
@@ -731,5 +768,21 @@ OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, f
 ```
 
 In the above example, the call with `brokenConfig` will return an error so another call with `workingConfig` is performed and the (positive) result of this call is returned.
+
+Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
+
+## Citations
+
+The Orchestration service can return citations in the response when the LLM provides them,
+such as with Perplexity's Sonar model.
+
+```java
+val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
+val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+return client.chatCompletion(prompt, sonarConfig);
+
+String content = response.getContent();
+List<Citation> citations = response.getOriginalResponse().getFinalResult().getCitations();
+```
 
 Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
