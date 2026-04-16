@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.10.0">
 <title data-rh="true">Release Notes | SAP Cloud SDK for AI</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://sap.github.io/ai-sdk/docs/java/release-notes"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-docs-java-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-docs-java-current"><meta data-rh="true" property="og:title" content="Release Notes | SAP Cloud SDK for AI"><meta data-rh="true" name="description" content="Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations."><meta data-rh="true" property="og:description" content="Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations."><meta data-rh="true" name="keywords" content="sap,cloud,sdk,ai"><link data-rh="true" rel="icon" href="/ai-sdk/img/AI-SDK-Logo.svg"><link data-rh="true" rel="canonical" href="https://sap.github.io/ai-sdk/docs/java/release-notes"><link data-rh="true" rel="alternate" href="https://sap.github.io/ai-sdk/docs/java/release-notes" hreflang="en"><link data-rh="true" rel="alternate" href="https://sap.github.io/ai-sdk/docs/java/release-notes" hreflang="x-default"><link data-rh="true" rel="preconnect" href="https://E4A268JVO0-dsn.algolia.net" crossorigin="anonymous"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Release Notes","item":"https://sap.github.io/ai-sdk/docs/java/release-notes"}]}</script><link rel="search" type="application/opensearchdescription+xml" title="SAP Cloud SDK for AI" href="/ai-sdk/opensearch.xml"><link rel="stylesheet" href="/ai-sdk/assets/css/styles.1d66d0d7.css">
-<script src="/ai-sdk/assets/js/runtime~main.ad4968fa.js" defer="defer"></script>
+<script src="/ai-sdk/assets/js/runtime~main.f1afb7c6.js" defer="defer"></script>
 <script src="/ai-sdk/assets/js/main.e5ae2df9.js" defer="defer"></script>
 </head>
 <body>
@@ -20,9 +20,31 @@ It will help you:</p>
 <li class="">Keep up with the latest changes in SAP ecosystem</li>
 <li class="">Protect yourself from bugs and breaking changes in the future</li>
 </ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1180---april-16-2026">1.18.0 - April 16, 2026<a href="#1180---april-16-2026" class="hash-link" aria-label="Direct link to 1.18.0 - April 16, 2026" title="Direct link to 1.18.0 - April 16, 2026" translate="no">​</a></h2>
+<p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.18.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes">🔧 Compatibility Notes<a href="#-compatibility-notes" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
+<ul>
+<li class="">Remove Spring dependency, by migrating generated API clients from <code>RestTemplate</code> (Spring) to <code>Apache</code>:</li>
+</ul>
+<table><thead><tr><th>Aspect</th><th>Before</th><th>After</th><th>Migration</th></tr></thead><tbody><tr><td><strong>API Class Base</strong></td><td><code>[...]Api</code> extends <code>AbstractOpenApiService</code></td><td><code>[...]Api</code> extends <code>BaseApi</code></td><td>Update inheritance in generated classes</td></tr><tr><td><strong>Response Object</strong></td><td><code>com.sap.cloud.sdk.services.openapi.core.OpenApiResponse</code></td><td><code>com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse</code></td><td>Update import statements</td></tr><tr><td><strong>API Client</strong></td><td><code>AiCoreService.getApiClient()</code> returns <code>com.sap.cloud.sdk.services.openapi.apiclient.ApiClient</code></td><td><code>AiCoreService.getApiClient()</code> returns <code>com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient</code></td><td>Update import statements</td></tr><tr><td><strong>importPromptTemplate() Input</strong></td><td><code>Resource</code> parameter</td><td><code>byte[]</code> parameter</td><td>Call <code>Resource.getContentAsByteArray()</code></td></tr><tr><td><strong>Dependencies</strong></td><td>Includes <code>org.springframework</code></td><td>Removed</td><td>May need to add to <code>dependencyManagement</code>: <code>spring-core</code>, <code>spring-web</code>, <code>spring-beans</code>, <code>spring-context</code></td></tr></tbody></table>
+<ul>
+<li class="">[PromptRegistry] (Breaking) Removed <code>includeSpec</code> parameter from <code>listPromptTemplateHistory</code> method in <code>PromptTemplatesApi</code></li>
+<li class="">[Grounding] (Breaking) <code>GoogleDriveConfig</code> now has fields <code>resourceType</code> and <code>resourceId</code> instead of <code>folder</code>.
+<code>GoogleDriveFolderDetail</code> has been renamed to <code>GoogleDriveResourceDetail</code> and can now represent both folders and drives using <code>resourceType</code> and <code>resourceId</code>.
+<code>GoogleDrivePipelineCreateRequest</code> now requires <code>GoogleDriveConfigurationStruct</code> to be created</li>
+<li class="">Deprecated multiple Orchestration and OpenAI models: <code>MISTRAL_LARGE_INSTRUCT</code>, <code>MISTRAL_SMALL_INSTRUCT</code>, <code>OPENAI_O1</code>, and <code>OPENAI_O3_MINI</code>.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality">✨ New Functionality<a href="#-new-functionality" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<ul>
+<li class="">[Grounding] Added values <code>CREATING</code>, <code>CREATED</code>, <code>CREATION_FAILED</code>, <code>DELETION_INPROGRESS</code> and <code>DELETION_FAILED</code> for <code>PipelineExecutionStatus</code>.</li>
+<li class="">[Grounding] New error type <code>GenericError</code> added. <code>ValidationError</code> now includes additional fields <code>input</code> and <code>ctx</code> for better debugging and error handling.</li>
+<li class="">[Orchestration] Supported (PDF) file uploading feature by local file path via <code>UserMessage.withFile</code>, by remote file URL via <code>UserMessage.withFileUrl</code> , and by base64 encoded string file via <code>UserMessage.withFileBase64</code>.</li>
+<li class="">[Orchestration] Added new models <code>GPT_53_CODEX</code>, <code>GPT_54</code>, and <code>GPT_54_NANO</code> for <code>OrchestrationAiModel</code>.</li>
+<li class="">[OpenAI] Added new models <code>GPT_53_CODEX</code>, <code>GPT_54</code>, and <code>GPT_54_NANO</code> for <code>OpenAiModel</code>.</li>
+</ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1170---march-27-2026">1.17.0 - March 27, 2026<a href="#1170---march-27-2026" class="hash-link" aria-label="Direct link to 1.17.0 - March 27, 2026" title="Direct link to 1.17.0 - March 27, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.17.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes">🔧 Compatibility Notes<a href="#-compatibility-notes" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-1">🔧 Compatibility Notes<a href="#-compatibility-notes-1" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
 <ul>
 <li class="">
 <p>Some changes to existing generated API in the <em>Prompt Registry</em> module.</p>
@@ -37,7 +59,7 @@ See full changelog for all details.</p>
 <div class="language-diff codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-diff codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">  var chunkMeta;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  var docMeta;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  var chunk =</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">-   TextOnlyBaseChunk.create().content(&quot;Luna is the Latin word for moon.&quot;).metadata(chunkMeta);</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">+   TextOnlyBaseChunkCreate.create().content(&quot;Luna is the Latin word for moon.&quot;).addMetadataItem(chunkMeta);</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- BaseDocument.create().chunks(chunk).metadata(docMeta);</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">+ BaseDocument.create().chunks(chunk).addMetadataItem(docMeta);</span><br></div></code></pre></div></div>
 </li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality">✨ New Functionality<a href="#-new-functionality" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-1">✨ New Functionality<a href="#-new-functionality-1" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[Grounding] Added <code>GroundingClient.withHeader()</code>.</li>
 <li class="">[Orchestration] Added <code>GPT_52</code> model for <code>OrchestrationAiModel</code>.</li>
@@ -52,7 +74,7 @@ See full changelog for all details.</p>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1160---february-20-2026">1.16.0 - February 20, 2026<a href="#1160---february-20-2026" class="hash-link" aria-label="Direct link to 1.16.0 - February 20, 2026" title="Direct link to 1.16.0 - February 20, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.16.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-1">✨ New Functionality<a href="#-new-functionality-1" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-2">✨ New Functionality<a href="#-new-functionality-2" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[RPT] Introducing <code>RptClient</code> for Tabular AI backed by SAP RPT models <code>SAP_RPT_1_SMALL</code> and <code>SAP_RPT_1_LARGE</code>.<!-- -->
 <ul>
@@ -74,7 +96,7 @@ See full changelog for all details.</p>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1150---january-21-2026">1.15.0 - January 21, 2026<a href="#1150---january-21-2026" class="hash-link" aria-label="Direct link to 1.15.0 - January 21, 2026" title="Direct link to 1.15.0 - January 21, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.15.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-2">✨ New Functionality<a href="#-new-functionality-2" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-3">✨ New Functionality<a href="#-new-functionality-3" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[Orchestration] Configs stored in prompt registry can now be used for <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion">Orchestration calls via reference</a>.</li>
 <li class="">[Prompt Registry] Added support to <a class="" href="/ai-sdk/docs/java/ai-core/prompt-registry">manage Orchestration configs stored in Prompt Registry</a>.</li>
