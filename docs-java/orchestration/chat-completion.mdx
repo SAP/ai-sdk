@@ -180,6 +180,8 @@ In this case the template is defined with the placeholder `{{?language}}` which 
 
 Alternatively, you can use already prepared templates from the [**Prompt Registry**](../ai-core/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
 
+#### Tenant Scope Level Approach
+
 ```java
 var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
 var configWithTemplate = config.withTemplateConfig(template);
@@ -188,6 +190,21 @@ var inputParams = Map.of("language", "Italian", "input", "cloud ERP systems");
 var prompt = new OrchestrationPrompt(inputParams);
 
 var result = client.chatCompletion(prompt, configWithTemplate);
+```
+
+#### Resource Group Scope Level Approach
+
+```java
+var destination = new AiCoreService().getInferenceDestination("resource-group-id").forScenario("orchestration");
+var clientWithResourceGroup = new OrchestrationClient(destination);
+
+var template = TemplateConfig.reference().byId("id").withScope(RESOURCE_GROUP);
+var configWithTemplate = config.withTemplateConfig(template);
+
+var inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", "What's the latest news on the stock market?");
+var prompt = new OrchestrationPrompt(inputParams);
+
+var result = clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
 ```
 
 A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version.
@@ -235,7 +252,7 @@ var result = new OrchestrationClient().chatCompletion(prompt, config);
 
 ## Filtering
 
-Apply [**input filtering**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering) and [**output filtering**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering) to the chat completion:
+Apply [**input filtering**](https://help.sap.com/docs/sap-ai-core/generative-ai/enhancing-model-consumption-with-input-filtering-75c6d42355924b28905ffe435af93b51) and [**output filtering**](https://help.sap.com/docs/sap-ai-core/generative-ai/enhancing-model-consumption-with-output-filtering-0675b9c77d40467bb2f87b6474e95a80) to the chat completion:
 
 ````java
 var prompt = new OrchestrationPrompt(
@@ -250,7 +267,8 @@ var filterStrict = new AzureContentFilter()
                 .selfHarm(ALLOW_SAFE)
                 .sexual(ALLOW_SAFE)
                 .violence(ALLOW_SAFE)
-                .promptShield(true);
+                .promptShield(true)
+                .protectedMaterialCode(true);
 
 var filterLoose = new AzureContentFilter()
                 .hate(ALLOW_SAFE_LOW_MEDIUM)
@@ -270,6 +288,7 @@ var result =
 ````
 
 **Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks.
+**Since v1.16.0** The `protectedMaterialCode` has been introduced in `AzureContentFilter` for output filtering to safeguard against copyrighted content.
 
 ### Behavior of Input and Output Filters
 
@@ -415,6 +434,24 @@ var maskedGroundingConfig = groundingConfig.withMaskingConfig(maskingConfig);
 
 var result = client.chatCompletion(prompt, maskedGroundingConfig);
 ```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+### Retrieving Additional Metadata
+
+To include [metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/contextualized-retrieval-using-metadata-and-vector-search?locale=en-US) in the grounding result, you can set the `metadataParams` options on the `Grounding` object by providing one or more strings of the metadata keys.
+If you provide `"*"`, all metadata will be included.
+
+```java
+var groundingConfig = Grounding.create().metadataParams("foo", "bar");
+var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
+var configWithGrounding = config.withGrounding(groundingConfig);
+
+var result = client.chatCompletion(prompt, configWithGrounding);
+```
+
+Note that retrieving this additional metadata information is not supported for data repository type _help.sap.com_.
+When using grounding via _help.sap.com_ the SDK will ignore the provided metadata parameters.
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
@@ -586,31 +623,57 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 
 Translate the input or output to [any supported language](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).
 The following sample will translate the prompt into English, send it to the LLM, and then translate the output to German.
+Source Language is identified on the whole user input.
 
 ```java
 var prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel?");
 
-var inputConfig = SAPDocumentTranslationInputConfig.create()
-        .targetLanguage("en-US")
-        .applyTo(null);
-var inputTranslation = SAPDocumentTranslationInput.create()
-        .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-        .config(inputConfig);
-var outputConfig = SAPDocumentTranslationOutputConfig.create()
-        .targetLanguage(SAPDocumentTranslationOutputTargetLanguage.create("de-DE"));
-var outputTranslation = SAPDocumentTranslationOutput.create()
-        .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-        .config(outputConfig);
 var configWithTranslation = config
-        .withInputTranslationConfig(inputTranslation)
-        .withOutputTranslationConfig(outputTranslation);
+        .withInputTranslationConfig(TranslationConfig.translateInputTo("en-US"))
+        .withOutputTranslationConfig(TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
+
+var response = client.chatCompletion(prompt, configWithTranslation);
+```
+
+### Translation using applyTo parameter
+
+The following sample will translate only the given placeholders into English, send it to the LLM, and then translate the output to German.
+
+Note that setting the source language through `withSourceLanguage()` works slightly different when used together with applyTo parameters.
+
+If either `applyToPlaceholders` or `applyToTemplateRoles` were not used, the source language is set for the whole message.
+If `applyToPlaceholders` is used however, `withSourceLanguage` applies to the most recently added placeholder only.
+This is why in the below example the source language of the placeholders was set to German, while the source language of the template roles was set to English.
+
+```java
+var inputParams =
+    Map.of("exam_type", "Abitur", "topic", "Deutsche Literatur", "num_questions", "5");
+
+var systemMessage =
+    Message.system("You are an expert study coach creating clear, concise exam notes and practice questions.");
+var userMessage =
+    Message.user("Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
+
+var templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+
+var prompt = new OrchestrationPrompt(inputParams);
+
+var configWithTranslation = config
+        .withTemplateConfig(templatingConfig)
+        .withInputTranslationConfig(
+        TranslationConfig.translateInputTo("en-US")
+              .applyToPlaceholders("exam_type", "topic")
+              .withSourceLanguage("de-DE")
+              .applyToTemplateRoles(USER, ASSISTANT)
+              .withSourceLanguage("en-US"))
+        .withOutputTranslationConfig(TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
 var response = client.chatCompletion(prompt, configWithTranslation);
 ```
 
 You can also optionally specify the source language, **the source-target pair has to be in the [list](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).**
 
-Note that setting `SAPDocumentTranslationInputConfig.applyTo()` to either `null` or to an actual value is necessary.
+Note that setting `TranslationConfig.applyTo()` to either `null` as shown in first example or to an actual value as shown in the second example is necessary.
 
 You will find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
@@ -628,7 +691,41 @@ OrchestrationAiModel customGPT4O =
         .withVersion("2024-05-13");
 ```
 
-## Using a Configuration from AI Launchpad
+## Using a prepared Configuration
+
+There are different ways to create an Orchestration configuration outside the runtime of your application.
+
+### Using a Configuration stored in Prompt Registry
+
+You can create and store Orchestration configurations in Prompt Registry.
+For a guide on how to do that please refer to the chapter on [Prompt Registry](../ai-core/prompt-registry#orchestration-configurations-in-prompt-registry).
+
+Once you stored an Orchestration configuration in Prompt Registry you can reference it either via its ID or via a combination of its scenario, name, and version as follows.
+
+```java
+var reference = OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
+OrchestrationChatResponse response = client.chatCompletionUsingReference(reference);
+```
+
+Note that you have to add the necessary templating parameters that are used in your Orchestration configuration.
+Additionally, you can add a list of messages as message history.
+Here is an example that uses both for a stored Orchestration configuration that is referenced via its ID.
+
+```java
+List<Message> history = List.of(new SystemMessage("Your message here."));
+var parameter = Map.of("placeholder", "your value");
+var reference =
+    OrchestrationConfigReference.fromId("0123")
+        .withMessageHistory(history)
+        .withTemplateParameters(parameter);
+OrchestrationChatResponse client.chatCompletionUsingReference(reference);
+```
+
+Note that besides setting the message history and the template parameters, the configuration itself cannot be changed during runtime if it is used via reference from prompt registry.
+
+You can also find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+### Using a Configuration from AI Launchpad
 
 In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
 
@@ -645,3 +742,47 @@ new OrchestrationClient().executeRequestFromJsonModuleConfig(prompt, configJson)
 ```
 
 While this is not recommended for long term use, it can be useful for creating demos and PoCs.
+
+## Using Fallback Modules
+
+It is possible to provide multiple `OrchestrationModuleConfig` objects to an Orchestration call instead of a single one.
+The provided configurations are then tried in the order they are given and if a call with one configuration failed, the next in line is used as fallback.
+For more information, see the [AI Core guide on fallback modules](https://help.sap.com/docs/sap-ai-core/generative-ai/orchestration-with-fallbacks?locale=en-US).
+
+To use this feature, you can simply provide multiple `OrchestrationModuleConfig` objects in your (steaming or non-streaming) call.
+
+```java
+var prompt = new OrchestrationPrompt("your prompt");
+
+var workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+var secondWorkingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+var brokenConfig =
+    new OrchestrationModuleConfig()
+        .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+
+var fallbackConfigs = new OrchestrationModuleConfig[] {workingConfig, secondWorkingConfig};
+
+OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, fallbackConfigs);
+// or:
+// OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, workingConfig, secondWorkingConfig);
+```
+
+In the above example, the call with `brokenConfig` will return an error so another call with `workingConfig` is performed and the (positive) result of this call is returned.
+
+Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
+
+## Citations
+
+The Orchestration service can return citations in the response when the LLM provides them,
+such as with Perplexity's Sonar model.
+
+```java
+val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
+val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+return client.chatCompletion(prompt, sonarConfig);
+
+String content = response.getContent();
+List<Citation> citations = response.getOriginalResponse().getFinalResult().getCitations();
+```
+
+Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)

@@ -28,7 +28,7 @@ import {
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/langchain';
 
-const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
 const embeddingClient = new AzureOpenAiEmbeddingClient({
   modelName: 'text-embedding-3-small'
 });
@@ -47,7 +47,7 @@ When initializing the client, it is possible to provide a custom destination for
 ```ts
 const chatClient = new AzureOpenAiChatClient(
   {
-    modelName: 'gpt-4o'
+    modelName: 'gpt-5'
   },
   {
     destinationName: 'my-destination'
@@ -77,7 +77,7 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 
 // Initialize the client
-const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
 
 // Create a prompt template
 const promptTemplate = ChatPromptTemplate.fromMessages([
@@ -106,7 +106,7 @@ Use the `stream()` method to receive a stream of chunk responses from the model.
 By default, the last chunk contains the finish reason and token usage information.
 
 ```ts
-const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+const client = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
 const response = await client.stream([
   {
     role: 'user',
@@ -154,7 +154,7 @@ In case of an error, SAP Cloud SDK for AI will automatically close the stream.
 It can also be manually aborted if an `AbortSignal` object associated with an `AbortController` was provided when calling the `stream()` method.
 
 ```ts
-const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+const client = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
 const controller = new AbortController();
 const response = await client.stream(
   [
@@ -179,6 +179,42 @@ for await (const chunk of response) {
 
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+#### Streaming Configuration
+
+By default, the `stream()` method supports streaming, while the `invoke()` method uses non-streaming requests.
+
+##### Auto-Streaming
+
+Set the `streaming` option to `true` to enable automatic streaming for all requests made with the `invoke()` method:
+
+```ts
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-5',
+  streaming: true
+});
+
+const response = await client.invoke(messageHistory);
+```
+
+With auto-streaming enabled, the `invoke()` method uses streaming to retrieve responses, returning the complete result upon completion.
+This option is automatically enabled by LangGraph when a LangGraph-based agent is used with a [streaming mode](https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes) that can output partial responses, such as "updates".
+
+##### Disabling Streaming
+
+Set the `disableStreaming` option to turn off streaming entirely.
+
+```ts
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-5',
+  disableStreaming: true
+});
+
+const response = await client.stream(messageHistory);
+```
+
+When streaming is disabled, both the `invoke()` and `stream()` methods use non-streaming requests internally.
+The `stream()` method will still return an iterable, but it will yield a single chunk containing the complete response.
 
 ### Reasoning Models
 
@@ -216,6 +252,8 @@ For a usage example, refer to the [getting started with agents tutorial](../tuto
 
 It is often useful to have a model return output that matches a specific schema.
 This schema can be defined using either a [Zod](https://zod.dev/) schema or an OpenAI-style JSON schema.
+We recommend using Zod v4 for full compatibility with this package.
+If you're upgrading from an earlier version, refer to the [Zod v4 migration guide](https://zod.dev/v4/changelog) and pay attention to breaking changes like the switch from `describe('...')` to `meta({ description: '...' })`.
 For more details on structured output, refer to the [official LangChain documentation on structured output](https://docs.langchain.com/oss/javascript/langchain/models#structured-outputs).
 Below is an example using `json_schema` response type and passing in a Zod schema.
 
@@ -223,12 +261,14 @@ Below is an example using `json_schema` response type and passing in a Zod schem
 import * as z from 'zod';
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 
-const llm = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+const llm = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
 
 const joke = z.object({
-  setup: z.string().describe('The setup of the joke'),
-  punchline: z.string().describe('The punchline to the joke'),
-  rating: z.number().describe('How funny the joke is, from 1 to 10')
+  setup: z.string().meta({ description: 'The setup of the joke' }),
+  punchline: z.string().meta({ description: 'The punchline to the joke' }),
+  rating: z
+    .number()
+    .meta({ description: 'How funny the joke is, from 1 to 10' })
 });
 
 const structuredLlm = llm.withStructuredOutput(joke, {
@@ -238,6 +278,38 @@ const structuredLlm = llm.withStructuredOutput(joke, {
 
 const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
 ```
+
+### Basic Agent Usage
+
+The `AzureOpenAiChatClient` can be used with LangChain's agent framework through the `createAgent()` function.
+
+:::note
+In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
+:::
+
+Create an agent by providing the Azure OpenAI chat client as the model, along with any tools you want the agent to use:
+
+<!-- vale off -->
+
+```ts
+import { createAgent } from 'langchain';
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+
+const model = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+
+const agent = createAgent({
+  model,
+  tools: []
+});
+
+const agentInputs = {
+  messages: [{ role: 'user', content: 'What is SAP?' }]
+};
+
+const result = await agent.invoke(agentInputs);
+```
+
+<!-- vale on -->
 
 ## Embedding
 
@@ -291,6 +363,11 @@ const retriever = vectorStore.asRetriever();
 
 Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
 
+:::note
+When using LangChain clients, configure resilience only through LangChain options.
+Do not apply additional SAP Cloud SDK resilience middleware, as LangChain already provides built-in retry mechanisms.
+:::
+
 ### Retry
 
 By default, LangChain client retries up to six times with exponential delay.
@@ -298,7 +375,7 @@ To modify this behavior, set the `maxRetries` option during the client initializ
 
 ```ts
 const client = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
+  modelName: 'gpt-5',
   maxRetries: 0
 });
 ```

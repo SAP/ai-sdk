@@ -17,8 +17,8 @@ The `@sap-ai-sdk/foundation-models` package incorporates generative AI foundatio
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/foundation-models
+```bash
+npm install @sap-ai-sdk/foundation-models
 ```
 
 ## Prerequisites
@@ -28,7 +28,7 @@ Refer to prerequisites outlined [here](./overview-cloud-sdk-for-ai-js#prerequisi
 ## Client Initialization
 
 Initialize a client with the model name.
-If model version is not specified, it is set to `latest`.
+If the model version is not specified, it is set to `latest`.
 
 The current available clients are: - `AzureOpenAiChatClient` - `AzureOpenAiEmbeddingClient`
 
@@ -37,7 +37,7 @@ Take the `AzureOpenAiChatClient` as an example, use the following code to initia
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
-const client = new AzureOpenAiChatClient('gpt-4o');
+const client = new AzureOpenAiChatClient('gpt-5');
 ```
 
 The deployment ID will be implicitly fetched from the `default` resource group.
@@ -47,7 +47,7 @@ When using other resource groups, you can specify the `resourceGroup` parameter.
 
 ```ts
 const client = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
+  modelName: 'gpt-5',
   // modelVersion: '2024-08-06', // optional
   resourceGroup: 'my-resource-group'
 });
@@ -63,9 +63,7 @@ const client = new AzureOpenAiChatClient({
 ```
 
 :::tip
-When initializing a client for using a foundation model, it is equivalent to provide - a combination of model name and model version - or deployment ID
-
-to identify a model within a [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group).
+When initializing a client to use a foundation model, it is equivalent to providing a combination of model name and model version, or a deployment ID to identify a model within a [Resource Group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group).
 If multiple deployments were created with the same model name and version, the first deployment will be used.
 :::
 
@@ -74,7 +72,7 @@ If multiple deployments were created with the same model name and version, the f
 When initializing the client, it is possible to provide a custom destination for your SAP AI Core instance.
 
 ```ts
-const client = await new AzureOpenAiChatClient('gpt-4o', {
+const client = await new AzureOpenAiChatClient('gpt-5', {
   destinationName: 'my-destination'
 });
 ```
@@ -115,3 +113,27 @@ This can be useful, e.g., to overwrite the API version of Azure OpenAI by defini
   }
 }
 ```
+
+### Custom Headers
+
+You can attach custom headers to your request, including SAP internal metering headers (for example, `premium-billing` and `user-context`), using the `requestConfig.headers` property.
+These internal metering headers are typically used for internal cost allocation and context propagation.
+
+```ts
+const response = await client.run(
+  {
+    messages: [{ role: 'user', content: 'What is the time in Tokyo?' }]
+  },
+  {
+    requestConfig: {
+      headers: {
+        'premium-billing': 'premium-plan',
+        'user-context': 'userId=12345;role=developer'
+      }
+    }
+  }
+);
+console.log(response.getContent());
+```
+
+To apply these headers globally for all requests, configure them on a destination or when building/initializing the client.

@@ -1,0 +1,347 @@
+---
+id: rpt
+title: SAP RPT-1 (Beta)
+hide_title: false
+hide_table_of_contents: false
+description: How to use SAP Cloud SDK for AI to interact with the SAP RPT-1 model for Tabular AI on SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - ai core
+  - ai-api
+  - rpt
+  - rpt-1
+  - tabular ai
+  - relational pretrained transformer
+---
+
+:::important
+This package is experimental and subject to change.
+Do not use in production.
+:::
+
+The `@sap-ai-sdk/rpt` package provides a client to interact with [SAP-RPT-1](https://www.sap.com/products/artificial-intelligence/sap-rpt.html), SAP’s Relational Pretrained Transformer model.
+
+## Installation
+
+To add the package to your project, run the following command in your terminal:
+
+```bash
+npm install @sap-ai-sdk/rpt
+```
+
+## Usage
+
+SAP-RPT-1 is a relational pretrained transformer model that delivers accurate predictive insights from structured business data.
+The following shows the different ways to use the RPT client to interact with the model.
+
+### Client Initialization
+
+Initialize a client using `RptClient` constructor with optional parameters.
+By default, the 'sap-rpt-1-small' model is chosen as the prediction model.
+
+```typescript
+import { RptClient } from '@sap-ai-sdk/rpt';
+
+const client = new RptClient();
+```
+
+To use the 'sap-rpt-1-large' model, specify the model name in the constructor:
+
+```typescript
+const client = new RptClient('sap-rpt-1-large');
+```
+
+Follow the instructions in the [Foundation Models documentation](./foundation-models#client-initialization)
+to specify a model version, use a model with an explicit deployment ID, select a specific resource group, or target a custom AI Core instance.
+
+:::tip
+
+When you use SAP-RPT-1 models, follow the [best practices](#best-practices) to improve performance and prediction accuracy.
+
+:::
+
+### Predict With Schema
+
+Use the `predictWithSchema()` method to make predictions with a schema explicitly defined.
+Pass the data schema, and the prediction data including the prediction configuration and input data to the method.
+Prefer providing the data schema if it is known instead of relying on the auto-inference solely based on the input data.
+
+For information about custom request options such as compression, custom headers, or timeout, refer to the [Advanced Usage](#advanced-usage) section.
+
+```typescript
+const prediction = await client.predictWithSchema(
+  // Data schema
+  [
+    { name: 'PRODUCT', dtype: 'string' },
+    { name: 'PRICE', dtype: 'numeric' },
+    { name: 'PRODUCTION_DATE', dtype: 'date' },
+    { name: 'SALESGROUP', dtype: 'string' }
+  ],
+  // Prediction data
+  {
+    prediction_config: {
+      target_columns: [
+        {
+          name: 'SALESGROUP',
+          prediction_placeholder: '[PREDICT]',
+          task_type: 'classification'
+        }
+      ]
+    },
+    index_column: 'ID',
+    rows: [
+      {
+        PRODUCT: 'Laptop',
+        PRICE: 999.99,
+        PRODUCTION_DATE: '2025-01-15',
+        ID: '35',
+        SALESGROUP: '[PREDICT]'
+      },
+      {
+        PRODUCT: 'Desktop Computer',
+        PRICE: 750.5,
+        PRODUCTION_DATE: '2024-12-02',
+        ID: '42',
+        SALESGROUP: 'Hardware'
+      }
+      // Additional rows...
+    ]
+  }
+);
+```
+
+The data schema is a list of column definitions, each containing a `name` and a `dtype` properties.
+The prediction data contains the following properties:
+
+- `prediction_config`: A mandatory configuration to specify the columns to predict, including their names, placeholder values, and task types.
+  The task type can be either `classification` or `regression`.
+  If not specified, the model infers the task type based on the column data type.
+- `index_column`: The name of the column that serves as the unique identifier for each row.
+  The index column is returned in the prediction results to allow mapping predictions back to the input data.
+- `rows` or `columns`: The input data to make predictions on.
+  Use `rows` for row-based format or `columns` for column-based format.
+- `parse_data_types`: Optional boolean to control data type parsing.
+  When set to `true` (default), numeric columns are parsed to float or integer, and dates (`YYYY-MM-DD`) are parsed automatically.
+
+:::important
+When you store the schema and prediction data in variables, declare the schema with `as const` and use the `PredictionData<typeof schema>` type.
+This enables type inference and accurate IDE autocompletion.
+If you pass the data directly to `predictWithSchema()`, you do not need additional annotations.
+
+Example:
+
+```typescript
+const schema = [...] as const;
+const data: PredictionData<typeof schema> = {...};
+
+client.predictWithSchema(schema, data);
+```
+
+:::
+
+### Predict Without Schema
+
+:::tip
+
+If the data schema is known, it is recommended to use the [`predictWithSchema()`](#predict-with-schema) method instead.
+
+:::
+
+To make predictions without providing a schema, use the `predictWithoutSchema()` method.
+Pass only the prediction data as a parameter.
+The data schema will be inferred from the input data.
+
+For information about custom request options such as compression, custom headers, or timeout, refer to the [Advanced Usage](#advanced-usage) section.
+
+```typescript
+const prediction = await client.predictWithoutSchema(
+  // Prediction data
+  {
+    prediction_config: {
+      target_columns: [
+        {
+          name: 'SALESGROUP',
+          prediction_placeholder: '[PREDICT]',
+          task_type: 'classification'
+        }
+      ]
+    },
+    index_column: 'ID',
+    rows: [
+      {
+        PRODUCT: 'Laptop',
+        PRICE: 999.99,
+        PRODUCTION_DATE: '2025-01-15',
+        ID: '35',
+        SALESGROUP: '[PREDICT]'
+      },
+      {
+        PRODUCT: 'Desktop Computer',
+        PRICE: 750.5,
+        PRODUCTION_DATE: '2024-12-02',
+        ID: '42',
+        SALESGROUP: 'Hardware'
+      }
+      // Additional rows...
+    ]
+  }
+);
+```
+
+## Best Practices
+
+Follow these best practices to improve performance and prediction accuracy when using SAP-RPT-1 models:
+
+- **Provide appropriate level of context**: Use the recommended context length from the [SAP Help Portal](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/sap-rpt-1?locale=en-US#tabular-in-context-learning) when preparing input data.
+- **Follow service best practices**: Refer to the [SAP AI Core best practices documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/example-payloads-for-inferencing-sap-rpt-1?locale=en-US&version=CLOUD#best-practices) for general guidance on optimizing SAP-RPT-1 usage.
+- **Provide a schema when possible**: Use [`predictWithSchema()`](#predict-with-schema) for better performance and more accurate predictions.
+  Explicitly defining the schema helps the model understand your data structure more precisely than auto-inference.
+- **Use string types for numerical identifiers and category columns**: In the provided schema, set identifier columns, category codes, and postal codes to `dtype: 'string'`, even when the values look numeric.
+  This prevents the model from treating them as a continuous scale and interpolating them with numerical methods.
+- **String predictions are limited to values seen in context**: For columns with `dtype: 'string'`, the model treats values as discrete categories and can only predict values present in the context rows.
+
+## Advanced Usage
+
+The RPT client supports advanced features for specialized use cases.
+
+### Predict with Parquet
+
+[Parquet](https://parquet.apache.org) is a tabular file format optimized for data-science workloads.
+To make predictions on Parquet files, use the `predictParquet()` method.
+Pass a [`ParquetPayload` object](pathname:///api/v2/types/rpt_src.ParquetPayload.html) containing the Parquet file, prediction configuration, and optional arguments such as `index_column` and `parse_data_types`.
+
+```typescript
+import { RptClient } from '@sap-ai-sdk/rpt';
+import { openAsBlob } from 'node:fs';
+
+const parquetBlob = await openAsBlob('path/to/input-data.parquet', {
+  type: 'application/vnd.apache.parquet'
+});
+const client = new RptClient();
+
+const prediction = await client.predictParquet({
+  file: parquetBlob,
+  prediction_config: {
+    target_columns: [
+      {
+        name: 'SALESGROUP',
+        prediction_placeholder: '[PREDICT]',
+        task_type: 'classification'
+      }
+    ]
+  },
+  index_column: 'ID',
+  parse_data_types: false
+});
+```
+
+### Request Compression
+
+The RPT client automatically compresses prediction requests to improve performance for large datasets.
+By default, requests with a body of 1024 bytes or larger are automatically compressed using the `gzip` algorithm.
+
+To customize compression settings, pass a `customRequest` parameter with a `compress` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
+
+<!-- vale off -->
+
+```typescript
+import * as zlib from 'zlib';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  compress: {
+    mode: 'always', // Force compression regardless of payload size (default 'auto')
+    autoCompressMinSize: 2048, // Only compress payloads >= 2048 bytes in 'auto' mode (default 1024)
+    compressOptions: {
+      level: zlib.constants.Z_BEST_SPEED // Custom compression level
+    }
+  }
+});
+```
+
+<!-- vale on -->
+
+### Custom Request Options
+
+The `customRequest` parameter also supports additional HTTP request configuration options from the SAP Cloud SDK for JavaScript, such as:
+
+- `headers`: Custom HTTP headers.
+- `timeout`: Request timeout in milliseconds.
+- `middleware`: Custom HTTP middleware functions.
+
+:::warning
+
+The compression middleware is automatically prepended to the middleware chain, unless disabled by setting `mode: 'never'`.
+
+:::
+
+The following example demonstrates how to include custom HTTP headers in your request configuration:
+
+```typescript
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  headers: {
+    'x-custom-header': 'value'
+  },
+  timeout: 30000, // 30 seconds
+  compress: {
+    mode: 'always'
+  }
+});
+```
+
+## Resilience
+
+Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
+By default, it enables a circuit breaker and a 10-second timeout.
+
+```typescript
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middleware: resilience()
+});
+```
+
+:::tip
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
+:::
+
+Customize the behavior by passing options:
+
+<!-- vale off -->
+
+```typescript
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middleware: resilience({
+    timeout: 5000, // 5 seconds; true for default 10s, false to disable
+    circuitBreaker: true, // true by default, false to disable
+    retry: 3 // false by default; true for 3 retries, or pass a number
+  })
+});
+```
+
+<!-- vale on -->
+
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
+
+### Custom Middleware Order
+
+When you need precise control over middleware ordering — for example, placing the compression middleware at a specific position relative to resilience — disable automatic compression and manage the full middleware chain yourself:
+
+```typescript
+import { compress } from '@sap-cloud-sdk/http-client';
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+const prediction = await client.predictWithSchema(schema, predictionData, {
+  middleware: [
+    ...resilience(),
+    compress({ mode: 'always' }) // Explicit position in the middleware chain
+  ],
+  compress: {
+    mode: 'never' // Disable automatic compression prepending
+  }
+});
+```

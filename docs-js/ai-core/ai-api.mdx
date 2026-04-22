@@ -24,8 +24,8 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/ai-api
+```bash
+npm install @sap-ai-sdk/ai-api
 ```
 
 :::important
@@ -65,13 +65,13 @@ async function createArtifact() {
 ```ts
 async function createConfiguration() {
   const requestBody: ConfigurationBaseData = {
-    name: 'gpt-4o',
+    name: 'gpt-5',
     executableId: 'azure-openai',
     scenarioId: 'foundation-models',
     parameterBindings: [
       {
         key: 'modelName',
-        value: 'gpt-4o'
+        value: 'gpt-5'
       },
       {
         key: 'modelVersion',
@@ -165,6 +165,49 @@ import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api';
 
 const deploymentUrl = await resolveDeploymentUrl({
   scenarioId: 'foundation-models',
-  model: { name: 'gpt-4o' }
+  model: { name: 'gpt-5' }
 });
 ```
+
+## Resilience
+
+Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
+By default, it enables a circuit breaker and a 10-second timeout.
+
+```ts
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+const deployments = await DeploymentApi.deploymentQuery(
+  {},
+  { 'AI-Resource-Group': 'default' }
+).execute({ destinationName: 'my-aicore' }, { middleware: resilience() });
+```
+
+:::tip
+`resilience()` returns an array of middleware.
+You can pass it directly to `middleware` or combine it with other middleware: `[...resilience(), myMiddleware]`.
+:::
+
+Customize the behavior by passing options:
+
+<!-- vale off -->
+
+```ts
+const deployments = await DeploymentApi.deploymentQuery(
+  {},
+  { 'AI-Resource-Group': 'default' }
+).execute(
+  { destinationName: 'my-aicore' },
+  {
+    middleware: resilience({
+      timeout: 5000, // 5 seconds; true for default 10s, false to disable
+      circuitBreaker: true, // true by default, false to disable
+      retry: 3 // false by default; true for 3 retries, or pass a number
+    })
+  }
+);
+```
+
+<!-- vale on -->
+
+For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
