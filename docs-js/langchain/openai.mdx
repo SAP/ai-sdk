@@ -216,6 +216,31 @@ const response = await client.stream(messageHistory);
 When streaming is disabled, both the `invoke()` and `stream()` methods use non-streaming requests internally.
 The `stream()` method will still return an iterable, but it will yield a single chunk containing the complete response.
 
+### Reasoning Models
+
+When working with reasoning models (such as `gpt-o3` or `gpt-5-mini`), you need to specify the `max_tokens` parameter during client initialization.
+The SDK internally maps this to `max_completion_tokens`, which is required for reasoning models.
+
+```ts
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-5-mini',
+  max_tokens: 1000
+});
+
+const response = await client.invoke('What is the capital of France?', {
+  requestConfig: {
+    params: {
+      'api-version': '2024-12-01-preview'
+    }
+  }
+});
+```
+
+:::note
+Reasoning models require a specific API version.
+Ensure you use `2024-12-01-preview` or a later version that supports reasoning models.
+:::
+
 ### Tool Calling
 
 LangChain offers a unified way to connect tools to language models.
