@@ -32,6 +32,7 @@ Refer to the prerequisites outlined [here](../overview-cloud-sdk-for-ai-js#prere
 This tutorial assumes a basic understanding of TypeScript and asynchronous programming.
 
 In addition, you will need:
+
 - An object store (S3-compatible) configured as a secret in SAP AI Core.
 - An `AI-Resource-Group` value identifying your resource group in SAP AI Core. You can find this in the SAP AI Core service instance settings or from your administrator.
 
@@ -42,7 +43,6 @@ Install the required dependencies:
 ```bash
 npm install @sap-ai-sdk/batch-api
 ```
-
 
 ## Step 1 — Configure an Object Store Secret
 
@@ -63,11 +63,11 @@ Each line represents one LLM chat completion request:
 {"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-4.1", "messages": [{"role": "user", "content": "Explain neural networks in simple terms"}], "max_tokens": 150}}
 ```
 
-| Field | Description |
-|---|---|
-| `custom_id` | Unique identifier used to match results back to their input request |
-| `url` | Always `/v1/chat/completions` |
-| `body` | Standard chat completion request body (model, messages, max_tokens, etc.) |
+| Field       | Description                                                               |
+| ----------- | ------------------------------------------------------------------------- |
+| `custom_id` | Unique identifier used to match results back to their input request       |
+| `url`       | Always `/v1/chat/completions`                                             |
+| `body`      | Standard chat completion request body (model, messages, max_tokens, etc.) |
 
 Upload this file to your object store before creating a batch job.
 Use the URI format `ai://<secret-name>/input-batch.jsonl` to reference it.
@@ -81,15 +81,15 @@ For uploading files to object store, you can use [rclone](https://rclone.org) or
 ```ts
 import { BatchesApi } from '@sap-ai-sdk/batch-api';
 
-const response = await BatchesApi
-  .batchServiceControllerBatchControllerCreateBatch({
+const response =
+  await BatchesApi.batchServiceControllerBatchControllerCreateBatch({
     type: 'llm-native',
     input: { uri: 'ai://s3secret/input-batch.jsonl' },
     output: { uri: 'ai://s3secret/' },
     spec: { provider: 'azure-openai', model: 'gpt-4.1' }
   })
-  .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
-  .execute();
+    .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
+    .execute();
 
 console.log('Batch job created:', response.id);
 ```
@@ -115,10 +115,12 @@ const TERMINAL_STATUSES = ['COMPLETED', 'FAILED', 'CANCELLED'];
 
 await retry(
   async () => {
-    const { current_status } = await BatchesApi
-      .batchServiceControllerBatchControllerGetBatchStatus(response.id)
-      .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
-      .execute();
+    const { current_status } =
+      await BatchesApi.batchServiceControllerBatchControllerGetBatchStatus(
+        response.id
+      )
+        .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
+        .execute();
 
     console.log('Current status:', current_status);
 
@@ -131,15 +133,15 @@ await retry(
 
 The possible statuses are:
 
-| Status | Description |
-|---|---|
-| `PENDING` | Job is queued |
+| Status            | Description                                |
+| ----------------- | ------------------------------------------ |
+| `PENDING`         | Job is queued                              |
 | `PREPARING_INPUT` | Input file is being read from object store |
-| `RUNNING` | LLM requests are being processed |
-| `COMPLETED` | All requests finished successfully |
-| `FAILED` | Job failed |
-| `CANCELLING` | Cancellation is in progress |
-| `CANCELLED` | Job was cancelled |
+| `RUNNING`         | LLM requests are being processed           |
+| `COMPLETED`       | All requests finished successfully         |
+| `FAILED`          | Job failed                                 |
+| `CANCELLING`      | Cancellation is in progress                |
+| `CANCELLED`       | Job was cancelled                          |
 
 ## Step 5 — Retrieve Results
 
@@ -159,22 +161,22 @@ Each line corresponds to one input request, matched via `custom_id`:
 {"custom_id": "request-2", "response": {"status_code": 200, "body": {"id": "chatcmpl-def", "object": "chat.completion", "model": "gpt-4.1-2025-04-14", "choices": [{"index": 0, "message": {"role": "assistant", "content": "Neural networks are computing systems..."}, "finish_reason": "stop"}], "usage": {"prompt_tokens": 13, "completion_tokens": 42, "total_tokens": 55}}}, "error": null}
 ```
 
-| Field | Description |
-|---|---|
-| `custom_id` | Matches the request from the input file |
-| `response.status_code` | HTTP status code (200 for success) |
-| `response.body` | Full chat completion response (same structure as a standard LLM response) |
-| `error` | Error details if the individual request failed; `null` on success |
+| Field                  | Description                                                               |
+| ---------------------- | ------------------------------------------------------------------------- |
+| `custom_id`            | Matches the request from the input file                                   |
+| `response.status_code` | HTTP status code (200 for success)                                        |
+| `response.body`        | Full chat completion response (same structure as a standard LLM response) |
+| `error`                | Error details if the individual request failed; `null` on success         |
 
 ## Manage Batch Jobs
 
 **List all batch jobs:**
 
 ```ts
-const { resources } = await BatchesApi
-  .batchServiceControllerBatchControllerListBatches()
-  .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
-  .execute();
+const { resources } =
+  await BatchesApi.batchServiceControllerBatchControllerListBatches()
+    .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
+    .execute();
 
 console.log(`Total jobs: ${resources.length}`);
 ```
@@ -182,8 +184,7 @@ console.log(`Total jobs: ${resources.length}`);
 **Cancel a running job:**
 
 ```ts
-await BatchesApi
-  .batchServiceControllerBatchControllerCancelBatch(batchId)
+await BatchesApi.batchServiceControllerBatchControllerCancelBatch(batchId)
   .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
   .execute();
 ```
@@ -191,8 +192,7 @@ await BatchesApi
 **Delete a job:**
 
 ```ts
-await BatchesApi
-  .batchServiceControllerBatchControllerDeleteBatch(batchId)
+await BatchesApi.batchServiceControllerBatchControllerDeleteBatch(batchId)
   .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
   .execute();
 ```
