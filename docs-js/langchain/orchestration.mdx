@@ -68,6 +68,60 @@ const response = await client.invoke(history, {
 });
 ```
 
+### Module Fallback
+
+The [`OrchestrationClient`](pathname:///api/v2/classes/langchain_src.OrchestrationClient.html) supports module fallback, which allows you to provide multiple orchestration configurations that are tried in sequence until one succeeds.
+Pass a non-empty array of [`LangChainOrchestrationModuleConfig`](pathname:///api/v2/types/langchain_src.LangChainOrchestrationModuleConfig.html) objects when initializing the client, using the [`LangChainOrchestrationModuleConfigList`](pathname:///api/v2/types/langchain_src.LangChainOrchestrationModuleConfigList.html) type.
+
+For a full explanation of when fallback is triggered and how it works with the orchestration service, refer to [Module Fallback](../orchestration/chat-completion#module-fallback) in the orchestration documentation.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfigList } from '@sap-ai-sdk/langchain';
+
+const orchestrationConfigs: LangChainOrchestrationModuleConfigList = [
+  {
+    // Primary configuration — fails if the model is unavailable
+    promptTemplating: {
+      model: {
+        name: 'gpt-5',
+        timeout: 10 // seconds; triggers fallback on timeout (non-streaming only)
+      }
+    }
+  },
+  {
+    // Fallback configuration
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku'
+      }
+    }
+  }
+];
+
+const response = await new OrchestrationClient(orchestrationConfigs).invoke([
+  { role: 'user', content: 'Tell me about SAP Cloud SDK.' }
+]);
+```
+
+Module fallback also works with the `stream()` method.
+Note that in streaming scenarios, only model unavailability triggers fallback.
+Unlike non-streaming requests, timeouts will not trigger fallback during streaming.
+
+```ts
+import type { AIMessageChunk } from '@langchain/core/messages';
+
+const client = new OrchestrationClient(orchestrationConfigs);
+const stream = await client.stream([
+  { role: 'user', content: 'Tell me about SAP Cloud SDK.' }
+]);
+
+let finalOutput: AIMessageChunk | undefined;
+for await (const chunk of stream) {
+  finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+}
+```
+
 ### Streaming
 
 The client supports streaming responses for chat completion requests.
