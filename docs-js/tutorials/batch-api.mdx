@@ -1,0 +1,220 @@
+---
+id: using-llm-batch-api
+title: Processing Batch LLM Requests with the Batch API
+sidebar_label: LLM Batch API
+description: Learn how to submit and manage asynchronous LLM batch jobs using the SAP AI SDK for JavaScript.
+keywords:
+  - tutorial
+  - batch api
+  - llm
+  - async
+  - object store
+  - jsonl
+---
+
+## Introduction
+
+This tutorial demonstrates how to use the LLM Batch API to process multiple LLM requests asynchronously.
+Instead of sending individual requests to the LLM in real time, batch processing lets you submit hundreds of requests in a single job — reducing cost and avoiding rate limits.
+
+A typical workflow looks like this:
+
+1. Configure an S3 object store secret in BPT Cockpit instances.
+2. Upload an input file (JSONL) to the object store.
+3. Create a batch job referencing the input file.
+4. Poll for completion.
+5. Retrieve results from the object store.
+
+## Prerequisites
+
+Refer to the prerequisites outlined [here](../overview-cloud-sdk-for-ai-js#prerequisites).
+
+This tutorial assumes a basic understanding of TypeScript and asynchronous programming.
+
+In addition, you will need:
+
+- An object store (S3-compatible) configured as a secret in SAP AI Core.
+- An `AI-Resource-Group` value identifying your resource group in SAP AI Core. You can find this in the SAP AI Core service instance settings or from your administrator.
+
+## Installation
+
+Install the required dependencies:
+
+```bash
+npm install @sap-ai-sdk/batch-api
+```
+
+## Step 1 — Configure an Object Store Secret
+
+The batch service reads input files and writes output files directly to an S3-compatible object store.
+You must register your object store credentials as a secret in SAP AI Core before creating a batch job.
+
+Refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret) for how to create an object store secret.
+
+Once registered, reference it in your batch job using the `ai://<secret-name>/` URI format.
+
+## Step 2 — Prepare the Input File
+
+The input file must be in **JSONL format** — one JSON object per line.
+Each line represents one LLM chat completion request:
+
+```jsonl
+{"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-4.1", "messages": [{"role": "user", "content": "What is machine learning?"}], "max_tokens": 150}}
+{"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-4.1", "messages": [{"role": "user", "content": "Explain neural networks in simple terms"}], "max_tokens": 150}}
+```
+
+| Field       | Description                                                               |
+| ----------- | ------------------------------------------------------------------------- |
+| `custom_id` | Unique identifier used to match results back to their input request       |
+| `url`       | Always `/v1/chat/completions`                                             |
+| `body`      | Standard chat completion request body (model, messages, max_tokens, etc.) |
+
+Upload this file to your object store before creating a batch job.
+Use the URI format `ai://<secret-name>/input-batch.jsonl` to reference it.
+
+:::info
+For uploading files to object store, you can use [rclone](https://rclone.org) or [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) for quick access, or the AWS S3 SDK (`@aws-sdk/client-s3`) for programmatic use.
+:::
+
+## Step 3 — Create a Batch Job
+
+```ts
+import { BatchesApi } from '@sap-ai-sdk/batch-api';
+
+const response =
+  await BatchesApi.batchServiceControllerBatchControllerCreateBatch({
+    type: 'llm-native',
+    input: { uri: 'ai://s3secret/input-batch.jsonl' },
+    output: { uri: 'ai://s3secret/' },
+    spec: { provider: 'azure-openai', model: 'gpt-4.1' }
+  })
+    .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
+    .execute();
+
+console.log('Batch job created:', response.id);
+```
+
+The `AI-Resource-Group` header identifies the resource group in SAP AI Core that owns this batch job.
+
+:::note
+`AI-Main-Tenant` is a required internal header but is automatically injected by the infrastructure (Istio) for all production requests.
+You do not need to include it in your code.
+:::
+
+The response contains the batch job ID used to track its progress.
+
+## Step 4 — Poll for Completion
+
+Batch jobs are processed asynchronously.
+Use the status endpoint to poll until a terminal state is reached:
+
+```ts
+import retry from 'async-retry';
+
+const TERMINAL_STATUSES = ['COMPLETED', 'FAILED', 'CANCELLED'];
+
+await retry(
+  async () => {
+    const { current_status } =
+      await BatchesApi.batchServiceControllerBatchControllerGetBatchStatus(
+        response.id
+      )
+        .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
+        .execute();
+
+    console.log('Current status:', current_status);
+
+    if (TERMINAL_STATUSES.includes(current_status)) return;
+    throw new Error(`Job still in progress: ${current_status}`);
+  },
+  { retries: 20, minTimeout: 5000 }
+);
+```
+
+The possible statuses are:
+
+| Status            | Description                                |
+| ----------------- | ------------------------------------------ |
+| `PENDING`         | Job is queued                              |
+| `PREPARING_INPUT` | Input file is being read from object store |
+| `RUNNING`         | LLM requests are being processed           |
+| `COMPLETED`       | All requests finished successfully         |
+| `FAILED`          | Job failed                                 |
+| `CANCELLING`      | Cancellation is in progress                |
+| `CANCELLED`       | Job was cancelled                          |
+
+## Step 5 — Retrieve Results
+
+Once the job reaches `COMPLETED` status, the output JSONL file is written to the object store at:
+
+```
+{output.uri}{batchId}/output.jsonl
+```
+
+For example, if `output.uri` is `ai://s3secret/`, the output file will be at `ai://s3secret/{batchId}/output.jsonl`.
+
+Download it from the object store using rclone, s3fs-fuse, or the AWS S3 SDK.
+Each line corresponds to one input request, matched via `custom_id`:
+
+```jsonl
+{"custom_id": "request-1", "response": {"status_code": 200, "body": {"id": "chatcmpl-abc", "object": "chat.completion", "model": "gpt-4.1-2025-04-14", "choices": [{"index": 0, "message": {"role": "assistant", "content": "Machine learning is a subset of AI..."}, "finish_reason": "stop"}], "usage": {"prompt_tokens": 12, "completion_tokens": 45, "total_tokens": 57}}}, "error": null}
+{"custom_id": "request-2", "response": {"status_code": 200, "body": {"id": "chatcmpl-def", "object": "chat.completion", "model": "gpt-4.1-2025-04-14", "choices": [{"index": 0, "message": {"role": "assistant", "content": "Neural networks are computing systems..."}, "finish_reason": "stop"}], "usage": {"prompt_tokens": 13, "completion_tokens": 42, "total_tokens": 55}}}, "error": null}
+```
+
+| Field                  | Description                                                               |
+| ---------------------- | ------------------------------------------------------------------------- |
+| `custom_id`            | Matches the request from the input file                                   |
+| `response.status_code` | HTTP status code (200 for success)                                        |
+| `response.body`        | Full chat completion response (same structure as a standard LLM response) |
+| `error`                | Error details if the individual request failed; `null` on success         |
+
+## Manage Batch Jobs
+
+**List all batch jobs:**
+
+```ts
+const { resources } =
+  await BatchesApi.batchServiceControllerBatchControllerListBatches()
+    .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
+    .execute();
+
+console.log(`Total jobs: ${resources.length}`);
+```
+
+**Cancel a running job:**
+
+```ts
+await BatchesApi.batchServiceControllerBatchControllerCancelBatch(batchId)
+  .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
+  .execute();
+```
+
+**Delete a job:**
+
+```ts
+await BatchesApi.batchServiceControllerBatchControllerDeleteBatch(batchId)
+  .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
+  .execute();
+```
+
+:::note
+A batch job can only be deleted after it reaches a terminal status: `COMPLETED`, `FAILED`, or `CANCELLED`.
+:::
+
+:::caution
+Deleting a batch job removes only the job metadata from the service.
+The corresponding output file in your object store (e.g. `{batchId}/output.jsonl`) is **not** deleted.
+Since the object store is owned and managed by you, cleanup of S3 files is your responsibility.
+:::
+
+## Summary
+
+This tutorial demonstrates how to process multiple LLM requests asynchronously using the Batch API:
+
+- Configuring an object store secret in SAP AI Core and uploading an input JSONL file.
+- Creating a batch job with `type: 'llm-native'` and object store URIs for input and output.
+- Polling for job completion using terminal status checks (`COMPLETED`, `FAILED`, `CANCELLED`).
+- Retrieving output results from object store at `{batchId}/output.jsonl`, matched to inputs via `custom_id`.
+- Managing jobs with list, cancel, and delete operations.
+
+Explore additional AI capabilities in the [SAP AI SDK documentation](../overview-cloud-sdk-for-ai-js).

@@ -58,6 +58,7 @@ module.exports = {
       items: [
         'tutorials/getting-started-with-agents',
         'tutorials/using-scoped-prompt-registry-templates',
+        'tutorials/using-llm-batch-api',
         {
           type: 'link',
           label: 'TechEd: Build Your Own AI Agent',
