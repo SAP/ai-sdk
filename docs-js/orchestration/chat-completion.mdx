@@ -439,8 +439,12 @@ const response = await orchestrationClient.chatCompletion({
 ```
 
 :::info Messages with Prompt Template References
-When using a `template_ref`, messages passed to `chatCompletion()` or `stream()` are automatically appended to `messages_history` as they cannot be merged into the remote template.
-The messages defined in the template are appended after any existing `messagesHistory` entries.
+The `prompt` property is optional when storing a template in the Prompt Registry, meaning a template can be stored without defining any prompt text.
+In that case, provide messages via the `messages` property in `chatCompletion()` or `stream()` — they will be routed to `messages_history` automatically.
+
+When using a `template_ref`, messages passed to `chatCompletion()` or `stream()` are automatically appended to `messages_history` rather than merged into the remote template.
+The messages are appended after any existing `messagesHistory` entries.
+All configured orchestration modules are applied to `messages_history`.
 :::
 
 A prompt template can be referenced either by ID, or by a combination of name, scenario and version.
@@ -1456,8 +1460,12 @@ console.log(response.getContent());
 ```
 
 :::info Messages with Orchestration Configuration References
-When initializing the client with an orchestration configuration reference, any messages passed to `chatCompletion()` or `stream()` are automatically appended to `messages_history` as they cannot be merged into the stored configuration's prompt template.
-The messages defined in the template are appended after any existing `messagesHistory` entries.
+The `prompt` property is optional when storing an orchestration configuration, meaning a configuration can be stored without defining any prompt text.
+In that case, provide messages via the `messages` property in `chatCompletion()` or `stream()` — they will be routed to `messages_history` automatically.
+
+When initializing the client with an orchestration configuration reference, any messages passed to `chatCompletion()` or `stream()` are automatically appended to `messages_history` rather than merged into the stored configuration's prompt template.
+The messages are appended after any existing `messagesHistory` entries.
+All configured orchestration modules are applied to `messages_history`.
 :::
 
 :::note
