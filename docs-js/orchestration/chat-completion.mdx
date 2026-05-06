@@ -439,10 +439,7 @@ const response = await orchestrationClient.chatCompletion({
 ```
 
 :::info Messages with Prompt Template References
-The `prompt` property is optional when storing a template in the Prompt Registry, meaning a template can be stored without defining any prompt text.
-In that case, provide messages via the `messages` property in `chatCompletion()` or `stream()` — they will be routed to `messages_history` automatically.
-
-When using a `template_ref`, messages passed to `chatCompletion()` or `stream()` are automatically appended to `messages_history` rather than merged into the remote template.
+When using a `template_ref`, messages passed to `chatCompletion()` or `stream()` are automatically appended to `messages_history` as they cannot be merged into the remote template.
 The messages are appended after any existing `messagesHistory` entries.
 All configured orchestration modules are applied to `messages_history`.
 :::
