@@ -22,7 +22,7 @@ jobs:
           echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_OUTPUT
       - name: Vale Linter
         # vale fails if the PR is too large, e.g. when updating API docs
-        if: ${{ github.event.pull_request.changed_files < 100 }}
+        if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.CHANGED_FILES != '' }}
         env:
           # Required
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
