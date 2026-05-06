@@ -1457,11 +1457,8 @@ console.log(response.getContent());
 ```
 
 :::info Messages with Orchestration Configuration References
-The `prompt` property is optional when storing an orchestration configuration, meaning a configuration can be stored without defining any prompt text.
-In that case, provide messages via the `messages` property in `chatCompletion()` or `stream()` — they will be routed to `messages_history` automatically.
-
-When initializing the client with an orchestration configuration reference, any messages passed to `chatCompletion()` or `stream()` are automatically appended to `messages_history` rather than merged into the stored configuration's prompt template.
-The messages are appended after any existing `messagesHistory` entries.
+When initializing the client with an orchestration configuration reference, any messages passed to `chatCompletion()` or `stream()` are automatically appended to `messages_history` as they cannot be merged into the stored configuration's prompt template.
+The messages defined in the template are appended after any existing `messagesHistory` entries.
 All configured orchestration modules are applied to `messages_history`.
 :::
 
