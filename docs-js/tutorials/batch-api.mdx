@@ -17,6 +17,10 @@ keywords:
 This tutorial demonstrates how to use the LLM Batch API to process multiple LLM requests asynchronously.
 Instead of sending individual requests to the LLM in real time, batch processing lets you submit hundreds of requests in a single job — reducing cost and avoiding rate limits.
 
+:::note
+The Batch API currently supports **Azure OpenAI models** only.
+:::
+
 A typical workflow looks like this:
 
 1. Configure an S3 object store secret in BPT Cockpit instances.
@@ -73,7 +77,7 @@ Upload this file to your object store before creating a batch job.
 Use the URI format `ai://<secret-name>/input-batch.jsonl` to reference it.
 
 :::info
-For uploading files to object store, you can use [rclone](https://rclone.org) or [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) for quick access, or the AWS S3 SDK (`@aws-sdk/client-s3`) for programmatic use.
+For uploading files to the object store, you can use [rclone](https://rclone.org) or [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse).
 :::
 
 ## Step 3 — Create a Batch Job
@@ -81,15 +85,15 @@ For uploading files to object store, you can use [rclone](https://rclone.org) or
 ```ts
 import { BatchesApi } from '@sap-ai-sdk/batch-api';
 
-const response =
-  await BatchesApi.batchServiceControllerBatchControllerCreateBatch({
+const response = await BatchesApi.createBatch(
+  {
     type: 'llm-native',
     input: { uri: 'ai://s3secret/input-batch.jsonl' },
     output: { uri: 'ai://s3secret/' },
     spec: { provider: 'azure-openai', model: 'gpt-4.1' }
-  })
-    .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
-    .execute();
+  },
+  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
+).execute();
 
 console.log('Batch job created:', response.id);
 ```
@@ -115,12 +119,9 @@ const TERMINAL_STATUSES = ['COMPLETED', 'FAILED', 'CANCELLED'];
 
 await retry(
   async () => {
-    const { current_status } =
-      await BatchesApi.batchServiceControllerBatchControllerGetBatchStatus(
-        response.id
-      )
-        .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
-        .execute();
+    const { current_status } = await BatchesApi.getBatchStatus(response.id, {
+      'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+    }).execute();
 
     console.log('Current status:', current_status);
 
@@ -153,7 +154,17 @@ Once the job reaches `COMPLETED` status, the output JSONL file is written to the
 
 For example, if `output.uri` is `ai://s3secret/`, the output file will be at `ai://s3secret/{batchId}/output.jsonl`.
 
-Download it from the object store using rclone, s3fs-fuse, or the AWS S3 SDK.
+Download the output file using `FileApi` from `@sap-ai-sdk/ai-api`:
+
+```ts
+import { FileApi } from '@sap-ai-sdk/ai-api';
+
+const outputBlob = await FileApi.fileDownload(
+  `s3secret//${response.id}/output.jsonl`,
+  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
+).execute();
+```
+
 Each line corresponds to one input request, matched via `custom_id`:
 
 ```jsonl
@@ -173,28 +184,35 @@ Each line corresponds to one input request, matched via `custom_id`:
 **List all batch jobs:**
 
 ```ts
-const { resources } =
-  await BatchesApi.batchServiceControllerBatchControllerListBatches()
-    .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
-    .execute();
+const { resources } = await BatchesApi.listBatches({
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
 
-console.log(`Total jobs: ${resources.length}`);
+console.log(`Total jobs: ${resources?.length}`);
+```
+
+**Get job details:**
+
+```ts
+const details = await BatchesApi.getBatchById(batchId, {
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
 ```
 
 **Cancel a running job:**
 
 ```ts
-await BatchesApi.batchServiceControllerBatchControllerCancelBatch(batchId)
-  .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
-  .execute();
+await BatchesApi.cancelBatch(batchId, {
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
 ```
 
 **Delete a job:**
 
 ```ts
-await BatchesApi.batchServiceControllerBatchControllerDeleteBatch(batchId)
-  .addCustomHeaders({ 'AI-Resource-Group': 'MY_RESOURCE_GROUP' })
-  .execute();
+await BatchesApi.deleteBatch(batchId, {
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
 ```
 
 :::note
