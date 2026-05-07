@@ -25,7 +25,7 @@ Currently, the Batch API supports **Azure OpenAI models** only.
 ## Installation
 
 ```bash
-npm install @sap-ai-sdk/batch-api
+npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api
 ```
 
 ## Making Requests
@@ -95,7 +95,8 @@ The possible statuses are:
 Once the job reaches `COMPLETED` status, download the output file from the object store.
 The output is written to `{output.uri}{batchId}/output.jsonl`.
 
-Use `FileApi` from `@sap-ai-sdk/ai-api` to download the file:
+Use `FileApi` from `@sap-ai-sdk/ai-api` to download the file.
+The path format is `<secret-name>//<batchId>/output.jsonl` — note the double slash, which is required by the API:
 
 ```ts
 import { FileApi } from '@sap-ai-sdk/ai-api';

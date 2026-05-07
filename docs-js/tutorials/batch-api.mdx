@@ -154,7 +154,8 @@ Once the job reaches `COMPLETED` status, the output JSONL file is written to the
 
 For example, if `output.uri` is `ai://s3secret/`, the output file will be at `ai://s3secret/{batchId}/output.jsonl`.
 
-Download the output file using `FileApi` from `@sap-ai-sdk/ai-api`:
+Download the output file using `FileApi` from `@sap-ai-sdk/ai-api`.
+The path format is `<secret-name>//<batchId>/output.jsonl` — note the double slash, which is required by the API:
 
 ```ts
 import { FileApi } from '@sap-ai-sdk/ai-api';
