@@ -199,7 +199,7 @@ You can import a declarative prompt template as a single file export in yaml for
 ```java
 PromptClient client = new PromptClient();
 
-byte[] template = new ClassPathResource("prompt-template.yaml").getContentAsByteArray();
+File template = new ClassPathResource("prompt-template.yaml").getFile();
 PromptTemplatePostResponse response = promptClient.importPromptTemplate("default", null, template);
 ```
 
