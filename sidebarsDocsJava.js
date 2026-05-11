@@ -56,9 +56,9 @@ module.exports = {
     'release-notes',
     'frequently-asked-questions',
     {
-          type: 'link',
-          label: 'API Reference',
-          href: `pathname:///java-api/v1/index.html`
+      type: 'link',
+      label: 'API Reference',
+      href: `pathname:///java-api/v1/index.html`
     },
     {
       type: 'link',
