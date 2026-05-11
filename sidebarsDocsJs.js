@@ -72,6 +72,7 @@ module.exports = {
     },
     'error-handling',
     'release-notes',
+    'release-policy',
     'upgrade-guide',
     'frequently-asked-questions',
     {
