@@ -89,7 +89,7 @@ const response = await BatchesApi.createBatch(
   {
     type: 'llm-native',
     input: { uri: 'ai://s3secret/input-batch.jsonl' },
-    output: { uri: 'ai://s3secret/' },
+    output: { uri: 'ai://s3secret/output/' },
     spec: { provider: 'azure-openai', model: 'gpt-4.1' }
   },
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
@@ -152,16 +152,16 @@ Once the job reaches `COMPLETED` status, the output JSONL file is written to the
 {output.uri}{batchId}/output.jsonl
 ```
 
-For example, if `output.uri` is `ai://s3secret/`, the output file will be at `ai://s3secret/{batchId}/output.jsonl`.
+For example, if `output.uri` is `ai://s3secret/output/`, the output file will be at `ai://s3secret/output/{batchId}/output.jsonl`.
 
 Download the output file using `FileApi` from `@sap-ai-sdk/ai-api`.
-The path format is `<secret-name>//<batchId>/output.jsonl` — note the double slash, which is required by the API:
+The path format is `<secret-name>//<path>` where `//` separates the secret name from the S3 path:
 
 ```ts
 import { FileApi } from '@sap-ai-sdk/ai-api';
 
 const outputBlob = await FileApi.fileDownload(
-  `s3secret//${response.id}/output.jsonl`,
+  `s3secret//output/${response.id}/output.jsonl`,
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
 ).execute();
 ```
