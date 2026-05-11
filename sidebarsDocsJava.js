@@ -56,6 +56,11 @@ module.exports = {
     'release-notes',
     'frequently-asked-questions',
     {
+          type: 'link',
+          label: 'API Reference',
+          href: `pathname:///java-api/v1/index.html`
+    },
+    {
       type: 'link',
       label: 'Maven Central',
       href: 'https://central.sonatype.com/search?q=g:com.sap.ai.sdk*&smo=true'
