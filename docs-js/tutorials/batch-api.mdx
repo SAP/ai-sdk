@@ -37,8 +37,8 @@ This tutorial assumes a basic understanding of TypeScript and asynchronous progr
 
 In addition, you will need:
 
-- An object store (S3-compatible) configured as a secret in SAP AI Core.
-- An `AI-Resource-Group` value identifying your resource group in SAP AI Core.
+- An object store configured as a secret in SAP AI Core (S3, WebHDFS, and other backends are supported — see the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret)).
+- An `AI-Resource-Group` value identifying your resource group in SAP AI Core. You can find this in the SAP AI Core service instance settings or from your administrator.
 
 ## Installation
 
@@ -77,9 +77,27 @@ Each line represents one LLM chat completion request:
 Upload this file to your object store before creating a batch job.
 Use the URI format `ai://<secret-name>/input-batch.jsonl` to reference it.
 
-:::info
-For uploading files to the object store, you can use [rclone](https://rclone.org) or [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse).
-:::
+You can upload the file programmatically using `FileApi` from `@sap-ai-sdk/ai-api`:
+
+```ts
+import { FileApi } from '@sap-ai-sdk/ai-api';
+
+const content = [
+  '{"custom_id":"request-1","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"What is machine learning?"}],"max_tokens":150}}',
+  '{"custom_id":"request-2","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"Explain neural networks in simple terms"}],"max_tokens":150}}'
+].join('\n');
+
+const blob = new Blob([content], { type: 'application/octet-stream' });
+
+await FileApi.fileUpload(
+  's3secret//input-batch.jsonl',
+  blob,
+  { overwrite: true },
+  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
+).execute();
+```
+
+The path format is `<secret-name>//<path>` where `//` separates the secret name from the object store path.
 
 ## Step 3 — Create a Batch Job
 
@@ -105,28 +123,21 @@ The response contains the batch job ID used to track its progress.
 
 ## Step 4 — Poll for Completion
 
-Batch jobs are processed asynchronously.
-Use the status endpoint to poll until a terminal state is reached:
+Batch jobs are processed asynchronously and can take anywhere from minutes to hours depending on the number of requests.
+Use the status endpoint to check progress:
 
 ```ts
-import retry from 'async-retry';
+const { current_status } = await BatchesApi.getBatchStatus(response.id, {
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
 
-const TERMINAL_STATUSES = ['COMPLETED', 'FAILED', 'CANCELLED'];
-
-await retry(
-  async () => {
-    const { current_status } = await BatchesApi.getBatchStatus(response.id, {
-      'AI-Resource-Group': 'MY_RESOURCE_GROUP'
-    }).execute();
-
-    console.log('Current status:', current_status);
-
-    if (TERMINAL_STATUSES.includes(current_status)) return;
-    throw new Error(`Job still in progress: ${current_status}`);
-  },
-  { retries: 20, minTimeout: 5000 }
-);
+console.log('Current status:', current_status);
 ```
+
+:::tip
+For large batches, avoid polling too frequently — checking every 30–60 minutes is usually sufficient.
+Batch jobs can run for up to 24 hours.
+:::
 
 The possible statuses are:
 
@@ -178,49 +189,8 @@ Each line corresponds to one input request, matched via `custom_id`:
 
 ## Manage Batch Jobs
 
-**List all batch jobs:**
-
-```ts
-const { resources } = await BatchesApi.listBatches({
-  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
-}).execute();
-
-console.log(`Total jobs: ${resources?.length}`);
-```
-
-**Get job details:**
-
-```ts
-const details = await BatchesApi.getBatchById(batchId, {
-  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
-}).execute();
-```
-
-**Cancel a running job:**
-
-```ts
-await BatchesApi.cancelBatch(batchId, {
-  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
-}).execute();
-```
-
-**Delete a job:**
-
-```ts
-await BatchesApi.deleteBatch(batchId, {
-  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
-}).execute();
-```
-
-:::note
-A batch job can only be deleted after it reaches a terminal status: `COMPLETED`, `FAILED`, or `CANCELLED`.
-:::
-
-:::caution
-Deleting a batch job removes only the job metadata from the service.
-The corresponding output file in your object store (e.g. `{batchId}/output.jsonl`) is **not** deleted.
-Since the object store is owned and managed by you, cleanup of S3 files is your responsibility.
-:::
+The Batch API also supports listing, cancelling, and deleting batch jobs.
+For the full management API reference, see [Batch — Managing Batch Jobs](../foundation-models/openai/batch#managing-batch-jobs).
 
 ## Summary
 

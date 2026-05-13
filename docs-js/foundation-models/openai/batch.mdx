@@ -34,7 +34,7 @@ A typical batch workflow consists of four steps: create a job, poll for completi
 
 ### Create a Batch Job
 
-Prepare an input file in **JSONL format** (one JSON object per line) and upload it to an S3-compatible object store registered as a secret in SAP AI Core.
+Prepare an input file in **JSONL format** (one JSON object per line) and upload it to an S3-compatible object store [registered as a secret](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret) in SAP AI Core.
 
 ```jsonl
 {"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-4.1", "messages": [{"role": "user", "content": "What is machine learning?"}], "max_tokens": 150}}
@@ -67,6 +67,10 @@ Poll the status endpoint until a terminal state is reached:
 ```ts
 const TERMINAL_STATUSES = ['COMPLETED', 'FAILED', 'CANCELLED'];
 
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 let status = '';
 while (!TERMINAL_STATUSES.includes(status)) {
   const result = await BatchesApi.getBatchStatus(response.id, {
@@ -75,8 +79,17 @@ while (!TERMINAL_STATUSES.includes(status)) {
 
   status = result.current_status ?? '';
   console.log('Current status:', status);
+
+  if (!TERMINAL_STATUSES.includes(status)) {
+    await delay(60_000); // wait 1 minute between polls
+  }
 }
 ```
+
+:::tip
+Batch jobs can take minutes to hours depending on the number of requests.
+Adjust the polling interval based on your expected workload — for large batches, consider polling every 30–60 minutes.
+:::
 
 The possible statuses are:
 
