@@ -38,7 +38,7 @@ This tutorial assumes a basic understanding of TypeScript and asynchronous progr
 In addition, you will need:
 
 - An object store (S3-compatible) configured as a secret in SAP AI Core.
-- An `AI-Resource-Group` value identifying your resource group in SAP AI Core. You can find this in the SAP AI Core service instance settings or from your administrator.
+- An `AI-Resource-Group` value identifying your resource group in SAP AI Core.
 
 ## Installation
 
@@ -46,6 +46,7 @@ Install the required dependencies:
 
 ```bash
 npm install @sap-ai-sdk/batch-api
+npm install @sap-ai-sdk/ai-api
 ```
 
 ## Step 1 — Configure an Object Store Secret
@@ -100,11 +101,6 @@ console.log('Batch job created:', response.id);
 
 The `AI-Resource-Group` header identifies the resource group in SAP AI Core that owns this batch job.
 
-:::note
-`AI-Main-Tenant` is a required internal header but is automatically injected by the infrastructure (Istio) for all production requests.
-You do not need to include it in your code.
-:::
-
 The response contains the batch job ID used to track its progress.
 
 ## Step 4 — Poll for Completion
@@ -149,7 +145,7 @@ The possible statuses are:
 Once the job reaches `COMPLETED` status, the output JSONL file is written to the object store at:
 
 ```
-{output.uri}{batchId}/output.jsonl
+{output.uri}/{batchId}/output.jsonl
 ```
 
 For example, if `output.uri` is `ai://s3secret/output/`, the output file will be at `ai://s3secret/output/{batchId}/output.jsonl`.
