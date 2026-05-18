@@ -155,9 +155,9 @@ The possible statuses are:
 
 Once the job reaches `COMPLETED` status, two files are written to the object store:
 
-| File | Description |
-| --- | --- |
-| `{output.uri}{batchId}/output.jsonl` | Successful responses |
+| File                                 | Description             |
+| ------------------------------------ | ----------------------- |
+| `{output.uri}{batchId}/output.jsonl` | Successful responses    |
 | `{output.uri}{batchId}/errors.jsonl` | Failed requests, if any |
 
 For example, if `output.uri` is `ai://s3secret/output/`, the output file will be at `ai://s3secret/output/{batchId}/output.jsonl`.

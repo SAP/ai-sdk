@@ -37,10 +37,10 @@ jobs:
           BOT_EMAIL: ${{ secrets.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ secrets.SAP_AI_SDK_BOT_NAME }}
         run: |
+          git config user.email "$BOT_EMAIL"
+          git config user.name "$BOT_NAME"
           diff=`git diff`
           if [ ! -z "$diff" ]; then
-            git config user.email "$BOT_EMAIL"
-            git config user.name "$BOT_NAME"
             git commit -m "fix: Changes from lint" -a
             git push
           fi
