@@ -18,7 +18,7 @@ This tutorial demonstrates how to use the LLM Batch API to process multiple LLM 
 Instead of sending individual requests to the LLM in real time, batch processing lets you submit hundreds of requests in a single job — reducing cost and avoiding rate limits.
 
 :::note
-The Batch API currently supports **selected Azure OpenAI models** only.
+The Batch API supports **selected Azure OpenAI models** only.
 :::
 
 A typical workflow looks like this:
@@ -38,7 +38,7 @@ This tutorial assumes a basic understanding of TypeScript and asynchronous progr
 In addition, you will need:
 
 - An object store configured as a secret in SAP AI Core (S3, WebHDFS, and other backends are supported — see the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret)).
-- An `AI-Resource-Group` value identifying your resource group in SAP AI Core. You can find this in the SAP AI Core service instance settings or from your administrator.
+- An `AI-Resource-Group` value identifying your resource group in SAP AI Core.
 
 ## Installation
 
@@ -56,7 +56,7 @@ You must register your object store credentials as a secret in SAP AI Core befor
 
 Refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret) for how to create an object store secret.
 
-Once registered, reference it in your batch job using the `ai://<secret-name>/` URI format.
+Once registered, reference it in your batch job using the `ai://SECRET_NAME/` URI format.
 
 ## Step 2 — Prepare the Input File
 
@@ -77,7 +77,7 @@ Each line represents one LLM chat completion request:
 Upload this file to your object store before creating a batch job.
 Use the URI format `ai://<secret-name>/input-batch.jsonl` to reference it.
 
-You can upload the file programmatically using `FileApi` from `@sap-ai-sdk/ai-api`:
+Upload the file programmatically using `FileApi` from `@sap-ai-sdk/ai-api`:
 
 ```ts
 import { FileApi } from '@sap-ai-sdk/ai-api';
@@ -191,7 +191,7 @@ Each line corresponds to one input request, matched via `custom_id`:
 ## Manage Batch Jobs
 
 The Batch API also supports listing, cancelling, and deleting batch jobs.
-For the full management API reference, see [Batch — Managing Batch Jobs](../foundation-models/openai/batch#managing-batch-jobs).
+For the full management API reference, see [Batch — Managing Batch Jobs](../foundation-models/openai/batch.mdx#managing-batch-jobs).
 
 ## Summary
 
