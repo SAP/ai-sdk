@@ -31,7 +31,7 @@ A typical workflow looks like this:
 
 ## Prerequisites
 
-Refer to the [SAP AI SDK for JavaScript prerequisites](../overview-cloud-sdk-for-ai-js#prerequisites).
+Refer to the prerequisites outlined [here](../overview-cloud-sdk-for-ai-js#prerequisites).
 
 This tutorial assumes a basic understanding of TypeScript and asynchronous programming.
 
@@ -75,29 +75,28 @@ Each line represents one LLM chat completion request:
 | `body`      | Standard chat completion request body (model, messages, max_tokens, etc.) |
 
 Upload this file to your object store before creating a batch job.
-Use the URI format `ai://<secret-name>/input-batch.jsonl` to reference it.
+Use the URI format `ai://MY_OBJECT_STORE/input-batch.jsonl` to reference it.
 
 Upload the file programmatically using `FileApi` from `@sap-ai-sdk/ai-api`:
 
 ```ts
+import { AzureOpenAiBatchInput } from '@sap-ai-sdk/foundation-models';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 
-const content = [
-  '{"custom_id":"request-1","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"What is machine learning?"}],"max_tokens":150}}',
-  '{"custom_id":"request-2","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"Explain neural networks in simple terms"}],"max_tokens":150}}'
-].join('\n');
-
-const blob = new Blob([content]);
+const blob = new AzureOpenAiBatchInput(
+  { model: 'gpt-4.1', messages: [{ role: 'user', content: 'What is machine learning?' }], max_tokens: 150 },
+  { model: 'gpt-4.1', messages: [{ role: 'user', content: 'Explain neural networks in simple terms' }], max_tokens: 150 }
+).toBlob();
 
 await FileApi.fileUpload(
-  's3secret//input-batch.jsonl',
+  'MY_OBJECT_STORE//input-batch.jsonl',
   blob,
   { overwrite: true },
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
 ).execute(undefined, { headers: { 'content-type': 'text/csv' } });
 ```
 
-The path format is `<secret-name>//<path>` where `//` separates the secret name from the object store path.
+The path format is `SECRET_NAME//PATH` where `//` separates the secret name from the object store path.
 
 ## Step 3 — Create a Batch Job
 
@@ -107,8 +106,8 @@ import { BatchesApi } from '@sap-ai-sdk/batch-api';
 const response = await BatchesApi.createBatch(
   {
     type: 'llm-native',
-    input: { uri: 'ai://s3secret/input-batch.jsonl' },
-    output: { uri: 'ai://s3secret/output/' },
+    input: { uri: 'ai://MY_OBJECT_STORE/input-batch.jsonl' },
+    output: { uri: 'ai://MY_OBJECT_STORE/output/' },
     spec: { provider: 'azure-openai', model: 'gpt-4.1' }
   },
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
@@ -160,18 +159,32 @@ Once the job reaches `COMPLETED` status, two files are written to the object sto
 | `{output.uri}{batchId}/output.jsonl` | Successful responses    |
 | `{output.uri}{batchId}/errors.jsonl` | Failed requests, if any |
 
-For example, if `output.uri` is `ai://s3secret/output/`, the output file will be at `ai://s3secret/output/{batchId}/output.jsonl`.
+For example, if `output.uri` is `ai://MY_OBJECT_STORE/output/`, the output file will be at `ai://MY_OBJECT_STORE/output/{batchId}/output.jsonl`.
 
 Download the output file using `FileApi` from `@sap-ai-sdk/ai-api`.
-The path format is `<secret-name>//<path>` where `//` separates the secret name from the object store path:
+The path format is `SECRET_NAME//PATH` where `//` separates the secret name from the object store path:
 
 ```ts
+import { AzureOpenAiBatchOutput } from '@sap-ai-sdk/foundation-models';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 
-const outputBlob = await FileApi.fileDownload(
-  `s3secret//output/${response.id}/output.jsonl`,
+const blob = await FileApi.fileDownload(
+  `MY_OBJECT_STORE//output/${response.id}/output.jsonl`,
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
 ).execute();
+
+const output = await AzureOpenAiBatchOutput.from(blob);
+
+// Access typed responses
+output.getSuccessful().forEach(line => {
+  const content = line.response?.body?.choices[0].message.content;
+  console.log(line.custom_id, content);
+});
+
+// Check for failures
+output.getFailed().forEach(line => {
+  console.error(line.custom_id, line.error);
+});
 ```
 
 Each line corresponds to one input request, matched via `custom_id`:
