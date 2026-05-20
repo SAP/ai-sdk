@@ -198,6 +198,7 @@ module.exports = {
     ]
   ],
   customFields: {},
+  clientModules: [require.resolve('./src/clientModules/twoslash.js')],
   plugins: [
     [
       '@docusaurus/plugin-content-docs',
@@ -224,6 +225,7 @@ module.exports = {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: require.resolve('./sidebarsDocsJs.js'),
+        rehypePlugins: [require('./src/plugins/rehypeTwoslash.js')],
         lastVersion: 'current',
         versions: {
           current: {

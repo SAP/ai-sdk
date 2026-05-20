@@ -22,6 +22,7 @@
     "@docusaurus/plugin-content-docs": "^3.10.1",
     "@docusaurus/preset-classic": "^3.10.1",
     "@docusaurus/theme-common": "^3.2.1",
+    "@floating-ui/dom": "^1.7.6",
     "@saucelabs/theme-github-codeblock": "^0.3.0",
     "@tanstack/react-table": "^8.21.3",
     "buffer": "^6.0.3",
@@ -31,6 +32,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.2.6",
     "react-markdown": "^10.1.0",
+    "rehype-twoslash": "^1.1.1",
     "remark-emoji": "^5.0.2",
     "remark-gfm": "^4.0.1"
   },

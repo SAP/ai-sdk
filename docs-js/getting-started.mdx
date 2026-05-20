@@ -79,3 +79,63 @@ AICORE_SERVICE_KEY='{
 Load the `.env` file by using [dotenv](https://www.npmjs.com/package/dotenv) or running `node --env-file=.env ...`.
 
 Refer to [Providing a Service Binding Locally](connecting-to-ai-core#providing-a-service-binding-locally) section for more information.
+
+## Twoslash Demo
+
+The following examples show how TypeScript type information is surfaced inline in code blocks.
+Hover over highlighted tokens to see their types.
+
+### Type Queries
+
+Use `// ^?` on the line below a symbol to show its inferred type:
+
+```ts twoslash
+const model = 'gpt-5';
+//    ^?
+```
+
+```ts twoslash
+const messages = [
+  { role: 'user' as const, content: 'Hello!' }
+];
+//    ^?
+```
+
+### Type Narrowing
+
+TypeScript's control flow analysis is shown inline:
+
+```ts twoslash
+function formatResponse(content: string | null): string {
+  if (content === null) {
+    return 'No response';
+  }
+  return content.toUpperCase();
+  //     ^?
+}
+```
+
+### Compiler Errors
+
+Use `// @errors:` to document expected TypeScript errors — the error is shown as a wavy underline with a tooltip:
+
+```ts twoslash
+// @errors: 2322
+const temperature: number = 'warm';
+```
+
+### Object Shape
+
+Inspect the shape of a structured object:
+
+```ts twoslash
+const requestConfig = {
+  messages: [{ role: 'user' as const, content: 'Hi' }],
+  max_tokens: 100,
+  temperature: 0.7
+};
+
+type RequestConfig = typeof requestConfig;
+//   ^?
+```
+
