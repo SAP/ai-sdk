@@ -83,6 +83,7 @@ www
 semver
 XML
 MDX
+PDF
 classpath
 [Ss]ervlet
 [Aa]ccessor
