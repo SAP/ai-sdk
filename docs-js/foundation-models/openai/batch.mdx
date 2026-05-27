@@ -48,7 +48,9 @@ const blob = createBatchInput([
   },
   {
     model: 'gpt-4.1',
-    messages: [{ role: 'user', content: 'Explain neural networks in simple terms' }],
+    messages: [
+      { role: 'user', content: 'Explain neural networks in simple terms' }
+    ],
     max_tokens: 150
   }
 ]);
