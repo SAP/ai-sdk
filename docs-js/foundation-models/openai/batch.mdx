@@ -25,7 +25,7 @@ The Batch API supports **Azure OpenAI models** only.
 ## Installation
 
 ```bash
-npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api
+npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
 ```
 
 ## Making Requests
@@ -34,11 +34,31 @@ A typical batch workflow consists of four steps: create a job, poll for completi
 
 ### Create a Batch Job
 
-Prepare an input file in **JSONL format** (one JSON object per line) and upload it to an object store [registered as a secret](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret) in SAP AI Core.
+Use `createBatchInput` from `@sap-ai-sdk/foundation-models` to generate the input Blob from typed chat completion requests and upload it to an object store [registered as a secret](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret) in SAP AI Core:
 
-```jsonl
-{"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-4.1", "messages": [{"role": "user", "content": "What is machine learning?"}], "max_tokens": 150}}
-{"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-4.1", "messages": [{"role": "user", "content": "Explain neural networks in simple terms"}], "max_tokens": 150}}
+```ts
+import { createBatchInput } from '@sap-ai-sdk/foundation-models';
+import { FileApi } from '@sap-ai-sdk/ai-api';
+
+const blob = createBatchInput([
+  {
+    model: 'gpt-4.1',
+    messages: [{ role: 'user', content: 'What is machine learning?' }],
+    max_tokens: 150
+  },
+  {
+    model: 'gpt-4.1',
+    messages: [{ role: 'user', content: 'Explain neural networks in simple terms' }],
+    max_tokens: 150
+  }
+]);
+
+await FileApi.fileUpload(
+  'MY_OBJECT_STORE/input-batch.jsonl',
+  blob,
+  { overwrite: true },
+  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
+).execute(undefined, { headers: { 'content-type': 'text/csv' } });
 ```
 
 Then create the batch job referencing the input file and an output directory using the `ai://SECRET_NAME/` URI format:
@@ -108,18 +128,6 @@ The possible statuses are:
 Once the job reaches `COMPLETED` status, download the output file from the object store.
 The output is written to `{output.uri}{batchId}/output.jsonl`.
 For example, if `output.uri` is `ai://MY_OBJECT_STORE/output/`, the file will be at `ai://MY_OBJECT_STORE/output/{batchId}/output.jsonl`.
-
-Use `FileApi` from `@sap-ai-sdk/ai-api` to download the file.
-The path format is `SECRET_NAME//PATH` where `//` separates the secret name from the object store path:
-
-```ts
-import { FileApi } from '@sap-ai-sdk/ai-api';
-
-const outputBlob = await FileApi.fileDownload(
-  `MY_OBJECT_STORE//output/${response.id}/output.jsonl`,
-  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
-).execute();
-```
 
 Each line in the output JSONL corresponds to one input request, matched via `custom_id`:
 

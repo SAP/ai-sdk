@@ -45,8 +45,7 @@ In addition, you will need:
 Install the required dependencies:
 
 ```bash
-npm install @sap-ai-sdk/batch-api
-npm install @sap-ai-sdk/ai-api
+npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
 ```
 
 ## Step 1 — Configure an Object Store Secret
@@ -80,10 +79,10 @@ Use the URI format `ai://MY_OBJECT_STORE/input-batch.jsonl` to reference it.
 Upload the file programmatically using `FileApi` from `@sap-ai-sdk/ai-api`:
 
 ```ts
-import { AzureOpenAiBatchInput } from '@sap-ai-sdk/foundation-models';
+import { createBatchInput } from '@sap-ai-sdk/foundation-models';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 
-const blob = new AzureOpenAiBatchInput(
+const blob = createBatchInput([
   {
     model: 'gpt-4.1',
     messages: [{ role: 'user', content: 'What is machine learning?' }],
@@ -96,17 +95,15 @@ const blob = new AzureOpenAiBatchInput(
     ],
     max_tokens: 150
   }
-).toBlob();
+]);
 
 await FileApi.fileUpload(
-  'MY_OBJECT_STORE//input-batch.jsonl',
+  'MY_OBJECT_STORE/input-batch.jsonl',
   blob,
   { overwrite: true },
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
 ).execute(undefined, { headers: { 'content-type': 'text/csv' } });
 ```
-
-The path format is `SECRET_NAME//PATH` where `//` separates the secret name from the object store path.
 
 ## Step 3 — Create a Batch Job
 
@@ -171,30 +168,33 @@ Once the job reaches `COMPLETED` status, two files are written to the object sto
 
 For example, if `output.uri` is `ai://MY_OBJECT_STORE/output/`, the output file will be at `ai://MY_OBJECT_STORE/output/{batchId}/output.jsonl`.
 
-Download the output file using `FileApi` from `@sap-ai-sdk/ai-api`.
-The path format is `SECRET_NAME//PATH` where `//` separates the secret name from the object store path:
+Download the output file using `FileApi` from `@sap-ai-sdk/ai-api`:
 
 ```ts
-import { AzureOpenAiBatchOutput } from '@sap-ai-sdk/foundation-models';
+import { parseBatchOutput } from '@sap-ai-sdk/foundation-models';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 
 const blob = await FileApi.fileDownload(
-  `MY_OBJECT_STORE//output/${response.id}/output.jsonl`,
+  `MY_OBJECT_STORE/output/${response.id}/output.jsonl`,
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
 ).execute();
 
-const output = await AzureOpenAiBatchOutput.from(blob);
+const lines = await parseBatchOutput(blob);
 
-// Access typed responses
-output.getSuccessful().forEach(line => {
-  const content = line.response?.body?.choices[0].message.content;
-  console.log(line.custom_id, content);
-});
+// Access successful responses
+lines
+  .filter(line => line.response !== null)
+  .forEach(line => {
+    const content = line.response?.body?.choices[0].message.content;
+    console.log(line.custom_id, content);
+  });
 
 // Check for failures
-output.getFailed().forEach(line => {
-  console.error(line.custom_id, line.error);
-});
+lines
+  .filter(line => line.error !== null)
+  .forEach(line => {
+    console.error(line.custom_id, line.error);
+  });
 ```
 
 Each line corresponds to one input request, matched via `custom_id`:
