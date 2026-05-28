@@ -767,14 +767,15 @@ For a full overview, refer to the [Prompt Caching documentation](https://help.sa
 
 Cache control improves performance by caching requests at the model provider level.
 Add a `cache_control` breakpoint to a content block to mark a cache breakpoint in the prompt.
-Availabiblity of different time-to-live (TTL) options may depend on the model, refer to the [orchestration prompt caching documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching?locale=en-US) for details.
+Availability of different time-to-live (TTL) options may depend on the model, refer to the [orchestration prompt caching documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching?locale=en-US) for details.
 
 :::note
 Prompt caching requires a minimum number of tokens in the cached content.
 If the prompt is too short, the cache breakpoint may not take effect.
 :::
 
-Set the `cache_control` property is set as part of message contents, and some models can also apply `cache_control` to tool calls.
+Set the `cache_control` property as part of message contents.
+Some models can also apply `cache_control` to tool calls.
 Use the `getTokenUsage()` method to inspect cache activity.
 For supported models, the `prompt_tokens_details` property on the tokens usage object will contain the amount of tokens read and written to the cache.
 
