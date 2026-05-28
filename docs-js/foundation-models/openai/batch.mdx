@@ -60,7 +60,7 @@ await FileApi.fileUpload(
   blob,
   { overwrite: true },
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
-).execute(undefined, { headers: { 'content-type': 'text/csv' } });
+).execute();
 ```
 
 Then create the batch job referencing the input file and an output directory using the `ai://SECRET_NAME/` URI format:
