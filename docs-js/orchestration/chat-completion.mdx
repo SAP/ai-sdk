@@ -794,7 +794,9 @@ const orchestrationClient = new OrchestrationClient({
           content: [
             {
               type: 'text',
-              text: 'You are an expert news article classifier. Classify each article into exactly one category.',
+              text:
+                'You are an expert news article classifier.' +
+                ' Classify each article into exactly one category.'.repeat(512),
               cache_control: { type: 'ephemeral' }
             }
           ]
