@@ -438,6 +438,11 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
+:::info Messages with Prompt Template References
+When using the `template_ref` property, messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored prompt template.
+The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
+:::
+
 A prompt template can be referenced either by ID, or by a combination of name, scenario and version.
 For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
@@ -1521,6 +1526,11 @@ const response = await orchestrationClient.chatCompletion({
 
 console.log(response.getContent());
 ```
+
+:::info Messages with Orchestration Configuration References
+When initializing the client with an orchestration configuration reference, any messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored configuration's prompt template.
+The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
+:::
 
 :::note
 When using an orchestration configuration reference, [streaming](#streaming) is only available if the stored configuration includes streaming settings.
