@@ -48,7 +48,7 @@ Install the required dependencies:
 npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
 ```
 
-## Step 1 — Configure an Object Store Secret
+## Configure an Object Store Secret
 
 The batch service reads input files and writes output files directly to an object store.
 You must register your object store credentials as a secret in SAP AI Core before creating a batch job.
@@ -57,7 +57,7 @@ Refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/s
 
 Once registered, reference it in your batch job using the `ai://SECRET_NAME/` URI format.
 
-## Step 2 — Prepare the Input File
+## Prepare the Input File
 
 The input file must be in **JSONL format** — one JSON object per line.
 Each line represents one LLM chat completion request:
@@ -105,7 +105,7 @@ await FileApi.fileUpload(
 ).execute();
 ```
 
-## Step 3 — Create a Batch Job
+## Create a Batch Job
 
 ```ts
 import { BatchesApi } from '@sap-ai-sdk/batch-api';
@@ -157,7 +157,7 @@ The possible statuses are:
 | `CANCELLING`      | Cancellation is in progress                |
 | `CANCELLED`       | Job was cancelled                          |
 
-## Step 5 — Retrieve Results
+## Retrieve Results
 
 Once the job reaches `COMPLETED` status, two files are written to the object store:
 
