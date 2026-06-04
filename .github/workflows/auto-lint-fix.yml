@@ -5,10 +5,14 @@ on:
     branches:
       - main
 
+permissions: {}
+
 jobs:
   fix-lint:
     if: github.actor != 'dependabot[bot]' && !github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # all write operations use app token
     steps:
       - name: Generate GitHub App token
         id: app-token
@@ -20,7 +24,7 @@ jobs:
           repositories: ai-sdk
           permission-contents: write
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
