@@ -1,0 +1,179 @@
+---
+id: batch
+title: Batch API
+hide_title: false
+hide_table_of_contents: false
+description: How to use the SAP Cloud SDK for AI to process multiple LLM requests asynchronously using the Batch API with Azure OpenAI models through SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - batch
+  - openai
+  - async
+---
+
+:::caution
+The `@sap-ai-sdk/batch-api` package is experimental and may change at any time without prior notice.
+:::
+
+The Batch API lets you submit multiple LLM requests as a single asynchronous job, reducing cost and avoiding rate limits compared to making real-time requests.
+
+The Batch API supports **Azure OpenAI models** only.
+
+## Installation
+
+```bash
+npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
+```
+
+## Making Requests
+
+A typical batch workflow consists of four steps: create a job, poll for completion, retrieve results, and optionally manage jobs.
+
+### Create a Batch Job
+
+Use `createBatchInput` from `@sap-ai-sdk/foundation-models` to generate the input Blob from typed chat completion requests and upload it to an object store [registered as a secret](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret) in SAP AI Core:
+
+```ts
+import { createBatchInput } from '@sap-ai-sdk/foundation-models';
+import { FileApi } from '@sap-ai-sdk/ai-api';
+
+const blob = createBatchInput([
+  {
+    model: 'gpt-4.1',
+    messages: [{ role: 'user', content: 'What is machine learning?' }],
+    max_tokens: 150
+  },
+  {
+    model: 'gpt-4.1',
+    messages: [
+      { role: 'user', content: 'Explain neural networks in simple terms' }
+    ],
+    max_tokens: 150
+  }
+]);
+
+await FileApi.fileUpload(
+  'MY_OBJECT_STORE/input-batch.jsonl',
+  blob,
+  { overwrite: true },
+  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
+).execute();
+```
+
+Then create the batch job referencing the input file and an output directory using the `ai://SECRET_NAME/` URI format:
+
+```ts
+import { BatchesApi } from '@sap-ai-sdk/batch-api';
+
+const response = await BatchesApi.createBatch(
+  {
+    type: 'llm-native',
+    input: { uri: 'ai://MY_OBJECT_STORE/input-batch.jsonl' },
+    output: { uri: 'ai://MY_OBJECT_STORE/output/' },
+    spec: { provider: 'azure-openai', model: 'gpt-4.1' }
+  },
+  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
+).execute();
+
+console.log('Batch job created:', response.id);
+```
+
+### Poll for Completion
+
+Batch jobs are processed asynchronously.
+Poll the status endpoint until a terminal state is reached:
+
+```ts
+const TERMINAL_STATUSES = ['COMPLETED', 'FAILED', 'CANCELLED'];
+
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+let status = '';
+while (!TERMINAL_STATUSES.includes(status)) {
+  const result = await BatchesApi.getBatchStatus(response.id, {
+    'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+  }).execute();
+
+  status = result.current_status ?? '';
+  console.log('Current status:', status);
+
+  if (!TERMINAL_STATUSES.includes(status)) {
+    await delay(60_000); // wait 1 minute between polls
+  }
+}
+```
+
+:::tip
+Batch jobs can take minutes to hours depending on the number of requests.
+Adjust the polling interval based on your expected workload — for large batches, consider polling every 30–60 minutes.
+:::
+
+The possible statuses are:
+
+| Status            | Description                                |
+| ----------------- | ------------------------------------------ |
+| `PENDING`         | Job is queued                              |
+| `PREPARING_INPUT` | Input file is being read from object store |
+| `RUNNING`         | LLM requests are being processed           |
+| `COMPLETED`       | All requests finished successfully         |
+| `FAILED`          | Job failed                                 |
+| `CANCELLING`      | Cancellation is in progress                |
+| `CANCELLED`       | Job was cancelled                          |
+
+### Retrieve Results
+
+Once the job reaches `COMPLETED` status, download the output file from the object store.
+The output is written to `{output.uri}{batchId}/output.jsonl`.
+For example, if `output.uri` is `ai://MY_OBJECT_STORE/output/`, the file will be at `ai://MY_OBJECT_STORE/output/{batchId}/output.jsonl`.
+
+Each line in the output JSONL corresponds to one input request, matched via `custom_id`:
+
+```jsonl
+{"custom_id": "request-1", "response": {"status_code": 200, "body": {"id": "chatcmpl-abc", "choices": [{"message": {"role": "assistant", "content": "Machine learning is a subset of AI..."}}], "usage": {"prompt_tokens": 12, "completion_tokens": 45, "total_tokens": 57}}}, "error": null}
+{"custom_id": "request-2", "response": {"status_code": 200, "body": {"id": "chatcmpl-def", "choices": [{"message": {"role": "assistant", "content": "Neural networks are computing systems..."}}], "usage": {"prompt_tokens": 13, "completion_tokens": 42, "total_tokens": 55}}}, "error": null}
+```
+
+## Managing Batch Jobs
+
+**List all batch jobs:**
+
+```ts
+const { resources } = await BatchesApi.listBatches({
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
+
+console.log(`Total jobs: ${resources?.length}`);
+```
+
+**Get job details:**
+
+```ts
+const details = await BatchesApi.getBatchById(batchId, {
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
+```
+
+**Cancel a running job:**
+
+```ts
+await BatchesApi.cancelBatch(batchId, {
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
+```
+
+**Delete a job:**
+
+```ts
+await BatchesApi.deleteBatch(batchId, {
+  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+}).execute();
+```
+
+:::note
+A batch job can only be deleted after it reaches a terminal status: `COMPLETED`, `FAILED`, or `CANCELLED`.
+:::
