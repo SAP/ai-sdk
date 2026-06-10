@@ -1,0 +1,178 @@
+---
+id: openai
+title: OpenAI
+hide_title: false
+hide_table_of_contents: false
+description: How to use the @sap-ai-sdk/openai package to access Azure OpenAI models on SAP AI Core using the official openai npm package.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - openai
+  - azure
+---
+
+:::caution
+The `@sap-ai-sdk/openai` package is experimental and may change at any time without prior notice.
+
+If you do not need OpenAI-specific features such as the Responses API, consider using the [`@sap-ai-sdk/orchestration`](../orchestration/chat-completion.mdx) package instead, which provides a stable interface for chat completion and other AI tasks on SAP AI Core.
+:::
+
+:::caution
+This package reuses the types from the official `openai` npm package.
+
+The Azure OpenAI API shape differs from the core OpenAI API shape, and SAP AI Core applies additional platform-specific constraints.
+As a result, the static types for request parameters and responses are not always an exact match for what is defined at the type-level.
+:::
+
+The `@sap-ai-sdk/openai` package is a thin wrapper around the official [`openai`](https://www.npmjs.com/package/openai) npm package, pre-configured for Azure OpenAI deployments on SAP AI Core.
+It handles deployment resolution, authentication, and SAP-specific headers automatically.
+Because SAP AI Core routes requests via the deployment URL, the `model` parameter is removed from all request signatures.
+
+If you need a stable Azure OpenAI integration without recent OpenAI-specific features, consider using the [`@sap-ai-sdk/foundation-models`](../foundation-models/foundation-models.mdx) package instead.
+It provides SAP's own client layer, based on a more stable API contract.
+
+For full API reference, see the [official OpenAI documentation](https://platform.openai.com/docs/api-reference).
+
+## Installation
+
+```bash
+npm install @sap-ai-sdk/openai openai
+```
+
+## Prerequisites
+
+See the [prerequisites](../overview.mdx#prerequisites) section.
+
+## Client Initialization
+
+Use the `SapOpenAi.createClient()` method to create a pre-configured client.
+Pass a model name string or a deployment identifier object via the `deployment` option:
+
+```ts
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+
+// By model name (shorthand)
+const client = await SapOpenAi.createClient('gpt-5.4');
+
+// By model name and version
+const client = await SapOpenAi.createClient({
+  deployment: { modelName: 'gpt-5.4', modelVersion: '2025-04-14' }
+});
+
+// By deployment ID
+const client = await SapOpenAi.createClient({
+  deployment: { deploymentId: 'DEPLOYMENT_ID' }
+});
+```
+
+Use the `resourceGroup` property to target a specific resource group.
+The resource group defaults to `default`:
+
+```ts
+const client = await SapOpenAi.createClient({
+  deployment: { modelName: 'gpt-5.4', resourceGroup: 'my-resource-group' }
+});
+```
+
+To use a custom SAP AI Core destination, pass the `destination` option:
+
+```ts
+const client = await SapOpenAi.createClient({
+  deployment: 'gpt-5.4',
+  destination: { destinationName: 'DESTINATION_NAME' }
+});
+```
+
+## Making Requests
+
+`SapOpenAi` exposes three endpoints supported by SAP AI Core: `chat`, `embeddings`, and `responses`.
+The `model` parameter is omitted from all request signatures — the deployment URL determines the model.
+
+### Chat Completions
+
+```ts
+const response = await client.chat.completions.create({
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+});
+```
+
+Use the `parse()` method for structured output with a Zod schema:
+
+```ts
+import { zodResponseFormat } from 'openai/helpers/zod';
+import { z } from 'zod';
+
+const CapitalResponse = z.object({ capital: z.string() });
+
+const response = await client.chat.completions.parse({
+  messages: [{ role: 'user', content: 'What is the capital of France?' }],
+  response_format: zodResponseFormat(CapitalResponse, 'capital_response')
+});
+```
+
+### Embeddings
+
+```ts
+const embeddingClient = await SapOpenAi.createClient({
+  deployment: 'text-embedding-3-small'
+});
+
+const response = await embeddingClient.embeddings.create({
+  input: 'Hello, world!'
+});
+```
+
+### Responses API
+
+```ts
+const response = await client.responses.create({
+  instructions: 'You are a helpful assistant.',
+  input: 'What is the capital of France?'
+});
+```
+
+Use the `parse()` method for structured output with a Zod schema:
+
+```ts
+import { zodTextFormat } from 'openai/helpers/zod';
+import { z } from 'zod';
+
+const CapitalResponse = z.object({ capital: z.string() });
+
+const response = await client.responses.parse({
+  instructions: 'You are a helpful assistant.',
+  input: 'What is the capital of France?',
+  text: { format: zodTextFormat(CapitalResponse, 'capital_response') }
+});
+```
+
+## Low-Level Config
+
+Use the `createOpenAIConfig()` function to get an `AzureClientOptions` object for direct instantiation of `AzureOpenAI`.
+This is useful when you need endpoints not exposed by `SapOpenAi`:
+
+```ts
+import { AzureOpenAI } from 'openai';
+import { createOpenAIConfig } from '@sap-ai-sdk/openai';
+
+const config = await createOpenAIConfig('gpt-5.4');
+const client = new AzureOpenAI(config);
+```
+
+## Token Provider
+
+Use the `createTokenProvider()` function when you need an `azureADTokenProvider`-compatible function for custom `AzureOpenAI` configurations.
+It is used internally by `createOpenAIConfig()`.
+
+```ts
+import { AzureOpenAI } from 'openai';
+import { createTokenProvider } from '@sap-ai-sdk/openai';
+
+const client = new AzureOpenAI({
+  baseURL: 'https://my-deployment-url',
+  apiVersion: '2024-10-21',
+  azureADTokenProvider: createTokenProvider()
+});
+```
