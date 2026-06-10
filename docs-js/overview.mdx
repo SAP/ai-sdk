@@ -58,17 +58,22 @@ Additionally, refer to the [sample code](https://github.com/SAP/ai-sdk-js/tree/m
 
 To use the SAP Cloud SDK for AI in a JavaScript / TypeScript application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
 
-- A project using **Node.js v20+** with **native ESM** support.
+- A project using **Node.js v22+** with **native ESM** support.
 
 :::tip Node.js Version Recommendations
-Node.js v20 is supported but **approaching end-of-life (EOL).**
-➡️ We strongly recommend upgrading to **Node.js v22 (Active LTS)** or **v24 (Current)** for long-term support, security updates, and improved ESM/CommonJS interoperability.
+Node.js v22 is supported but **approaching end-of-life (EOL).**
+➡️ We strongly recommend upgrading to **Node.js v24 (Active LTS)** for long-term support and security updates.
+:::
 
-If your project is still using CommonJS, you can consume ESM modules via:
+:::tip CommonJS users
+If your project is still using CommonJS, you can load this SDK with synchronous `require()`:
 
-- **Dynamic `import()`** (all versions)
-- **`require()`** [(experimental, v20.19+)](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require)
-  :::
+```js
+const { AzureOpenAiChatClient } = require('@sap-ai-sdk/foundation-models');
+```
+
+This relies on Node.js 22's built-in `require(ESM)` support, which is stable since v22.12.0.
+:::
 
 - Access to an **SAP AI Core Service** instance. Refer to [enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
   - ⚠️ Note: To use generative AI models the `extended` or `sap-internal` service plan is required.
