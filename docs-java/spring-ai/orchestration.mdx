@@ -204,11 +204,17 @@ var advisor = MessageChatMemoryAdvisor.builder(memory).build();
 var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 Prompt prompt1 = new Prompt("What is the capital of France?", opts);
-String content1 = cl.prompt(prompt1).call().content();
+String content1 = cl.prompt(prompt1)
+    .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+    .call()
+    .content();
 // content1 is "Paris"
 
 Prompt prompt2 = new Prompt("And what is the typical food there?", opts);
-String content2 = cl.prompt(prompt2).call().content();
+String content2 = cl.prompt(prompt2)
+    .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+    .call()
+    .content();
 // chat memory will remember that the user is inquiring about France.
 ```
 

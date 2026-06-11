@@ -202,7 +202,11 @@ public class SpringAiAgenticWorkflowService {
       // Make a call to the LLM with the new input
       var response =
           Objects.requireNonNull(
-              cl.prompt(prompt).call().chatResponse(), "Chat response is null.");
+              cl.prompt(prompt)
+                  .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+                  .call()
+                  .chatResponse(),
+              "Chat response is null.");
       responseText = response.getResult().getOutput().getText();
     }
 
