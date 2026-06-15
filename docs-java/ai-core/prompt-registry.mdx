@@ -311,20 +311,23 @@ You can create a new Orchestration configuration in Prompt Registry as follows.
 
 ```java
 var orchConfigClient = new OrchestrationConfigClient();
+var prompt =
+    com.sap.ai.sdk.prompt.registry.model.Template.create()
+        .template(
+            UserChatMessage.create()
+                .content(
+                    new UserChatMessageContent.InnerString(
+                        "message"))
+                .role(UserChatMessage.RoleEnum.USER));
+
+final var moduleConfig =
+    PromptTemplatingModuleConfig.create()
+        .model(LLMModelDetails.create().name("model-name"));
+moduleConfig.setPrompt(prompt);
 var orchConfig = OrchestrationConfig.create()
         .modules(
             OrchestrationConfigModules.createInnerModuleConfigs(
-                ModuleConfigs.create()
-                    .promptTemplating(
-                        PromptTemplatingModuleConfig.create()
-                            .prompt(
-                                Template.create()
-                                    .template(
-                                        UserChatMessage.create()
-                                            .content(
-                                                new UserChatMessageContent.InnerString("message"))
-                                            .role(UserChatMessage.RoleEnum.USER)))
-                            .model(LLMModelDetails.create().name("model-name")))));
+                ModuleConfigs.create().promptTemplating(moduleConfig)));
 var postRequest =
       OrchestrationConfigPostRequest.create()
           .name("name")
