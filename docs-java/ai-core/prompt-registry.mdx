@@ -150,7 +150,7 @@ You can list the history of edits to prompt templates, for imperatively managed 
 ```java
 PromptClient client = new PromptClient();
 
-PromptTemplateListResponse history = client.listPromptTemplateHistory("categorization", "0.0.1", NAME);
+PromptTemplateListResponse history = client.listPromptTemplateHistory("categorization", "0.0.1", "template-name");
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -166,6 +166,8 @@ PromptClient client = new PromptClient();
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
     "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    "resource group",
+    "resource groupt scope",
     false,
     PromptTemplateSubstitutionRequest.create()
         .inputParams(Map.of("inputExample", "I love football")));
