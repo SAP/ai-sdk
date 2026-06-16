@@ -38,8 +38,8 @@ jobs:
       - run: npm run lint:fix
       - name: Commit changes if needed
         env:
-          BOT_EMAIL: ${{ secrets.SAP_AI_SDK_BOT_EMAIL }}
-          BOT_NAME: ${{ secrets.SAP_AI_SDK_BOT_NAME }}
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
         run: |
           git config user.email "$BOT_EMAIL"
           git config user.name "$BOT_NAME"
