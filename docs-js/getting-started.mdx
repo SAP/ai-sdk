@@ -95,9 +95,7 @@ const model = 'gpt-5';
 ```
 
 ```ts twoslash
-const messages = [
-  { role: 'user' as const, content: 'Hello!' }
-];
+const messages = [{ role: 'user' as const, content: 'Hello!' }];
 //    ^?
 ```
 
@@ -134,8 +132,6 @@ const requestConfig = {
   max_tokens: 100,
   temperature: 0.7
 };
-
 type RequestConfig = typeof requestConfig;
 //   ^?
 ```
-

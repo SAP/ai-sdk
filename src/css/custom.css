@@ -99,54 +99,138 @@
   overflow-y: scroll;
 }
 
-/* rehype-twoslash */
-.rehype-twoslash-completions {
-  list-style-type: none !important;
-  padding-left: 0 !important;
-  margin-bottom: 0 !important;
+/*
+ * Twoslash popovers — styles ship with `@shikijs/twoslash`. We import the
+ * rich variant which uses the native browser popover API (no positioning
+ * library required).
+ */
+@import url('@shikijs/twoslash/style-rich.css');
+
+/*
+ * Shiki dual-theme support. With `defaultColor: false`, `@shikijs/rehype`
+ * emits each token as `<span style="--shiki-light:#xxx; --shiki-dark:#yyy">`
+ * and the wrapping `<pre>` carries the matching `--shiki-light-bg` /
+ * `--shiki-dark-bg`. We map the right variable to `color` /
+ * `background-color` based on Docusaurus's `data-theme` attribute.
+ *
+ * `MDXComponents/Pre` and `MDXComponents/Code` are swizzled to passthroughs
+ * so Shiki's pre-rendered HTML reaches the DOM unmodified. The
+ * `transformerCopyButton` Shiki transformer wraps every block in
+ * `<div class="code-block">` so we can attach a copy button.
+ *
+ * `github-light`'s default background is pure white, which clashes with
+ * Docusaurus's content background. We override it to GitHub's standard
+ * code-surface gray so the block actually stands out.
+ */
+.code-block {
+  position: relative;
+  margin-bottom: var(--ifm-leading);
 }
 
-.rehype-twoslash-completion-deprecated {
-  opacity: 0.5;
+html[data-theme='light'] .code-block {
+  --shiki-light-bg: #f6f8fa;
 }
 
-.rehype-twoslash-popover-target {
-  cursor: default;
+html[data-theme='light'] pre.shiki,
+html[data-theme='light'] pre.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
 }
 
-.rehype-twoslash-error-target {
-  background-repeat: repeat-x;
-  background-position: bottom left;
-  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 3" enable-background="new 0 0 6 3" height="3" width="6"><g fill="%23c94824"><polygon points="5.5,0 2.5,3 1.1,3 4.1,0"/><polygon points="4,0 6,2 6,0.6 5.4,0"/><polygon points="0,2 1,3 2.4,3 0,0.6"/></g></svg>');
+html[data-theme='dark'] pre.shiki,
+html[data-theme='dark'] pre.shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
 }
 
-.rehype-twoslash-popover {
+/* Spans nested inside a Shiki block shouldn't paint their own background. */
+html pre.shiki span {
+  background-color: transparent;
+}
+
+/* Match the Docusaurus code-block chrome (padding, radius, scroll). */
+pre.shiki {
+  padding: var(--ifm-pre-padding);
+  border-radius: var(--ifm-code-border-radius, var(--ifm-global-radius));
+  overflow: auto;
+  margin: 0; /* the outer `.code-block` owns block spacing */
+}
+
+/* Copy-to-clipboard button injected by `transformerCodeBlockChrome`. */
+.code-block-copy-button {
   position: absolute;
-  max-width: calc(45 * (1em + 1ex));
-  padding: calc(0.5 * (1em + 1ex));
-  margin: 0;
-  background-color: var(--ifm-background-surface-color);
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: var(--ifm-global-radius);
-  z-index: 100;
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-color-content);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
-.rehype-twoslash-popover:has(.rehype-twoslash-popover-code) {
-  padding: 0;
+/*
+ * Reveal on hover/focus. The copied state never forces visibility on its
+ * own — if the cursor leaves the block right after clicking, the button
+ * fades out cleanly along with the rest of the chrome.
+ */
+.code-block:hover .code-block-copy-button,
+.code-block-copy-button:focus-visible {
+  opacity: 1;
 }
 
-.rehype-twoslash-popover-description {
-  background-color: var(--ifm-background-color);
-  padding: 1em;
+.code-block-copy-button:hover {
+  background-color: var(--ifm-color-emphasis-100);
 }
 
-.rehype-twoslash-popover-description
-  > :last-child:is(p, blockquote, ul, ol, dl, table, pre, details) {
-  margin-bottom: 0;
+/*
+ * Two icons stacked in the same slot — only one is visible at a time and
+ * we cross-fade between them via opacity. No layout shift, no font-size
+ * tricks.
+ */
+.code-block-copy-icon {
+  display: grid;
 }
 
-.rehype-twoslash-completion-swap,
-.rehype-twoslash-highlight {
-  background-color: var(--ifm-color-warning-contrast-background);
+.code-block-copy-icon::before,
+.code-block-copy-icon::after {
+  grid-area: 1 / 1;
+  transition: opacity 0.15s ease;
 }
 
+.code-block-copy-icon::before {
+  content: '⧉';
+  opacity: 1;
+}
+
+.code-block-copy-icon::after {
+  content: '✓';
+  opacity: 0;
+}
+
+.code-block-copy-button--copied {
+  border-color: var(--ifm-color-success);
+  color: var(--ifm-color-success);
+}
+
+.code-block-copy-button--copied .code-block-copy-icon::before {
+  opacity: 0;
+}
+
+.code-block-copy-button--copied .code-block-copy-icon::after {
+  opacity: 1;
+}

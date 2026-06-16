@@ -13,6 +13,8 @@ class ESMPolyfillWrapper {
   }
 }
 
+const rehypeShikiTwoslash = require('./src/plugins/rehypeShikiTwoslash.js');
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'SAP Cloud SDK for AI',
@@ -184,7 +186,8 @@ module.exports = {
           sidebarPath: require.resolve('./sidebarsDocsCommon.js'),
           editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
           routeBasePath: 'docs/overview',
-          path: 'docs'
+          path: 'docs',
+          beforeDefaultRehypePlugins: [rehypeShikiTwoslash]
         },
         theme: {
           customCss: [require.resolve('./src/css/custom.css')]
@@ -198,7 +201,7 @@ module.exports = {
     ]
   ],
   customFields: {},
-  clientModules: [require.resolve('./src/clientModules/twoslash.js')],
+  clientModules: [require.resolve('./src/clientModules/copyButton.js')],
   plugins: [
     [
       '@docusaurus/plugin-content-docs',
@@ -208,6 +211,7 @@ module.exports = {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/java',
         sidebarPath: require.resolve('./sidebarsDocsJava.js'),
+        beforeDefaultRehypePlugins: [rehypeShikiTwoslash],
         lastVersion: 'current',
         versions: {
           current: {
@@ -225,7 +229,7 @@ module.exports = {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: require.resolve('./sidebarsDocsJs.js'),
-        rehypePlugins: [require('./src/plugins/rehypeTwoslash.js')],
+        beforeDefaultRehypePlugins: [rehypeShikiTwoslash],
         lastVersion: 'current',
         versions: {
           current: {
