@@ -332,7 +332,8 @@ module.exports = {
           };
         }
       };
-    }
+    },
+    '@signalwire/docusaurus-plugin-llms-txt',
   ],
   i18n: {
     defaultLocale: 'en',
