@@ -333,7 +333,7 @@ module.exports = {
         }
       };
     },
-    '@signalwire/docusaurus-plugin-llms-txt',
+    '@signalwire/docusaurus-plugin-llms-txt'
   ],
   i18n: {
     defaultLocale: 'en',
