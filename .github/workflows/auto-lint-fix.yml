@@ -24,7 +24,7 @@ jobs:
           repositories: ai-sdk
           permission-contents: write
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
@@ -38,13 +38,13 @@ jobs:
       - run: npm run lint:fix
       - name: Commit changes if needed
         env:
-          BOT_EMAIL: ${{ secrets.SAP_AI_SDK_BOT_EMAIL }}
-          BOT_NAME: ${{ secrets.SAP_AI_SDK_BOT_NAME }}
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
         run: |
+          git config user.email "$BOT_EMAIL"
+          git config user.name "$BOT_NAME"
           diff=`git diff`
           if [ ! -z "$diff" ]; then
-            git config user.email "$BOT_EMAIL"
-            git config user.name "$BOT_NAME"
             git commit -m "fix: Changes from lint" -a
             git push
           fi

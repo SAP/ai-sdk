@@ -28,7 +28,8 @@ module.exports = {
           label: 'OpenAI',
           items: [
             'foundation-models/openai/chat-completion',
-            'foundation-models/openai/embedding'
+            'foundation-models/openai/embedding',
+            'foundation-models/openai/batch'
           ]
         }
       ]
@@ -58,6 +59,7 @@ module.exports = {
       items: [
         'tutorials/getting-started-with-agents',
         'tutorials/using-scoped-prompt-registry-templates',
+        'tutorials/using-llm-batch-api',
         {
           type: 'link',
           label: 'TechEd: Build Your Own AI Agent',
