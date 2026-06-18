@@ -80,7 +80,7 @@ To use a custom SAP AI Core destination, pass the `destination` option:
 
 ```ts
 const client = await SapOpenAi.createClient({
-  deployment: 'gpt-5.4',
+  deployment: { modelName: 'gpt-5.4' },
   destination: { destinationName: 'DESTINATION_NAME' }
 });
 ```
@@ -150,21 +150,21 @@ const response = await client.responses.parse({
 
 ## Low-Level Config
 
-Use the `createOpenAIConfig()` function to get an `AzureClientOptions` object for direct instantiation of `AzureOpenAI`.
+Use the `createOpenAiConfig()` function to get an `AzureClientOptions` object for direct instantiation of `AzureOpenAI`.
 This is useful when you need endpoints not exposed by `SapOpenAi`:
 
 ```ts
 import { AzureOpenAI } from 'openai';
-import { createOpenAIConfig } from '@sap-ai-sdk/openai';
+import { createOpenAiConfig } from '@sap-ai-sdk/openai';
 
-const config = await createOpenAIConfig('gpt-5.4');
+const config = await createOpenAiConfig('gpt-5.4');
 const client = new AzureOpenAI(config);
 ```
 
 ## Token Provider
 
 Use the `createTokenProvider()` function when you need an `azureADTokenProvider`-compatible function for custom `AzureOpenAI` configurations.
-It is used internally by `createOpenAIConfig()`.
+It is used internally by `createOpenAiConfig()`.
 
 ```ts
 import { AzureOpenAI } from 'openai';
