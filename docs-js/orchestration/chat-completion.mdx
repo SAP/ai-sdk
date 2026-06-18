@@ -762,6 +762,78 @@ const response = await orchestrationClient.chatCompletion({
 You can send a single chat completion request with multiple images by defining multiple content blocks with `image_url` type in the template.
 The model will process each image and use the information from all of them to respond.
 
+### Prompt Caching
+
+:::note
+This section covers explicit cache control for AWS Bedrock-hosted models (Anthropic Claude and Amazon Nova).
+Other model providers, such as OpenAI and Gemini, use implicit context caching that is enabled by default and requires no additional configuration.
+For a full overview, refer to the [Prompt Caching documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching?locale=en-US).
+:::
+
+Cache control improves performance by caching requests at the model provider level.
+Add a `cache_control` breakpoint to a content block to mark a cache breakpoint in the prompt.
+Availability of different time-to-live (TTL) options may depend on the model, refer to the [orchestration prompt caching documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching?locale=en-US) for details.
+
+:::note
+Prompt caching requires a minimum number of tokens in the cached content.
+If the prompt is too short, the cache breakpoint may not take effect.
+:::
+
+Set the `cache_control` property as part of message contents.
+Some models can also apply `cache_control` to tool calls.
+Use the `getTokenUsage()` method to inspect cache activity.
+For supported models, the `prompt_tokens_details` property on the tokens usage object will contain the amount of tokens read and written to the cache.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.7-opus'
+    },
+    prompt: {
+      template: [
+        {
+          role: 'system',
+          content: [
+            {
+              type: 'text',
+              text:
+                'You are an expert news article classifier.' +
+                ' Classify each article into exactly one category.'.repeat(512),
+              cache_control: { type: 'ephemeral' }
+            }
+          ]
+        },
+        { role: 'user', content: 'input: Comcast launches prepaid plans' },
+        { role: 'assistant', content: 'Business' },
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'input: {{?article}}',
+              cache_control: { type: 'ephemeral' }
+            }
+          ]
+        }
+      ]
+    }
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  placeholderValues: {
+    article:
+      'Scaling up neural models has yielded significant advancements in language generation'
+  }
+});
+
+const usage = response.getTokenUsage();
+console.log('Cache details', usage.prompt_tokens_details ?? usage);
+```
+
 ### File Input
 
 Some models in the orchestration service accept files as input, such as PDFs, CSV files, Word documents, and audio files.
