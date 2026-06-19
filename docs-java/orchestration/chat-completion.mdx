@@ -113,6 +113,9 @@ var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?
 var result = client.chatCompletion(prompt, config);
 
 String messageResult = result.getContent();
+
+// You can use this to get the last message in the chat response which is the assistant's reply.
+Message lastMessage = result.getLastMessage();
 ```
 
 In this example, the Orchestration service generates a response to the user message "Hello world! Why is this phrase so famous?".
