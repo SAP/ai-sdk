@@ -112,12 +112,70 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
 <!-- prettier-ignore-end-->
 
-## Create a response
+## Create a non-persistent response
 
 ```java
 var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
 
-var params = ResponseCreateParams.builder().input("Hi, how are you?").store(false).build(); // set store to true for creating a persistent response
+var params = ResponseCreateParams.builder().input("Hi, how are you?").store(false).build(); // set store to true when creating a persistent response
 
 var response = responseClient.create(params);
 ```
+
+## Create a persistent response
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseCreateParams.builder().input("Hi, how are you?").store(true).background(true).build(); // set background to true for the response to run asynchronously
+
+var response = responseClient.create(params);
+```
+
+## Create a streaming non-persistent response
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseCreateParams.builder().input("Hi, how are you?").model(ChatModel.GPT_5).store(false).build(); // set store to true when creating a persistent response
+
+var response = responseClient.createStreaming(params);
+```
+
+## Retrieve a response
+
+This allows the retrieval of a previously created persistent response by its id.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseRetrieveParams.builder().responseId("response-id").build();
+
+var response = responseClient.retrieve(params);
+```
+
+## Cancel a response
+
+This cancels the previously created background response by its id.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseCancelParams.builder().responseId("response-id").build();
+
+var response = responseClient.cancel(params);
+```
+
+## Delete a response
+
+This deletes a stored response by its id.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseDeleteParams.builder().responseId("response-id").build();
+
+var response = responseClient.delete(params);
+```
+
+Refer to [OpenAI Docs](https://developers.openai.com/api/reference/resources/responses) for OpenAI SDK API usage.
