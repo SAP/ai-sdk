@@ -1,0 +1,95 @@
+# JavaScript SDK Overview
+
+[![npm Version](https://img.shields.io/npm/v/%40sap-ai-sdk%2Fai-api?color=dark-green)](https://www.npmjs.com/org/sap-ai-sdk)
+
+## Quick Start[​](#quick-start "Direct link to Quick Start")
+
+For a quick start, check out the [Getting Started](/ai-sdk/docs/js/v1/getting-started.md) section.
+
+## Why the SAP Cloud SDK for AI (SAP AI SDK)?[​](#why-the-sap-cloud-sdk-for-ai-sap-ai-sdk "Direct link to Why the SAP Cloud SDK for AI (SAP AI SDK)?")
+
+The SAP Cloud SDK for AI (SAP AI SDK) enables developers to seamlessly integrate AI capabilities, such as chat completion, into their JavaScript / TypeScript-based business applications using SAP Generative AI Hub. Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications. The SAP Cloud SDK for AI simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
+
+## Feature Matrix[​](#feature-matrix "Direct link to Feature Matrix")
+
+Below you can find an overview of the currently available features and documentation.
+
+**Legend:** ✅ - Generally Available, ❌ - Not Available, 📅 - Planned, ➖- Not Applicable
+
+| Feature                            | Orchestration                                                                                           | Orchestration with LangChain                                             | OpenAI                                                                                     | OpenAI with LangChain                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| **Chat Completion**                | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#quick-start)                              | ✅ [docs](/ai-sdk/docs/js/v1/langchain/orchestration.md#chat-completion) | ✅ [docs](/ai-sdk/docs/js/v1/foundation-models/openai/chat-completion.md#making-requests)  | ✅ [docs](/ai-sdk/docs/js/v1/langchain/openai.md#chat-completion)   |
+| **Templates**                      | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#templating)                               | ❌                                                                       | ❌                                                                                         | ➖                                                                  |
+| **Content Moderation (Filtering)** | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#content-filtering)                        | ✅ \*                                                                    | ➖                                                                                         | ➖                                                                  |
+| **Data Masking**                   | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#data-masking)                             | ✅ \*                                                                    | ➖                                                                                         | ➖                                                                  |
+| **Grounding**                      | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#grounding)                                | ❌                                                                       | ❌                                                                                         | ➖                                                                  |
+| **Chat Memory / Message History**  | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#message-history)                          | ✅ \*                                                                    | ✅ [docs](/ai-sdk/docs/js/v1/foundation-models/openai/chat-completion.md#message-history)  | ➖                                                                  |
+| **JSON Configuration**             | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#use-json-configuration-from-ai-launchpad) | ➖                                                                       | ➖                                                                                         | ➖                                                                  |
+| **Stream Chat Completion**         | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#streaming)                                | ✅ [docs](/ai-sdk/docs/js/v1/langchain/orchestration.md#streaming)       | ✅ [docs](/ai-sdk/docs/js/v1/foundation-models/openai/chat-completion.md#streaming)        | ✅ [docs](/ai-sdk/docs/js/v1/langchain/openai.md#streaming)         |
+| **Multi-modal Messages**           | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#image-recognition)                        | ❌                                                                       | ❌                                                                                         | ➖                                                                  |
+| **Response Format**                | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#response-format)                          | ❌                                                                       | ✅ [docs](/ai-sdk/docs/js/v1/foundation-models/openai/chat-completion.md#response-format)  | ✅ [docs](/ai-sdk/docs/js/v1/langchain/openai.md#structured-output) |
+| **Translation Service**            | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#translation)                              | ❌                                                                       | ➖                                                                                         | ➖                                                                  |
+| **Chat Completion: Tool Call**     | ✅ [docs](/ai-sdk/docs/js/v1/orchestration/chat-completion.md#function-calling)                         | ✅ \*                                                                    | ✅ [docs](/ai-sdk/docs/js/v1/foundation-models/openai/chat-completion.md#function-calling) | ✅ \*                                                               |
+| **Embedding**                      | ❌                                                                                                      | ❌                                                                       | ✅ [docs](/ai-sdk/docs/js/v1/foundation-models/openai/embedding.md#making-requests)        | ✅ [docs](/ai-sdk/docs/js/v1/langchain/openai.md#embedding)         |
+
+note
+
+\*: The LangChain clients conform to LangChain interface. Client options are a combination of LangChain options and original client configurations. Refer to the original client and LangChain documentation for more information. Additionally, refer to the [sample code](https://github.com/SAP/ai-sdk-js/tree/main/sample-code) in our official GitHub repository for examples.
+
+## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
+
+To use the SAP Cloud SDK for AI in a JavaScript / TypeScript application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
+
+* A project with **Node.js v20 or higher** and **native ESM** support.
+
+* Access to an **SAP AI Core Service** instance. Refer to [enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+
+* Ensure either an [Orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) or [OpenAI model](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core) deployment is available.
+
+  <!-- -->
+
+  * Alternatively, you can create a deployment using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US\&q=launchpad).
+  * Once a deployment is complete, access the model via the `deploymentUrl`.
+
+Refer to [Connecting to AI Core](/ai-sdk/docs/js/v1/connecting-to-ai-core.md) section for **how to connect the SAP Cloud SDK for AI to AI Core**.
+
+## Availability of Generative AI Models[​](#availability-of-generative-ai-models "Direct link to Availability of Generative AI Models")
+
+For a detailed list of available models, refer to the SAP note [Availability of Generative AI Models](https://me.sap.com/notes/3437766).
+
+### Deprecated Models[​](#deprecated-models "Direct link to Deprecated Models")
+
+The following models are deprecated in SAP Cloud SDK for AI and should not be used. Replace them with the recommended alternatives.
+
+| Model Name                             | Replacement                                        |
+| -------------------------------------- | -------------------------------------------------- |
+| `text-embedding-ada-002`               | `text-embedding-3-small`, `text-embedding-3-large` |
+| `gpt-35-turbo`                         | `gpt-4o-mini`                                      |
+| `gpt-35-turbo-16k`                     | `gpt-4o-mini`                                      |
+| `gpt-4-32k`                            | `gpt-4o`                                           |
+| `gpt-4`                                | `gpt-4o`, `gpt-4.1`                                |
+| `gemini-1.0-pro`                       | `gemini-2.0-flash`, `gemini-2.0-flash-lite`        |
+| `gemini-1.5-flash`                     | `gemini-2.0-flash`                                 |
+| `gemini-1.5-pro`                       | `gemini-2.0-flash`                                 |
+| `mistralai--mixtral-8x7b-instruct-v01` | `mistralai--mistral-small-instruct`                |
+| `meta--llama3-70b-instruct`            |                                                    |
+| `meta--llama3.1-70b-instruct`          |                                                    |
+| `amazon--titan-text-express`           |                                                    |
+| `amazon--titan-text-lite`              |                                                    |
+| `ibm--granite-13b-chat`                |                                                    |
+
+## Contribute, Support and Feedback[​](#contribute-support-and-feedback "Direct link to Contribute, Support and Feedback")
+
+This project is open to feature requests/suggestions and bug reports via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
+
+## Security / Disclosure[​](#security--disclosure "Direct link to Security / Disclosure")
+
+If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk-js/security/policy) on how to report it. Please do not create GitHub issues for security-related doubts or problems.
+
+## Code of Conduct[​](#code-of-conduct "Direct link to Code of Conduct")
+
+We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone. By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
+
+## Licensing[​](#licensing "Direct link to Licensing")
+
+Copyright 2024 SAP SE or an SAP affiliate company and ai-sdk-js contributors. Please see our [LICENSE](https://github.com/SAP/ai-sdk-js/blob/main/LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk-js).

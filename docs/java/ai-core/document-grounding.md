@@ -1,0 +1,275 @@
+# Document Grounding
+
+## Introduction[​](#introduction "Direct link to Introduction")
+
+This guide provides examples on how to manage data in [SAP Document Grounding](https://help.sap.com/docs/sap-ai-core/generative-ai/data-management-apis-6348a01a930d414ab7ac7ab522d81eb5). It's divided into two main sections: Data Ingestion and Data Retrieval.
+
+warning
+
+All classes in the `...model` and `...client` packages are generated from an OpenAPI specification. These classes can be used, but no API stability guarantees are provided, even for minor releases. Maintenance and support are limited to ensuring consistency with the service specification. No additional convenience API layer is provided.
+
+## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
+
+Before using the Document Grounding module, ensure that you have met all the general requirements outlined in the [overview](/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java.md#general-requirements).
+
+Additionally, make sure your [resource group has the Document Grounding service enabled](https://help.sap.com/docs/sap-ai-core/generative-ai/create-resource-group-for-grounding-e32efa5402154101b4cc05c03ef5be09).
+
+Finally, include the necessary Maven dependency in your project.
+
+### Maven Dependencies[​](#maven-dependencies "Direct link to Maven Dependencies")
+
+Add the following dependency to your `pom.xml` file:
+
+```
+<dependency>
+
+    <groupId>com.sap.ai.sdk</groupId>
+
+    <artifactId>document-grounding</artifactId>
+
+    <version>${ai-sdk.version}</version>
+
+</dependency>
+```
+
+See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml)
+
+## Usage[​](#usage "Direct link to Usage")
+
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
+
+* A running instance of SAP AI Core with correctly setup credentials, including a resource group id.
+
+## Data Ingestion[​](#data-ingestion "Direct link to Data Ingestion")
+
+The following APIs are available for data ingestion: Pipeline and Vector.
+
+### Pipeline API[​](#pipeline-api "Direct link to Pipeline API")
+
+Consider the following code sample to read pipelines, create a new one and get its status:
+
+```
+var api = new GroundingClient().pipelines();
+
+var resourceGroupId = "default";
+
+
+
+// get all pipelines
+
+Pipelines pipelines = api.getAllPipelines(resourceGroupId);
+
+
+
+// create new pipeline
+
+var type = "MSSharePoint"; // or "S3" or "SFTP"
+
+var pipelineSecret = "my-secret-name";
+
+var config = PipelinePostRequstConfiguration.create().destination(pipelineSecret);
+
+var request = PipelinePostRequst.create().type(type)._configuration(config);
+
+PipelineId pipeline = api.createPipeline(resourceGroupId, request);
+
+
+
+// get pipeline status
+
+PipelineStatus status = api.getPipelineStatus(resourceGroupId, pipeline.getPipelineId());
+```
+
+### Vector API[​](#vector-api "Direct link to Vector API")
+
+#### Collection creation[​](#collection-creation "Direct link to Collection creation")
+
+```
+String resourceGroupId;
+
+CollectionRequest collectionRequest;
+
+
+
+var api = new GroundingClient().vector();
+
+
+
+OpenApiResponse documents = api.createCollection(resourceGroupId, collectionRequest);
+
+Map<String, List<String>> headers = documents.getHeaders();
+
+
+
+String locationHeader = headers.get("Location").get(0);
+
+String collectionId = locationHeader.replaceAll("^.*?/([a-f0-9-]+)/.*?$", "$1");
+```
+
+#### Document creation[​](#document-creation "Direct link to Document creation")
+
+```
+var api = new GroundingClient().vector();
+
+var resourceGroupId = "default";
+
+
+
+// resolve collection id
+
+var collectionId = UUID.fromString("12345-123-123-123-0123456abcdef");
+
+
+
+var request =
+
+    DocumentCreateRequest.create()
+
+        .documents(BaseDocument.create()
+
+            .chunks(TextOnlyBaseChunk.create()
+
+               .content("The dog makes _woof_")
+
+               .metadata(VectorKeyValueListPair.create().key("animal").value("dog")))
+
+            .metadata(VectorDocumentKeyValueListPair.create().key("topic").value("sound")));
+
+DocumentsListResponse response = api.createDocuments(resourceGroupId, collectionId, request);
+```
+
+#### Document search[​](#document-search "Direct link to Document search")
+
+```
+String resourceGroup;
+
+TextSearchRequest textSearch;
+
+
+
+var api = new GroundingClient().vector();
+
+var result = api.search(resourceGroup, textSearch);
+
+
+
+String joinedContent = result.getResults().stream()
+
+  .flatMap(r -> r.getResults().stream())
+
+  .flatMap(r -> r.getDocuments().stream())
+
+  .flatMap(d -> d.getChunks().stream())
+
+  .map(VectorChunk::getContent)
+
+  .collect(Collectors.joining());
+```
+
+Refer to the [GroundingController](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/GroundingController.java) in our Spring Boot application for a complete example.
+
+## Data Retrieval[​](#data-retrieval "Direct link to Data Retrieval")
+
+The following APIs are available for data retrieval: Retrieval and Orchestration.
+
+### Retrieval API[​](#retrieval-api "Direct link to Retrieval API")
+
+Consider the following code sample to search for relevant document grounding data based on a query:
+
+```
+var api = new GroundingClient().retrieval();
+
+var resourceGroupId = "default";
+
+
+
+var filter =
+
+    RetrievalSearchFilter.create()
+
+        .id("question")
+
+        .dataRepositoryType(DataRepositoryType.VECTOR)
+
+        .dataRepositories(List.of("*"))
+
+        .searchConfiguration(SearchConfiguration.create().maxChunkCount(10));
+
+var search = RetrievalSearchInput.create().query("What is SAP Cloud SDK for AI?").filters(filter);
+
+RetievalSearchResults results = api.search(resourceGroupId, search);
+```
+
+### Grounding via Orchestration[​](#grounding-via-orchestration "Direct link to Grounding via Orchestration")
+
+You can use the grounding service via orchestration. Please find the [Orchestration documentation on grounding](/ai-sdk/docs/java/orchestration/chat-completion.md#grounding).
+
+```
+OrchestrationClient client;
+
+
+
+var databaseFilter =
+
+    DocumentGroundingFilter.create()
+
+        .dataRepositoryType(DataRepositoryType.VECTOR)
+
+        .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(3));
+
+var groundingConfigConfig =
+
+    GroundingModuleConfigConfig.create()
+
+        .inputParams(List.of("query"))
+
+        .outputParam("results")
+
+        .addFiltersItem(databaseFilter);
+
+var groundingConfig =
+
+    GroundingModuleConfig.create()
+
+        .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+
+        .config(groundingConfigConfig);
+
+var configWithGrounding =
+
+    new OrchestrationModuleConfig()
+
+        .withLlmConfig(GPT_4O)
+
+        .withGroundingConfig(groundingConfig);
+
+
+
+var inputParams = Map.of("query", "What is SAP Cloud SDK for AI?");
+
+
+
+var prompt =
+
+    new OrchestrationPrompt(
+
+        inputParams,
+
+        Message.system("Context message with embedded grounding results. {{?results}}"));
+
+
+
+OrchestrationChatResponse response = client.chatCompletion(prompt, configWithGrounding);
+```
+
+## Custom Headers[​](#custom-headers "Direct link to Custom Headers")
+
+To add custom headers to single or groups of your grounding calls, you can use the `.withHeader` method of the `GroundingClient`.
+
+```
+var client = new GroundingClient():
+
+
+
+var result = client.withHeader("foo", "bar").pipelines().getAllPipelines();
+```

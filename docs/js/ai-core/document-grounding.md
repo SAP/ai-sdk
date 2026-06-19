@@ -1,0 +1,305 @@
+# Document Grounding
+
+The `@sap-ai-sdk/document-grounding` package incorporates generative AI document grounding capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+## Installation[​](#installation "Direct link to Installation")
+
+```
+npm install @sap-ai-sdk/document-grounding
+```
+
+important
+
+This package contains generated code. Updates to this package may include breaking changes.
+
+To ensure compatibility and manage updates effectively, we strongly recommend using the tilde (`~`) version range in your project instead of the caret (`^`). This approach will allow patch-level updates while preventing potentially breaking minor version changes.
+
+## Usage[​](#usage "Direct link to Usage")
+
+The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core document grounding service. In addition to the examples below, you can find more sample code [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts).
+
+tip
+
+If you define a custom resource group, ensure that it has the label `document-grounding: true` in order to use the document grounding service. This label can be set in SAP AI Launchpad while creating the resource group. Alternatively, create a resource group via AI API by referring to the [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-grounding-e32efa5402154101b4cc05c03ef5be09) guide.
+
+### Get Pipeline Status[​](#get-pipeline-status "Direct link to Get Pipeline Status")
+
+The following examples show how to list pipelines, create a new pipeline, and view its current status. Refer to the [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipelines-api-d8cc0e369f994091b95a6d80aeadbc7f) for more details.
+
+```
+const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
+
+  {
+
+    $top: 10
+
+  },
+
+  {
+
+    'AI-Resource-Group': 'default'
+
+  }
+
+).execute();
+
+
+
+const createPipelineResponse = await PipelinesApi.createPipeline(
+
+  {
+
+    configuration: {
+
+      destination: 'my-destination'
+
+      sharepoint: {
+
+        site: {
+
+          name: 'sharepoint-site-name'
+
+        }
+
+      }
+
+    },
+
+    type: 'MSSharePoint'
+
+  },
+
+  {
+
+    'AI-Resource-Group': 'default'
+
+  }
+
+).execute();
+
+
+
+const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus(
+
+  'pipeline-id',
+
+  {
+
+    'AI-Resource-Group': 'default'
+
+  }
+
+).execute();
+```
+
+### Create a Collection[​](#create-a-collection "Direct link to Create a Collection")
+
+The following example shows how to create a collection using Vector API. For more details, refer to the [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-08e3d008addb4362986c73ff0151638c).
+
+```
+const response = await VectorApi.createCollection(
+
+  {
+
+    title: 'my-collection-title',
+
+    embeddingConfig: {
+
+      modelName: 'text-embedding-3-small'
+
+    },
+
+    metadata: []
+
+  },
+
+  {
+
+    'AI-Resource-Group': 'default'
+
+  }
+
+).executeRaw();
+
+
+
+const collectionId = (response.headers.location as string).split('/').at(-2);
+```
+
+### Create a Document[​](#create-a-document "Direct link to Create a Document")
+
+The following example shows how to create a document using Vector API.
+
+```
+const response: DocumentsListResponse = await VectorApi.createDocuments(
+
+  collectionId,
+
+  {
+
+    documents: [
+
+      {
+
+        metadata: [],
+
+        chunks: [
+
+          {
+
+            content:
+
+              'SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service.',
+
+            metadata: []
+
+          }
+
+        ]
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    'AI-Resource-Group': 'default'
+
+  }
+
+).execute();
+```
+
+### Retrieval Search[​](#retrieval-search "Direct link to Retrieval Search")
+
+The following example shows how to search results using Retrieve API. Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api-281e8cf31d654b108a6e128a4a6cdbae) for more details.
+
+```
+const response: RetrievalSearchResults = RetrievalApi.search(
+
+  {
+
+    query: 'What is SAP Cloud SDK for AI?',
+
+    filters: [
+
+      {
+
+        id: 'my-filter',
+
+        searchConfiguration: {
+
+          maxChunkCount: 10
+
+        },
+
+        dataRepositories: ['*'],
+
+        dataRepositoryType: 'vector'
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    'AI-Resource-Group': 'default'
+
+  }
+
+).execute();
+```
+
+### Use Grounding in Orchestration[​](#use-grounding-in-orchestration "Direct link to Use Grounding in Orchestration")
+
+Refer to [Orchestration Grounding](/ai-sdk/docs/js/orchestration/chat-completion.md#grounding) for usage details.
+
+### Custom Destination[​](#custom-destination "Direct link to Custom Destination")
+
+When calling the `execute()` method, it is possible to provide a custom destination for your SAP AI Core instance. For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
+
+```
+const response = await VectorApi.deleteCollectionById(collectionId, {
+
+  'AI-Resource-Group': 'default'
+
+}).execute({
+
+  destinationName: 'my-destination'
+
+});
+```
+
+By default, the fetched destination is cached. To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
+
+For more information about configuring a destination, refer to the [Using a Destination](/ai-sdk/docs/js/connecting-to-ai-core.md#using-a-destination) section.
+
+## Custom Request Configuration[​](#custom-request-configuration "Direct link to Custom Request Configuration")
+
+Set custom request configuration in the `requestConfig` parameter when calling the `.execute()` method.
+
+```
+const response: DocumentsListResponse = await VectorApi.createDocuments(
+
+  collectionId,
+
+  {
+
+    documents: [
+
+      {
+
+        metadata: [],
+
+        chunks: [
+
+          {
+
+            content: 'Your document content here',
+
+            metadata: []
+
+          }
+
+        ]
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    'AI-Resource-Group': 'default'
+
+  }
+
+).execute({
+
+  requestConfig: {
+
+    headers: {
+
+      'x-custom-header': 'custom-value'
+
+      // Add more headers here
+
+    },
+
+    params: {
+
+      // Add more parameters here
+
+    }
+
+    // Add more request configuration here
+
+  }
+
+});
+```

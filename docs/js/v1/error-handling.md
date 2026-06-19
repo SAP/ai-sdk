@@ -1,0 +1,56 @@
+# Error Handling
+
+A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`. In this case, SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
+
+## Accessing Error Information[​](#accessing-error-information "Direct link to Accessing Error Information")
+
+For example, for the following nested `ErrorWithCause`
+
+```
+const rootCause = new Error('The root cause is a bug!');
+
+const lowerLevelErrorWithCause = new ErrorWithCause(
+
+  'Failed to call function foo().',
+
+  rootCause
+
+);
+
+const upperLevelErrorWithCause = new ErrorWithCause(
+
+  'Process crashed.',
+
+  lowerLevelErrorWithCause
+
+);
+
+throw upperLevelErrorWithCause;
+```
+
+The error stack will look like this:
+
+```
+ErrorWithCause: Process crashed.
+
+    at ...
+
+Caused by:
+
+ErrorWithCause: Failed to call function foo().
+
+    at ...
+
+Caused by:
+
+Error: The root cause is a bug!
+
+    at ...
+```
+
+* `error.stack` will contain the above stack trace.
+* `error.message` will be `Process crashed.`.
+* `error.cause.message` will be `Failed to call function foo().`.
+* `error.rootCause.message` will be `The root cause is a bug!`.
+
+In case of `AxiosError`, the response data will be part of the error stack and can be accessed via `error.cause.response.data`.

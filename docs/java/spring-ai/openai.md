@@ -1,0 +1,260 @@
+# OpenAI Integration
+
+## Introduction[​](#introduction "Direct link to Introduction")
+
+This guide provides examples of how to use our Spring AI integration with our OpenAI client in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
+
+First, add the Spring AI dependency to your `pom.xml`:
+
+```
+<dependencyManagement>
+
+  <dependencies>
+
+    <dependency>
+
+      <groupId>org.springframework.ai</groupId>
+
+      <artifactId>spring-ai-bom</artifactId>
+
+      <version>${spring-ai.version}</version>
+
+      <type>pom</type>
+
+      <scope>import</scope>
+
+    </dependency>
+
+  </dependencies>
+
+</dependencyManagement>
+
+
+
+<dependencies>
+
+  <dependency>
+
+    <groupId>org.springframework.ai</groupId>
+
+    <artifactId>spring-ai-commons</artifactId>
+
+  </dependency>
+
+  <dependency>
+
+    <groupId>org.springframework.ai</groupId>
+
+    <artifactId>spring-ai-model</artifactId>
+
+  </dependency>
+
+  <dependency>
+
+    <groupId>org.springframework.ai</groupId>
+
+    <artifactId>spring-ai-client-chat</artifactId>
+
+  </dependency>
+
+  <dependency>
+
+    <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+
+    <artifactId>openai</artifactId>
+
+    <version>${ai-sdk.version}</version>
+
+  </dependency>
+
+</dependencies>
+```
+
+Spring AI Version
+
+As of version `1.10.0` the minimum required version for Spring AI is `1.0.0`. Please refer to the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for details on how to upgrade from a previous milestone version.
+
+## Embedding[​](#embedding "Direct link to Embedding")
+
+Here is how to obtain embedding vectors for a list of strings:
+
+You first initialize the OpenAI client for your model of choice and attach it `OpenAiSpringEmbeddingModel` object.
+
+```
+OpenAiClient client = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+
+OpenAiSpringEmbeddingModel embeddingModel = new OpenAiSpringEmbeddingModel(client);
+
+List<String> texts = List.of("Hello", "World");
+
+float[] embeddings = embeddingModel.embed(texts);
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).
+
+## Chat Completion[​](#chat-completion "Direct link to Chat Completion")
+
+The OpenAI client is integrated in Spring AI classes:
+
+```
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
+
+ChatModel client = new OpenAiChatModel(openAiClient);
+
+
+
+Prompt prompt = new Prompt("What is the capital of France?");
+
+ChatResponse response = client.call(prompt);
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).
+
+## Stream Chat Completion[​](#stream-chat-completion "Direct link to Stream Chat Completion")
+
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
+
+```
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
+
+ChatModel client = new OpenAiChatModel(openAiClient);
+
+
+
+Prompt prompt = new Prompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
+
+Flux<ChatResponse> response = client.stream(prompt);
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).
+
+## Tool Calling[​](#tool-calling "Direct link to Tool Calling")
+
+First define a function that will be called by the LLM:
+
+```
+class WeatherMethod {
+
+  enum Unit {C,F}
+
+  record Request(String location, Unit unit) {}
+
+  record Response(double temp, Unit unit) {}
+
+
+
+  @Tool(description = "Get the weather in location")
+
+  Response getCurrentWeather(@ToolParam Request request) {
+
+    int temperature = request.location.hashCode() % 30;
+
+    return new Response(temperature, request.unit);
+
+  }
+
+}
+```
+
+What to consider:
+
+* Self-explanatory interfaces that avoid acronyms.
+* Provide clear, humane readable error messages.
+* Enriched data objects to avoid client-side data merging.
+* Filter output to control size
+
+Then pass your tool to the model as follows.
+
+```
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
+
+ChatModel client = new OpenAiChatModel(openAiClient);
+
+var options = new DefaultToolCallingChatOptions();
+
+
+
+options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+
+
+
+Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+
+
+
+ChatResponse response = client.call(prompt);
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).
+
+## Chat Memory[​](#chat-memory "Direct link to Chat Memory")
+
+Create a Spring AI `ChatClient` from our `OpenAiChatModel` and add a chat memory advisor like so:
+
+```
+OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
+
+ChatModel client = new OpenAiChatModel(openAiClient);
+
+
+
+var repository = new InMemoryChatMemoryRepository();
+
+var memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+
+var advisor = MessageChatMemoryAdvisor.builder(memory).build();
+
+var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+
+
+
+Prompt prompt1 = new Prompt("What is the capital of France?");
+
+String content1 = cl.prompt(prompt1)
+
+    .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+
+    .call()
+
+    .content();
+
+// content1 is "Paris"
+
+
+
+Prompt prompt2 = new Prompt("And what is the typical food there?");
+
+String content2 = cl.prompt(prompt2)
+
+    .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+
+    .call()
+
+    .content();
+
+// chat memory will remember that the user is inquiring about France.
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).
+
+## Templates from Prompt Registry[​](#templates-from-prompt-registry "Direct link to Templates from Prompt Registry")
+
+You can use prompt templates stored in a prompt registry in your Spring AI application.
+
+Please see this [documentation](/ai-sdk/docs/java/ai-core/prompt-registry.md#using-templates-in-springai).
+
+## Custom Headers[​](#custom-headers "Direct link to Custom Headers")
+
+To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OpenAIClient`.
+
+```
+var clientWithHeader = new OpenAIClient().withHeader("foo", "bar");
+
+ChatModel client = new OpenAiChatModel(clientWithHeader);
+
+
+
+Prompt prompt = new Prompt("What is the capital of France?");
+
+ChatResponse response = client.call(prompt);
+```
