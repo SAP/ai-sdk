@@ -96,9 +96,18 @@ Please also refer to [our sample code](https://github.com/SAP/ai-sdk-java/tree/m
 <details>
 <summary>How to create a client for a custom resource group</summary>
 
+Either create the client from scratch as follows.
+
 ```java
 var destination = new AiCoreService().getInferenceDestination("myResourceGroup").forScenario("orchestration");
 var client = new OrchestrationClient(destination);
+```
+
+Or use an existing client and add the resource group to it.
+
+```java
+var existingClient = new OrchestrationClient();
+var client = existingClient.withResourceGroup("myResourceGroup","orchestration");
 ```
 
 </details>
