@@ -204,7 +204,7 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 #### Resource Group Scope Level Approach
 
 ```java
-var clientWithResourceGroup = new OrchestrationClient().withResourceGroup("resource-group-id", "scenario-name" );
+var clientWithResourceGroup = new OrchestrationClient().withResourceGroup("resource-group-name", "scenario-name" );
 
 var template = TemplateConfig.reference().byId("id").withScope(RESOURCE_GROUP);
 var configWithTemplate = config.withTemplateConfig(template);
