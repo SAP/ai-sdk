@@ -293,6 +293,85 @@ const result = await agent.invoke(agentInputs);
 
 <!-- vale on -->
 
+### Prompt Caching
+
+:::note
+Prompt caching is supported by Anthropic Claude and Amazon Nova model families served through orchestration.
+Other models ignore the `cache_control` directive without error.
+For a full overview, refer to the [prompt caching documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching?locale=en-US).
+:::
+
+Prompt caching reduces latency and cost by reusing cached content at the model provider level.
+The SDK offers two approaches: a per-call option and an agent middleware.
+
+#### Per-Call Cache Control
+
+Pass `cache_control` as a call option to `invoke()` or `stream()`.
+The SDK automatically places a cache breakpoint on the last cacheable block of the last message, so the breakpoint advances naturally as the conversation grows.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+const client = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku'
+    }
+  }
+});
+
+const response = await client.invoke(
+  [{ role: 'user', content: 'What is the speed of light?' }],
+  { cache_control: { type: 'ephemeral' } }
+);
+
+console.log(response.usage_metadata?.input_token_details);
+/*
+  { cache_read: 0, cache_creation: 1234 }   // first call: cache written
+  { cache_read: 1234, cache_creation: 0 }   // second call: cache read
+*/
+```
+
+#### Prompt Caching Middleware
+
+For agents, use `orchestrationPromptCachingMiddleware()` to manage cache breakpoints automatically across turns.
+Pass it to `createAgent()` via the `middleware` option.
+
+:::note
+The middleware is exported from a sub-path that requires the `langchain` package to be installed as a direct dependency.
+You can install it with `npm install langchain`.
+:::
+
+<!-- vale off -->
+
+```ts
+import { createAgent } from 'langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { orchestrationPromptCachingMiddleware } from '@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware';
+
+const model = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku'
+    }
+  }
+});
+
+const agent = createAgent({
+  model,
+  middleware: [orchestrationPromptCachingMiddleware({ ttl: '5m' })],
+  tools: []
+});
+
+const result = await agent.invoke({
+  messages: [{ role: 'user', content: 'What is the speed of light?' }]
+});
+```
+
+<!-- vale on -->
+
+For configuration options such as `minMessagesToCache` and `unsupportedModelBehavior`, refer to the [LangChain `anthropicPromptCachingMiddleware()` middleware documentation](https://reference.langchain.com/javascript/langchain/browser/anthropicPromptCachingMiddleware).
+
 ### Structured Output
 
 It is often useful to have a model return output that matches a specific schema.
