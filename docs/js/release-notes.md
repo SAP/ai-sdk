@@ -1,18 +1,37 @@
 # Release Notes
 
-## 2.11.0 - May 26, 2026[​](#2110---may-26-2026 "Direct link to 2.11.0 - May 26, 2026")
+## 2.12.0 - June 24, 2026[​](#2120---june-24-2026 "Direct link to 2.12.0 - June 24, 2026")
 
 ### New Features[​](#new-features "Direct link to New Features")
+
+* \[core] Add `AzureOpenAiResponsesModel` type for Azure OpenAI models that exclusively support the Responses API. ([0f10482](https://github.com/SAP/ai-sdk-js/commit/0f104825fb37f3518acb8cf4389b69e48e973182))
+* \[document-grounding, prompt-registry] Update document grounding specification. ([d984914](https://github.com/SAP/ai-sdk-js/commit/d984914f17767a458f1c2b4dae2aa6a8837dee62))
+* \[foundation-models] Add `createBatchInput()` and `parseBatchOutput()` helpers for building and parsing LLM batch requests and responses. ([0b41bea](https://github.com/SAP/ai-sdk-js/commit/0b41bea8cb572fdb8d1ea849bd31f87aef3341ea))
+* \[llm-batch] Add new experimental `@sap-ai-sdk/llm-batch` package for asynchronous batch processing of LLM requests via SAP AI Core LLM Batch Service. ([0b41bea](https://github.com/SAP/ai-sdk-js/commit/0b41bea8cb572fdb8d1ea849bd31f87aef3341ea))
+* \[openai] Add new experimental `@sap-ai-sdk/openai` package with a SAP AI Core-aware OpenAI client. The client wraps the OpenAI SDK and handles authentication and deployment resolution against SAP AI Core. ([0f10482](https://github.com/SAP/ai-sdk-js/commit/0f104825fb37f3518acb8cf4389b69e48e973182))
+
+### Fixed Issues[​](#fixed-issues "Direct link to Fixed Issues")
+
+* \[core] Improve error message when server sends a non-JSON response during streaming. ([2faf4a8](https://github.com/SAP/ai-sdk-js/commit/2faf4a8e0211f5d356e5aa0164c739c7160a212f))
+* \[langchain] Fixed duplicate tools accumulating in LangChain orchestration client in some configurations on repeated invocations. ([311dc08](https://github.com/SAP/ai-sdk-js/commit/311dc08e45ee7f7f897a9dc227fb22d078e28356))
+
+### Improvements[​](#improvements "Direct link to Improvements")
+
+* \[core] Added `gpt-5.5` to the available model list. Remove retired model `anthropic--claude-4-opus` — use `anthropic--claude-4.7-opus` instead. Remove deprecated model `o3-mini` (retirement date: 2026-08-02). ([e944aa1](https://github.com/SAP/ai-sdk-js/commit/e944aa1083c56d04bdef210870641b35ab17794c))
+
+## 2.11.0 - May 26, 2026[​](#2110---may-26-2026 "Direct link to 2.11.0 - May 26, 2026")
+
+### New Features[​](#new-features-1 "Direct link to New Features")
 
 * \[langchain] Support orchestration prompt module fallbacks. (dc2f5b1)
 * \[orchestration] Update orchestration specification to v0.131.3 (f72bb58)
 
-### Fixed Issues[​](#fixed-issues "Direct link to Fixed Issues")
+### Fixed Issues[​](#fixed-issues-1 "Direct link to Fixed Issues")
 
 * \[orchestration] Route messages to `messages_history` when using an orchestration config reference or prompt template reference. (cbcefb9)
 * \[orchestration] Disallow providing both orchestration config reference and config object at the same time. (7db7237)
 
-### Improvements[​](#improvements "Direct link to Improvements")
+### Improvements[​](#improvements-1 "Direct link to Improvements")
 
 * \[core] Add `gpt-5.4`, `gpt-5.4-nano` to the available model list. Remove deprecated model `o1` (retirement date: 2026-06-18). (c8c0e41)
 * \[core] Added `mistralai--mistral-small`, `anthropic--claude-4.7-opus`, `gemini-3.1-flash-lite` to the available model list. (75bb9a9)
@@ -36,7 +55,7 @@
 * \[prompt-registry] The `include_spec` parameter is deprecated in favor of `includeSpec` and `resolve_template_ref` is deprecated in favor of `resolveTemplateRef`. (cc9e80c)
 * \[prompt-registry] `PromptTemplateSubstitutionRequest` now requires the `inputParams` property. (cc9e80c)
 
-### New Features[​](#new-features-1 "Direct link to New Features")
+### New Features[​](#new-features-2 "Direct link to New Features")
 
 * \[document-grounding] Update document grounding specification. (029f091)
 * \[foundation-models] Add `getRequestId()` method to `AzureOpenAiChatCompletionResponse`, `AzureOpenAiChatCompletionStreamResponse` and `AzureOpenAiEmbeddingResponse`. The new method retrieves the request ID from the `x-aicore-request-id` response header, useful for debugging and tracking requests. (a722171)
@@ -44,17 +63,17 @@
 * \[orchestration] Update orchestration specification to 0.115.19. Multiple embedding output formats are not yet supported in the orchestration embedding client. (cf767a9)
 * \[prompt-registry] Update prompt registry specification. (cc9e80c)
 
-### Improvements[​](#improvements-1 "Direct link to Improvements")
+### Improvements[​](#improvements-2 "Direct link to Improvements")
 
 * \[core] Remove deprecated models `amazon--titan-embed-image` and `anthropic--claude-4.5-opus`. (8cb466a)
 
 ## 2.9.0 - March 20, 2026[​](#290---march-20-2026 "Direct link to 2.9.0 - March 20, 2026")
 
-### New Features[​](#new-features-2 "Direct link to New Features")
+### New Features[​](#new-features-3 "Direct link to New Features")
 
 * \[orchestration] Add `getCitations()` method to retrieve source citations from models like Perplexity Sonar. (8de0013)
 
-### Improvements[​](#improvements-2 "Direct link to Improvements")
+### Improvements[​](#improvements-3 "Direct link to Improvements")
 
 * \[core] Add `gpt-5.2`, `anthropic--claude-4.5-opus`, `anthropic--claude-4.6-opus`, `anthropic--claude-4.6-sonnet` and `amazon-titan-embed-image` to the available model list. Removed deprecated `gpt-4o` model. (cd3d8ed)
 * \[orchestration] Support file input for user messages. File inputs have a `type` of `file` and include a `file_data` field with a URL such as a HTTP URL or a data URL. Local files must be provided as `data:MEDIATYPE;base64,DATA` with a non-empty media type and valid base64 content. Availability of different file types depends on the capabilities of the underlying model and tools. GPT-models do not support file inputs with the orchestration API at this time. (b822da9)
@@ -62,7 +81,7 @@
 
 ## 2.8.0 - March 03, 2026[​](#280---march-03-2026 "Direct link to 2.8.0 - March 03, 2026")
 
-### New Features[​](#new-features-3 "Direct link to New Features")
+### New Features[​](#new-features-4 "Direct link to New Features")
 
 * \[orchestration] Support streaming with orchestration prompt module fallback. (3d12d4c)
 * \[orchestration] Support orchestration prompt module fallback for non-streaming requests When constructing an `OrchestrationClient` it is now possible to provide a list of module configurations to support module fallback. (5501e7c)
@@ -79,25 +98,25 @@
 * \[core] Remove deprecated and retired models from model list. Remove retired model `anthropic--claude-3-sonnet` from model list, use suggested replacement `anthropic--claude-4.5-sonnet` instead. Remove retired model `anthropic--claude-3-opus` from model list. Remove deprecated model `gpt-4o-mini`, use suggested replacement `gpt-5-mini` instead. Remove deprecated models `anthropic--claude-3.5-sonnet` and `anthropic--claude-3.7-sonnet`. (b12626b)
 * \[orchestration] Support for constructing an `OrchestrationStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release. Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter to allow reading from raw HTTP response. (6b49479)
 
-### New Features[​](#new-features-4 "Direct link to New Features")
+### New Features[​](#new-features-5 "Direct link to New Features")
 
 * \[core] Advertise AbortSignal support for HTTP request cancellation. This change adds typings, documentation and examples for using AbortSignal with the HTTP client to enable request cancellation. (b11b00c)
 * \[langchain] Support the `withStructuredOutput()` method in the Orchestration LangChain client. (4fce347)
 * \[orchestration] Add `rawResponse` property to `OrchestrationStreamResponse`. The new property exposes the raw HTTP response from the orchestration service for advanced use cases. (6b49479)
 * \[orchestration] Add `getRequestId()` method to `OrchestrationResponse`, `OrchestrationStreamResponse` and `OrchestrationEmbeddingResponse`. The new method allows retrieving the request ID from the orchestration service responses, which can be useful for debugging and tracking requests. (6b49479)
 
-### Improvements[​](#improvements-3 "Direct link to Improvements")
+### Improvements[​](#improvements-4 "Direct link to Improvements")
 
 * \[core] Combine 'ai-client-type' headers if a custom 'ai-client-type' header is set. (56e9c3f)
 * \[rpt] Restrict the `task_type` property in the `PredictionConfig` type. (12b4129)
 
 ## 2.6.0 - February 04, 2026[​](#260---february-04-2026 "Direct link to 2.6.0 - February 04, 2026")
 
-### New Features[​](#new-features-5 "Direct link to New Features")
+### New Features[​](#new-features-6 "Direct link to New Features")
 
 * \[rpt] Release Beta version of a client for the SAP-RPT-1 model. (790ad05)
 
-### Fixed Issues[​](#fixed-issues-1 "Direct link to Fixed Issues")
+### Fixed Issues[​](#fixed-issues-2 "Direct link to Fixed Issues")
 
 * \[orchestration] Export `isConfigReference()` method as a value instead of type-only export. This function can now be imported and used at runtime to check if a configuration is an orchestration configuration reference type. (f3b6dc5)
 
@@ -107,17 +126,17 @@
 
 * \[langchain] The `@langchain/core` package is now a peer dependency. You now have to install the `@langchain/core` package as a direct dependency of your project. (5b88f6f)
 
-### New Features[​](#new-features-6 "Direct link to New Features")
+### New Features[​](#new-features-7 "Direct link to New Features")
 
 * \[langchain] Support disabling streaming completely via the langchain option `disableStreaming`. (b91e0a7)
 * \[langchain] Support auto-streaming via the langchain option `streaming`. When enabled (e.g., transparently by LangGraph), responses are automatically streamed in `invoke()` calls. (b91e0a7)
 * \[orchestration] Add support for orchestration configuration references in the orchestration client. (2f19a40)
 
-### Fixed Issues[​](#fixed-issues-2 "Direct link to Fixed Issues")
+### Fixed Issues[​](#fixed-issues-3 "Direct link to Fixed Issues")
 
 * \[langchain] Pin `@langchain/core` to v1.1.8 to avoid a regression. (9ff7cec)
 
-### Improvements[​](#improvements-4 "Direct link to Improvements")
+### Improvements[​](#improvements-5 "Direct link to Improvements")
 
 * \[langchain] Move the `@langchain/core` package from dependencies to peer dependencies. This reduces the chance of version incompatibilities between langchain-related packages. (5b88f6f)
 
@@ -127,12 +146,12 @@
 
 * \[prompt-registry] In the prompt-registry client schema, the `Template` type was renamed to `PromptTemplate`. (a3cbc6e)
 
-### New Features[​](#new-features-7 "Direct link to New Features")
+### New Features[​](#new-features-8 "Direct link to New Features")
 
 * \[orchestration] Added support for `applyTo` and `translateMessagesHistory` in order to enable selective input translation and automatic inference of target language for output translation parameters. (aa097da)
 * \[prompt-registry] Update prompt-registry specification adding support for resource group scoped prompt templates. (a3cbc6e)
 
-### Improvements[​](#improvements-5 "Direct link to Improvements")
+### Improvements[​](#improvements-6 "Direct link to Improvements")
 
 * \[core] Added `anthropic--claude-4.5-sonnet` , `anthropic--claude-4.5-haiku` , `gemini-2.5-flash-lite` and `sap-abap-1` to the available model list. Removed deprecated models `gemini-2.0-flash` and `gemini-2.0-flash-lite` scheduled for retirement. (2e1d2c2)
 
@@ -142,7 +161,7 @@
 
 * \[langchain, orchestration, prompt-registry] `zod` was upgraded to v4 (7c9605d)
 
-### New Features[​](#new-features-8 "Direct link to New Features")
+### New Features[​](#new-features-9 "Direct link to New Features")
 
 * \[langchain] Bump langchain to v1 (7c9605d)
 * \[orchestration] Added support for `protected_material_code` property to `buildAzureContentSafetyFilter()` function for output filter configuration to allow detecting protected code content from known github repositories. (485e21b)
@@ -173,27 +192,27 @@
 
 * \[langchain] Remove structured ouput handling for deprecated gpt-4 & gpt-3 models (6100bca)
 
-### New Features[​](#new-features-9 "Direct link to New Features")
+### New Features[​](#new-features-10 "Direct link to New Features")
 
 * \[ai-api] Update `ai-api` package with the new specification (2509b). (58464e9)
 * \[core, orchestration] Introduce orchestration embedding client for consuming embedding feature of the orchestration service. (347eac1)
 * \[document-grounding] Update document-grounding specification (e2c34f3)
 
-### Fixed Issues[​](#fixed-issues-3 "Direct link to Fixed Issues")
+### Fixed Issues[​](#fixed-issues-4 "Direct link to Fixed Issues")
 
 * \[core] Replace active logging during streaming with error throwing to avoid logging the response payload. (5225275)
 
-### Improvements[​](#improvements-6 "Direct link to Improvements")
+### Improvements[​](#improvements-7 "Direct link to Improvements")
 
 * \[core, orchestration] Add `cohere--command-a-reasoning`, `mistralai--mistral-medium-instruct` and perplexity-ai `sonar` and `sonar-pro` to model list (6100bca)
 
 ## 2.1.0 - October 17, 2025[​](#210---october-17-2025 "Direct link to 2.1.0 - October 17, 2025")
 
-### Fixed Issues[​](#fixed-issues-4 "Direct link to Fixed Issues")
+### Fixed Issues[​](#fixed-issues-5 "Direct link to Fixed Issues")
 
 * \[orchestration] Fix JSDoc example of `buildAzureContentSafetyFilter()` function. (0cf7d80)
 
-### Improvements[​](#improvements-7 "Direct link to Improvements")
+### Improvements[​](#improvements-8 "Direct link to Improvements")
 
 * \[core] Remove `alephalpha-pharia-1-7b-control` and `deepseek-ai--deepseek-r1` from available model list. (0cf7d80)
 
@@ -257,7 +276,7 @@
   * Update Azure content filter property names to lowercase with underscores: `Hate` to `hate`, `SelfHarm` to `self_harm`, `Sexual` to `sexual`, and `Violence` to `violence`.
   * Remove deprecated `buildAzureContentFilter()` function and use `buildAzureContentSafetyFilter()` instead. (86e6370)
 
-### New Features[​](#new-features-10 "Direct link to New Features")
+### New Features[​](#new-features-11 "Direct link to New Features")
 
 * \[ai-api] Add `resolveDeploymentUrl()` function to resolve the deployment URL that matches the given criteria. (14745de)
 * \[foundation-models] Add `getTokenUsage()`, `getFinishReason()`, `getContent()`, `getToolCalls()`, `getRefusal()`, `getAssistantMessage()`, `findChoiceByIndex()` methods to Azure OpenAI chat completion response. (5c52cb6)
@@ -266,7 +285,7 @@
 * \[orchestration] Add `deploymentId` as the optional parameter for OrchestrationClient initialization. (0a418d0)
 * \[orchestration] Add `findChoiceByIndex()` method to find specific choices by index in streaming responses. (5c52cb6)
 
-### Improvements[​](#improvements-8 "Direct link to Improvements")
+### Improvements[​](#improvements-9 "Direct link to Improvements")
 
 * \[core] Add `gpt-5`,`gpt-5-mini` and `gpt-5-nano` to and remove `gemini-1.5-flash`, `gemini-1.5-pro` and `ibm--granite-13b-chat` from the available model list. (500c0dd)
 * \[core] Add `anthropic--claude-4-opus`, `anthropic--claude-4-sonnet`, `amazon--nova-premier`, `gemini-2.5-flash` and `gemini-2.5-pro` to and remove `mistralai--mixtral-8x7b-instruct-v01`, `meta--llama3.1-70b-instruct`, `nvidia--llama-3.2-nv-embedqa-1b`, `amazon--titan-embed-text`, `gpt-4`, `amazon--titan-text-express` and `amazon--titan-text-lite` from the available model list. (9e1c43a)
