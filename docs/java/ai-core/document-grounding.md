@@ -57,27 +57,37 @@ var resourceGroupId = "default";
 
 // get all pipelines
 
-Pipelines pipelines = api.getAllPipelines(resourceGroupId);
+GetPipelines pipelines = api.getAllPipelines(resourceGroupId);
 
 
 
-// create new pipeline
-
-var type = "MSSharePoint"; // or "S3" or "SFTP"
+// create new pipeline (MSSharePoint example)
 
 var pipelineSecret = "my-secret-name";
 
-var config = PipelinePostRequstConfiguration.create().destination(pipelineSecret);
+var sharePointSite = SharePointSite.create().name("my-site");
 
-var request = PipelinePostRequst.create().type(type)._configuration(config);
+var sharePointConfig = SharePointConfig.create().site(sharePointSite);
+
+var config =
+
+    MSSharePointConfiguration.create().destination(pipelineSecret).sharePoint(sharePointConfig);
+
+var request =
+
+    MSSharePointPipelineCreateRequest.create()
+
+        .type(MS_SHARE_POINT)
+
+        ._configuration(config);
 
 PipelineId pipeline = api.createPipeline(resourceGroupId, request);
 
 
 
-// get pipeline status
+// get pipeline by id, returns a GetPipeline (MSSharePointPipelineGetResponse, S3PipelineGetResponse, or SFTPPipelineGetResponse)
 
-PipelineStatus status = api.getPipelineStatus(resourceGroupId, pipeline.getPipelineId());
+var status = (MSSharePointPipelineGetResponse) = api.getPipelineById(resourceGroupId, pipeline.getPipelineId());
 ```
 
 ### Vector API[​](#vector-api "Direct link to Vector API")
@@ -127,13 +137,13 @@ var request =
 
         .documents(BaseDocument.create()
 
-            .chunks(TextOnlyBaseChunk.create()
+            .chunks(TextOnlyBaseChunkCreate.create()
 
                .content("The dog makes _woof_")
 
-               .metadata(VectorKeyValueListPair.create().key("animal").value("dog")))
+               .addMetadataItem(VectorKeyValueListPair.create().key("animal").value("dog")))
 
-            .metadata(VectorDocumentKeyValueListPair.create().key("topic").value("sound")));
+            .addMetadataItem(VectorDocumentKeyValueListPair.create().key("topic").value("sound")));
 
 DocumentsListResponse response = api.createDocuments(resourceGroupId, collectionId, request);
 ```
@@ -149,7 +159,7 @@ TextSearchRequest textSearch;
 
 var api = new GroundingClient().vector();
 
-var result = api.search(resourceGroup, textSearch);
+VectorSearchResults result = api.search(resourceGroup, textSearch);
 
 
 
@@ -185,7 +195,7 @@ var resourceGroupId = "default";
 
 var filter =
 
-    RetrievalSearchFilter.create()
+    FiltersInner.create()
 
         .id("question")
 
@@ -193,11 +203,11 @@ var filter =
 
         .dataRepositories(List.of("*"))
 
-        .searchConfiguration(SearchConfiguration.create().maxChunkCount(10));
+        .searchConfiguration(RetrievalSearchConfiguration.create().maxChunkCount(10));
 
 var search = RetrievalSearchInput.create().query("What is SAP Cloud SDK for AI?").filters(filter);
 
-RetievalSearchResults results = api.search(resourceGroupId, search);
+RetrievalSearchResults results = api.search(resourceGroupId, search);
 ```
 
 ### Grounding via Orchestration[​](#grounding-via-orchestration "Direct link to Grounding via Orchestration")
@@ -213,7 +223,7 @@ var databaseFilter =
 
     DocumentGroundingFilter.create()
 
-        .dataRepositoryType(DataRepositoryType.VECTOR)
+        .dataRepositoryType(VECTOR)
 
         .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(3));
 
@@ -221,9 +231,9 @@ var groundingConfigConfig =
 
     GroundingModuleConfigConfig.create()
 
-        .inputParams(List.of("query"))
+        .placeholders(
 
-        .outputParam("results")
+            GroundingModuleConfigConfigPlaceholders.create().input("query").output("results"))
 
         .addFiltersItem(databaseFilter);
 
@@ -231,17 +241,13 @@ var groundingConfig =
 
     GroundingModuleConfig.create()
 
-        .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+        .type(DOCUMENT_GROUNDING_SERVICE)
 
         .config(groundingConfigConfig);
 
 var configWithGrounding =
 
-    new OrchestrationModuleConfig()
-
-        .withLlmConfig(GPT_4O)
-
-        .withGroundingConfig(groundingConfig);
+    new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGroundingConfig(groundingConfig);
 
 
 
@@ -267,9 +273,9 @@ OrchestrationChatResponse response = client.chatCompletion(prompt, configWithGro
 To add custom headers to single or groups of your grounding calls, you can use the `.withHeader` method of the `GroundingClient`.
 
 ```
-var client = new GroundingClient():
+var client = new GroundingClient();
 
 
 
-var result = client.withHeader("foo", "bar").pipelines().getAllPipelines();
+var result = client.withHeader("foo", "bar").pipelines().getAllPipelines("default");
 ```
