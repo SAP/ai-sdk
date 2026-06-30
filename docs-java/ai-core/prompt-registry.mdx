@@ -323,8 +323,8 @@ var prompt =
 
 final var moduleConfig =
     PromptTemplatingModuleConfig.create()
-        .model(LLMModelDetails.create().name("model-name"));
-moduleConfig.setPrompt(prompt);
+        .model(LLMModelDetails.create().name("model-name"))
+        .prompt(prompt);
 var orchConfig = OrchestrationConfig.create()
         .modules(
             OrchestrationConfigModules.createInnerModuleConfigs(
