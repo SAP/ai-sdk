@@ -166,8 +166,8 @@ PromptClient client = new PromptClient();
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
     "212a9b9b-a532-4c1c-8852-bf75de853d74",
-    "resource group",
-    "resource groupt scope",
+    null,
+    null,
     false,
     PromptTemplateSubstitutionRequest.create()
         .inputParams(Map.of("inputExample", "I love football")));
@@ -202,7 +202,7 @@ You can import a declarative prompt template as a single file export in yaml for
 PromptClient client = new PromptClient();
 
 File template = new ClassPathResource("prompt-template.yaml").getFile();
-PromptTemplatePostResponse response = promptClient.importPromptTemplate("default", null, template);
+PromptTemplatePostResponse response = client.importPromptTemplate("default", null, template);
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -236,7 +236,7 @@ Delete a specific version of the prompt template, for imperatively managed promp
 ```java
 PromptClient client = new PromptClient();
 
-PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId())
+PromptTemplateDeleteResponse response = client.deletePromptTemplate(UUID.fromString("template id"))
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -249,7 +249,7 @@ PromptClient client = new PromptClient();
 var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
 var resourceGroupScope = "true";
 
-PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId(), resourceGroupId, resourceGroupScope);
+PromptTemplateDeleteResponse response = client.deletePromptTemplate(UUID.fromString("template id"), resourceGroupId, resourceGroupScope);
 ```
 
 ## Using Templates in SpringAI
@@ -275,15 +275,14 @@ var advisor = MessageChatMemoryAdvisor.builder(memory).build();
 var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 var promptResponse =
-        new PromptClient()
-            .parsePromptTemplateByNameVersion(
-                "scenario",
-                "0.0.1",
-                "template_name",
-                "resource-group",// usually "default"
-                false,
-                PromptTemplateSubstitutionRequest.create()
-                    .inputParams(Map.of("parameter1", "value1")));
+    new PromptClient()
+        .parsePromptTemplateById(
+            UUID.fromString("template id"),
+            "template_name",
+            "resource-group",// usually "default"
+            false,
+            PromptTemplateSubstitutionRequest.create()
+                .inputParams(Map.of("parameter1", "value1")));
 
 List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
 var prompt = new Prompt(messages);
