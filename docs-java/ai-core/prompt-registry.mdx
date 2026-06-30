@@ -165,7 +165,7 @@ You can fill a prompt template by ID, or by the combination of name, scenario, a
 PromptClient client = new PromptClient();
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
-    "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    UUID.fromString("template id"),
     null,
     null,
     false,
@@ -184,7 +184,7 @@ var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
 var resourceGroupScope = "true";
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
-    "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    UUID.fromString("template id"),
     resourceGroupId,
     resourceGroupScope,
     false,
@@ -236,7 +236,7 @@ Delete a specific version of the prompt template, for imperatively managed promp
 ```java
 PromptClient client = new PromptClient();
 
-PromptTemplateDeleteResponse response = client.deletePromptTemplate(UUID.fromString("template id"))
+PromptTemplateDeleteResponse response = client.deletePromptTemplate(UUID.fromString("template id"));
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
