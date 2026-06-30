@@ -313,12 +313,12 @@ You can create a new Orchestration configuration in Prompt Registry as follows.
 ```java
 import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
-import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
-import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
-import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfigModules;
+import com.sap.ai.sdk.prompt.registry.model.PartialPromptTemplatingModuleConfig;
 import com.sap.ai.sdk.prompt.registry.model.Template;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
@@ -333,14 +333,14 @@ var prompt = Template.create()
             .role(UserChatMessage.RoleEnum.USER));
 
 final var moduleConfig =
-    PromptTemplatingModuleConfig.create()
+    PartialPromptTemplatingModuleConfig.create()
         .prompt(prompt)
         .model(LLMModelDetails.create().name("model-name"));
 
-var orchConfig = OrchestrationConfig.create()
+var orchConfig = PromptRegistryOrchestrationConfig.create()
     .modules(
-        OrchestrationConfigModules.createInnerModuleConfigs(
-            ModuleConfigs.create().promptTemplating(moduleConfig)));
+        PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
+            PartialModuleConfigs.create().promptTemplating(moduleConfig)));
 
 var postRequest =
     OrchestrationConfigPostRequest.create()
