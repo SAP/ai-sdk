@@ -143,10 +143,14 @@ var request =
 
                .addMetadataItem(VectorKeyValueListPair.create().key("animal").value("dog")))
 
-            .addMetadataItem(VectorDocumentKeyValueListPair.create().key("topic").value("sound")));
+            .addMetadataItem(VectorDocumentKeyValueListPair.create().key("topic").value("sound")
+
+                .matchMode(FilterMatchModeEnum.ANY)));
 
 DocumentsListResponse response = api.createDocuments(resourceGroupId, collectionId, request);
 ```
+
+Note that it is currently required to add the `.matchMode()` parameter to the `VectorDocumentKeyValueListPair`. Otherwise, the grounding service will return a `500 Internal Server Error`.
 
 #### Document search[​](#document-search "Direct link to Document search")
 
