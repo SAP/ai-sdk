@@ -150,7 +150,7 @@ You can list the history of edits to prompt templates, for imperatively managed 
 ```java
 PromptClient client = new PromptClient();
 
-PromptTemplateListResponse history = client.listPromptTemplateHistory("categorization", "0.0.1", NAME);
+PromptTemplateListResponse history = client.listPromptTemplateHistory("categorization", "0.0.1", "template-name");
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -165,7 +165,9 @@ You can fill a prompt template by ID, or by the combination of name, scenario, a
 PromptClient client = new PromptClient();
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
-    "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    UUID.fromString("template id"),
+    null,
+    null,
     false,
     PromptTemplateSubstitutionRequest.create()
         .inputParams(Map.of("inputExample", "I love football")));
@@ -182,7 +184,7 @@ var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
 var resourceGroupScope = "true";
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
-    "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    UUID.fromString("template id"),
     resourceGroupId,
     resourceGroupScope,
     false,
@@ -200,7 +202,7 @@ You can import a declarative prompt template as a single file export in yaml for
 PromptClient client = new PromptClient();
 
 File template = new ClassPathResource("prompt-template.yaml").getFile();
-PromptTemplatePostResponse response = promptClient.importPromptTemplate("default", null, template);
+PromptTemplatePostResponse response = client.importPromptTemplate("default", null, template);
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -234,7 +236,7 @@ Delete a specific version of the prompt template, for imperatively managed promp
 ```java
 PromptClient client = new PromptClient();
 
-PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId())
+PromptTemplateDeleteResponse response = client.deletePromptTemplate(UUID.fromString("template id"));
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -247,7 +249,7 @@ PromptClient client = new PromptClient();
 var resourceGroupId = "ai-sdk-java-e2e"; // your resource group id
 var resourceGroupScope = "true";
 
-PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId(), resourceGroupId, resourceGroupScope);
+PromptTemplateDeleteResponse response = client.deletePromptTemplate(UUID.fromString("template id"), resourceGroupId, resourceGroupScope);
 ```
 
 ## Using Templates in SpringAI
@@ -273,15 +275,14 @@ var advisor = MessageChatMemoryAdvisor.builder(memory).build();
 var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 var promptResponse =
-        new PromptClient()
-            .parsePromptTemplateByNameVersion(
-                "scenario",
-                "0.0.1",
-                "template_name",
-                "resource-group",// usually "default"
-                false,
-                PromptTemplateSubstitutionRequest.create()
-                    .inputParams(Map.of("parameter1", "value1")));
+    new PromptClient()
+        .parsePromptTemplateById(
+            UUID.fromString("template id"),
+            "template_name",
+            "resource-group",// usually "default"
+            false,
+            PromptTemplateSubstitutionRequest.create()
+                .inputParams(Map.of("parameter1", "value1")));
 
 List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
 var prompt = new Prompt(messages);
@@ -310,27 +311,43 @@ For more details about orchestration configuration management, refer to the [SAP
 You can create a new Orchestration configuration in Prompt Registry as follows.
 
 ```java
+import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
+import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfigModules;
+import com.sap.ai.sdk.prompt.registry.model.PartialPromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.Template;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
+
 var orchConfigClient = new OrchestrationConfigClient();
-var orchConfig = OrchestrationConfig.create()
-        .modules(
-            OrchestrationConfigModules.createInnerModuleConfigs(
-                ModuleConfigs.create()
-                    .promptTemplating(
-                        PromptTemplatingModuleConfig.create()
-                            .prompt(
-                                Template.create()
-                                    .template(
-                                        UserChatMessage.create()
-                                            .content(
-                                                new UserChatMessageContent.InnerString("message"))
-                                            .role(UserChatMessage.RoleEnum.USER)))
-                            .model(LLMModelDetails.create().name("model-name")))));
+var prompt = Template.create()
+    .template(
+        UserChatMessage.create()
+            .content(
+                new UserChatMessageContent.InnerString(
+                    "message"))
+            .role(UserChatMessage.RoleEnum.USER));
+
+final var moduleConfig =
+    PartialPromptTemplatingModuleConfig.create()
+        .prompt(prompt)
+        .model(LLMModelDetails.create().name("model-name"));
+
+var orchConfig = PromptRegistryOrchestrationConfig.create()
+    .modules(
+        PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
+            PartialModuleConfigs.create().promptTemplating(moduleConfig)));
+
 var postRequest =
-      OrchestrationConfigPostRequest.create()
-          .name("name")
-          .version("0.0.1")
-          .scenario("scenario")
-          .spec(buildOrchestrationConfig());
+    OrchestrationConfigPostRequest.create()
+        .name("name")
+        .version("0.0.1")
+        .scenario("scenario")
+        .spec(orchConfig);
 OrchestrationConfigPostResponse response = orchConfigClient.createUpdateOrchestrationConfig(postRequest);
 ```
 
