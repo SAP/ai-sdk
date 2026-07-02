@@ -197,7 +197,7 @@ PromptClient client = new PromptClient();
 
 
 
-PromptTemplateListResponse history = client.listPromptTemplateHistory("categorization", "0.0.1", NAME);
+PromptTemplateListResponse history = client.listPromptTemplateHistory("categorization", "0.0.1", "template-name");
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -215,7 +215,11 @@ PromptClient client = new PromptClient();
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
 
-    "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    UUID.fromString("template id"),
+
+    null,
+
+    null,
 
     false,
 
@@ -241,7 +245,7 @@ var resourceGroupScope = "true";
 
 PromptTemplateSubstitutionResponse substitution = client.parsePromptTemplateById(
 
-    "212a9b9b-a532-4c1c-8852-bf75de853d74",
+    UUID.fromString("template id"),
 
     resourceGroupId,
 
@@ -267,7 +271,7 @@ PromptClient client = new PromptClient();
 
 File template = new ClassPathResource("prompt-template.yaml").getFile();
 
-PromptTemplatePostResponse response = promptClient.importPromptTemplate("default", null, template);
+PromptTemplatePostResponse response = client.importPromptTemplate("default", null, template);
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -309,7 +313,7 @@ PromptClient client = new PromptClient();
 
 
 
-PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId())
+PromptTemplateDeleteResponse response = client.deletePromptTemplate(UUID.fromString("template id"));
 ```
 
 Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java) in our Spring Boot application for a complete example.
@@ -327,7 +331,7 @@ var resourceGroupScope = "true";
 
 
 
-PromptTemplateDeleteResponse response = client.deletePromptTemplate(template.getId(), resourceGroupId, resourceGroupScope);
+PromptTemplateDeleteResponse response = client.deletePromptTemplate(UUID.fromString("template id"), resourceGroupId, resourceGroupScope);
 ```
 
 ## Using Templates in SpringAI[​](#using-templates-in-springai "Direct link to Using Templates in SpringAI")
@@ -365,23 +369,21 @@ var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 var promptResponse =
 
-        new PromptClient()
+    new PromptClient()
 
-            .parsePromptTemplateByNameVersion(
+        .parsePromptTemplateById(
 
-                "scenario",
+            UUID.fromString("template id"),
 
-                "0.0.1",
+            "template_name",
 
-                "template_name",
+            "resource-group",// usually "default"
 
-                "resource-group",// usually "default"
+            false,
 
-                false,
+            PromptTemplateSubstitutionRequest.create()
 
-                PromptTemplateSubstitutionRequest.create()
-
-                    .inputParams(Map.of("parameter1", "value1")));
+                .inputParams(Map.of("parameter1", "value1")));
 
 
 
@@ -413,47 +415,79 @@ For more details about orchestration configuration management, refer to the [SAP
 You can create a new Orchestration configuration in Prompt Registry as follows.
 
 ```
+import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+
+import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
+
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
+
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
+
+import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
+
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfig;
+
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfigModules;
+
+import com.sap.ai.sdk.prompt.registry.model.PartialPromptTemplatingModuleConfig;
+
+import com.sap.ai.sdk.prompt.registry.model.Template;
+
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
+
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
+
+
+
 var orchConfigClient = new OrchestrationConfigClient();
 
-var orchConfig = OrchestrationConfig.create()
+var prompt = Template.create()
 
-        .modules(
+    .template(
 
-            OrchestrationConfigModules.createInnerModuleConfigs(
+        UserChatMessage.create()
 
-                ModuleConfigs.create()
+            .content(
 
-                    .promptTemplating(
+                new UserChatMessageContent.InnerString(
 
-                        PromptTemplatingModuleConfig.create()
+                    "message"))
 
-                            .prompt(
+            .role(UserChatMessage.RoleEnum.USER));
 
-                                Template.create()
 
-                                    .template(
 
-                                        UserChatMessage.create()
+final var moduleConfig =
 
-                                            .content(
+    PartialPromptTemplatingModuleConfig.create()
 
-                                                new UserChatMessageContent.InnerString("message"))
+        .prompt(prompt)
 
-                                            .role(UserChatMessage.RoleEnum.USER)))
+        .model(LLMModelDetails.create().name("model-name"));
 
-                            .model(LLMModelDetails.create().name("model-name")))));
+
+
+var orchConfig = PromptRegistryOrchestrationConfig.create()
+
+    .modules(
+
+        PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
+
+            PartialModuleConfigs.create().promptTemplating(moduleConfig)));
+
+
 
 var postRequest =
 
-      OrchestrationConfigPostRequest.create()
+    OrchestrationConfigPostRequest.create()
 
-          .name("name")
+        .name("name")
 
-          .version("0.0.1")
+        .version("0.0.1")
 
-          .scenario("scenario")
+        .scenario("scenario")
 
-          .spec(buildOrchestrationConfig());
+        .spec(orchConfig);
 
 OrchestrationConfigPostResponse response = orchConfigClient.createUpdateOrchestrationConfig(postRequest);
 ```
