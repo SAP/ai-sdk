@@ -1,3 +1,30 @@
+## 1.21.0 - July 02, 2026
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.21.0)
+
+### 🔧 Compatibility Notes
+
+- [Prompt Registry] In `OrchestrationConfigPostRequest` and similar classes to create prompt registry requests, use the following replacements:
+
+  | Aspect | Before | After |
+  |--------|--------|-------|
+  | Orchestration config | `OrchestrationConfig` | `PromptRegistryOrchestrationConfig` |
+  | Orchestration config modules | `OrchestrationConfigModules` | `PromptRegistryOrchestrationConfigModules` |
+  | Module configs | `ModuleConfigs` | `PartialModuleConfigs` |
+  | Prompt templating module config | `PromptTemplatingModuleConfig` | `PartialPromptTemplatingModuleConfig` |
+
+### ✨ New Functionality
+
+- [Orchestration] Added `CLAUDE_4_8_OPUS` to the model list in `OrchestrationAiModel`.
+- [Orchestration] Added `getReasoningContent()` to assistant messages.
+- [Orchestration] Added `PartialOrchestrationConfig` to override config references in
+  `CompletionRequestConfigurationReferenceById` and
+  `CompletionRequestConfigurationReferenceByNameScenarioVersion`.
+
+### 📈 Improvements
+
+- [Orchestration] Renamed `PromptRegistryOrchestrationConfig` to `OrchestrationConfig`.
+
 ## 1.20.0 - June 16, 2026
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.20.0)
