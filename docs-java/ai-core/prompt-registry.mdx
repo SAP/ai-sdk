@@ -324,30 +324,27 @@ import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 
 var orchConfigClient = new OrchestrationConfigClient();
-var prompt = Template.create()
-    .template(
-        UserChatMessage.create()
-            .content(
-                new UserChatMessageContent.InnerString(
-                    "message"))
-            .role(UserChatMessage.RoleEnum.USER));
-
-final var moduleConfig =
+// build PromptRegistryOrchestrationConfig
+var message =
+    UserChatMessage.create()
+        .content(new UserChatMessageContent.InnerString("message"))
+        .role(UserChatMessage.RoleEnum.USER);
+var promptTemplating =
     PartialPromptTemplatingModuleConfig.create()
-        .prompt(prompt)
-        .model(LLMModelDetails.create().name("model-name"));
-
-var orchConfig = PromptRegistryOrchestrationConfig.create()
-    .modules(
-        PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
-            PartialModuleConfigs.create().promptTemplating(moduleConfig)));
-
+        .model(LLMModelDetails.create().name("model-name"))
+        .prompt(Template.create().template(message));
+var orchestrationConfig =
+    PromptRegistryOrchestrationConfig.create()
+        .modules(
+            PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
+                PartialModuleConfigs.create().promptTemplating(promptTemplating)));
+// use the config
 var postRequest =
-    OrchestrationConfigPostRequest.create()
-        .name("name")
-        .version("0.0.1")
-        .scenario("scenario")
-        .spec(orchConfig);
+      OrchestrationConfigPostRequest.create()
+          .name("name")
+          .version("0.0.1")
+          .scenario("scenario")
+          .spec(orchestrationConfig);
 OrchestrationConfigPostResponse response = orchConfigClient.createUpdateOrchestrationConfig(postRequest);
 ```
 
