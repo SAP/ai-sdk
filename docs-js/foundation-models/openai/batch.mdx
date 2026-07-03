@@ -42,12 +42,12 @@ import { FileApi } from '@sap-ai-sdk/ai-api';
 
 const blob = createBatchInput([
   {
-    model: 'gpt-4.1',
+    model: 'gpt-5',
     messages: [{ role: 'user', content: 'What is machine learning?' }],
     max_tokens: 150
   },
   {
-    model: 'gpt-4.1',
+    model: 'gpt-5',
     messages: [
       { role: 'user', content: 'Explain neural networks in simple terms' }
     ],
@@ -73,7 +73,7 @@ const response = await BatchesApi.createBatch(
     type: 'llm-native',
     input: { uri: 'ai://MY_OBJECT_STORE/input-batch.jsonl' },
     output: { uri: 'ai://MY_OBJECT_STORE/output/' },
-    spec: { provider: 'azure-openai', model: 'gpt-4.1' }
+    spec: { provider: 'azure-openai', model: 'gpt-5' }
   },
   { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
 ).execute();
