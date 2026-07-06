@@ -48,9 +48,9 @@ Once registered, reference it in your batch job using the `ai://SECRET_NAME/` UR
 The input file must be in **JSONL format** — one JSON object per line. Each line represents one LLM chat completion request:
 
 ```
-{"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-4.1", "messages": [{"role": "user", "content": "What is machine learning?"}], "max_tokens": 150}}
+{"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-5", "messages": [{"role": "user", "content": "What is machine learning?"}], "max_tokens": 150}}
 
-{"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-4.1", "messages": [{"role": "user", "content": "Explain neural networks in simple terms"}], "max_tokens": 150}}
+{"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-5", "messages": [{"role": "user", "content": "Explain neural networks in simple terms"}], "max_tokens": 150}}
 ```
 
 | Field       | Description                                                                |
@@ -74,7 +74,7 @@ const blob = createBatchInput([
 
   {
 
-    model: 'gpt-4.1',
+    model: 'gpt-5',
 
     messages: [{ role: 'user', content: 'What is machine learning?' }],
 
@@ -84,7 +84,7 @@ const blob = createBatchInput([
 
   {
 
-    model: 'gpt-4.1',
+    model: 'gpt-5',
 
     messages: [
 
@@ -130,7 +130,7 @@ const response = await BatchesApi.createBatch(
 
     output: { uri: 'ai://MY_OBJECT_STORE/output/' },
 
-    spec: { provider: 'azure-openai', model: 'gpt-4.1' }
+    spec: { provider: 'azure-openai', model: 'gpt-5' }
 
   },
 
@@ -245,9 +245,9 @@ lines
 Each line corresponds to one input request, matched via `custom_id`:
 
 ```
-{"custom_id": "request-1", "response": {"status_code": 200, "body": {"id": "chatcmpl-abc", "object": "chat.completion", "model": "gpt-4.1-2025-04-14", "choices": [{"index": 0, "message": {"role": "assistant", "content": "Machine learning is a subset of AI..."}, "finish_reason": "stop"}], "usage": {"prompt_tokens": 12, "completion_tokens": 45, "total_tokens": 57}}}, "error": null}
+{"custom_id": "request-1", "response": {"status_code": 200, "body": {"id": "chatcmpl-abc", "object": "chat.completion", "model": "gpt-5-2025-04-14", "choices": [{"index": 0, "message": {"role": "assistant", "content": "Machine learning is a subset of AI..."}, "finish_reason": "stop"}], "usage": {"prompt_tokens": 12, "completion_tokens": 45, "total_tokens": 57}}}, "error": null}
 
-{"custom_id": "request-2", "response": {"status_code": 200, "body": {"id": "chatcmpl-def", "object": "chat.completion", "model": "gpt-4.1-2025-04-14", "choices": [{"index": 0, "message": {"role": "assistant", "content": "Neural networks are computing systems..."}, "finish_reason": "stop"}], "usage": {"prompt_tokens": 13, "completion_tokens": 42, "total_tokens": 55}}}, "error": null}
+{"custom_id": "request-2", "response": {"status_code": 200, "body": {"id": "chatcmpl-def", "object": "chat.completion", "model": "gpt-5-2025-04-14", "choices": [{"index": 0, "message": {"role": "assistant", "content": "Neural networks are computing systems..."}, "finish_reason": "stop"}], "usage": {"prompt_tokens": 13, "completion_tokens": 42, "total_tokens": 55}}}, "error": null}
 ```
 
 | Field                  | Description                                                               |

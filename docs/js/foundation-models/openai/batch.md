@@ -33,7 +33,7 @@ const blob = createBatchInput([
 
   {
 
-    model: 'gpt-4.1',
+    model: 'gpt-5',
 
     messages: [{ role: 'user', content: 'What is machine learning?' }],
 
@@ -43,7 +43,7 @@ const blob = createBatchInput([
 
   {
 
-    model: 'gpt-4.1',
+    model: 'gpt-5',
 
     messages: [
 
@@ -89,7 +89,7 @@ const response = await BatchesApi.createBatch(
 
     output: { uri: 'ai://MY_OBJECT_STORE/output/' },
 
-    spec: { provider: 'azure-openai', model: 'gpt-4.1' }
+    spec: { provider: 'azure-openai', model: 'gpt-5' }
 
   },
 

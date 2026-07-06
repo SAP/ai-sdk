@@ -86,6 +86,10 @@ The following models are deprecated in SAP Cloud SDK for AI and should not be us
 | `amazon--nova-premier`              | `amazon--nova-lite`                                |
 | `anthropic--claude-3-haiku`         | `anthropic--claude-4.5-haiku`                      |
 | `anthropic--claude-4-sonnet`        | `anthropic--claude-4.5-sonnet`                     |
+| `gpt-4.1`                           |                                                    |
+| `gpt-4.1-mini`                      |                                                    |
+| `o3`                                |                                                    |
+| `o4-mini`                           |                                                    |
 
 ## Contribute, Support and Feedback[​](#contribute-support-and-feedback "Direct link to Contribute, Support and Feedback")
 
