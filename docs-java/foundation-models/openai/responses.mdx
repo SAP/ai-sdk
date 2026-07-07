@@ -175,7 +175,7 @@ var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").r
 
 var params = ResponseDeleteParams.builder().responseId("response-id").build();
 
-var response = responseClient.delete(params);
+responseClient.delete(params);
 ```
 
 Refer to [OpenAI Docs](https://developers.openai.com/api/reference/resources/responses) for OpenAI SDK API usage.
