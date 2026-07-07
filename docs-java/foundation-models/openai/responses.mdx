@@ -13,30 +13,13 @@ keywords:
 
 ## Introduction
 
-This guide demonstrates how to use the SAP AI SDK for Java to perform chat completion tasks using OpenAI models deployed on SAP AI Core.
+This guide demonstrates how to use the SAP AI SDK for Java to perform responses using OpenAI models deployed on SAP AI Core.
 
 :::warning
 All classes under any of the `...model` packages are generated from an OpenAPI specification.
 This means that these model classes are not guaranteed to be stable and may change with future releases.
 They are safe to use, but may require updates even in minor releases.
 :::
-
-<details>
-<summary id="new-user-interface-v140">New User Interface (v1.4.0)</summary>
-
-We're excited to introduce a new user interface for OpenAI responses calls starting with **version 1.4.0**. This update is designed to improve the SAP AI SDK by:
-
-- **Decoupling Layers:** Separating the convenience layer from the model classes to deliver a more stable and maintainable experience.
-- **Staying Current:** Making it easier for the SAP AI SDK to adapt to the latest changes in the OpenAI API specification.
-- **Consistent Design:** Aligning with the Orchestrator convenience API for a smoother transition and easier adoption.
-
-**Please Note:**
-
-- The new interface is gradually being rolled out across the SAP AI SDK.
-- We welcome your feedback to help us refine this interface.
-- The existing interface (v1.0.0) is deprecated but available.
-
-</details>
 
 ## Prerequisites
 
@@ -53,6 +36,12 @@ Add the following dependency to your `pom.xml` file:
         <groupId>com.sap.ai.sdk.foundationmodels</groupId>
         <artifactId>openai</artifactId>
         <version>${ai-sdk.version}</version>
+    </dependency>
+    <dependency>
+          <groupId>com.openai</groupId>
+          <artifactId>openai-java-core</artifactId>
+          <version>${openai-java.version}</version>
+          <optional>true</optional>
     </dependency>
 </dependencies>
 ```
@@ -114,30 +103,36 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
 ## Create a non-persistent response
 
+This creates a simple non-persistent response using the Responses API.
+
 ```java
 var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
 
-var params = ResponseCreateParams.builder().input("Hi, how are you?").store(false).build(); // set store to true when creating a persistent response
+var params = ResponseCreateParams.builder().input("Hi, how are you?").store(false).build();
 
 var response = responseClient.create(params);
 ```
 
 ## Create a persistent response
 
+This creates a persistent response which runs asynchronously using the Responses API.
+
 ```java
 var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
 
-var params = ResponseCreateParams.builder().input("Hi, how are you?").store(true).background(true).build(); // set background to true for the response to run asynchronously
+var params = ResponseCreateParams.builder().input("Hi, how are you?").store(true).background(true).build(); // set background to false for the response to run synchronously
 
 var response = responseClient.create(params);
 ```
 
-## Create a streaming non-persistent response
+## Create a non-persistent streaming response
+
+This creates a non-persistent streaming response using the Responses API.
 
 ```java
 var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
 
-var params = ResponseCreateParams.builder().input("Hi, how are you?").model(ChatModel.GPT_5).store(false).build(); // set store to true when creating a persistent response
+var params = ResponseCreateParams.builder().input("Hi, how are you?").store(false).build(); // set store to true if you want to create a persistent streaming response
 
 var response = responseClient.createStreaming(params);
 ```
