@@ -15,6 +15,8 @@ keywords:
 
 This guide demonstrates how to use the SAP AI SDK for Java to perform responses using OpenAI models deployed on SAP AI Core.
 
+Refer to the [OpenAI Responses API reference](https://platform.openai.com/docs/api-reference/responses) for details on the underlying OpenAI SDK API.
+
 :::warning
 All classes under any of the `...model` packages are generated from an OpenAPI specification.
 This means that these model classes are not guaranteed to be stable and may change with future releases.
@@ -172,8 +174,6 @@ var params = ResponseDeleteParams.builder().responseId("response-id").build();
 
 responseClient.delete(params);
 ```
-
-Refer to [OpenAI Docs](https://developers.openai.com/api/reference/resources/responses) for OpenAI SDK API usage.
 
 ## Useful features using endpoints mentioned above
 
