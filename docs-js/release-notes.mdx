@@ -13,6 +13,28 @@ keywords:
 <!-- vale off -->
 <!-- This line is used for our release notes automation -->
 
+## 2.12.0 - June 24, 2026
+
+### New Features
+
+- [core] Add `AzureOpenAiResponsesModel` type for Azure OpenAI models that exclusively support the Responses API. ([0f10482](https://github.com/SAP/ai-sdk-js/commit/0f104825fb37f3518acb8cf4389b69e48e973182))
+- [document-grounding, prompt-registry] Update document grounding specification. ([d984914](https://github.com/SAP/ai-sdk-js/commit/d984914f17767a458f1c2b4dae2aa6a8837dee62))
+- [foundation-models] Add `createBatchInput()` and `parseBatchOutput()` helpers for building and parsing LLM batch requests and responses. ([0b41bea](https://github.com/SAP/ai-sdk-js/commit/0b41bea8cb572fdb8d1ea849bd31f87aef3341ea))
+- [llm-batch] Add new experimental `@sap-ai-sdk/llm-batch` package for asynchronous batch processing of LLM requests via SAP AI Core LLM Batch Service. ([0b41bea](https://github.com/SAP/ai-sdk-js/commit/0b41bea8cb572fdb8d1ea849bd31f87aef3341ea))
+- [openai] Add new experimental `@sap-ai-sdk/openai` package with a SAP AI Core-aware OpenAI client.
+  The client wraps the OpenAI SDK and handles authentication and deployment resolution against SAP AI Core. ([0f10482](https://github.com/SAP/ai-sdk-js/commit/0f104825fb37f3518acb8cf4389b69e48e973182))
+
+### Fixed Issues
+
+- [core] Improve error message when server sends a non-JSON response during streaming. ([2faf4a8](https://github.com/SAP/ai-sdk-js/commit/2faf4a8e0211f5d356e5aa0164c739c7160a212f))
+- [langchain] Fixed duplicate tools accumulating in LangChain orchestration client in some configurations on repeated invocations. ([311dc08](https://github.com/SAP/ai-sdk-js/commit/311dc08e45ee7f7f897a9dc227fb22d078e28356))
+
+### Improvements
+
+- [core] Added `gpt-5.5` to the available model list.
+  Remove retired model `anthropic--claude-4-opus` — use `anthropic--claude-4.7-opus` instead.
+  Remove deprecated model `o3-mini` (retirement date: 2026-08-02). ([e944aa1](https://github.com/SAP/ai-sdk-js/commit/e944aa1083c56d04bdef210870641b35ab17794c))
+
 ## 2.11.0 - May 26, 2026
 
 ### New Features
