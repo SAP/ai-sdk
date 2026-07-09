@@ -1,0 +1,116 @@
+---
+id: langgraph-orchestration-client
+title: Using Orchestration Client in LangGraph Workflows
+sidebar_label: Orchestration Client in LangGraph
+description: How to use template and template_ref with the Orchestration client in LangGraph workflows, using the two-client pattern to avoid message duplication.
+keywords:
+  - tutorial
+  - orchestration
+  - langchain
+  - langgraph
+  - template
+  - template_ref
+  - prompt registry
+---
+
+## Introduction
+
+This tutorial shows how to use the `OrchestrationClient` from `@sap-ai-sdk/langchain` inside [LangGraph](https://docs.langchain.com/oss/javascript/langgraph) workflows when a prompt `template` or `template_ref` is involved.
+
+There are two behaviors to be aware of:
+
+- **Inline template (`template`)** — the template messages are **always prepended** to every request.
+  Reusing the same client across multiple turns causes the template to be duplicated in each call.
+- **Prompt Registry reference (`template_ref`)** — the template is stored remotely and cannot be extended inline.
+  Any messages passed alongside a `template_ref` are automatically routed to `messages_history` instead of being merged into the template.
+
+The recommended pattern for both cases is the **two-client approach**:
+use one client with the template for the **first node**, and a second client without the template for all **subsequent conversational nodes**.
+
+## Prerequisites
+
+Refer to the prerequisites outlined [here](../overview-cloud-sdk-for-ai-js#prerequisites).
+
+This tutorial assumes a basic understanding of TypeScript, LangGraph, and the orchestration client.
+
+## Installation
+
+```bash
+npm install @sap-ai-sdk/langchain langchain @langchain/langgraph @langchain/core
+```
+
+## Inline Template: Two-Client Approach
+
+When a `template` is defined on an `OrchestrationClient` and that client is reused across multiple turns, the template is prepended on **every** call.
+In a LangGraph agent loop this means the system prompt repeats with each turn.
+The SDK logs an `info` message on the first call and a `warn` on subsequent calls.
+
+Use two clients: one with the template for the first node, one without for all subsequent nodes.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+// First node: template is applied once for the opening turn.
+const clientWithTemplate = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' },
+    prompt: {
+      template: [
+        {
+          role: 'system',
+          content: 'You are a helpful travel assistant. Always respond in a friendly tone.'
+        }
+      ]
+    }
+  }
+});
+
+// Subsequent nodes: no template, used for all follow-up turns.
+const clientWithoutTemplate = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' }
+  }
+});
+```
+
+:::tip
+If you only need the system prompt once, you can also use a single client without a `template` and pass the system message as the first entry in `messagesHistory` on the opening call.
+:::
+
+## Prompt Registry Reference: Two-Client Approach
+
+When `template_ref` is configured, the orchestration service fetches the template from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) at request time.
+Messages cannot be merged into a remotely stored template — they are automatically routed to `messages_history`.
+The SDK logs a `warn` when messages are passed alongside a `template_ref`.
+
+Use the same two-client pattern: one client with `template_ref` for the first node, one without for subsequent nodes.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+// First node: fetches and applies the remote template once.
+const clientWithTemplateRef = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' },
+    prompt: {
+      template_ref: {
+        name: 'my-travel-assistant-template',
+        scenario: 'travel',
+        version: '1.0.0'
+      }
+    }
+  }
+});
+
+// Subsequent nodes: no template_ref, messages are used directly.
+const clientForFollowUp = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' }
+  }
+});
+```
+
+For more background on these behaviors, refer to:
+- [Orchestration Template Configuration](../orchestration/chat-completion#template-configuration)
+- [Orchestration Prompt Registry](../orchestration/chat-completion#prompt-registry)
+- [LangChain Orchestration Integration](../langchain/orchestration#template-and-prompt-registry-behavior)
