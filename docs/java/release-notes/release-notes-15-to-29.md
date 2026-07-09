@@ -1,5 +1,23 @@
 # release-notes-15-to-29
 
+## 1.22.0 - July 09, 2026[​](#1220---july-09-2026 "Direct link to 1.22.0 - July 09, 2026")
+
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.22.0)
+
+### ✨ New Functionality[​](#-new-functionality "Direct link to ✨ New Functionality")
+
+* \[OpenAI] Support for OpenAI Responses API with the new `AiCoreOpenAiClient`. The following endpoints are currently supported:
+
+  <!-- -->
+
+  * create()
+  * createStreaming()
+  * retrieve()
+  * delete()
+  * cancel()
+
+* \[Orchestration] You can now add multiple custom headers to an `OrchestrationClient` at once via `.withHeaders()`.
+
 ## 1.21.0 - July 02, 2026[​](#1210---july-02-2026 "Direct link to 1.21.0 - July 02, 2026")
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.21.0)
@@ -17,7 +35,7 @@
 
 * \[Orchestration] Renamed `PromptRegistryOrchestrationConfig` to `OrchestrationConfig`.
 
-### ✨ New Functionality[​](#-new-functionality "Direct link to ✨ New Functionality")
+### ✨ New Functionality[​](#-new-functionality-1 "Direct link to ✨ New Functionality")
 
 * \[Orchestration] Added `CLAUDE_4_8_OPUS` to the model list in `OrchestrationAiModel`.
 * \[Orchestration] Added `getReasoningContent()` to assistant messages.
@@ -31,7 +49,7 @@
 
 * Instead of `PromptTemplatingModuleConfig.create().prompt(prompt).model(model)` you have to use `PromptTemplatingModuleConfig.create().model(model).prompt(prompt)`.
 
-### ✨ New Functionality[​](#-new-functionality-1 "Direct link to ✨ New Functionality")
+### ✨ New Functionality[​](#-new-functionality-2 "Direct link to ✨ New Functionality")
 
 * \[Batch] Added a new `BatchesApi` client to access the [Batch Service API](https://github.tools.sap/AI/llm-batch-service).
 * \[Orchestration] Added `GEMINI_3_1_FLASH_LITE`, `GEMINI_3_5_FLASH`, `GPT_55`, `SONAR_DEEP_RESEARCH`, and `LLAMA_CINDERELLA_DN` to model list in `OrchestrationAiModel`.
@@ -50,7 +68,7 @@
 * \[Document Grounding] `getAllPipelines()` has additional nullable parameter `metadataConfigId`.
 * \[Prompt Registry] The `importPromptTemplate` and `importOrchestrationConfig` accepts `File` instead of `byte[]` to propagate file name in `Content-Disposition` header.
 
-### ✨ New Functionality[​](#-new-functionality-2 "Direct link to ✨ New Functionality")
+### ✨ New Functionality[​](#-new-functionality-3 "Direct link to ✨ New Functionality")
 
 * \[Orchestration] Added `MISTRAL_SMALL` and `CLAUDE_4_7_OPUS` to model list in `OrchestrationAiModel`.
 
@@ -78,7 +96,7 @@
 * \[Grounding] (Breaking) `GoogleDriveConfig` now has fields `resourceType` and `resourceId` instead of `folder`. `GoogleDriveFolderDetail` has been renamed to `GoogleDriveResourceDetail` and can now represent both folders and drives using `resourceType` and `resourceId`. `GoogleDrivePipelineCreateRequest` now requires `GoogleDriveConfigurationStruct` to be created
 * Deprecated multiple Orchestration and OpenAI models: `MISTRAL_LARGE_INSTRUCT`, `MISTRAL_SMALL_INSTRUCT`, `OPENAI_O1`, and `OPENAI_O3_MINI`.
 
-### ✨ New Functionality[​](#-new-functionality-3 "Direct link to ✨ New Functionality")
+### ✨ New Functionality[​](#-new-functionality-4 "Direct link to ✨ New Functionality")
 
 * \[Grounding] Added values `CREATING`, `CREATED`, `CREATION_FAILED`, `DELETION_INPROGRESS` and `DELETION_FAILED` for `PipelineExecutionStatus`.
 * \[Grounding] New error type `GenericError` added. `ValidationError` now includes additional fields `input` and `ctx` for better debugging and error handling.
@@ -116,7 +134,7 @@
   + BaseDocument.create().chunks(chunk).addMetadataItem(docMeta);
   ```
 
-### ✨ New Functionality[​](#-new-functionality-4 "Direct link to ✨ New Functionality")
+### ✨ New Functionality[​](#-new-functionality-5 "Direct link to ✨ New Functionality")
 
 * \[Grounding] Added `GroundingClient.withHeader()`.
 * \[Orchestration] Added `GPT_52` model for `OrchestrationAiModel`.
@@ -133,7 +151,7 @@
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.16.0)
 
-### ✨ New Functionality[​](#-new-functionality-5 "Direct link to ✨ New Functionality")
+### ✨ New Functionality[​](#-new-functionality-6 "Direct link to ✨ New Functionality")
 
 * \[RPT] Introducing `RptClient` for Tabular AI backed by SAP RPT models `SAP_RPT_1_SMALL` and `SAP_RPT_1_LARGE`.
   <!-- -->
@@ -155,7 +173,7 @@
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.15.0)
 
-### ✨ New Functionality[​](#-new-functionality-6 "Direct link to ✨ New Functionality")
+### ✨ New Functionality[​](#-new-functionality-7 "Direct link to ✨ New Functionality")
 
 * \[Orchestration] Configs stored in prompt registry can now be used for [Orchestration calls via reference](/ai-sdk/docs/java/orchestration/chat-completion.md).
 * \[Prompt Registry] Added support to [manage Orchestration configs stored in Prompt Registry](/ai-sdk/docs/java/ai-core/prompt-registry.md).
