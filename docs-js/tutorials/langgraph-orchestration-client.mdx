@@ -58,7 +58,8 @@ const clientWithTemplate = new OrchestrationClient({
       template: [
         {
           role: 'system',
-          content: 'You are a helpful travel assistant. Always respond in a friendly tone.'
+          content:
+            'You are a helpful travel assistant. Always respond in a friendly tone.'
         }
       ]
     }
@@ -111,6 +112,7 @@ const clientForFollowUp = new OrchestrationClient({
 ```
 
 For more background on these behaviors, refer to:
+
 - [Orchestration Template Configuration](../orchestration/chat-completion#template-configuration)
 - [Orchestration Prompt Registry](../orchestration/chat-completion#prompt-registry)
 - [LangChain Orchestration Integration](../langchain/orchestration#template-and-prompt-registry-behavior)
