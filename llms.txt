@@ -54,6 +54,7 @@
 - [LangChain](/docs/js/langchain.md): How to use SAP Cloud SDK for AI clients with LangChain.
 - [OpenAI Integration](/docs/js/langchain/openai.md): How to integrate Azure OpenAI chat and embedding clients from SAP Cloud SDK for AI into LangChain.
 - [Orchestration Integration](/docs/js/langchain/orchestration.md): How to integrate orchestration client of SAP Cloud SDK for AI into LangChain.
+- [OpenAI](/docs/js/openai.md): How to use the @sap-ai-sdk/openai package to access Azure OpenAI models on SAP AI Core using the official openai npm package.
 - [Chat Completion](/docs/js/orchestration/chat-completion.md): How to use the SAP Cloud SDK for AI to perform chat completion tasks using orchestration service from SAP AI Core.
 - [Embedding](/docs/js/orchestration/embedding.md): How to use the SAP Cloud SDK for AI to generate embeddings using the Orchestration service on SAP AI Core.
 - [JavaScript SDK Overview](/docs/js/overview-cloud-sdk-for-ai-js.md): The SAP Cloud SDK for AI JavaScript/TypeScript significantly simplifies extending and developing an application with SAP Business Technology Platform
