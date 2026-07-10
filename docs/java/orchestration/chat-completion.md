@@ -190,6 +190,18 @@ var client = new OrchestrationClient();
 var result = client.withHeader("foo", "bar").chatCompletion(prompt, config);
 ```
 
+Or, to add multiple headers a once, use `withHeaders`.
+
+```
+var client = new OrchestrationClient();
+
+var headers = Map.of("foo", "bar", "foot", "baz");
+
+
+
+var result = client.withHeaders(headers).chatCompletion(prompt, config);
+```
+
 ## Templating[​](#templating "Direct link to Templating")
 
 Use a prepared [**template**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating) and execute requests with by passing only the input parameters:
