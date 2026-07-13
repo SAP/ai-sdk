@@ -293,6 +293,45 @@ const result = await agent.invoke(agentInputs);
 
 <!-- vale on -->
 
+### Prompt Caching
+
+:::note
+Prompt caching is supported by Anthropic Claude and Amazon Nova model families served through orchestration.
+Other models ignore the `cache_control` directive without error.
+For a full overview, refer to the [prompt caching documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching?locale=en-US).
+:::
+
+Prompt caching reduces latency and cost by reusing cached content at the model provider level.
+The SDK supports a per-call option to enable it.
+
+#### Per-Call Cache Control
+
+Pass `cache_control` as a call option to `invoke()` or `stream()`.
+The SDK automatically places a cache breakpoint on the last cacheable block of the last message, so the breakpoint advances naturally as the conversation grows.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+const client = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku'
+    }
+  }
+});
+
+const response = await client.invoke(
+  [{ role: 'user', content: 'What is the speed of light?' }],
+  { cache_control: { type: 'ephemeral' } }
+);
+
+console.log(response.usage_metadata?.input_token_details);
+/*
+  { cache_read: 0, cache_creation: 1234 }   // first call: cache written
+  { cache_read: 1234, cache_creation: 0 }   // second call: cache read
+*/
+```
+
 ### Structured Output
 
 It is often useful to have a model return output that matches a specific schema.
