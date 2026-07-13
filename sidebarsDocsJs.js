@@ -58,7 +58,7 @@ module.exports = {
       label: 'Tutorials',
       items: [
         'tutorials/getting-started-with-agents',
-        'tutorials/langgraph-orchestration-client',
+        'tutorials/langgraph-template-orchestration-client',
         'tutorials/using-scoped-prompt-registry-templates',
         'tutorials/using-llm-batch-api',
         {

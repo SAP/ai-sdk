@@ -73,7 +73,7 @@ const response = await client.invoke(history, {
 :::warning
 When using `template`, its messages are **always prepended** to every `invoke()` or `stream()` call — reusing the same client across multiple turns causes the template to appear on every request.
 When using `template_ref`, any messages passed are **automatically routed to `messages_history`** and cannot be merged into the remotely stored template.
-In both cases, use the **two-client pattern** from the [LangGraph tutorial](../tutorials/langgraph-orchestration-client): one client with the template for the first turn, a second without it for follow-up turns.
+In both cases, use the **two-client pattern** from the [LangGraph tutorial](../tutorials/langgraph-template-orchestration-client): one client with the template for the first turn, a second without it for follow-up turns.
 :::
 
 ## Module Fallback
