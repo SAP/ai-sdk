@@ -327,8 +327,8 @@ const response = await client.invoke(
 
 console.log(response.usage_metadata?.input_token_details);
 /*
-  { cache_read: 0, cache_creation: 1234 }   // first call: cache written
-  { cache_read: 1234, cache_creation: 0 }   // second call: cache read
+  { cache_read: 0, cache_creation: TOKEN_COUNT }   // first call: tokens written to cache
+  { cache_read: TOKEN_COUNT, cache_creation: 0 }   // identical repeated call: tokens read from cache
 */
 ```
 
