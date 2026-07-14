@@ -169,15 +169,6 @@ const overrideResponse = await client.chat.completions.create({
 });
 ```
 
-You can also provide a full deployment object to target a specific version or resource group:
-
-```ts
-const response = await client.chat.completions.create({
-  model: { modelName: 'gpt-5.4-nano', resourceGroup: 'my-resource-group' },
-  messages: [{ role: 'user', content: 'What is the capital of France?' }]
-});
-```
-
 :::note
 If the `model` parameter matches the client's configured deployment, no additional deployment resolution is performed.
 Deployment resolution results are cached, so overriding the model on repeated requests does not incur an API call each time.
