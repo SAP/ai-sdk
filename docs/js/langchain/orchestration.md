@@ -406,6 +406,60 @@ const agentInputs = {
 const result = await agent.invoke(agentInputs);
 ```
 
+### Prompt Caching[​](#prompt-caching "Direct link to Prompt Caching")
+
+note
+
+Prompt caching is supported by Anthropic Claude and Amazon Nova model families served through orchestration. Other models ignore the `cache_control` directive without error. For a full overview, refer to the [prompt caching documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching?locale=en-US).
+
+Prompt caching reduces latency and cost by reusing cached content at the model provider level. The SDK supports a per-call option to enable it.
+
+#### Per-Call Cache Control[​](#per-call-cache-control "Direct link to Per-Call Cache Control")
+
+Pass `cache_control` as a call option to `invoke()` or `stream()`. The SDK automatically places a cache breakpoint on the last cacheable block of the last message, so the breakpoint advances naturally as the conversation grows.
+
+```
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+
+
+const client = new OrchestrationClient({
+
+  promptTemplating: {
+
+    model: {
+
+      name: 'anthropic--claude-4.5-haiku'
+
+    }
+
+  }
+
+});
+
+
+
+const response = await client.invoke(
+
+  [{ role: 'user', content: 'What is the speed of light?' }],
+
+  { cache_control: { type: 'ephemeral' } }
+
+);
+
+
+
+console.log(response.usage_metadata?.input_token_details);
+
+/*
+
+  { cache_read: 0, cache_creation: TOKEN_COUNT }   // first call: tokens written to cache
+
+  { cache_read: TOKEN_COUNT, cache_creation: 0 }   // identical repeated call: tokens read from cache
+
+*/
+```
+
 ### Structured Output[​](#structured-output "Direct link to Structured Output")
 
 It is often useful to have a model return output that matches a specific schema. This schema can be defined using either a [Zod](https://zod.dev/) schema or a JSON schema. We recommend using Zod v4 for full compatibility with this package. If you're upgrading from an earlier version, refer to the [Zod v4 migration guide](https://zod.dev/v4/changelog) and pay attention to breaking changes like the switch from `describe('...')` to `meta({ description: '...' })`. For more details on structured output, refer to the [official LangChain documentation on structured output](https://docs.langchain.com/oss/javascript/langchain/models#structured-outputs). Below is an example using `json_schema` response type and passing in a Zod schema.
