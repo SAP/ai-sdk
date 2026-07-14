@@ -28,7 +28,7 @@ As a result, the static types for request parameters and responses are not alway
 
 The `@sap-ai-sdk/openai` package is a thin wrapper around the official [`openai`](https://www.npmjs.com/package/openai) npm package, pre-configured for Azure OpenAI deployments on SAP AI Core.
 It handles deployment resolution, authentication, and SAP-specific headers automatically.
-Because SAP AI Core routes requests via the deployment URL, the `model` parameter is removed from all request signatures.
+The `model` parameter is optional in all request signatures — requests are routed via the deployment URL configured at client initialization by default.
 
 If you need a stable Azure OpenAI integration without recent OpenAI-specific features, consider using the [`@sap-ai-sdk/foundation-models`](../foundation-models/foundation-models.mdx) package instead.
 It provides SAP's own client layer, based on a more stable API contract.
@@ -88,7 +88,8 @@ const client = await SapOpenAi.createClient({
 ## Making Requests
 
 `SapOpenAi` exposes three endpoints supported by SAP AI Core: `chat`, `embeddings`, and `responses`.
-The `model` parameter is omitted from all request signatures — the deployment URL determines the model.
+By default, requests are routed via the deployment URL configured at client initialization.
+You can optionally pass a `model` parameter in individual requests to route to a different deployment.
 
 ### Chat Completions
 
@@ -147,6 +148,40 @@ const response = await client.responses.parse({
   text: { format: zodTextFormat(CapitalResponse, 'capital_response') }
 });
 ```
+
+## Per-Request Model Override
+
+You can override the model (or deployment configuration) for individual requests by passing a `model` parameter.
+This lets a single client instance send requests to different deployments without re-initializing.
+
+```ts
+const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
+
+// Uses the client's configured deployment (gpt-5.4)
+const defaultResponse = await client.chat.completions.create({
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+});
+
+// Overrides to a different model for this request only
+const overrideResponse = await client.chat.completions.create({
+  model: 'gpt-5.4-nano',
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+});
+```
+
+You can also provide a full deployment object to target a specific version or resource group:
+
+```ts
+const response = await client.chat.completions.create({
+  model: { modelName: 'gpt-5.4-nano', resourceGroup: 'my-resource-group' },
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+});
+```
+
+:::note
+If the `model` parameter matches the client's configured deployment, no additional deployment resolution is performed.
+Deployment resolution results are cached, so overriding the model on repeated requests does not incur an API call each time.
+:::
 
 ## Low-Level Config
 
