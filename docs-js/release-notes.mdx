@@ -13,6 +13,23 @@ keywords:
 <!-- vale off -->
 <!-- This line is used for our release notes automation -->
 
+## 2.13.0 - July 14, 2026
+
+### New Features
+
+- [core] Add `toReadableStream()` method to `SseStream`.
+  The new method converts the asynchronous iterable stream to a pull-based `ReadableStream` of newline-delimited JSON, enabling composable transformations via the Web Streams API `pipeThrough()` pattern with native flow control. ([6542a2a](https://github.com/SAP/ai-sdk-js/commit/6542a2a3a6740277b61c820c8f70a37b71c4e75a))
+- [langchain] Add `cache_control` call option to the LangChain orchestration client.
+  When the `cache_control` option is set, a cache breakpoint is automatically applied to the request. ([fafd99e](https://github.com/SAP/ai-sdk-js/commit/fafd99e43f8bc1879a896862eccb93cf8827a77e))
+- [langchain] Expose `cached_tokens` and `cache_creation_tokens` in `usage_metadata.input_token_details` for LangChain orchestration responses. ([fafd99e](https://github.com/SAP/ai-sdk-js/commit/fafd99e43f8bc1879a896862eccb93cf8827a77e))
+- [openai] Allow setting a model or deployment configuration per request. ([fea1c3f](https://github.com/SAP/ai-sdk-js/commit/fea1c3ff75a87621e800ae7bdae3d51f07dacbb7))
+
+### Improvements
+
+- [core] Remove deprecated models `mistralai--mistral-small-instruct` (retirement date: not earlier than 2026-09-30) — use `mistralai--mistral-small` instead, `amazon--nova-premier` (retirement date: 2026-09-10) — use `amazon--nova-lite` (version: 2) instead, `anthropic--claude-3-haiku` (retirement date: 2026-09-10) — use `anthropic--claude-4.5-haiku` instead and `anthropic--claude-4-sonnet` (retirement date: 2026-10-14) — use `anthropic--claude-4.5-sonnet` instead. ([11baf52](https://github.com/SAP/ai-sdk-js/commit/11baf52487ecdb14062223a74a3f94938def5910))
+- [core] Added `gpt-5.1` to the available model list. ([cb8ffe7](https://github.com/SAP/ai-sdk-js/commit/cb8ffe7f133ea15aba2ef01baf4d64d0bba0d59f))
+- [core] Remove deprecated models `gpt-4.1` (retirement date: 2026-10-14), `gpt-4.1-mini` (retirement date: 2026-10-14), `o3` (retirement date: 2026-10-16) and `o4-mini` (retirement date: 2026-10-16). ([a8c9b29](https://github.com/SAP/ai-sdk-js/commit/a8c9b291a09ac812f24007b6a5f4139d8a3ef71b))
+
 ## 2.12.0 - June 24, 2026
 
 ### New Features
