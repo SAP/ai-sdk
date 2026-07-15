@@ -171,7 +171,7 @@ const overrideResponse = await client.chat.completions.create({
 
 :::note
 If the `model` parameter matches the client's configured deployment, no additional deployment resolution is performed.
-Deployment resolution results are cached, so overriding the model on repeated requests does not incur an API call each time.
+Deployment resolution results are cached, so overriding the model on repeated requests does not incur additional network requests.
 :::
 
 ## Low-Level Config
