@@ -34,6 +34,7 @@ module.exports = {
         }
       ]
     },
+    'openai/openai',
     {
       type: 'category',
       label: 'LangChain',

@@ -17,7 +17,8 @@ module.exports = {
           label: 'OpenAI',
           items: [
             'foundation-models/openai/chat-completion',
-            'foundation-models/openai/embedding'
+            'foundation-models/openai/embedding',
+            'foundation-models/openai/responses'
           ]
         },
         {
