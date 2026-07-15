@@ -12,7 +12,7 @@ This package reuses the types from the official `openai` npm package.
 
 The Azure OpenAI API shape differs from the core OpenAI API shape, and SAP AI Core applies additional platform-specific constraints. As a result, the static types for request parameters and responses are not always an exact match for what is defined at the type-level.
 
-The `@sap-ai-sdk/openai` package is a thin wrapper around the official [`openai`](https://www.npmjs.com/package/openai) npm package, pre-configured for Azure OpenAI deployments on SAP AI Core. It handles deployment resolution, authentication, and SAP-specific headers automatically. Because SAP AI Core routes requests via the deployment URL, the `model` parameter is removed from all request signatures.
+The `@sap-ai-sdk/openai` package is a thin wrapper around the official [`openai`](https://www.npmjs.com/package/openai) npm package, pre-configured for Azure OpenAI deployments on SAP AI Core. It handles deployment resolution, authentication, and SAP-specific headers automatically. The `model` parameter is optional in all request signatures — requests are routed via the deployment URL configured at client initialization by default.
 
 If you need a stable Azure OpenAI integration without recent OpenAI-specific features, consider using the [`@sap-ai-sdk/foundation-models`](/ai-sdk/docs/js/foundation-models.md) package instead. It provides SAP's own client layer, based on a more stable API contract.
 
@@ -86,7 +86,7 @@ const client = await SapOpenAi.createClient({
 
 ## Making Requests[​](#making-requests "Direct link to Making Requests")
 
-`SapOpenAi` exposes three endpoints supported by SAP AI Core: `chat`, `embeddings`, and `responses`. The `model` parameter is omitted from all request signatures — the deployment URL determines the model.
+`SapOpenAi` exposes three endpoints supported by SAP AI Core: `chat`, `embeddings`, and `responses`. By default, requests are routed via the deployment URL configured at client initialization. You can optionally [pass a `model` parameter](#per-request-model-override) in individual requests to route to a different deployment.
 
 ### Chat Completions[​](#chat-completions "Direct link to Chat Completions")
 
@@ -173,6 +173,40 @@ const response = await client.responses.parse({
 
 });
 ```
+
+## Per-Request Model Override[​](#per-request-model-override "Direct link to Per-Request Model Override")
+
+You can override the model for individual requests by passing a `model` parameter. This lets a single client instance send requests to different deployments without re-initializing.
+
+```
+const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
+
+
+
+// Uses the client's configured deployment (gpt-5.4)
+
+const defaultResponse = await client.chat.completions.create({
+
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+
+});
+
+
+
+// Overrides to a different model for this request only
+
+const overrideResponse = await client.chat.completions.create({
+
+  model: 'gpt-5.4-nano',
+
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+
+});
+```
+
+note
+
+If the `model` parameter matches the client's configured deployment, no additional deployment resolution is performed. Deployment resolution results are cached, so overriding the model on repeated requests does not incur additional network requests.
 
 ## Low-Level Config[​](#low-level-config "Direct link to Low-Level Config")
 
