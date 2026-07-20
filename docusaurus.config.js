@@ -74,7 +74,7 @@ module.exports = {
         },
         {
           label: '🐍 Python',
-          to: 'docs/python/overview-cloud-sdk-for-ai-python',
+          to: 'docs/python/overview',
           position: 'left',
           docsPluginId: 'docs-python',
           activeBasePath: 'docs/python',
