@@ -74,6 +74,7 @@ template_by_names = TemplateRef.from_tuple(scenario="translation", name="transla
 #### Response Format Options
 
 **Text:**
+
 ```python
 from gen_ai_hub.orchestration.models.message import SystemMessage, UserMessage
 from gen_ai_hub.orchestration.models.template import Template, TemplateValue
@@ -89,6 +90,7 @@ template = Template(
 ```
 
 **JSON Object:**
+
 ```python
 template = Template(
     messages=[
@@ -101,6 +103,7 @@ template = Template(
 ```
 
 **JSON Schema:**
+
 ```python
 from gen_ai_hub.orchestration.models.response_format import ResponseFormatJsonSchema
 

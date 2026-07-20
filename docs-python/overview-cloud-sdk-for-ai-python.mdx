@@ -37,13 +37,13 @@ pip install "sap-ai-sdk-gen[google, amazon]"
 
 In the table below, you can see which models and vendor specific langchain packages are installed when using different installation parameters.
 
-| Install Parameter | OpenAI | Google | AWS | LangChain | OpenAI-LangChain | Google-LangChain | AWS-LangChain |
-|---|---|---|---|---|---|---|---|
-| | yes | no | no | yes | yes | no | no |
-| [google] | yes | yes | no | yes | yes | yes | no |
-| [amazon] | yes | no | yes | yes | yes | no | yes |
-| [amazon, google] / [google, amazon] | yes | yes | yes | yes | yes | yes | yes |
-| [all] | yes | yes | yes | yes | yes | yes | yes |
+| Install Parameter                   | OpenAI | Google | AWS | LangChain | OpenAI-LangChain | Google-LangChain | AWS-LangChain |
+| ----------------------------------- | ------ | ------ | --- | --------- | ---------------- | ---------------- | ------------- |
+|                                     | yes    | no     | no  | yes       | yes              | no               | no            |
+| [google]                            | yes    | yes    | no  | yes       | yes              | yes              | no            |
+| [amazon]                            | yes    | no     | yes | yes       | yes              | no               | yes           |
+| [amazon, google] / [google, amazon] | yes    | yes    | yes | yes       | yes              | yes              | yes           |
+| [all]                               | yes    | yes    | yes | yes       | yes              | yes              | yes           |
 
 ## Configuration
 
@@ -152,62 +152,62 @@ Among these, the following models are currently supported in the SAP Cloud SDK f
 
 ### LLM Models
 
-| Provider | Model Name | Streaming Support |
-|---|---|---|
-| Amazon | amazon--nova-lite | No |
-| | amazon--nova-micro | No |
-| | amazon--nova-pro | No |
-| | amazon--amazon--nova-premier | Yes |
-| Anthropic | anthropic--claude-3-haiku | Yes |
-| | anthropic--claude-3.5-sonnet | Yes |
-| | anthropic--claude-3.7-sonnet | Yes |
-| | anthropic--claude-4-sonnet | Yes |
-| | anthropic--claude-4-opus | Yes |
-| | anthropic--claude-4.5-sonnet | Yes |
-| | anthropic--claude-4.5-haiku | Yes |
-| | anthropic--claude-4.6-sonnet | Yes |
-| | anthropic--claude-4.6-opus | Yes |
-| Google | gemini-2.0-flash | Yes |
-| | gemini-2.0-flash-lite | Yes |
-| | gemini-2.5-flash | Yes |
-| | gemini-2.5-pro | Yes |
-| | gemini-2.5-flash-lite | Yes |
-| MistralAI | mistralai--mistral-small-instruct | No |
-| | mistralai--mistral-medium-instruct | No |
-| | mistralai--mistral-large-instruct | No |
-| OpenAI | gpt-4o | Yes |
-| | gpt-4o-mini | Yes |
-| | gpt-4.1 | Yes |
-| | gpt-4.1-mini | Yes |
-| | gpt-4.1-nano | Yes |
-| | gpt-5 | Yes |
-| | gpt-5-mini | Yes |
-| | gpt-5-nano | Yes |
-| | gpt-5.2 | Yes |
-| | gpt-5.3-codex | Yes |
-| | gpt-5.4 | Yes |
-| | gpt-5.4-nano | Yes |
-| | o1 | No |
-| | o3 | Yes |
-| | o3-mini | No |
-| | o4-mini | Yes |
-| Cohere | cohere--command-a-reasoning | Yes |
-| | cohere--reranker | Yes |
-| Perplexity | sonar | Yes |
-| | sonar-pro | Yes |
-| | sonar-deep-research | Yes |
+| Provider   | Model Name                         | Streaming Support |
+| ---------- | ---------------------------------- | ----------------- |
+| Amazon     | amazon--nova-lite                  | No                |
+|            | amazon--nova-micro                 | No                |
+|            | amazon--nova-pro                   | No                |
+|            | amazon--amazon--nova-premier       | Yes               |
+| Anthropic  | anthropic--claude-3-haiku          | Yes               |
+|            | anthropic--claude-3.5-sonnet       | Yes               |
+|            | anthropic--claude-3.7-sonnet       | Yes               |
+|            | anthropic--claude-4-sonnet         | Yes               |
+|            | anthropic--claude-4-opus           | Yes               |
+|            | anthropic--claude-4.5-sonnet       | Yes               |
+|            | anthropic--claude-4.5-haiku        | Yes               |
+|            | anthropic--claude-4.6-sonnet       | Yes               |
+|            | anthropic--claude-4.6-opus         | Yes               |
+| Google     | gemini-2.0-flash                   | Yes               |
+|            | gemini-2.0-flash-lite              | Yes               |
+|            | gemini-2.5-flash                   | Yes               |
+|            | gemini-2.5-pro                     | Yes               |
+|            | gemini-2.5-flash-lite              | Yes               |
+| MistralAI  | mistralai--mistral-small-instruct  | No                |
+|            | mistralai--mistral-medium-instruct | No                |
+|            | mistralai--mistral-large-instruct  | No                |
+| OpenAI     | gpt-4o                             | Yes               |
+|            | gpt-4o-mini                        | Yes               |
+|            | gpt-4.1                            | Yes               |
+|            | gpt-4.1-mini                       | Yes               |
+|            | gpt-4.1-nano                       | Yes               |
+|            | gpt-5                              | Yes               |
+|            | gpt-5-mini                         | Yes               |
+|            | gpt-5-nano                         | Yes               |
+|            | gpt-5.2                            | Yes               |
+|            | gpt-5.3-codex                      | Yes               |
+|            | gpt-5.4                            | Yes               |
+|            | gpt-5.4-nano                       | Yes               |
+|            | o1                                 | No                |
+|            | o3                                 | Yes               |
+|            | o3-mini                            | No                |
+|            | o4-mini                            | Yes               |
+| Cohere     | cohere--command-a-reasoning        | Yes               |
+|            | cohere--reranker                   | Yes               |
+| Perplexity | sonar                              | Yes               |
+|            | sonar-pro                          | Yes               |
+|            | sonar-deep-research                | Yes               |
 
 ### Embedding Models
 
-| Provider | Model Name |
-|---|---|
-| Amazon | amazon--titan-embed-text |
-| | amazon--titan-embed-image |
-| Google | google--gemini-embedding |
-| NVIDIA | nvidia--llama-3.2-nv-embedqa-1b |
-| OpenAI | text-embedding-3-small |
-| | text-embedding-3-large |
-| | text-embedding-ada-002 |
+| Provider | Model Name                      |
+| -------- | ------------------------------- |
+| Amazon   | amazon--titan-embed-text        |
+|          | amazon--titan-embed-image       |
+| Google   | google--gemini-embedding        |
+| NVIDIA   | nvidia--llama-3.2-nv-embedqa-1b |
+| OpenAI   | text-embedding-3-small          |
+|          | text-embedding-3-large          |
+|          | text-embedding-ada-002          |
 
 ### Notes on model usage
 
