@@ -98,3 +98,7 @@
   max-height: 30em;
   overflow-y: scroll;
 }
+
+.navbar-item-invisible {
+  opacity: 0;
+}

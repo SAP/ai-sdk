@@ -1,0 +1,141 @@
+---
+id: document-grounding
+title: Document Grounding
+hide_title: false
+hide_table_of_contents: false
+---
+
+The Document Grounding module implements Retrieval Augmented Generation (RAG). It uses the SAP HANA Vector Engine to retrieve relevant document context and generate more accurate responses.
+
+## Prerequisites
+
+A vector knowledge base is [required](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding#prerequisites). It can be created from:
+
+- Documents in a SharePoint folder, S3 storage, or SFTP repository
+- Text chunks fed directly via the Vector API
+
+Another option is to use the `help.sap.com` elastic search endpoint.
+
+### Create a Vector Knowledge Base (S3 Example)
+
+```python
+from gen_ai_hub.proxy import get_proxy_client
+from gen_ai_hub.document_grounding import PipelineAPIClient, S3PipelineCreateRequest, CommonConfiguration
+
+aicore_client = get_proxy_client()
+pipelines_api_client = PipelineAPIClient(aicore_client)
+
+generic_secret_s3_bucket = "<*** generic secret name for the S3 bucket ***>"
+s3_config = S3PipelineCreateRequest(configuration=CommonConfiguration(destination=generic_secret_s3_bucket))
+response = pipelines_api_client.create_pipeline(s3_config)
+print(f"Pipeline ID: {response.pipelineId}")
+print(pipelines_api_client.get_pipeline_status(response.pipelineId))
+```
+
+## Configuration
+
+```python
+from gen_ai_hub.orchestration.service import OrchestrationService
+from gen_ai_hub.orchestration.models.config import OrchestrationConfig
+from gen_ai_hub.orchestration.models.document_grounding import (
+    GroundingModule, GroundingType, DataRepositoryType,
+    GroundingFilterSearch, DocumentGrounding, DocumentGroundingFilter
+)
+from gen_ai_hub.orchestration.models.llm import LLM
+
+orchestration_service_url = "https://api.ai.<*** cluster-name ***>.aws.ml.hana.ondemand.com/v2/inference/deployments/<*** deployment_id ***>"
+orchestration_service = OrchestrationService(api_url=orchestration_service_url)
+
+llm = LLM(name="gpt-4o-mini", parameters={'temperature': 0.0})
+```
+
+### Define the Prompt
+
+```python
+from gen_ai_hub.orchestration.models.message import SystemMessage, UserMessage
+from gen_ai_hub.orchestration.models.template import Template, TemplateValue
+
+prompt = Template(messages=[
+    SystemMessage("You are an expert on SAP Product features."),
+    UserMessage("""Context: {{ ?grounding_response }}
+                   Question: What are the features of {{ ?product }}
+                """),
+])
+```
+
+### Grounding via SAP Help (Elastic Search)
+
+```python
+filters = [DocumentGroundingFilter(id="SAPHelp", data_repository_type=DataRepositoryType.URL.value)]
+
+grounding_config = GroundingModule(
+    type=GroundingType.DOCUMENT_GROUNDING_SERVICE.value,
+    config=DocumentGrounding(
+        input_params=["product"],
+        output_param="grounding_response",
+        filters=filters
+    )
+)
+
+config = OrchestrationConfig(template=prompt, llm=llm, grounding=grounding_config)
+response = orchestration_service.run(config=config, template_values=[TemplateValue("product", "Generative AI Hub")])
+print(response.orchestration_result.choices[0].message.content)
+```
+
+### Grounding via Custom Data Repository
+
+```python
+filters = [DocumentGroundingFilter(
+    id="<*** product extension docs id ***>",
+    data_repositories=["<*** data repository referencing the S3 pipeline id ***>"],
+    search_config=GroundingFilterSearch(max_chunk_count=3),
+    data_repository_type=DataRepositoryType.VECTOR.value
+)]
+
+grounding_config = GroundingModule(
+    type=GroundingType.DOCUMENT_GROUNDING_SERVICE.value,
+    config=DocumentGrounding(input_params=["product"], output_param="grounding_response", filters=filters)
+)
+
+config = OrchestrationConfig(template=prompt, llm=llm, grounding=grounding_config)
+response = orchestration_service.run(
+    config=config,
+    template_values=[TemplateValue("product", "<*** custom extension name ***>")]
+)
+print(response.orchestration_result.choices[0].message.content)
+```
+
+### Show Retrieved Context
+
+```python
+print(response.module_results.grounding.data['grounding_result'])
+```
+
+### Data Masking of Retrieved Context
+
+```python
+from gen_ai_hub.orchestration.models.sap_data_privacy_integration import (
+    SAPDataPrivacyIntegration, MaskingMethod, ProfileEntity
+)
+from gen_ai_hub.orchestration.models.data_masking import DataMasking
+
+data_masking = DataMasking(
+    providers=[
+        SAPDataPrivacyIntegration(
+            method=MaskingMethod.ANONYMIZATION,
+            entities=[ProfileEntity.SAP_IDS_INTERNAL],
+            mask_grounding_input=True
+        )
+    ]
+)
+
+masking_config = OrchestrationConfig(
+    template=prompt, llm=llm, grounding=grounding_config, data_masking=data_masking
+)
+response = orchestration_service.run(
+    config=masking_config,
+    template_values=[TemplateValue("product", "<*** custom extension name ***>")]
+)
+print(response.orchestration_result.choices[0].message.content)
+print(response.module_results.grounding.data['grounding_result'])
+```
