@@ -151,7 +151,7 @@ const response = await client.responses.parse({
 
 ## Per-Request Model Override
 
-You can override the model for individual requests by passing a `model` parameter.
+You can override the model or deployment configuration for individual requests by passing a `model` parameter.
 This lets a single client instance send requests to different deployments without re-initializing.
 
 ```ts
@@ -162,9 +162,15 @@ const defaultResponse = await client.chat.completions.create({
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
 
-// Overrides to a different model for this request only
+// Overrides with a different model for this request only
 const overrideResponse = await client.chat.completions.create({
   model: 'gpt-5.4-nano',
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+});
+
+// Overrides with a different deployment for this request only
+const overrideResponse = await client.chat.completions.create({
+  model: { deploymentId: 'DEPLOYMENT_ID' },
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
 ```
