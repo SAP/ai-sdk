@@ -1,6 +1,6 @@
 module.exports = {
   docsPythonSidebar: [
-    'overview-cloud-sdk-for-ai-python',
+    'overview',
     {
       type: 'category',
       label: 'Examples',
