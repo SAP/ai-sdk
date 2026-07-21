@@ -16,7 +16,7 @@
     "lint": "eslint . && prettier . --config .prettierrc -c",
     "lint:fix": "eslint . --fix --quiet && prettier . --config .prettierrc -w --log-level error",
     "style": "npm run lint && vale .",
-    "check:docs-types": "node scripts/check-docs-types.mjs"
+    "check:docs-js-types": "node scripts/check-docs-js-types.mjs"
   },
   "dependencies": {
     "@docusaurus/core": "^3.10.2",
