@@ -157,18 +157,24 @@ This lets a single client instance send requests to different deployments withou
 ```ts
 const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
 
-// Uses the client's configured deployment (gpt-5.4)
+// Use the client's configured deployment (gpt-5.4)
 const defaultResponse = await client.chat.completions.create({
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
 
-// Overrides with a different model for this request only
+// Override with a different model for this request only
 const overrideResponse = await client.chat.completions.create({
   model: 'gpt-5.4-nano',
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
 
-// Overrides with a different deployment for this request only
+// Override with a different model and version for this request only
+const overrideResponse = await client.chat.completions.create({
+  model: { model: 'gpt-5.4-nano', version: 'latest' },
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+});
+
+// Override with a different deployment for this request only
 const overrideResponse = await client.chat.completions.create({
   model: { deploymentId: 'DEPLOYMENT_ID' },
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
