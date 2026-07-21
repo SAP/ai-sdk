@@ -1,4 +1,5 @@
-name: Build Cloud SDK Documentation
+name: build documentation
+
 
 on:
   pull_request:
