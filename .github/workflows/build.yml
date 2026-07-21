@@ -1,5 +1,4 @@
-name: build documentation
-
+name: build
 
 on:
   pull_request:
@@ -21,14 +20,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          ALL_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[] | select(.additions > 0) | .path')
-          CHANGED_FILES="${ALL_FILES//$'\n'/,}"
+          all_files=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[] | select(.additions > 0) | .path')
+          changed_files="${all_files//$'\n'/,}"
 
-          echo "[DEBUG] Following files have been changed: $CHANGED_FILES"
-          echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "[DEBUG] Following files have been changed: $changed_files"
+          echo "changed-files=$changed_files" >> $GITHUB_OUTPUT
       - name: Vale Linter
         # vale fails if the PR is too large, e.g. when updating API docs
-        if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.CHANGED_FILES != '' }}
+        if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.changed-files != '' }}
         env:
           # Required
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -38,7 +37,7 @@ jobs:
           # see https://github.com/vale-cli/vale for all releases
           version: 3.14.1
           # changed files. computed in the step above
-          files: ${{ steps.changed-files.outputs.CHANGED_FILES }}
+          files: ${{ steps.changed-files.outputs.changed-files }}
           # the separator for the file list. we are using a comma (see step above)
           separator: ","
           # let review dog fail if there are errors
