@@ -73,6 +73,14 @@ module.exports = {
           sdkSwitch: true
         },
         {
+          label: '🐍 Python',
+          to: 'docs/python/overview',
+          position: 'left',
+          docsPluginId: 'docs-python',
+          activeBasePath: 'docs/python',
+          className: 'navbar-item-invisible'
+        },
+        {
           type: 'docsVersionDropdown',
           position: 'right',
           docsPluginId: 'docs-js'
@@ -81,6 +89,11 @@ module.exports = {
           type: 'docsVersionDropdown',
           position: 'right',
           docsPluginId: 'docs-java'
+        },
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          docsPluginId: 'docs-python'
         }
       ]
     },
@@ -234,6 +247,23 @@ module.exports = {
             label: 'v1',
             banner: 'unmaintained',
             badge: true
+          }
+        }
+      }
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'docs-python',
+        path: 'docs-python',
+        editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
+        routeBasePath: 'docs/python',
+        sidebarPath: require.resolve('./sidebarsDocsPython.js'),
+        lastVersion: 'current',
+        versions: {
+          current: {
+            label: 'v1',
+            badge: false
           }
         }
       }
