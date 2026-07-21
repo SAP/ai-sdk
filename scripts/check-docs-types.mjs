@@ -9,44 +9,49 @@
  * rendered output while still including them for type-checking.
  */
 import { createTwoslasher } from 'twoslash';
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative } from 'path';
+import { readFileSync, readdirSync } from 'fs';
+import { join, relative, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const docsDir = join(repoRoot, 'docs-js');
 const nm = join(repoRoot, 'node_modules');
 
+const sdkPackages = [
+  'openai',
+  'orchestration',
+  'foundation-models',
+  'core',
+  'ai-api'
+];
+
+import ts from 'typescript';
+
 const compilerOptions = {
-  target: 99 /* ES2022 */,
-  module: 99 /* ESNext */,
-  moduleResolution: 100 /* Bundler */,
+  target: ts.ScriptTarget.ES2022,
+  module: ts.ModuleKind.NodeNext,
+  moduleResolution: ts.ModuleResolutionKind.NodeNext,
   strict: true,
   paths: {
-    '@sap-ai-sdk/openai': [`${nm}/@sap-ai-sdk/openai/dist/index.d.ts`],
-    '@sap-ai-sdk/orchestration': [`${nm}/@sap-ai-sdk/orchestration/dist/index.d.ts`],
-    '@sap-ai-sdk/foundation-models': [`${nm}/@sap-ai-sdk/foundation-models/dist/index.d.ts`],
-    '@sap-ai-sdk/core': [`${nm}/@sap-ai-sdk/core/dist/index.d.ts`],
-    '@sap-ai-sdk/ai-api': [`${nm}/@sap-ai-sdk/ai-api/dist/index.d.ts`],
-    'openai': [`${nm}/openai/index.d.ts`],
+    ...Object.fromEntries(
+      sdkPackages.map(p => [
+        `@sap-ai-sdk/${p}`,
+        [`${nm}/@sap-ai-sdk/${p}/dist/index.d.ts`]
+      ])
+    ),
+    openai: [`${nm}/openai/index.d.ts`],
     'openai/*': [`${nm}/openai/*.d.ts`],
-    'zod': [`${nm}/zod/index.d.ts`],
-  },
+    zod: [`${nm}/zod/index.d.ts`]
+  }
 };
 
 function findMdxFiles(dir) {
-  const results = [];
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      results.push(...findMdxFiles(full));
-    } else if (entry.endsWith('.mdx') || entry.endsWith('.md')) {
-      results.push(full);
-    }
-  }
-  return results;
+  return readdirSync(dir, { recursive: true, withFileTypes: true })
+    .filter(
+      e => e.isFile() && (e.name.endsWith('.mdx') || e.name.endsWith('.md'))
+    )
+    .map(e => join(e.parentPath ?? e.path, e.name));
 }
 
 function extractTwoslashBlocks(content, filePath) {
@@ -61,7 +66,17 @@ function extractTwoslashBlocks(content, filePath) {
   return blocks;
 }
 
-const twoslasher = createTwoslasher({ compilerOptions });
+function reportError(filePath, line, message) {
+  console.error(
+    `\n✗ ${relative(process.cwd(), filePath)} (block starting at line ${line})`
+  );
+  console.error(`  ${message}`);
+}
+
+const twoslasher = createTwoslasher({
+  compilerOptions,
+  extraFiles: { 'package.json': '{"type":"module"}' }
+});
 
 const files = findMdxFiles(docsDir);
 let totalBlocks = 0;
@@ -78,22 +93,24 @@ for (const file of files) {
       const result = twoslasher(code, 'ts');
       if (result.errors.length > 0) {
         failed++;
-        const rel = relative(process.cwd(), filePath);
-        console.error(`\n✗ ${rel} (block starting at line ${line})`);
-        for (const err of result.errors) {
-          console.error(`  Line ${(err.line ?? 0) + 1}: TS${err.code} ${err.text}`);
-        }
+        reportError(
+          filePath,
+          line,
+          result.errors
+            .map(e => `Line ${(e.line ?? 0) + 1}: TS${e.code} ${e.text}`)
+            .join('\n  ')
+        );
       }
     } catch (e) {
       failed++;
-      const rel = relative(process.cwd(), filePath);
-      console.error(`\n✗ ${rel} (block starting at line ${line})`);
-      console.error(`  ${e.message}`);
+      reportError(filePath, line, e.message);
     }
   }
 }
 
 const passed = totalBlocks - failed;
-console.log(`\nChecked ${totalBlocks} twoslash block(s): ${passed} passed, ${failed} failed.`);
+console.log(
+  `\nChecked ${totalBlocks} twoslash block(s): ${passed} passed, ${failed} failed.`
+);
 
 if (failed > 0) process.exit(1);
