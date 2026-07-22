@@ -2,9 +2,9 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import emoji from 'remark-emoji';
 import gfm from 'remark-gfm';
-import { features } from './data/features'; // JSON Object with main SDK features
-import { mainFeatureTableLayout } from './data/table-layouts'; // Table layout with bindings for main feature matrix
-import Table from './Table';
+import { features } from './data/features.js';
+import { mainFeatureTableLayout } from './data/table-layouts.js';
+import Table from './Table.js';
 
 /**
  * Generates a main feature-table in SDK overview.

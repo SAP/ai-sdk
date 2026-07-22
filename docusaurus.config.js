@@ -351,13 +351,9 @@ export default {
             plugins: [new ProvidePlugin({ process: 'process/browser.js' })],
             module: {
               rules: [
-                { test: /\.jsx?$/, resolve: { fullySpecified: false } },
                 // Docusaurus generates files in .docusaurus/ with require() calls;
                 // treat them as non-strict so require is available in the bundle.
-                {
-                  test: /\.docusaurus\/.*\.js$/,
-                  type: 'javascript/auto'
-                }
+                { test: /\.docusaurus\/.*\.js$/, type: 'javascript/auto' }
               ]
             }
           };
