@@ -1,20 +1,11 @@
-const { ProvidePlugin } = require('webpack');
+import { createRequire } from 'module';
+import { themes } from 'prism-react-renderer';
+import webpack from 'webpack';
 
-// We have to polyfill some Node APIs because Docusaurus migrated to Webpack 5
-// This is mainly required because of remark related modules which don't load otherwise
-// Also process is required for local runs
-class ESMPolyfillWrapper {
-  apply(compiler) {
-    compiler.options.plugins.push(
-      new ProvidePlugin({
-        process: 'process/browser.js'
-      })
-    );
-  }
-}
+const { ProvidePlugin } = webpack;
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+export default {
   title: 'SAP Cloud SDK for AI',
   tagline: 'The one-stop shop for integrating AI into SAP Cloud applications.',
   url: 'https://sap.github.io/',
@@ -33,8 +24,8 @@ module.exports = {
     },
     prism: {
       additionalLanguages: ['powershell', 'java', 'groovy'],
-      theme: require('prism-react-renderer').themes.github,
-      darkTheme: require('prism-react-renderer').themes.dracula
+      theme: themes.github,
+      darkTheme: themes.dracula
     },
     algolia: {
       apiKey: '441c57554e5a0ca9338cc9f047fb10c8',
@@ -194,13 +185,13 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          sidebarPath: require.resolve('./sidebarsDocsCommon.js'),
+          sidebarPath: './sidebarsDocsCommon.js',
           editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
           routeBasePath: 'docs/overview',
           path: 'docs'
         },
         theme: {
-          customCss: [require.resolve('./src/css/custom.css')]
+          customCss: './src/css/custom.css'
         },
         sitemap: {
           changefreq: 'weekly',
@@ -210,7 +201,6 @@ module.exports = {
       }
     ]
   ],
-  customFields: {},
   plugins: [
     [
       '@docusaurus/plugin-content-docs',
@@ -219,7 +209,7 @@ module.exports = {
         path: 'docs-java',
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/java',
-        sidebarPath: require.resolve('./sidebarsDocsJava.js'),
+        sidebarPath: './sidebarsDocsJava.js',
         lastVersion: 'current',
         versions: {
           current: {
@@ -236,7 +226,7 @@ module.exports = {
         path: 'docs-js',
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
-        sidebarPath: require.resolve('./sidebarsDocsJs.js'),
+        sidebarPath: './sidebarsDocsJs.js',
         lastVersion: 'current',
         versions: {
           current: {
@@ -258,7 +248,7 @@ module.exports = {
         path: 'docs-python',
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/python',
-        sidebarPath: require.resolve('./sidebarsDocsPython.js'),
+        sidebarPath: './sidebarsDocsPython.js',
         lastVersion: 'current',
         versions: {
           current: {
@@ -353,12 +343,23 @@ module.exports = {
         ]
       }
     ],
-    function nodeWebpackPolyfillPlugin(context, options) {
+    function nodeWebpackPolyfillPlugin() {
       return {
         name: 'nodeWebpackPolyfill',
-        configureWebpack(config, isServer) {
+        configureWebpack() {
           return {
-            plugins: [new ESMPolyfillWrapper()]
+            plugins: [new ProvidePlugin({ process: 'process/browser.js' })],
+            module: {
+              rules: [
+                { test: /\.jsx?$/, resolve: { fullySpecified: false } },
+                // Docusaurus generates files in .docusaurus/ with require() calls;
+                // treat them as non-strict so require is available in the bundle.
+                {
+                  test: /\.docusaurus\/.*\.js$/,
+                  type: 'javascript/auto'
+                }
+              ]
+            }
           };
         }
       };

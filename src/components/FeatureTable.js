@@ -8,7 +8,7 @@ import Table from './Table';
 
 /**
  * Generates a main feature-table in SDK overview.
- * Data (features.js) and Columns layout (table-layour.js) come from the `data` folder.
+ * Data (features.js) and Columns layout (table-layouts.js) come from the `data` folder.
  *
  */
 export default function FeatureTable() {
