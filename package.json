@@ -2,6 +2,7 @@
   "name": "sap-ai-sdk-documentation",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
