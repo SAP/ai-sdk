@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   docsCommonSidebar: [
     'overview-cloud-sdk-for-ai',
     'cloud-sdk-feature-matrix',
