@@ -17,6 +17,14 @@ export default {
   projectName: 'ai-sdk',
   trailingSlash: false,
   themes: ['@saucelabs/theme-github-codeblock'],
+  future: {
+    v4: {
+      removeLegacyPostBuildHeadAttribute: true,
+      useCssCascadeLayers: true,
+      siteStorageNamespacing: true,
+      mdx1CompatDisabledByDefault: true,
+    },
+  },
   themeConfig: {
     colorMode: {
       respectPrefersColorScheme: true,

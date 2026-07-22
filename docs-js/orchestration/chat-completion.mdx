@@ -185,7 +185,7 @@ const response = await orchestrationClient.chatCompletion({
 console.log(response.getContent());
 ```
 
-:::info Timeout Parameter
+:::info[Timeout Parameter]
 The `timeout` parameter in the model configuration sets the maximum time (in seconds) for the LLM request.
 If the request exceeds this timeout in non-streaming scenarios, the orchestration service triggers the fallback to the next configuration.
 The timeout parameter applies to the individual LLM call, not the entire orchestration request.
@@ -250,7 +250,7 @@ const promptTemplating = {
 };
 ```
 
-:::tip Available LLMs on SAP Generative AI Hub
+:::tip[Available LLMs on SAP Generative AI Hub]
 Thanks to the harmonized API, all available LLMs on the SAP Generative AI Hub can be accessed through orchestration, including:
 
 - OpenAI GPT 4o
@@ -438,7 +438,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-:::info Messages with Prompt Template References
+:::info[Messages with Prompt Template References]
 When using the `template_ref` property, messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored prompt template.
 The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
 :::
@@ -448,7 +448,7 @@ For details on storing a template in the Prompt Registry, refer to [this guide](
 
 ### Scoped Prompt Registry
 
-:::info Tutorial: Creating Scoped Prompt Templates with Headers
+:::info[Tutorial: Creating Scoped Prompt Templates with Headers]
 For a step-by-step guide on creating orchestration deployment and configuring scoped prompt registry templates, see the [Using Scoped Prompt Registry Templates](../tutorials/using-scoped-prompt-registry-templates) tutorial.
 :::
 
@@ -866,7 +866,7 @@ It is recommended to include a `filename` in the payload; otherwise, the orchest
 The following example reads a local file and sends it to the model.
 Adjust the file path, MIME type and model name as needed, for PDF files use `application/pdf` as MIME type.
 
-<!-- vale off -->
+{/* vale off */}
 
 ```ts
 import { readFile } from 'node:fs/promises';
@@ -894,7 +894,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-<!-- vale on -->
+{/* vale on */}
 
 ## Content Filtering
 
@@ -1527,7 +1527,7 @@ const response = await orchestrationClient.chatCompletion({
 console.log(response.getContent());
 ```
 
-:::info Messages with Orchestration Configuration References
+:::info[Messages with Orchestration Configuration References]
 When initializing the client with an orchestration configuration reference, any messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored configuration's prompt template.
 The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
 :::
@@ -1672,7 +1672,7 @@ These can be configured when initializing the client.
 
 For example, to configure retry and timeout options:
 
-<!-- vale off -->
+{/* vale off */}
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
@@ -1686,7 +1686,7 @@ const orchestrationClient = new OrchestrationClient({
 });
 ```
 
-<!-- vale on -->
+{/* vale on */}
 
 ### SAP Cloud SDK Resilience Package
 
@@ -1720,7 +1720,7 @@ You can pass it directly to `middleware` or combine it with other middleware: `[
 
 Customize the behavior by passing options:
 
-<!-- vale off -->
+{/* vale off */}
 
 ```ts
 const response = await orchestrationClient.chatCompletion(request, {
@@ -1732,7 +1732,7 @@ const response = await orchestrationClient.chatCompletion(request, {
 });
 ```
 
-<!-- vale on -->
+{/* vale on */}
 
 For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on resilience](https://sap.github.io/cloud-sdk/docs/js/guides/resilience).
 

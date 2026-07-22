@@ -265,7 +265,7 @@ In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
 
 Create an agent by providing the orchestration client as the model, along with any tools you want the agent to use:
 
-<!-- vale off -->
+{/* vale off */}
 
 ```ts
 import { createAgent } from 'langchain';
@@ -291,7 +291,7 @@ const agentInputs = {
 const result = await agent.invoke(agentInputs);
 ```
 
-<!-- vale on -->
+{/* vale on */}
 
 ### Prompt Caching
 
@@ -371,13 +371,13 @@ const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
 
 ## Resilience
 
-<!-- vale off -->
+{/* vale off */}
 
 :::warning
 The Langchain, Orchestration layer and the SAP Cloud SDK resilience mechanisms should not be combined, or should be integrated only with careful consideration.
 :::
 
-<!-- vale on -->
+{/* vale on */}
 
 Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
 

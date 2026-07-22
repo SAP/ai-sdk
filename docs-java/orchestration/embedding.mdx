@@ -46,7 +46,7 @@ See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sd
 
 In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
 
-<!-- prettier-ignore-start-->
+{/* prettier-ignore-start*/}
 
 - **A Deployed Orchestration Model in SAP AI Core**
 
@@ -80,7 +80,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
     </details>
 
-<!-- prettier-ignore-end-->
+{/* prettier-ignore-end*/}
 
 ## Embedding
 
@@ -100,7 +100,7 @@ float[] embedding = response.getEmbeddingVectors().get(0);
 
 See [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for more features including masking of sensitive data.
 
-:::tip Integration with CAP
+:::tip[Integration with CAP]
 
 In case you are using CAP, you can use the above code together with the native support for the [HANA Vector Store](https://cap.cloud.sap/docs/guides/databases-hana#vector-embeddings).
 
