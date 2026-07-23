@@ -16,7 +16,10 @@ export default {
   organizationName: 'SAP',
   projectName: 'ai-sdk',
   trailingSlash: false,
-  themes: ['@saucelabs/theme-github-codeblock', 'docusaurus-plugin-copy-page-button'],
+  themes: [
+    '@saucelabs/theme-github-codeblock',
+    'docusaurus-plugin-copy-page-button'
+  ],
   themeConfig: {
     colorMode: {
       respectPrefersColorScheme: true,
