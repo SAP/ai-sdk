@@ -5,6 +5,24 @@
  * work well for content-centric websites.
  */
 
+@import '@shikijs/twoslash/style-rich.css';
+
+/* Activate Shiki dual-theme CSS variables for light/dark mode */
+.shiki span {
+  color: var(--shiki-light) !important;
+}
+[data-theme='dark'] .shiki span {
+  color: var(--shiki-dark) !important;
+}
+
+/* <pre> lives inside Container which handles the background; reset to avoid double-styling */
+pre.shiki {
+  overflow: visible;
+  margin: 0;
+  background: transparent;
+  padding: var(--ifm-pre-padding);
+}
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #0070f2;

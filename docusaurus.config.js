@@ -1,6 +1,7 @@
 import { createRequire } from 'module';
 import { themes } from 'prism-react-renderer';
 import webpack from 'webpack';
+import { rehypeShikiTwoslash } from './src/shiki-twoslash.js';
 
 const { ProvidePlugin } = webpack;
 
@@ -230,6 +231,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: './sidebarsDocsJs.js',
+        rehypePlugins: [rehypeShikiTwoslash],
         lastVersion: 'current',
         versions: {
           current: {

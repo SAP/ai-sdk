@@ -25,6 +25,8 @@
     "@docusaurus/preset-classic": "^3.10.2",
     "@docusaurus/theme-common": "^3.10.1",
     "@saucelabs/theme-github-codeblock": "^0.3.0",
+    "@shikijs/rehype": "^4.3.1",
+    "@shikijs/twoslash": "^4.3.1",
     "@signalwire/docusaurus-plugin-llms-txt": "^1.2.2",
     "@tanstack/react-table": "^8.21.3",
     "buffer": "^6.0.3",
@@ -36,7 +38,8 @@
     "react-dom": "^19.2.8",
     "react-markdown": "^10.1.0",
     "remark-emoji": "^5.0.2",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "shiki": "^4.3.1"
   },
   "devDependencies": {
     "@langchain/core": "^1.2.3",
