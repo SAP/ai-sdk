@@ -26,7 +26,13 @@ Follow these steps to create an orchestration deployment and configure prompt te
 
 If no configuration exists, create a configuration with the following code:
 
-```ts
+```ts twoslash
+import { ConfigurationApi } from '@sap-ai-sdk/ai-api';
+import type {
+  AiConfigurationBaseData,
+  AiConfigurationCreationResponse
+} from '@sap-ai-sdk/ai-api';
+// ---cut---
 const configurationPostData: AiConfigurationBaseData = {
   name: 'CONFIG_EXAMPLE',
   executableId: 'orchestration',
@@ -43,21 +49,27 @@ const result: AiConfigurationCreationResponse =
 
 Create an orchestration deployment for the target resource group if it does not exist already with the following code:
 
-```ts
+```ts twoslash
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import type { AiDeploymentCreationRequest } from '@sap-ai-sdk/ai-api';
+// ---cut---
 const deploymentPostData: AiDeploymentCreationRequest = {
   configurationId: '3d2c1b0a'
 };
 
-const deploymentResponse = await createDeployment(deploymentPostData, {
-  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
-});
+const deploymentResponse = await DeploymentApi.deploymentCreate(
+  deploymentPostData,
+  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
+).execute();
 ```
 
 ## Create Prompt Template with Specific Resource Group Scope
 
 Create the prompt template with resource group scoping:
 
-```ts
+```ts twoslash
+import { PromptTemplatesApi } from '@sap-ai-sdk/prompt-registry';
+// ---cut---
 const promptTemplate = await PromptTemplatesApi.createUpdatePromptTemplate(
   {
     name: 'MY_SCOPED_TEMPLATE',
@@ -83,7 +95,7 @@ const promptTemplate = await PromptTemplatesApi.createUpdatePromptTemplate(
 
 Create the orchestration client with custom headers for resource group scoping:
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient(

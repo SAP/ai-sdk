@@ -22,7 +22,10 @@ Refer to the [Custom Request Configuration](../foundation-models.mdx#custom-requ
 
 ## Making Requests
 
-```ts
+```ts twoslash
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiEmbeddingClient('text-embedding-3-small');
+// ---cut---
 const response = await client.run({
   input: 'AI is fascinating'
 });
@@ -34,7 +37,10 @@ const embedding = response.getEmbedding();
 The SAP Cloud SDK for AI provides access to the underlying HTTP response through the `rawResponse` property on response objects.
 Use this for advanced scenarios such as accessing response headers, inspecting HTTP status codes, or debugging.
 
-```ts
+```ts twoslash
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiEmbeddingClient('text-embedding-3-small');
+// ---cut---
 const response = await client.run({
   input: 'AI is fascinating'
 });
@@ -59,9 +65,11 @@ The `rawResponse` property is available on embedding response objects.
 Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
 By default, it enables a circuit breaker and a 10-second timeout.
 
-```ts
+```ts twoslash
 import { resilience } from '@sap-cloud-sdk/resilience';
-
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiEmbeddingClient('text-embedding-3-small');
+// ---cut---
 const response = await client.run(
   { input: 'What is the capital of Germany?' },
   { middleware: resilience() }
@@ -77,7 +85,11 @@ Customize the behavior by passing options:
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
+import { resilience } from '@sap-cloud-sdk/resilience';
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiEmbeddingClient('text-embedding-3-small');
+// ---cut---
 const response = await client.run(
   { input: 'What is the capital of Germany?' },
   {
@@ -100,7 +112,10 @@ Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when
 This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
 Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
 
-```ts
+```ts twoslash
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiEmbeddingClient('text-embedding-3-small');
+// ---cut---
 const controller = new AbortController();
 
 const request = {
@@ -118,7 +133,7 @@ setTimeout(() => {
 
 try {
   await response;
-} catch (error) {
+} catch (error: any) {
   console.error('Request was cancelled:', error.message);
 }
 ```

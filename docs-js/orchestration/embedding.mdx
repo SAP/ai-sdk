@@ -32,7 +32,7 @@ npm install @sap-ai-sdk/orchestration
 Initialize the `OrchestrationEmbeddingClient` with the embedding model configuration.
 Then call `embed()` with your input.
 
-```ts
+```ts twoslash
 import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
 
 const embeddingClient = new OrchestrationEmbeddingClient({
@@ -71,7 +71,12 @@ Embedding items returned by `getEmbeddings()` have the shape:
 
 Access vector embeddings as follows:
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+const response = await new OrchestrationEmbeddingClient({
+  embeddings: { model: { name: 'text-embedding-3-large' } }
+}).embed({ input: '' });
+// ---cut---
 const embeddings = response.getEmbeddings().map(item => item.embedding);
 ```
 
@@ -84,7 +89,12 @@ Pass an array of strings to embed multiple inputs at once.
 The array returned by `getEmbeddings()` includes an `index` field.
 Use the index to correlate the embeddings to the input array order.
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+const embeddingClient = new OrchestrationEmbeddingClient({
+  embeddings: { model: { name: 'text-embedding-3-large' } }
+});
+// ---cut---
 const response = await embeddingClient.embed({
   input: ['First text to embed', 'Second text to embed']
 });
@@ -99,7 +109,9 @@ for (const item of response.getEmbeddings()) {
 The harmonized API lets you use different foundation models without the need to change the client code.
 Set the model in `embeddings.model.name`. You can easily switch providers like in the example below:
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const embeddingClient = new OrchestrationEmbeddingClient({
   embeddings: {
     model: {
@@ -121,7 +133,7 @@ Use the orchestration embedding client with the masking module to mask sensitive
 
 The following example demonstrates how to use data masking with the orchestration embedding client.
 
-```ts
+```ts twoslash
 import {
   OrchestrationEmbeddingClient,
   buildDpiMaskingProvider
@@ -158,7 +170,9 @@ By default, there should be an orchestration deployment in the `default` [Resour
 
 If the orchestration service has been deployed in a different resource group, specify the `resourceGroup` when creating the client.
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 // Using a custom resource group
 const embeddingClient = new OrchestrationEmbeddingClient(
   {
@@ -171,7 +185,12 @@ const embeddingClient = new OrchestrationEmbeddingClient(
 Additionally, it is possible to manually specify a deployment ID using the `deploymentId` property instead of letting the SDK resolve it.
 Make sure to set the correct resource group in which the deployment was created.
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+declare const orchestrationConfig: ConstructorParameters<
+  typeof OrchestrationEmbeddingClient
+>[0];
+// ---cut---
 const embeddingClient = new OrchestrationEmbeddingClient(orchestrationConfig, {
   deploymentId: 'YOUR_DEPLOYMENT_ID'
 });
@@ -184,7 +203,12 @@ Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-a
 The SAP Cloud SDK for AI provides access to the underlying HTTP response through the `response` property on orchestration embedding responses.
 Use this for advanced scenarios such as accessing response headers, inspecting HTTP status codes, or debugging.
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+const client = new OrchestrationEmbeddingClient({
+  embeddings: { model: { name: 'text-embedding-3-large' } }
+});
+// ---cut---
 const response = await client.embed({
   input:
     'Hello, my name is Alice Johnson and my email is alice.johnson@company.com.',
@@ -203,6 +227,7 @@ console.log(response.response.data); // Raw response data
 :::tip
 For most use cases, prefer the convenience methods like `getEmbeddings()`.
 Use `response` only when you need direct access to HTTP-level details.
+:::
 
 ## Request Cancellation
 
@@ -210,7 +235,12 @@ Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when
 This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
 Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+const embeddingClient = new OrchestrationEmbeddingClient({
+  embeddings: { model: { name: 'text-embedding-3-large' } }
+});
+// ---cut---
 const controller = new AbortController();
 
 const response = embeddingClient.embed(
@@ -227,7 +257,7 @@ setTimeout(() => {
 
 try {
   await response;
-} catch (error) {
+} catch (error: any) {
   console.error('Request was cancelled:', error.message);
 }
 ```
@@ -242,7 +272,12 @@ Metering information may not be available for cancelled requests.
 
 Add custom headers or query parameters by passing a `CustomRequestConfig` as the second parameter to `embed()`.
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+const embeddingClient = new OrchestrationEmbeddingClient({
+  embeddings: { model: { name: 'text-embedding-3-large' } }
+});
+// ---cut---
 const response = await embeddingClient.embed(
   {
     input: 'Vectorize this text'
@@ -265,7 +300,15 @@ const response = await embeddingClient.embed(
 When initializing the client, it is possible to provide a custom destination.
 For example, when targeting a destination with the name `YOUR_DESTINATION_NAME`, the following code can be used:
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+declare const orchestrationEmbeddingConfig: ConstructorParameters<
+  typeof OrchestrationEmbeddingClient
+>[0];
+declare const deploymentConfig: ConstructorParameters<
+  typeof OrchestrationEmbeddingClient
+>[1];
+// ---cut---
 const client = new OrchestrationEmbeddingClient(
   orchestrationEmbeddingConfig,
   deploymentConfig,
@@ -283,7 +326,12 @@ For more information about configuring a destination, refer to the [Using a Dest
 Embedding requests may fail due to invalid configuration, unavailable deployments, quota limits, or provider errors.
 Wrap calls in `try/catch` and consult the cause for more details.
 
-```ts
+```ts twoslash
+import { OrchestrationEmbeddingClient } from '@sap-ai-sdk/orchestration';
+const embeddingClient = new OrchestrationEmbeddingClient({
+  embeddings: { model: { name: 'text-embedding-3-large' } }
+});
+// ---cut---
 try {
   await embeddingClient.embed({ input: '...' });
 } catch (error: any) {
