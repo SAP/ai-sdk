@@ -34,7 +34,7 @@ npm install @sap-ai-sdk/orchestration
 
 Initialize an orchestration client with an LLM model and a prompt template.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -54,7 +54,12 @@ const orchestrationClient = new OrchestrationClient({
 Next, send a chat completion request with a value defined for the `question` input parameter.
 The value replaces the `{{?question}}` placeholder in the template.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const response = await orchestrationClient.chatCompletion({
   placeholderValues: {
     question: 'Why is the phrase "Hello world!" so famous?'

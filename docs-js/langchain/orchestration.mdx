@@ -23,10 +23,11 @@ Therefore, the client initialization combines the configuration of the orchestra
 Similar to the orchestration client, the `OrchestrationClient` LangChain client can be initialized with an orchestration configuration.
 Refer to [Orchestration Chat Completion](../orchestration/chat-completion) for more information about the configuration.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
-const config: OrchestrationModuleConfig = {
+const config: LangChainOrchestrationModuleConfig = {
   promptTemplating: {
     model: {
       name: 'gpt-5'
@@ -42,7 +43,18 @@ Optionally, you can also specify LangChain options, resource group in deployment
 
 When initializing the client, it is possible to provide a custom destination for your SAP AI Core instance.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+declare const orchestrationConfig: ConstructorParameters<
+  typeof OrchestrationClient
+>[0];
+declare const langchainOptions: ConstructorParameters<
+  typeof OrchestrationClient
+>[1];
+declare const deploymentConfig: ConstructorParameters<
+  typeof OrchestrationClient
+>[2];
+// ---cut---
 const client = new OrchestrationClient(
   orchestrationConfig,
   langchainOptions,
@@ -60,7 +72,12 @@ For more information about configuring a destination, refer to the [Using a Dest
 
 Pass a message history and, in most cases, input parameters for the orchestration templating module.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { OrchestrationModuleConfig } from '@sap-ai-sdk/orchestration';
+import { SystemMessage } from '@langchain/core/messages';
+declare const client: OrchestrationClient;
+// ---cut---
 const systemMessage = new SystemMessage('Be a helpful assistant!');
 const history = [systemMessage];
 const response = await client.invoke(history, {
@@ -75,8 +92,9 @@ Pass a non-empty array of [`LangChainOrchestrationModuleConfig`](pathname:///api
 
 For a full explanation of when fallback is triggered and how it works with the orchestration service, refer to [Module Fallback](../orchestration/chat-completion#module-fallback) in the orchestration documentation.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+// ---cut---
 import type { LangChainOrchestrationModuleConfigList } from '@sap-ai-sdk/langchain';
 
 const orchestrationConfigs: LangChainOrchestrationModuleConfigList = [
@@ -108,7 +126,11 @@ Module fallback also works with the `stream()` method.
 Note that in streaming scenarios, only model unavailability triggers fallback.
 Unlike non-streaming requests, timeouts will not trigger fallback during streaming.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfigList } from '@sap-ai-sdk/langchain';
+declare const orchestrationConfigs: LangChainOrchestrationModuleConfigList;
+// ---cut---
 import type { AIMessageChunk } from '@langchain/core/messages';
 
 const client = new OrchestrationClient(orchestrationConfigs);
@@ -133,8 +155,12 @@ By default, the last chunk contains the finish reason and token usage informatio
 The orchestration service currently doesn't support multiple choices during streaming.
 :::
 
-```ts
-const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+import type { AIMessageChunk } from '@langchain/core/messages';
+
+const orchestrationConfig: LangChainOrchestrationModuleConfig = {
   promptTemplating: {
     model: {
       name: 'gpt-5'
@@ -142,6 +168,7 @@ const orchestrationConfig: LangchainOrchestrationModuleConfig = {
   }
 };
 
+// ---cut---
 const client = new OrchestrationClient(orchestrationConfig);
 const response = await client.stream([
   {
@@ -178,8 +205,11 @@ The client supports aborting streaming requests using the `AbortController` API.
 In case of an error, SAP Cloud SDK for AI will automatically close the stream.
 It can also be manually aborted if an `AbortSignal` object associated with an `AbortController` was provided when calling the `stream()` method.
 
-```ts
-const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+
+const orchestrationConfig: LangChainOrchestrationModuleConfig = {
   promptTemplating: {
     model: {
       name: 'gpt-5'
@@ -187,6 +217,7 @@ const orchestrationConfig: LangchainOrchestrationModuleConfig = {
   }
 };
 
+// ---cut---
 const client = new OrchestrationClient(orchestrationConfig);
 const controller = new AbortController();
 const { signal } = controller;
@@ -222,7 +253,12 @@ By default, the `stream()` method supports streaming, while the `invoke()` metho
 
 Set the `streaming` option to `true` to enable automatic streaming for all requests made with the `invoke()` method:
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+declare const orchestrationConfig: LangChainOrchestrationModuleConfig;
+declare const messageHistory: Parameters<OrchestrationClient['invoke']>[0];
+// ---cut---
 const client = new OrchestrationClient(orchestrationConfig, {
   streaming: true
 });
@@ -237,7 +273,12 @@ This option is automatically enabled by LangGraph when a LangGraph-based agent i
 
 Set the `disableStreaming` option to turn off streaming entirely.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+declare const orchestrationConfig: LangChainOrchestrationModuleConfig;
+declare const messageHistory: Parameters<OrchestrationClient['stream']>[0];
+// ---cut---
 const client = new OrchestrationClient(orchestrationConfig, {
   disableStreaming: true
 });
@@ -267,7 +308,7 @@ Create an agent by providing the orchestration client as the model, along with a
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
 import { createAgent } from 'langchain';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
@@ -309,7 +350,7 @@ The SDK supports a per-call option to enable it.
 Pass `cache_control` as a call option to `invoke()` or `stream()`.
 The SDK automatically places a cache breakpoint on the last cacheable block of the last message, so the breakpoint advances naturally as the conversation grows.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
 const client = new OrchestrationClient({
@@ -341,7 +382,7 @@ If you're upgrading from an earlier version, refer to the [Zod v4 migration guid
 For more details on structured output, refer to the [official LangChain documentation on structured output](https://docs.langchain.com/oss/javascript/langchain/models#structured-outputs).
 Below is an example using `json_schema` response type and passing in a Zod schema.
 
-```ts
+```ts twoslash
 import * as z from 'zod';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
@@ -386,7 +427,12 @@ Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
 By default, LangChain client retries up to six times with exponential delay.
 To modify this behavior, set the `maxRetries` option during the client initialization.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+declare const orchestrationConfig: LangChainOrchestrationModuleConfig;
+declare const messageHistory: Parameters<OrchestrationClient['invoke']>[0];
+// ---cut---
 const client = new OrchestrationClient(orchestrationConfig, {
   maxRetries: 0
 });
@@ -402,13 +448,22 @@ By default, no timeout is set in the client.
 To limit the maximum duration for the entire request including retries, specify a timeout in milliseconds when calling the `invoke` method.
 A request that times out will be [retried](#retry) by default.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+declare const orchestrationConfig: LangChainOrchestrationModuleConfig;
+declare const client: OrchestrationClient;
+declare const messageHistory: Parameters<OrchestrationClient['invoke']>[0];
+// ---cut---
 const response = await client.invoke(messageHistory, { timeout: 10000 });
 ```
 
 Timeout can also be set for streaming requests.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+declare const client: OrchestrationClient;
+// ---cut---
 const response = await client.stream(
   [
     {
