@@ -528,7 +528,7 @@ var prompt =
 var response = client.chatCompletion(prompt, reasoningConfig);
 
 String answer = response.getContent();
-String reasoning = response.getReasoningText(); // empty if the model returned no reasoning
+String reasoning = response.getReasoningText();
 ```
 
 `ReasoningEffort` offers the harmonized levels `MINIMAL`, `LOW`, `MEDIUM`, `HIGH`, and `NONE`.
