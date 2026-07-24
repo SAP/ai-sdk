@@ -537,7 +537,7 @@ Not all reasoning-capable models support the full range; where a model does not 
 ### Streaming Reasoning
 
 When streaming, each delta carries its answer and reasoning fragments separately.
-Read them with `getDeltaContent` and `getDeltaReasoningContent`.
+Read them with `getDeltaContent` and `getDeltaReasoningText`.
 
 ```java
 var request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
@@ -545,7 +545,7 @@ var request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfi
 try (var stream = client.streamChatCompletionDeltas(request)) {
     stream.forEach(
         delta -> {
-            System.out.print(delta.getDeltaReasoningContent()); // thinking, as it arrives
+            System.out.print(delta.getDeltaReasoningText()); // thinking, as it arrives
             System.out.print(delta.getDeltaContent());          // answer, as it arrives
         });
 }
