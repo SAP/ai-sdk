@@ -1,7 +1,7 @@
 import { createRequire } from 'module';
 import { themes } from 'prism-react-renderer';
 import webpack from 'webpack';
-import { rehypeShikiTwoslash } from './src/shiki-twoslash.js';
+import { rehypeShikiTwoslash } from './scripts/shiki-twoslash.js';
 
 const { ProvidePlugin } = webpack;
 
