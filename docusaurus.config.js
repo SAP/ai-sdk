@@ -90,11 +90,6 @@ module.exports = {
           position: 'right',
           docsPluginId: 'docs-java'
         },
-        {
-          type: 'docsVersionDropdown',
-          position: 'right',
-          docsPluginId: 'docs-python'
-        }
       ]
     },
     footer: {
@@ -286,6 +281,16 @@ module.exports = {
         changefreq: 'weekly',
         priority: 0.5,
         ignorePatterns: ['**/docs/js/**']
+      }
+    ],
+    [
+      '@docusaurus/plugin-sitemap',
+      {
+        id: 'sitemap-python',
+        filename: 'sitemap-python.xml',
+        changefreq: 'weekly',
+        priority: 0.5,
+        ignorePatterns: ['**/docs/java/**', '**/docs/js/**']
       }
     ],
     [
