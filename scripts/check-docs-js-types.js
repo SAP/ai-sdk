@@ -12,12 +12,12 @@ import { createTwoslasher } from 'twoslash';
 import { readFile, readdir } from 'fs/promises';
 import { join, relative, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { compilerOptions } from './compiler-options.js';
+import ts from 'typescript';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const docsDir = join(__dirname, '..', 'docs-js');
-
-import ts from 'typescript';
+const repoRoot = join(__dirname, '..');
+const docsDir = join(repoRoot, 'docs-js');
+const tsconfigPath = join(docsDir, 'tsconfig.json');
 
 async function findMdxFiles(dir) {
   return (await readdir(dir, { recursive: true, withFileTypes: true }))
@@ -45,8 +45,14 @@ function reportError(filePath, line, message) {
 }
 
 async function main() {
+  const parsed = ts.parseJsonConfigFileContent(
+    ts.readConfigFile(tsconfigPath, ts.sys.readFile).config,
+    ts.sys,
+    docsDir
+  );
   const twoslasher = createTwoslasher({
-    compilerOptions,
+    vfsRoot: repoRoot,
+    compilerOptions: parsed.options,
     extraFiles: { 'package.json': '{"type":"module"}' }
   });
 
