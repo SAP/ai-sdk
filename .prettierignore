@@ -3,6 +3,7 @@
 node_modules/
 build/
 static/
+docs-python/_api_doc/
 styles/
 LICENSES
 CONTRIBUTING.md
