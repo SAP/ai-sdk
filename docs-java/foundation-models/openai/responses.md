@@ -1,0 +1,353 @@
+---
+id: responses
+title: Responses
+description: How to use the SAP AI SDK for Java to perform responses tasks using OpenAI models deployed on SAP AI Core.
+---
+
+# Responses
+
+
+## Introduction
+
+This guide demonstrates how to use the SAP AI SDK for Java to perform responses using OpenAI models deployed on SAP AI Core.
+
+Refer to the [OpenAI Responses API reference](https://platform.openai.com/docs/api-reference/responses) for details on the underlying OpenAI SDK API.
+
+## Prerequisites
+
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](../../overview-cloud-sdk-for-ai-java#general-requirements).
+Additionally, include the necessary Maven dependency in your project.
+
+### Maven Dependencies
+
+Add the following dependencies to your `pom.xml` file:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>openai</artifactId>
+        <version>${ai-sdk.version}</version>
+    </dependency>
+    <dependency>
+          <groupId>com.openai</groupId>
+          <artifactId>openai-java-core</artifactId>
+          <version>${openai-java.version}</version>
+          <optional>true</optional>
+    </dependency>
+</dependencies>
+```
+
+See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml)
+
+## Usage
+
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
+
+<!-- prettier-ignore-start-->
+
+- **A Deployed OpenAI Model in SAP AI Core**
+
+  - Refer
+    to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
+    for setup instructions.
+  - In case the model is deployed in a custom resource group, refer to [this section](#using-a-custom-resource-group).
+  - <details>
+    <summary>Example deployed model from the AI Core <code>/deployments</code> endpoint</summary>
+
+    ```json
+    {
+      "id": "d123456abcdefg",
+      "deploymentUrl": "https://api.ai.region.aws.ml.hana.ondemand.com/v2/inference/deployments/d123456abcdefg",
+      "configurationId": "12345-123-123-123-123456abcdefg",
+      "configurationName": "gpt-4o-mini",
+      "scenarioId": "foundation-models",
+      "status": "RUNNING",
+      "statusMessage": null,
+      "targetStatus": "RUNNING",
+      "lastOperation": "CREATE",
+      "latestRunningConfigurationId": "12345-123-123-123-123456abcdefg",
+      "ttl": null,
+      "details": {
+        "scaling": {
+          "backendDetails": {}
+        },
+        "resources": {
+          "backendDetails": {
+            "model": {
+              "name": "gpt-4o-mini",
+              "version": "latest"
+            }
+          }
+        }
+      },
+      "createdAt": "2024-07-03T12:44:22Z",
+      "modifiedAt": "2024-07-16T12:44:19Z",
+      "submissionTime": "2024-07-03T12:44:51Z",
+      "startTime": "2024-07-03T12:45:56Z",
+      "completionTime": null
+    }
+    ```
+
+    </details>
+
+<!-- prettier-ignore-end-->
+
+## Create a non-persistent response
+
+This creates a simple non-persistent response using the Responses API.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseCreateParams.builder().input("Hi, how are you?").store(false).build();
+
+var response = responseClient.create(params);
+```
+
+## Create a persistent response
+
+This creates a persistent response which runs asynchronously using the Responses API.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseCreateParams.builder().input("Hi, how are you?").store(true).background(true).build(); // set background to false for the response to run synchronously
+
+var response = responseClient.create(params);
+```
+
+## Create a non-persistent streaming response
+
+This creates a non-persistent streaming response using the Responses API.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseCreateParams.builder().input("Hi, how are you?").store(false).build(); // set store to true if you want to create a persistent streaming response
+
+var response = responseClient.createStreaming(params);
+```
+
+## Retrieve a response
+
+This allows the retrieval of a previously created persistent response by its id.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseRetrieveParams.builder().responseId("response-id").build();
+
+var response = responseClient.retrieve(params);
+```
+
+## Cancel a response
+
+This cancels the previously created background response by its id.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseCancelParams.builder().responseId("response-id").build();
+
+var response = responseClient.cancel(params);
+```
+
+## Delete a response
+
+This deletes a stored response by its id.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params = ResponseDeleteParams.builder().responseId("response-id").build();
+
+responseClient.delete(params);
+```
+
+## Useful features using endpoints mentioned above
+
+### Create a background response and poll
+
+This creates a background response and polls until it reaches a terminal status.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var createParams = ResponseCreateParams.builder().input("Hi, how are you?").store(true).background(true).build();
+var response = responseClient.create(createParams);
+
+var retrieveParams = ResponseRetrieveParams.builder().responseId(response.id()).build();
+
+// Poll until the response leaves QUEUED / IN_PROGRESS (i.e. reaches a terminal status)
+while (response.status().filter(ResponseStatus.QUEUED::equals).isPresent()
+    || response.status().filter(ResponseStatus.IN_PROGRESS::equals).isPresent()) {
+  Thread.sleep(2000);
+  response = responseClient.retrieve(retrieveParams);
+}
+```
+
+### Create a multi-turn follow-up response
+
+This creates a multi-turn follow-up response using a previous response id.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params =
+    ResponseCreateParams.builder()
+        .input("And what about tomorrow?")
+        .previousResponseId("previous-response-id")
+        .store(true)
+        .build();
+
+var response = responseClient.create(params);
+```
+
+### Create a stateless multi-turn response
+
+This creates a stateless multi-turn response by passing the full conversation history as input.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+// Client sends the full history on every call and nothing is persisted server-side due to store set to false
+List<ResponseInputItem> messages = List.of(/* prior messages + new user message */);
+
+var params = ResponseCreateParams.builder().inputOfResponse(messages).store(false).build();
+
+var response = responseClient.create(params);
+```
+
+### Create a response with tool calling
+
+This creates a response with a function tool that the model may call.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+// JSON Schema describing the function's arguments
+var parameters =
+    FunctionTool.Parameters.builder()
+        .putAdditionalProperty("type", JsonValue.from("object"))
+        .putAdditionalProperty(
+            "properties",
+            JsonValue.from(
+                Map.of(
+                    "location",
+                    Map.of("type", "string", "description", "City name, e.g. Berlin"),
+                    "unit",
+                    Map.of(
+                        "type", "string",
+                        "enum", List.of("celsius", "fahrenheit"),
+                        "description", "Temperature unit"))))
+        .putAdditionalProperty("required", JsonValue.from(List.of("location", "unit")))
+        .putAdditionalProperty("additionalProperties", JsonValue.from(false))
+        .build();
+
+var tool =
+    FunctionTool.builder()
+        .name("get_weather")
+        .description("Retrieves current weather for a given location.")
+        .parameters(parameters)
+        .strict(true)
+        .build();
+
+var params =
+    ResponseCreateParams.builder()
+        .input("What's the weather in Berlin?")
+        .addTool(tool)
+        .toolChoice(ToolChoiceOptions.AUTO) // let the model decide whether to invoke the tool
+        .store(false)
+        .build();
+
+var response = responseClient.create(params);
+```
+
+### Create a response with reasoning
+
+This creates a response with a specific reasoning effort level and a concise reasoning summary.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var reasoning =
+    Reasoning.builder().effort(ReasoningEffort.MEDIUM).summary(Reasoning.Summary.CONCISE).build();
+
+var params =
+    ResponseCreateParams.builder().input("Explain quantum entanglement.").reasoning(reasoning).store(false).build();
+
+var response = responseClient.create(params);
+```
+
+### Create a response with structured output
+
+This creates a response with structured JSON output conforming to a given schema.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+// JSON Schema the model's output must conform to
+var schema =
+    ResponseFormatTextJsonSchemaConfig.Schema.builder()
+        .putAdditionalProperty("type", JsonValue.from("object"))
+        .putAdditionalProperty(
+            "properties",
+            JsonValue.from(
+                Map.of("name", Map.of("type", "string"), "age", Map.of("type", "integer"))))
+        .putAdditionalProperty("required", JsonValue.from(List.of("name", "age")))
+        .putAdditionalProperty("additionalProperties", JsonValue.from(false))
+        .build();
+
+// setting strict to true guarantees the returned JSON conforms exactly to the schema
+var format =
+    ResponseFormatTextJsonSchemaConfig.builder().name("person").schema(schema).strict(true).build();
+
+var textConfig = ResponseTextConfig.builder().format(format).build();
+
+var params =
+    ResponseCreateParams.builder()
+        .input("Extract the person: John is 30 years old.")
+        .text(textConfig)
+        .store(false)
+        .build();
+
+var response = responseClient.create(params);
+```
+
+### Create a response with truncation
+
+This creates a response with truncation enabled so long conversations are automatically trimmed.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+var params =
+    ResponseCreateParams.builder()
+        .input("Can you elaborate on your last point?")
+        .previousResponseId("previous-response-id")
+        // AUTO drops older items from the middle if the conversation exceeds the context window
+        .truncation(ResponseCreateParams.Truncation.AUTO)
+        .store(true)
+        .build();
+
+var response = responseClient.create(params);
+```
+
+### Create a response with a prompt cache key
+
+This creates a response using a prompt cache key to maximize cache reuse across related requests.
+
+```java
+var responseClient = AiCoreOpenAiClient.forModel(GPT_5, "resource-group-name").responses();
+
+// Routes requests sharing this key to the same backend, improving prompt cache hit rate on shared prefixes
+var params =
+    ResponseCreateParams.builder()
+        .input("Hi, how are you?")
+        .promptCacheKey("my-cache-key")
+        .store(false)
+        .build();
+
+var response = responseClient.create(params);
+```

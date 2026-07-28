@@ -1,0 +1,86 @@
+---
+id: overview-cloud-sdk-for-ai-java
+title: Java SDK Overview
+description: The SAP Cloud SDK for AI Java significantly simplifies extending and developing an application with SAP Business Technology Platform
+---
+
+# Java SDK Overview
+
+
+[![Maven Central Version](https://img.shields.io/maven-central/v/com.sap.ai.sdk/core?color=dark-green)](https://central.sonatype.com/search?smo=true&namespace=com.sap.ai.sdk)
+
+## Quick Start
+
+For a quick start, check out the [getting started](getting-started) section.
+
+## Why the SAP Cloud SDK for AI (SAP AI SDK)?
+
+The SAP Cloud SDK for AI (SAP AI SDK) enables developers to seamlessly integrate AI capabilities, such as chat completion, into their Java-based business applications using SAP Generative AI Hub.
+Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications.
+The SAP AI SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
+
+## Feature Matrix
+
+Below you can find an overview of the currently available features and documentation.
+
+**Legend:** ✅ - Generally Available, ❌ - Not Available, 🔧 - WIP/Limited Support, ➖- Not Applicable
+
+| Feature                                   |                                               Orchestration                                                |                                    Orchestration with Spring AI                                    |                                                       OpenAI                                                        |                             OpenAI with Spring AI                              |
+| ----------------------------------------- | :--------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------: |
+| **Chat Completion**                       |     ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#chat-completion)      |    ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#chat-completion)     | ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#simple-chat-completion) |                                       ➖                                       |
+| **Templates**                             |        ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#templating)        |                                                 ❌                                                 |                                                         ❌                                                          |                                       ➖                                       |
+| **Content Moderation (Filtering): Azure** |        ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#filtering)         |       ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#filtering)        |                                                         ➖                                                          |                                       ➖                                       |
+| **Masking: DPI**                          |         ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#masking)          |        ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#masking)         |                                                         ➖                                                          |                                       ➖                                       |
+| **Grounding: Vector DB**                  |  ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#vector-data-repository)  |                                                 ❌                                                 |                                                         ❌                                                          |                                       ➖                                       |
+| **Grounding: _help.sap.com_**             | ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#grounding-via-helpsapcom) |                                                 ❌                                                 |                                                         ➖                                                          |                                       ➖                                       |
+| **Chat Memory / Message History**         |     ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#message-history)      |      ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#chat-memory)       |    ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#message-history)     |                                       ➖                                       |
+| **Stream Chat Completion**                |        ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#streaming)         | ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#stream-chat-completion) | ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#stream-chat-completion) |                                       ➖                                       |
+| **Multi-modal Messages**                  |       ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#using-images)       |                                                 ❌                                                 |                                                         ❌                                                          |                                       ➖                                       |
+| **Response Format**                       |     ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#response-format)      |    ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#response-format)     |                                                         ❌                                                          |                                       ➖                                       |
+| **Translation Service**                   |                                                     🔧                                                     |                                                 ❌                                                 |                                                         ➖                                                          |                                       ➖                                       |
+| **Chat Completion: Tool Call**            |                                                     🔧                                                     |      ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#tool-calling)      |  ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#executing-tool-calls)  |                                       ➖                                       |
+| **Embedding**                             |                                                     ❌                                                     |                                                 ❌                                                 |         ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/embedding#introduction)         | ✅ : [docs](https://sap.github.io/ai-sdk/docs/java/spring-ai/openai#embedding) |
+
+## General Requirements
+
+To use the SAP AI SDK in a Java application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
+
+- Java 17 or higher.
+- Access to an **SAP AI Core Service** instance.
+  - ⚠️ Note: To use generative AI models the `extended` or `sap-internal` service plan is required.
+
+Please refer to [this documentation on **how to connect the SAP AI SDK to AI Core**](connecting-to-ai-core).
+
+The following table lists the required versions, based on the latest release:
+
+| Dependency             | Minimum Version | Recommended Version |
+| ---------------------- | --------------- | ------------------- |
+| JDK                    | 17 (LTS)        | 21 (LTS)            |
+| SAP Cloud SDK          | 5.6.0           | latest              |
+| (optional) CAP Java    | 3.0.0           | latest              |
+| (optional) Spring Boot | 3.0             | latest              |
+| (optional) Spring AI   | 1.0.0           | latest              |
+
+See [an example `pom.xml` in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml).
+
+## Contribute, Support and Feedback
+
+This project is open to feature requests/suggestions and bug reports via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues).
+Contribution and feedback are encouraged and always welcome.
+For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-java/blob/main/CONTRIBUTING.md).
+
+## Security / Disclosure
+
+If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk-java/security/policy) on how to report it.
+Please do not create GitHub issues for security-related doubts or problems.
+
+## Code of Conduct
+
+We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone.
+By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
+
+## Licensing
+
+Copyright 2024 SAP SE or an SAP affiliate company and ai-sdk-java contributors.
+Please see our [LICENSE](https://github.com/SAP/ai-sdk-java/blob/main/LICENSE) for copyright and license information.
+Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk-java).
