@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "paths": {
+      "@langchain/core": ["../node_modules/@langchain/core/dist/index.d.ts"],
+      "@langchain/core/*": ["../node_modules/@langchain/core/dist/*.d.ts"],
+      "@langchain/langgraph": ["../node_modules/@langchain/langgraph/dist/index.d.ts"],
+      "@sap-ai-sdk/openai": ["../node_modules/@sap-ai-sdk/openai/dist/index.d.ts"],
+      "@sap-ai-sdk/orchestration": ["../node_modules/@sap-ai-sdk/orchestration/dist/index.d.ts"],
+      "@sap-ai-sdk/foundation-models": ["../node_modules/@sap-ai-sdk/foundation-models/dist/index.d.ts"],
+      "@sap-ai-sdk/core": ["../node_modules/@sap-ai-sdk/core/dist/index.d.ts"],
+      "@sap-ai-sdk/ai-api": ["../node_modules/@sap-ai-sdk/ai-api/dist/index.d.ts"],
+      "@sap-ai-sdk/document-grounding": ["../node_modules/@sap-ai-sdk/document-grounding/dist/index.d.ts"],
+      "@sap-ai-sdk/langchain": ["../node_modules/@sap-ai-sdk/langchain/dist/index.d.ts"],
+      "@sap-ai-sdk/llm-batch": ["../node_modules/@sap-ai-sdk/llm-batch/dist/index.d.ts"],
+      "@sap-ai-sdk/rpt": ["../node_modules/@sap-ai-sdk/rpt/dist/index.d.ts"],
+      "@sap-ai-sdk/prompt-registry": ["../node_modules/@sap-ai-sdk/prompt-registry/dist/index.d.ts"],
+      "@sap-cloud-sdk/resilience": ["../node_modules/@sap-cloud-sdk/resilience/dist/index.d.ts"],
+      "@sap-cloud-sdk/http-client": ["../node_modules/@sap-cloud-sdk/http-client/dist/index.d.ts"],
+      "langchain": ["../node_modules/langchain/dist/index.d.ts"],
+      "openai": ["../node_modules/openai/index.d.ts"],
+      "openai/*": ["../node_modules/openai/*.d.ts"],
+      "zod": ["../node_modules/zod/index.d.ts"]
+    }
+  }
+}

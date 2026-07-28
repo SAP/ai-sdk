@@ -1,0 +1,419 @@
+---
+id: openai
+title: OpenAI Integration
+description: How to integrate Azure OpenAI chat and embedding clients from SAP Cloud SDK for AI into LangChain.
+---
+
+# OpenAI Integration
+
+
+The `@sap-ai-sdk/langchain` packages provides `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` clients for LangChain integration with Azure OpenAI.
+
+## Client Initialization
+
+Both clients reuse the Azure OpenAI clients from `@sap-ai-sdk/foundation-models` and implement [LangChain's interface](https://docs.langchain.com/oss/javascript/langchain/models).
+Therefore, the client initialization combines the configuration of the foundation model and LangChain options.
+
+Similar to the foundation model clients, the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` LangChain clients can be initialized with model name and, by default, the latest model version.
+
+```ts twoslash
+import {
+  AzureOpenAiChatClient,
+  AzureOpenAiEmbeddingClient
+} from '@sap-ai-sdk/langchain';
+
+const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+const embeddingClient = new AzureOpenAiEmbeddingClient({
+  modelName: 'text-embedding-3-small'
+});
+```
+
+Optionally, you can also specify model version, resource group and other parameters such as `max_tokens`, `temperature` and more.
+
+:::info
+Providing a deployment ID is currently not supported.
+:::
+
+### Custom Destination
+
+When initializing the client, it is possible to provide a custom destination for your SAP AI Core instance.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+// ---cut---
+const chatClient = new AzureOpenAiChatClient(
+  {
+    modelName: 'gpt-5'
+  },
+  {
+    destinationName: 'my-destination'
+  }
+);
+```
+
+By default, the fetched destination is cached.
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
+
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
+
+## Chat Completion
+
+The `AzureOpenAiChatClient` allows interaction with Azure OpenAI chat models on SAP AI Core.
+Pass a prompt to invoke the client.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+// ---cut---
+const response = await chatClient.invoke("What's the capital of France?");
+```
+
+Below is an advanced example demonstrating the usage of templating and output parsing.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+import { StringOutputParser } from '@langchain/core/output_parsers';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+
+// Initialize the client
+const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+
+// Create a prompt template
+const promptTemplate = ChatPromptTemplate.fromMessages([
+  ['system', 'Answer the following in {language}:'],
+  ['user', '{text}']
+]);
+
+// Create an output parser
+const parser = new StringOutputParser();
+
+// Chain together template, client and parser
+const llmChain = promptTemplate.pipe(chatClient).pipe(parser);
+
+// Invoke the chain
+const response = await llmChain.invoke({
+  language: 'german',
+  text: 'What is the capital of France?'
+});
+```
+
+### Streaming
+
+The client supports streaming responses for chat completion requests.
+Use the `stream()` method to receive a stream of chunk responses from the model.
+
+By default, the last chunk contains the finish reason and token usage information.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+import type { AIMessageChunk } from '@langchain/core/messages';
+
+const client = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+// ---cut---
+const stream = await client.stream([
+  {
+    role: 'user',
+    content:
+      'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+  }
+]);
+
+let finalResult: AIMessageChunk | undefined;
+
+for await (const chunk of stream) {
+  console.log(chunk.content);
+  finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+}
+
+console.log(finalResult?.response_metadata?.finish_reason);
+
+console.log(finalResult?.usage_metadata);
+/*
+  { input_tokens: 20, output_tokens: 126, total_tokens: 146 }
+*/
+
+// Token usage is also available in `response_metadata` property
+console.log(finalResult?.response_metadata?.token_usage);
+/*
+  {
+    completion_tokens: 126,
+    completion_tokens_details: {
+      accepted_prediction_tokens: 0,
+      audio_tokens: 0,
+      reasoning_tokens: 0,
+      rejected_prediction_tokens: 0
+    },
+    prompt_tokens: 20,
+    prompt_tokens_details: { audio_tokens: 0, cached_tokens: 0 },
+    total_tokens: 146
+  }
+*/
+```
+
+#### Streaming with Abort Controller
+
+The client supports aborting streaming requests using the `AbortController` API.
+In case of an error, SAP Cloud SDK for AI will automatically close the stream.
+It can also be manually aborted if an `AbortSignal` object associated with an `AbortController` was provided when calling the `stream()` method.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+// ---cut---
+const client = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+const controller = new AbortController();
+const response = await client.stream(
+  [
+    {
+      role: 'user',
+      content:
+        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+    }
+  ],
+  { signal: controller.signal }
+);
+
+// Abort the streaming request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+for await (const chunk of response) {
+  console.log(chunk.content);
+}
+```
+
+In this example, streaming request will be aborted after one second.
+Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+#### Streaming Configuration
+
+By default, the `stream()` method supports streaming, while the `invoke()` method uses non-streaming requests.
+
+##### Auto-Streaming
+
+Set the `streaming` option to `true` to enable automatic streaming for all requests made with the `invoke()` method:
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+declare const messageHistory: Parameters<AzureOpenAiChatClient['invoke']>[0];
+// ---cut---
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-5',
+  streaming: true
+});
+
+const response = await client.invoke(messageHistory);
+```
+
+With auto-streaming enabled, the `invoke()` method uses streaming to retrieve responses, returning the complete result upon completion.
+This option is automatically enabled by LangGraph when a LangGraph-based agent is used with a [streaming mode](https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes) that can output partial responses, such as "updates".
+
+##### Disabling Streaming
+
+Set the `disableStreaming` option to turn off streaming entirely.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+declare const messageHistory: Parameters<AzureOpenAiChatClient['stream']>[0];
+// ---cut---
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-5',
+  disableStreaming: true
+});
+
+const response = await client.stream(messageHistory);
+```
+
+When streaming is disabled, both the `invoke()` and `stream()` methods use non-streaming requests internally.
+The `stream()` method will still return an iterable, but it will yield a single chunk containing the complete response.
+
+### Reasoning Models
+
+When working with reasoning models (such as `gpt-o3` or `gpt-5-mini`), you need to specify the `max_tokens` parameter during client initialization.
+The SDK internally maps this to `max_completion_tokens`, which is required for reasoning models.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+// ---cut---
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-5-mini',
+  max_tokens: 1000
+});
+
+const response = await client.invoke('What is the capital of France?', {
+  requestConfig: {
+    params: {
+      'api-version': '2024-12-01-preview'
+    }
+  }
+});
+```
+
+:::info
+Reasoning models require a specific API version.
+Ensure you use `2024-12-01-preview` or a later version that supports reasoning models.
+:::
+
+### Tool Calling
+
+LangChain offers a unified way to connect tools to language models.
+Use the `bindTools()` method to define the set of tools a model can access.
+For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling).
+For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents#define-tools).
+
+### Structured Output
+
+It is often useful to have a model return output that matches a specific schema.
+This schema can be defined using either a [Zod](https://zod.dev/) schema or an OpenAI-style JSON schema.
+We recommend using Zod v4 for full compatibility with this package.
+If you're upgrading from an earlier version, refer to the [Zod v4 migration guide](https://zod.dev/v4/changelog) and pay attention to breaking changes like the switch from `describe('...')` to `meta({ description: '...' })`.
+For more details on structured output, refer to the [official LangChain documentation on structured output](https://docs.langchain.com/oss/javascript/langchain/models#structured-outputs).
+Below is an example using `json_schema` response type and passing in a Zod schema.
+
+```ts twoslash
+import * as z from 'zod';
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+
+const llm = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+
+const joke = z.object({
+  setup: z.string().meta({ description: 'The setup of the joke' }),
+  punchline: z.string().meta({ description: 'The punchline to the joke' }),
+  rating: z
+    .number()
+    .meta({ description: 'How funny the joke is, from 1 to 10' })
+});
+
+const structuredLlm = llm.withStructuredOutput(joke, {
+  name: 'joke',
+  strict: true
+});
+
+const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
+```
+
+### Basic Agent Usage
+
+The `AzureOpenAiChatClient` can be used with LangChain's agent framework through the `createAgent()` function.
+
+:::info
+In LangChain v1, the function `createReactAgent` was replaced by `createAgent`.
+:::
+
+Create an agent by providing the Azure OpenAI chat client as the model, along with any tools you want the agent to use:
+
+<!-- vale off -->
+
+```ts twoslash
+import { createAgent } from 'langchain';
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+
+const model = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+
+const agent = createAgent({
+  model,
+  tools: []
+});
+
+const agentInputs = {
+  messages: [{ role: 'user', content: 'What is SAP?' }]
+};
+
+const result = await agent.invoke(agentInputs);
+```
+
+<!-- vale on -->
+
+## Embedding
+
+The `AzureOpenAiEmbeddingClient` allows embedding text or document chunks (represented as arrays of strings).
+While the embedding client can be used standalone, it is typically combined with other LangChain utilities, such as a text splitter for preprocessing and a vector store for storing and retrieving relevant embeddings.
+For a complete example of how to implement RAG with the LangChain client, refer to the [sample code](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-azure-openai.ts).
+
+### Embed Text
+
+```ts twoslash
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/langchain';
+const embeddingClient = new AzureOpenAiEmbeddingClient({
+  modelName: 'text-embedding-3-small'
+});
+// ---cut---
+const embeddedText = await embeddingClient.embedQuery(
+  'Paris is the capital of France.'
+);
+```
+
+### Embed Document Chunks
+
+```ts twoslash
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/langchain';
+const embeddingClient = new AzureOpenAiEmbeddingClient({
+  modelName: 'text-embedding-3-small'
+});
+// ---cut---
+const embeddedDocuments = await embeddingClient.embedDocuments([
+  'Page 1: Paris is the capital of France.',
+  'Page 2: It is a beautiful city.'
+]);
+```
+
+### Preprocess, embed, and store documents
+
+```ts
+// Create a text splitter and split the document
+const textSplitter = new RecursiveCharacterTextSplitter({
+  chunkSize: 2000,
+  chunkOverlap: 200
+});
+const splits = await textSplitter.splitDocuments(docs);
+
+// Initialize the embedding client
+const embeddingClient = new AzureOpenAiEmbeddingClient({
+  modelName: 'text-embedding-3-small'
+});
+
+// Create a vector store from the document
+const vectorStore = await MemoryVectorStore.fromDocuments(
+  splits,
+  embeddingClient
+);
+
+// Create a retriever for the vector store
+const retriever = vectorStore.asRetriever();
+```
+
+## Resilience
+
+Use LangChain options such as `maxRetries` and `timeout` to provide resilience.
+
+:::info
+When using LangChain clients, configure resilience only through LangChain options.
+Do not apply additional SAP Cloud SDK resilience middleware, as LangChain already provides built-in retry mechanisms.
+:::
+
+### Retry
+
+By default, LangChain client retries up to six times with exponential delay.
+To modify this behavior, set the `maxRetries` option during the client initialization.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+// ---cut---
+const client = new AzureOpenAiChatClient({
+  modelName: 'gpt-5',
+  maxRetries: 0
+});
+```
+
+### Timeout
+
+By default, no timeout is set in the client.
+To limit the maximum duration for the entire request including retries, specify a timeout in milliseconds when calling the `invoke` method.
+
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+const client = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+declare const messageHistory: Parameters<AzureOpenAiChatClient['invoke']>[0];
+// ---cut---
+const response = await client.invoke(messageHistory, { timeout: 10000 });
+```

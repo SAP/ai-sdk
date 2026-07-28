@@ -1,0 +1,328 @@
+---
+id: release-notes
+title: Release Notes
+description: Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations.
+---
+
+# Release Notes
+
+
+<!-- vale off -->
+<!-- This line is used for our release notes automation -->
+
+## 2.13.0 - July 14, 2026
+
+### New Features
+
+- [core] Add `toReadableStream()` method to `SseStream`.
+  The new method converts the asynchronous iterable stream to a pull-based `ReadableStream` of newline-delimited JSON, enabling composable transformations via the Web Streams API `pipeThrough()` pattern with native flow control. ([6542a2a](https://github.com/SAP/ai-sdk-js/commit/6542a2a3a6740277b61c820c8f70a37b71c4e75a))
+- [langchain] Add `cache_control` call option to the LangChain orchestration client.
+  When the `cache_control` option is set, a cache breakpoint is automatically applied to the request. ([fafd99e](https://github.com/SAP/ai-sdk-js/commit/fafd99e43f8bc1879a896862eccb93cf8827a77e))
+- [langchain] Expose `cached_tokens` and `cache_creation_tokens` in `usage_metadata.input_token_details` for LangChain orchestration responses. ([fafd99e](https://github.com/SAP/ai-sdk-js/commit/fafd99e43f8bc1879a896862eccb93cf8827a77e))
+- [openai] Allow setting a model configuration per request. ([fea1c3f](https://github.com/SAP/ai-sdk-js/commit/fea1c3ff75a87621e800ae7bdae3d51f07dacbb7))
+
+### Improvements
+
+- [core] Remove deprecated models `mistralai--mistral-small-instruct` (retirement date: not earlier than 2026-09-30) — use `mistralai--mistral-small` instead, `amazon--nova-premier` (retirement date: 2026-09-10) — use `amazon--nova-lite` (version: 2) instead, `anthropic--claude-3-haiku` (retirement date: 2026-09-10) — use `anthropic--claude-4.5-haiku` instead and `anthropic--claude-4-sonnet` (retirement date: 2026-10-14) — use `anthropic--claude-4.5-sonnet` instead. ([11baf52](https://github.com/SAP/ai-sdk-js/commit/11baf52487ecdb14062223a74a3f94938def5910))
+- [core] Added `gpt-5.1` to the available model list. ([cb8ffe7](https://github.com/SAP/ai-sdk-js/commit/cb8ffe7f133ea15aba2ef01baf4d64d0bba0d59f))
+- [core] Remove deprecated models `gpt-4.1` (retirement date: 2026-10-14), `gpt-4.1-mini` (retirement date: 2026-10-14), `o3` (retirement date: 2026-10-16) and `o4-mini` (retirement date: 2026-10-16). ([a8c9b29](https://github.com/SAP/ai-sdk-js/commit/a8c9b291a09ac812f24007b6a5f4139d8a3ef71b))
+
+## 2.12.0 - June 24, 2026
+
+### New Features
+
+- [core] Add `AzureOpenAiResponsesModel` type for Azure OpenAI models that exclusively support the Responses API. ([0f10482](https://github.com/SAP/ai-sdk-js/commit/0f104825fb37f3518acb8cf4389b69e48e973182))
+- [document-grounding, prompt-registry] Update document grounding specification. ([d984914](https://github.com/SAP/ai-sdk-js/commit/d984914f17767a458f1c2b4dae2aa6a8837dee62))
+- [foundation-models] Add `createBatchInput()` and `parseBatchOutput()` helpers for building and parsing LLM batch requests and responses. ([0b41bea](https://github.com/SAP/ai-sdk-js/commit/0b41bea8cb572fdb8d1ea849bd31f87aef3341ea))
+- [llm-batch] Add new experimental `@sap-ai-sdk/llm-batch` package for asynchronous batch processing of LLM requests via SAP AI Core LLM Batch Service. ([0b41bea](https://github.com/SAP/ai-sdk-js/commit/0b41bea8cb572fdb8d1ea849bd31f87aef3341ea))
+- [openai] Add new experimental `@sap-ai-sdk/openai` package with a SAP AI Core-aware OpenAI client.
+  The client wraps the OpenAI SDK and handles authentication and deployment resolution against SAP AI Core. ([0f10482](https://github.com/SAP/ai-sdk-js/commit/0f104825fb37f3518acb8cf4389b69e48e973182))
+
+### Fixed Issues
+
+- [core] Improve error message when server sends a non-JSON response during streaming. ([2faf4a8](https://github.com/SAP/ai-sdk-js/commit/2faf4a8e0211f5d356e5aa0164c739c7160a212f))
+- [langchain] Fixed duplicate tools accumulating in LangChain orchestration client in some configurations on repeated invocations. ([311dc08](https://github.com/SAP/ai-sdk-js/commit/311dc08e45ee7f7f897a9dc227fb22d078e28356))
+
+### Improvements
+
+- [core] Added `gpt-5.5` to the available model list.
+  Remove retired model `anthropic--claude-4-opus` — use `anthropic--claude-4.7-opus` instead.
+  Remove deprecated model `o3-mini` (retirement date: 2026-08-02). ([e944aa1](https://github.com/SAP/ai-sdk-js/commit/e944aa1083c56d04bdef210870641b35ab17794c))
+
+## 2.11.0 - May 26, 2026
+
+### New Features
+
+- [langchain] Support orchestration prompt module fallbacks. (dc2f5b1)
+- [orchestration] Update orchestration specification to v0.131.3 (f72bb58)
+
+### Fixed Issues
+
+- [orchestration] Route messages to `messages_history` when using an orchestration config reference or prompt template reference. (cbcefb9)
+- [orchestration] Disallow providing both orchestration config reference and config object at the same time. (7db7237)
+
+### Improvements
+
+- [core] Add `gpt-5.4`, `gpt-5.4-nano` to the available model list.
+  Remove deprecated model `o1` (retirement date: 2026-06-18). (c8c0e41)
+- [core] Added `mistralai--mistral-small`, `anthropic--claude-4.7-opus`, `gemini-3.1-flash-lite` to the available model list. (75bb9a9)
+
+## 2.10.0 - April 19, 2026
+
+### Compatibility Notes
+
+- [document-grounding] `DocumentKeyValueListPair`, `RetrievalDocumentKeyValueListPair`, `VectorDocumentKeyValueListPair`: the `matchMode` property type was narrowed from an open union (`'ANY' | 'ALL' | any`) to the strict `FilterMatchModeEnum` (`'ANY' | 'ALL'`). (029f091)
+- [document-grounding] `CollectionPendingResponse`: fields `Location` and `status` were removed.
+  A new `monitorURL` property was added instead. (029f091)
+- [document-grounding] `GoogleDrivePipelineCreateRequest`: the `configuration` property is now required (was optional).
+  Code constructing this request without `configuration` must be updated to provide it. (94546e6)
+- [document-grounding] `GoogleDriveFolderDetail` type was removed.
+  Code referencing `GoogleDriveFolderDetail` must be updated to use `GoogleDriveResourceDetail` instead. (94546e6)
+- [document-grounding] `DataRepositoryType`, `RetrievalSearchSelectOptionEnum`, `VectorSearchSelectOptionEnum`: previously open (`| any`) unions are now strictly typed.
+  Only the specified string literals are accepted. (029f091)
+- [document-grounding] `S3PipelineMinimalResponse`, `SFTPPipelineMinimalResponse`: the `configuration` property is now optional. (029f091)
+- [document-grounding] `GoogleDriveFolder` type was removed and replaced by `GoogleDriveResourceDetail`.
+  The properties `id`, `driveId`, and `driverType` were replaced by `resourceType` and `resourceId`.
+  Code referencing `GoogleDriveFolder` or its properties must be updated to use `GoogleDriveResourceDetail` with the new property names. (94546e6)
+- [document-grounding] `TextOnlyBaseChunk`: new required field `id: string` added and `metadata` is now optional. (029f091)
+- [document-grounding] `GoogleDriveConfig`: the `folder` property was removed and replaced by a new required `resourceType: 'SHARED_FOLDER' | 'SHARED_DRIVE'` property, plus optional `resourceId` and `includePaths` properties.
+  Code constructing `GoogleDriveConfig` objects must be updated to use the new shape. (94546e6)
+- [document-grounding] `BaseDocument` / `DocumentInput`: `chunks` type changed from `TextOnlyBaseChunk[]` to `TextOnlyBaseChunkCreate[]`.
+  The `metadata` property is now optional. (029f091)
+- [foundation-models] Support for constructing an `AzureOpenAiChatCompletionStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release.
+  Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter to allow reading from raw HTTP response. (a722171)
+- [prompt-registry] `listPromptTemplateHistory()`: the `includeSpec` query parameter has been removed. (dce18df)
+- [prompt-registry] The `include_spec` parameter is deprecated in favor of `includeSpec` and `resolve_template_ref` is deprecated in favor of `resolveTemplateRef`. (cc9e80c)
+- [prompt-registry] `PromptTemplateSubstitutionRequest` now requires the `inputParams` property. (cc9e80c)
+
+### New Features
+
+- [document-grounding] Update document grounding specification. (029f091)
+- [foundation-models] Add `getRequestId()` method to `AzureOpenAiChatCompletionResponse`, `AzureOpenAiChatCompletionStreamResponse` and `AzureOpenAiEmbeddingResponse`.
+  The new method retrieves the request ID from the `x-aicore-request-id` response header, useful for debugging and tracking requests. (a722171)
+- [foundation-models] Add `rawResponse` property to `AzureOpenAiChatCompletionStreamResponse`.
+  The new property exposes the raw HTTP response for advanced use cases such as accessing response headers. (a722171)
+- [orchestration] Update orchestration specification to 0.115.19.
+  Multiple embedding output formats are not yet supported in the orchestration embedding client. (cf767a9)
+- [prompt-registry] Update prompt registry specification. (cc9e80c)
+
+### Improvements
+
+- [core] Remove deprecated models `amazon--titan-embed-image` and `anthropic--claude-4.5-opus`. (8cb466a)
+
+## 2.9.0 - March 20, 2026
+
+### New Features
+
+- [orchestration] Add `getCitations()` method to retrieve source citations from models like Perplexity Sonar. (8de0013)
+
+### Improvements
+
+- [core] Add `gpt-5.2`, `anthropic--claude-4.5-opus`, `anthropic--claude-4.6-opus`, `anthropic--claude-4.6-sonnet` and `amazon-titan-embed-image` to the available model list.
+  Removed deprecated `gpt-4o` model. (cd3d8ed)
+- [orchestration] Support file input for user messages.
+  File inputs have a `type` of `file` and include a `file_data` field with a URL such as a HTTP URL or a data URL.
+  Local files must be provided as `data:MEDIATYPE;base64,DATA` with a non-empty media type and valid base64 content.
+  Availability of different file types depends on the capabilities of the underlying model and tools.
+  GPT-models do not support file inputs with the orchestration API at this time. (b822da9)
+- [rpt] Align parquet endpoint types with the RPT API types. (08c6137)
+
+## 2.8.0 - March 03, 2026
+
+### New Features
+
+- [orchestration] Support streaming with orchestration prompt module fallback. (3d12d4c)
+- [orchestration] Support orchestration prompt module fallback for non-streaming requests
+  When constructing an `OrchestrationClient` it is now possible to provide a list of module configurations to support module fallback. (5501e7c)
+- [rpt] Add generic HTTP request configuration support.
+  The `predictWithSchema()` and `predictWithoutSchema()` methods now accept an optional `customRequest` parameter of type `RptRequestOptions`, allowing configuration of custom HTTP request options such as headers, timeout, and middlewares. (e0ef84c)
+- [rpt] Add predict request compression support.
+  All requests with a body of 1024 bytes or larger will be automatically compressed with `gzip` by default, unless configured otherwise.
+  Compression configuration is available via the `requestCompression` property on the `RptClientConfig` object. (e0ef84c)
+
+## 2.7.0 - February 16, 2026
+
+### Compatibility Notes
+
+- [ai-api] Extract functionality around execution scheduling from the `ExecutionApi` to `ExecutionScheduleApi`. (8616d5e)
+- [ai-api] Remove the `BckndEvent` type. (8616d5e)
+- [ai-api] Split the `BckndArgoCDApplicationData` into `BckndArgoCDApplicationDataResponse` and `BckndArgoCDApplicationDataRequest`. (8616d5e)
+- [core] Remove deprecated and retired models from model list.
+  Remove retired model `anthropic--claude-3-sonnet` from model list, use suggested replacement `anthropic--claude-4.5-sonnet` instead.
+  Remove retired model `anthropic--claude-3-opus` from model list.
+  Remove deprecated model `gpt-4o-mini`, use suggested replacement `gpt-5-mini` instead.
+  Remove deprecated models `anthropic--claude-3.5-sonnet` and `anthropic--claude-3.7-sonnet`. (b12626b)
+- [orchestration] Support for constructing an `OrchestrationStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release.
+  Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter to allow reading from raw HTTP response. (6b49479)
+
+### New Features
+
+- [core] Advertise AbortSignal support for HTTP request cancellation.
+  This change adds typings, documentation and examples for using AbortSignal with the HTTP client to enable request cancellation. (b11b00c)
+- [langchain] Support the `withStructuredOutput()` method in the Orchestration LangChain client. (4fce347)
+- [orchestration] Add `rawResponse` property to `OrchestrationStreamResponse`.
+  The new property exposes the raw HTTP response from the orchestration service for advanced use cases. (6b49479)
+- [orchestration] Add `getRequestId()` method to `OrchestrationResponse`, `OrchestrationStreamResponse` and `OrchestrationEmbeddingResponse`.
+  The new method allows retrieving the request ID from the orchestration service responses, which can be useful for debugging and tracking requests. (6b49479)
+
+### Improvements
+
+- [core] Combine 'ai-client-type' headers if a custom 'ai-client-type' header is set. (56e9c3f)
+- [rpt] Restrict the `task_type` property in the `PredictionConfig` type. (12b4129)
+
+## 2.6.0 - February 04, 2026
+
+### New Features
+
+- [rpt] Release Beta version of a client for the SAP-RPT-1 model. (790ad05)
+
+### Fixed Issues
+
+- [orchestration] Export `isConfigReference()` method as a value instead of type-only export.
+  This function can now be imported and used at runtime to check if a configuration is an orchestration configuration reference type. (f3b6dc5)
+
+## 2.5.0 - January 13, 2026
+
+### Compatibility Notes
+
+- [langchain] The `@langchain/core` package is now a peer dependency.
+  You now have to install the `@langchain/core` package as a direct dependency of your project. (5b88f6f)
+
+### New Features
+
+- [langchain] Support disabling streaming completely via the langchain option `disableStreaming`. (b91e0a7)
+- [langchain] Support auto-streaming via the langchain option `streaming`. When enabled (e.g., transparently by LangGraph), responses are automatically streamed in `invoke()` calls. (b91e0a7)
+- [orchestration] Add support for orchestration configuration references in the orchestration client. (2f19a40)
+
+### Fixed Issues
+
+- [langchain] Pin `@langchain/core` to v1.1.8 to avoid a regression. (9ff7cec)
+
+### Improvements
+
+- [langchain] Move the `@langchain/core` package from dependencies to peer dependencies.
+  This reduces the chance of version incompatibilities between langchain-related packages. (5b88f6f)
+
+## 2.4.0 - December 23, 2025
+
+### Compatibility Notes
+
+- [prompt-registry] In the prompt-registry client schema, the `Template` type was renamed to `PromptTemplate`. (a3cbc6e)
+
+### New Features
+
+- [orchestration] Added support for `applyTo` and `translateMessagesHistory` in order to enable selective input translation and automatic inference of target language for output translation parameters. (aa097da)
+- [prompt-registry] Update prompt-registry specification adding support for resource group scoped prompt templates. (a3cbc6e)
+
+### Improvements
+
+- [core] Added `anthropic--claude-4.5-sonnet` , `anthropic--claude-4.5-haiku` , `gemini-2.5-flash-lite` and `sap-abap-1` to the available model list.
+  Removed deprecated models `gemini-2.0-flash` and `gemini-2.0-flash-lite` scheduled for retirement. (2e1d2c2)
+
+## 2.3.0 - November 27, 2025
+
+### Compatibility Notes
+
+- [langchain, orchestration, prompt-registry] `zod` was upgraded to v4 (7c9605d)
+
+### New Features
+
+- [langchain] Bump langchain to v1 (7c9605d)
+- [orchestration] Added support for `protected_material_code` property to `buildAzureContentSafetyFilter()` function for output filter configuration to allow detecting protected code content from known github repositories. (485e21b)
+
+## 2.2.0 - November 17, 2025
+
+### Compatibility Notes
+
+- [document-grounding] `MSSharePointConfigurationGetResponse` now requires the `sharePoint` property (e2c34f3)
+- [document-grounding] `CommonConfiguration` was replaced with backend-specific types: `SFTPConfiguration` and `S3Configuration` (e2c34f3)
+- [document-grounding] Some types have been renamed to include endpoint-specific prefixes.
+  Some instances of the prior names may still exist:
+  - `SearchResults` was renamed to `VectorSearchResults` / `RetrievalSearchResults`
+  - `Chunk` was renamed to `VectorChunk` / `RetrievalChunk`
+  - `SearchFilter` was renamed to `VectorSearchFilter`
+  - `KeyValueListPair` was renamed to `VectorKeyValueListPair` / `RetrievalKeyValueListPair`
+  - `DocumentKeyValueListPair` was renamed to `VectorDocumentKeyValueListPair` / `RetrievalDocumentKeyValueListPair`
+  - `SearchConfiguration` was renamed to `VectorSearchConfiguration` / `RetrievalSearchConfiguration`
+  - `SearchSelectOptionEnum` was renamed to `VectorSearchSelectOptionEnum` / `RetrievalSearchSelectOptionEnum`
+  - `PerFilterSearchResult` was renamed to `RetrievalPerFilterSearchResult`
+  - `PerFilterSearchError` was renamed to `RetrievalPerFilterSearchError`
+  - `DataRepositorySearchResult` was renamed to `RetrievalDataRepositorySearchResult`
+  - `SearchInput` was renamed to `RetrievalSearchInput` (e2c34f3)
+- [langchain] Remove structured ouput handling for deprecated gpt-4 & gpt-3 models (6100bca)
+
+### New Features
+
+- [ai-api] Update `ai-api` package with the new specification (2509b). (58464e9)
+- [core, orchestration] Introduce orchestration embedding client for consuming embedding feature of the orchestration service. (347eac1)
+- [document-grounding] Update document-grounding specification (e2c34f3)
+
+### Fixed Issues
+
+- [core] Replace active logging during streaming with error throwing to avoid logging the response payload. (5225275)
+
+### Improvements
+
+- [core, orchestration] Add `cohere--command-a-reasoning`, `mistralai--mistral-medium-instruct` and perplexity-ai `sonar` and `sonar-pro` to model list (6100bca)
+
+## 2.1.0 - October 17, 2025
+
+### Fixed Issues
+
+- [orchestration] Fix JSDoc example of `buildAzureContentSafetyFilter()` function. (0cf7d80)
+
+### Improvements
+
+- [core] Remove `alephalpha-pharia-1-7b-control` and `deepseek-ai--deepseek-r1` from available model list. (0cf7d80)
+
+## 2.0.0 - September 22, 2025
+
+### Compatibility Notes
+
+- [foundation-models, orchestration] Change stream method parameter from `AbortController` to `AbortSignal`.
+  The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter in both Azure OpenAI and Orchestration clients. (4c00c27)
+- [foundation-models, orchestration] Response object `data` property is renamed to `_data`.
+  Use getter methods like `getContent()`, `getTokenUsage()`, `getAssistantMessage()` instead of direct data access. (5c52cb6)
+- [foundation-models] Move generated types to internal exports while keeping frequently used types in main exports.
+  - Generated types are no longer exported from `@sap-ai-sdk/foundation-models` and must be imported from `@sap-ai-sdk/foundation-models/internal.js` instead.
+  - Frequently used types (`AzureOpenAiChatCompletionTool`, `AzureOpenAiFunctionObject`, `AzureOpenAiChatCompletionRequestMessage`, `AzureOpenAiChatCompletionRequestSystemMessage`, `AzureOpenAiChatCompletionRequestUserMessage`, `AzureOpenAiChatCompletionRequestAssistantMessage`, `AzureOpenAiChatCompletionRequestToolMessage`) remain available from main package exports.
+  - Add new type `AzureOpenAiChatCompletionParameters` to replace `AzureOpenAiCreateChatCompletionRequest` which is no longer exported publicly. (5c52cb6)
+- [langchain] Major breaking changes for LangChain orchestration v2:
+  - Update LangChain orchestration configuration structure to use `promptTemplating` instead of separate `llm` and `templating` properties.
+  - Replace `llm.model_name` with `promptTemplating.model.name` and `llm.model_params` with `promptTemplating.model.params`.
+  - The `templating.template` property is now `promptTemplating.prompt.template`.
+  - Rename `inputParams` parameter to `placeholderValues` in LangChain orchestration client methods.
+  - Update message response property names from `module_results` to `intermediate_results` in additional kwargs. (86e6370)
+- [langchain] Update imports to use new API facade from foundation-models package.
+  - Some generated types now need to be imported from `@sap-ai-sdk/foundation-models/internal.js` instead of `@sap-ai-sdk/foundation-models`.
+  - Update to use new `AzureOpenAiChatCompletionParameters` type to replace `AzureOpenAiCreateChatCompletionRequest` which is no longer exported publicly. (5c52cb6)
+- [orchestration] `buildTranslationConfig()` function now requires `type` parameter to distinguish between `input` and `output` translation configuration. (740ba78)
+- [orchestration] `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()`. It now requires a type parameter to distinguish between `input` and `output` filter configurations, and accepts filter categories as an array. (740ba78)
+- [orchestration] Move generated types to internal exports while keeping frequently used types in main exports.
+  - Generated types are no longer exported from `@sap-ai-sdk/orchestration` and must be imported from `@sap-ai-sdk/orchestration/internal.js` instead.
+  - Frequently used types (`ChatMessage`, `SystemChatMessage`, `UserChatMessage`, `AssistantChatMessage`, `ToolChatMessage`, `DeveloperChatMessage`, `ChatCompletionTool`, `FunctionObject`) remain available from main package exports. (5c52cb6)
+- [orchestration] `buildAzureContentSafetyFilter()` function now requires `type` parameter to distinguish between `input` and `output` filter configuration. (997e8ec)
+- [orchestration] Major breaking changes for orchestration v2:
+  - Consolidate `llm` and `templating` modules into a single `promptTemplating` module.
+  - The `llm.model_name` property is now `promptTemplating.model.name` and `llm.model_params` is now `promptTemplating.model.params`.
+  - The `templating.template` property is now `promptTemplating.prompt.template`.
+  - Rename `inputParams` parameter to `placeholderValues` in orchestration client methods.
+  - Update response property names from `orchestration_result` to `final_result` and `module_results` to `intermediate_results`.
+  - Replace top-level `stream` property with `streamOptions.enabled` and update streaming module options from `llm` to `promptTemplating`.
+  - Update grounding configuration to use `placeholders.input` and `placeholders.output` instead of separate `input_params` and `output_param`.
+  - Update Azure content filter property names to lowercase with underscores: `Hate` to `hate`, `SelfHarm` to `self_harm`, `Sexual` to `sexual`, and `Violence` to `violence`.
+  - Remove deprecated `buildAzureContentFilter()` function and use `buildAzureContentSafetyFilter()` instead. (86e6370)
+
+### New Features
+
+- [ai-api] Add `resolveDeploymentUrl()` function to resolve the deployment URL that matches the given criteria. (14745de)
+- [foundation-models] Add `getTokenUsage()`, `getFinishReason()`, `getContent()`, `getToolCalls()`, `getRefusal()`, `getAssistantMessage()`, `findChoiceByIndex()` methods to Azure OpenAI chat completion response. (5c52cb6)
+- [orchestration] Add `prompt_shield` property to `buildAzureContentSafetyFilter()` function for input filter configuration to allow enabling prompt attack detection. (997e8ec)
+- [orchestration] Add `getIntermediateResults()` method to `OrchestrationResponse`, `OrchestrationStreamResponse`, `OrchestrationStreamChunkResponse` classes for accessing intermediate processing results from orchestration modules. (5c52cb6)
+- [orchestration] Add `deploymentId` as the optional parameter for OrchestrationClient initialization. (0a418d0)
+- [orchestration] Add `findChoiceByIndex()` method to find specific choices by index in streaming responses. (5c52cb6)
+
+### Improvements
+
+- [core] Add `gpt-5`,`gpt-5-mini` and `gpt-5-nano` to and remove `gemini-1.5-flash`, `gemini-1.5-pro` and `ibm--granite-13b-chat` from the available model list. (500c0dd)
+- [core] Add `anthropic--claude-4-opus`, `anthropic--claude-4-sonnet`, `amazon--nova-premier`, `gemini-2.5-flash` and `gemini-2.5-pro` to and remove `mistralai--mixtral-8x7b-instruct-v01`, `meta--llama3.1-70b-instruct`, `nvidia--llama-3.2-nv-embedqa-1b`, `amazon--titan-embed-text`, `gpt-4`, `amazon--titan-text-express` and `amazon--titan-text-lite` from the available model list. (9e1c43a)

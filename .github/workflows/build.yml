@@ -25,6 +25,9 @@ jobs:
 
           echo "[DEBUG] Following files have been changed: $changed_files"
           echo "changed-files=$changed_files" >> $GITHUB_OUTPUT
+
+          docs_js_changed=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '[.files.[] | select(.path | startswith("docs-js/"))] | length')
+          echo "docs-js-changed=$docs_js_changed" >> $GITHUB_OUTPUT
       - name: Vale Linter
         # vale fails if the PR is too large, e.g. when updating API docs
         if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.changed-files != '' }}
@@ -55,6 +58,9 @@ jobs:
         run: npm ci
       - name: ESlint and Prettier
         run: npm run lint
+      - name: Check docs-js types
+        if: ${{ steps.changed-files.outputs.docs-js-changed != '0' }}
+        run: npm run check:docs-js-types
 
   build:
     runs-on: ubuntu-latest
