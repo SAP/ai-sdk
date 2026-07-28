@@ -1,15 +1,16 @@
 # SAP Cloud SDK for AI (Python) - generative
 
-The SDK formerly known as *generative AI Hub SDK* was rebranded.
+The SDK formerly known as _generative AI Hub SDK_ was rebranded.
 
 With this SDK you can leverage the power of generative models available in the generative AI Hub of SAP AI Core.
-This SDK provides LLM access by wrapping the native SDKs of the model providers (OpenAI, Amazon, Google), 
+This SDK provides LLM access by wrapping the native SDKs of the model providers (OpenAI, Amazon, Google),
 through langchain, or through the orchestration service.
 
 (installation)=
+
 ## Installation
 
-Use the package name to install the SDK with support for all models (OpenAI, Amazon, Google) 
+Use the package name to install the SDK with support for all models (OpenAI, Amazon, Google)
 including langchain support:
 
 ```bash
@@ -33,7 +34,7 @@ pip install "sap-ai-sdk-gen[google, amazon]"
 In the table below, you can see which models and vendor specific langchain packages are installed when using different installation parameters.
 
 | Install Parameter                   | OpenAI | Google | AWS | LangChain | OpenAI-LangChain | Google-LangChain | AWS-LangChain |
-|-------------------------------------|--------|--------|-----|-----------|------------------|------------------|---------------|
+| ----------------------------------- | ------ | ------ | --- | --------- | ---------------- | ---------------- | ------------- |
 |                                     | yes    | no     | no  | yes       | yes              | no               | no            |
 | [google]                            | yes    | yes    | no  | yes       | yes              | yes              | no            |
 | [amazon]                            | yes    | no     | yes | yes       | yes              | no               | yes           |
@@ -53,7 +54,7 @@ For custom authentication, you can provide a `proxy_client` parameter when insta
 `GenAIHubProxyClient` with direct credential configuration.
 
 We recommend setting these values as environment variables or via config file. The default path for the configuration file
-is  `~/.aicore/config.json`
+is `~/.aicore/config.json`
 
 ### Environment variables
 
@@ -64,7 +65,7 @@ is  `~/.aicore/config.json`
 - `AICORE_RESOURCE_GROUP`: This represents the resource group that should be used.
 - `AI_CLIENT_TYPE` (optional): Specify client type in request headers. Default is 'GenAI Hub SDK (Python)'. Note: This cannot be set in the config file.
 
-For using X.509 credentials, you can set the file paths to certificate and key files, or certificate and key strings, 
+For using X.509 credentials, you can set the file paths to certificate and key files, or certificate and key strings,
 as an alternative to client secret.
 
 - `AICORE_CERT_FILE_PATH`: This is the path to the file which holds the X.509 certificate
@@ -86,7 +87,7 @@ The following list explains which environment variables can be used to control w
 
 1. **`AICORE_HOME`**: This variable represents a directory path. Within this directory, various configuration files can be stored and the SDK will automatically load them from there based on the "AICORE_PROFILE" environment variable.
 
-2. **`AICORE_PROFILE`**: This variable allows users to switch between different configurations stored in the `AICORE_HOME` directory. It is important to note that `AICORE_PROFILE` does not represent the complete name of a configuration file. Instead, it refers to a profile name, which corresponds to a file named `config_{profile}.json`.  If AICORE_PROFILE is empty `$AICORE_HOME/config.json` is used.
+2. **`AICORE_PROFILE`**: This variable allows users to switch between different configurations stored in the `AICORE_HOME` directory. It is important to note that `AICORE_PROFILE` does not represent the complete name of a configuration file. Instead, it refers to a profile name, which corresponds to a file named `config_{profile}.json`. If AICORE_PROFILE is empty `$AICORE_HOME/config.json` is used.
 
 3. **`AICORE_CONFIG`**: This variable overrides both `AICORE_HOME` and `AICORE_PROFILE`. It specifies the direct absolute path to a configuration file that will be used.
 
@@ -139,9 +140,10 @@ For model access through the orchestration service, you need to create a deploym
 
 ### Examples
 
-In section "*Examples*" there are code snippets for each Large Language and Embedding model as well as for the orchestration service usage.
+In section "_Examples_" there are code snippets for each Large Language and Embedding model as well as for the orchestration service usage.
 
 (supported_models)=
+
 ## Supported Models
 
 The list of models in the Generative AI Hub of SAP AI Core can be found in [SAP note 343776](https://me.sap.com/notes/3437766).
@@ -149,12 +151,12 @@ Among these, the following models are currently supported in the SAP Cloud SDK f
 
 ### LLM Models
 
-| Provider   | Model Name                         | Streaming Support | 
-|------------|------------------------------------|-------------------|
+| Provider   | Model Name                         | Streaming Support |
+| ---------- | ---------------------------------- | ----------------- |
 | Amazon     | amazon--nova-lite                  | No                |
 |            | amazon--nova-micro                 | No                |
 |            | amazon--nova-pro                   | No                |
-|            | amazon--amazon--nova-premier       | Yes               | 
+|            | amazon--amazon--nova-premier       | Yes               |
 | Anthropic  | anthropic--claude-3-haiku          | Yes               |
 |            | anthropic--claude-3.5-sonnet       | Yes               |
 |            | anthropic--claude-3.7-sonnet       | Yes               |
@@ -197,7 +199,7 @@ Among these, the following models are currently supported in the SAP Cloud SDK f
 ### Embedding Models
 
 | Provider | Model Name                      |
-|----------|---------------------------------|
+| -------- | ------------------------------- |
 | Amazon   | amazon--titan-embed-text        |
 |          | amazon--titan-embed-image       |
 | Google   | google--gemini-embedding        |
@@ -224,6 +226,7 @@ Among these, the following models are currently supported in the SAP Cloud SDK f
     is needed.
 
 (package_dependencies)=
+
 ## Package dependencies
 
 Please note the following dependencies of sap-ai-sdk-gen:

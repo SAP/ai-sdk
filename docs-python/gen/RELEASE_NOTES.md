@@ -1,10 +1,13 @@
 # Release Notes
+
 ## 7.2.0
 
 ### Features
+
 - Added Support for LLM Batch Service, see [](batch_service)
 
 ### Bugfixes
+
 - Upgraded langchain
 - Upgraded langchain-aws
 - Upgraded langchain-google-genai
@@ -16,6 +19,7 @@
 ## 6.10.0
 
 ### Features
+
 - Added model_version as model identifier
 - Updated Prompt Registry Client to align with API changes
 - Added support for OpenAI Responses API, see [](responses_api)
@@ -23,32 +27,38 @@
 - Added support for newly added models to the AI Core, see [](supported_models)
 
 ### Bugfixes
+
 - Upgraded google-genai
 - Upgraded langchain
 
 ## 6.7.0
 
 ### Features
+
 - Added support for Orchestration Config API of Prompt Registry, see [](orchestration_config_api)
 - Added retry logic for token retrieval
 
 ### Bugfixes
+
 - Upgraded langchain-aws
 
 ## 6.6.0
 
 ### Bugfixes
-- Replaced the lingua-language-detector library, which was causing version conflict issues. 
+
+- Replaced the lingua-language-detector library, which was causing version conflict issues.
 
 ## 6.5.0
 
 ### Features
+
 - Enabled providing additional headers for Grounding Clients (Pipeline API Client, Retrieval API Client & Vector API Client)
 - Added support for Orchestration V2 API /embeddings endpoint, see [](orchestration2)
 - Added Evaluations Client, see [](evaluations)
 - Added support for RPT-1 models, see [](rpt_models)
 
 ### Bugfixes
+
 - Fixed the issue regarding the handling of large streaming responses in AsyncSSEClient
 - Upgraded langchain version
 - Adjusted to the changes in Orchestration V2 API
@@ -62,11 +72,13 @@
 - Switch from langchain-google-vertexai to langchain-google-genai and google-cloud-aiplatform to google-genai due to [deprecation of these libraries](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/deprecations/genai-vertexai-sdk)
 
 ### Features
+
 - Added support for additional embedding models: Amazon Titan Embedding, Llama 3.2 Embedding, Google Gemini Embedding
 
 ## 5.11.0
 
 ### Features
+
 - Added support for orchestration V2 API. For details, see [](orchestration2).
 - Added API reference documentation
 - Added support for new models: Claude 4.5 Sonnet, Claude 4.5 Haiku, Cohere Command-a-reasoning, Cohere reranker, Gemini 2.5 Flash Lite, Perplexity Sonar, Perplexity Sonar-Pro, Mistral Medium
@@ -86,7 +98,7 @@
 
 ## 5.8.0
 
-### Features 
+### Features
 
 - Added additional apis for document grounding: vector api and retrieval api support and additional methods for pipelines api.
 
@@ -95,7 +107,7 @@
 ### Features
 
 - Added support for new models: Amazon Nova Premier, Claude 4 Opus, Gemini 2.5-flash, Gemini 2.5-pro, GPT-5, GPT-5-mini, GPT-5-nano, Mistral Small Instruct. See [](supported_models) for a comprehensive overview of supported models.
-- Removed old models: Amazon Titan Text Express/Lite, Gemini 1.5-flash, Gemini 1.5-pro, Claude 3 Sonnet 
+- Removed old models: Amazon Titan Text Express/Lite, Gemini 1.5-flash, Gemini 1.5-pro, Claude 3 Sonnet
 - Allow botocore.config as input for Amazon Bedrock to set additional parameters, e.g. connect_timeout
 
 ### Bugfixes
@@ -120,7 +132,7 @@
 
 - Added support for Claude 4 Sonnet
 
-### Bugfixes 
+### Bugfixes
 
 - Upgraded langchain-google-vertexai to fix a bug with streaming on newer gemini models
 - Fix issue where template input parameters would be converted to CamelCase when sending to prompt registry API
@@ -130,7 +142,6 @@
 ### Features
 
 - Added support for additional storage types (S3/SFTP) for the Grounding module of the Orchestration Service.
-
 
 ## 5.4.1
 
@@ -159,6 +170,7 @@
 ## 4.12.1
 
 ### Features
+
 - Added support for Anthropic Claude 3.7 Sonnet model.
 - Added support for gemini-2.0 and gemini-2.0-flash models.
 - Retirement of Gemini 1.0 Pro.
@@ -233,7 +245,7 @@
 ### Features
 
 - Add support for orchestration service: data masking. See the example notebook section [](content_filtering) for details.
- 
+
 ### Bugfixes
 
 - Bugfix for x509 certificate authentication support

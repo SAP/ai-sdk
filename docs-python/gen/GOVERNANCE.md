@@ -1,13 +1,13 @@
 # How this project is run
 
- The project team is fully responsible for:
+The project team is fully responsible for:
 
 - the project roadmap
 - timeline and priorities
 - reviewing (approving or rejecting) pull requests
 - public releases of the project
 
- The model we select for this GOVERNANCE.md is the [central responsibility model](https://github.tools.sap/innersource/innersource/blob/master/governance-models/models/central-responsibility.md).
+The model we select for this GOVERNANCE.md is the [central responsibility model](https://github.tools.sap/innersource/innersource/blob/master/governance-models/models/central-responsibility.md).
 
 ## Community Setup
 
@@ -35,6 +35,7 @@ First, let's define some important roles:
 - **Maintainer**: Maintainers review pull requests - they approve or reject changes in order to make sure that the overall vision, scope, architecture and roadmap of the project is kept.
 
 The overall responsibility for our project is with the project team. It governs the project and is responsible for
+
 - the project scope, roadmap, backlog and prioritization of requirements and tasks (based on input of all stakeholders, especially contributors and consumers)
 - the overall architecture of the project
 - all maintainer tasks (see maintainer role above)
@@ -49,4 +50,4 @@ High quality documentation is as important as the shipped code. **Developer docu
 
 Collaboration, creativity, and meaningful innovation depend on good communication. To make your contribution a success, be open and transparent about your planned development and closely align with the project team. Use communication tools that allow anyone to easily find discussions that happened in the past.
 
-To contact us or get in touch with our community, please have a look at our [communication channels](SUPPORT.md#communication-channels). 
+To contact us or get in touch with our community, please have a look at our [communication channels](SUPPORT.md#communication-channels).

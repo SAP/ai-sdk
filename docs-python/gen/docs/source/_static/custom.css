@@ -70,20 +70,48 @@
 }
 
 /* Dark theme syntax */
-.dark .highlight .c1 { color: #7f849c; }
-.dark .highlight .s1, .dark .highlight .s2 { color: #89dceb; }
-.dark .highlight .k, .dark .highlight .kn { color: #f5c2e7; }
-.dark .highlight .n { color: #cdd6f4; }
-.dark .highlight .o { color: #89b4fa; }
-.dark .highlight .p { color: #9399b2; }
+.dark .highlight .c1 {
+  color: #7f849c;
+}
+.dark .highlight .s1,
+.dark .highlight .s2 {
+  color: #89dceb;
+}
+.dark .highlight .k,
+.dark .highlight .kn {
+  color: #f5c2e7;
+}
+.dark .highlight .n {
+  color: #cdd6f4;
+}
+.dark .highlight .o {
+  color: #89b4fa;
+}
+.dark .highlight .p {
+  color: #9399b2;
+}
 
 /* Light theme syntax */
-.highlight .c1 { color: #64748b; }
-.highlight .s1, .highlight .s2 { color: #0369a1; }
-.highlight .k, .highlight .kn { color: #be185d; }
-.highlight .n { color: #334155; }
-.highlight .o { color: #0284c7; }
-.highlight .p { color: #475569; }
+.highlight .c1 {
+  color: #64748b;
+}
+.highlight .s1,
+.highlight .s2 {
+  color: #0369a1;
+}
+.highlight .k,
+.highlight .kn {
+  color: #be185d;
+}
+.highlight .n {
+  color: #334155;
+}
+.highlight .o {
+  color: #0284c7;
+}
+.highlight .p {
+  color: #475569;
+}
 
 button.copy {
   background: transparent;
@@ -99,7 +127,12 @@ button.copy:hover {
 /* autodoc related adjustments*/
 
 /* autodoc generation for docstring causes no wordwrap */
-.sig-name, .viewcode-link, .py-attribute, .py-class, .py-function, .descclassname {
+.sig-name,
+.viewcode-link,
+.py-attribute,
+.py-class,
+.py-function,
+.descclassname {
   word-break: break-all;
   white-space: normal !important;
 }
@@ -109,7 +142,6 @@ button.copy:hover {
   word-break: break-word;
 }
 
-main{
+main {
   word-wrap: break-word;
 }
-

@@ -1,6 +1,6 @@
 # SAP Cloud SDK for AI (Python) - generative
 
-The SDK formerly known as *generative AI Hub SDK* was rebranded.
+The SDK formerly known as _generative AI Hub SDK_ was rebranded.
 With this SDK you can leverage the power of Large Language Models available in SAP's Generative AI Hub.
 
 ## Installing and Using the SDK
@@ -39,6 +39,7 @@ The main modules are located in the subfolder [proxy](https://github.wdf.sap.cor
 - [native](https://github.wdf.sap.corp/AI/generative-ai-hub-sdk/tree/main/gen_ai_hub/proxy/native)
 
 ### Docstring Convention
+
 In this project, we use the `reStructuredText` format for all Python docstrings, following the guidelines outlined in [PEP 257](https://peps.python.org/pep-0257/) and the [Sphinx documentation style guide](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html).
 This ensures consistency and compatibility with other SDKs in the same namespace.
 
@@ -102,4 +103,4 @@ This project is Innersource and if you wish to contribute to this project please
 
 The code for this SDK is originated from [llm-commons](https://github.tools.sap/AI-Playground-Projects/llm-commons).
 
-Kudos to the authors (especially Mathis Börner). 
+Kudos to the authors (especially Mathis Börner).

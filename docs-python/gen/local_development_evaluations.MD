@@ -13,12 +13,14 @@ This guide provides step-by-step instructions for developing and testing the Eva
 ### 1. Create and Activate Virtual Environment
 
 **Using venv:**
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 **Using conda:**
+
 ```bash
 conda create -n gen-ai-hub python=3.10
 conda activate gen-ai-hub
@@ -27,6 +29,7 @@ conda activate gen-ai-hub
 ### 2. Install Dependencies
 
 Install all required dependencies from the root directory:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -34,6 +37,7 @@ pip install -r requirements.txt
 ### 3. Install SDK in Editable Mode
 
 To ensure SDK changes are immediately reflected without reinstalling:
+
 ```bash
 pip install -e .
 ```
@@ -78,11 +82,13 @@ pytest integration_tests/evaluations/ -v
 To create a distributable `.whl` file for testing in notebooks or other environments:
 
 1. **Install build tools** (if not already installed):
+
    ```bash
    pip install build
    ```
 
 2. **Build the distribution**:
+
    ```bash
    python -m build
    ```
@@ -129,14 +135,17 @@ python -m build
 ## Troubleshooting
 
 ### Changes Not Reflected
+
 - Make sure you ran `pip install -e .` after making changes
 - Restart your Python interpreter/kernel
 
 ### Import Errors
+
 - Verify all dependencies are installed: `pip install -r requirements.txt`
 - Check that you're using the correct virtual environment
 
 ### Integration Test Failures
+
 - Ensure environment variables are set (source `set_env.sh`)
 - Verify your AI Core credentials have the necessary permissions
 - Check that the base URL includes the `/v2` suffix
