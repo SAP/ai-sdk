@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>gen_ai_hub.evaluations.models package | SAP Cloud SDK for AI (Python) - generative v7.2.0</title>
+<meta content="gen_ai_hub.evaluations.models package | SAP Cloud SDK for AI (Python) - generative v7.2.0" property="og:title"/>
+<meta content="gen_ai_hub.evaluations.models package | SAP Cloud SDK for AI (Python) - generative v7.2.0" name="twitter:title"/>
+<link href="../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../_static/custom-override.css" rel="stylesheet" type="text/css"/>
+<link href="../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="gen_ai_hub.evaluations.utils.html" rel="next" title="gen_ai_hub.evaluations.utils package"/>
+<link href="gen_ai_hub.evaluations.helpers.html" rel="prev" title="gen_ai_hub.evaluations.helpers package"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../_reference/README_sphynx.html">Introduction</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../examples.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../_reference/gen_ai_hub.html">Native Client Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/gen_ai_hub.html#langchain-integration">Langchain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/gen_ai_hub.html#sap-rpt-1-models">SAP RPT-1 Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/prompt-registry.html">Prompt Registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/orchestration-service.html">Orchestration Service [Deprecated]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/orchestration-service2.html">Orchestration Service V2 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/document-grounding.html">Document Grounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/async-examples.html">Async examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_reference/evaluations.html">Generative AI Custom Evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_reference/RELEASE_NOTES.html">Release Notes</a></li>
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.html">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.batch_service.html">gen_ai_hub.batch_service package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.batch_service.models.html">gen_ai_hub.batch_service.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.document_grounding.html">gen_ai_hub.document_grounding package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.document_grounding.clients.html">gen_ai_hub.document_grounding.clients package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.document_grounding.models.html">gen_ai_hub.document_grounding.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.evaluations.html">gen_ai_hub.evaluations package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.evaluations.exceptions.html">gen_ai_hub.evaluations.exceptions package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.evaluations.helpers.html">gen_ai_hub.evaluations.helpers package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">gen_ai_hub.evaluations.models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.evaluations.utils.html">gen_ai_hub.evaluations.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.orchestration.html">gen_ai_hub.orchestration package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration.models.html">gen_ai_hub.orchestration.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.orchestration_v2.html">gen_ai_hub.orchestration_v2 package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.prompt_registry.html">gen_ai_hub.prompt_registry package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html">gen_ai_hub.prompt_registry.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.proxy.html">gen_ai_hub.proxy package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.core.html">gen_ai_hub.proxy.core package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.gen_ai_hub_proxy.html">gen_ai_hub.proxy.gen_ai_hub_proxy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.langchain.html">gen_ai_hub.proxy.langchain package</a></li>
+<li class="toctree-l3" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.proxy.native.html">gen_ai_hub.proxy.native package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.amazon.html">gen_ai_hub.proxy.native.amazon package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.google_genai.html">gen_ai_hub.proxy.native.google_genai package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.openai.html">gen_ai_hub.proxy.native.openai package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html">gen_ai_hub.proxy.native.sap package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="gen_ai_hub.html">gen_ai_hub package</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="gen_ai_hub.evaluations.html">gen_ai_hub.evaluations package</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">gen_ai_hub.evaluations.models package</span>
+</nav>
+<div id="content" role="main">
+<section id="module-gen_ai_hub.evaluations.models">
+<span id="gen-ai-hub-evaluations-models-package"></span><h1>gen_ai_hub.evaluations.models package</h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.ArtifactSource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ArtifactSource</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Extends the artifact object with the relative path user can provide inside to be used for EvaluationConfig
+Example Usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">ArtifactSource</span><span class="p">(</span>
+</span><span id="line-2"><span class="go">        artifact={</span>
+</span><span id="line-3"><span class="go">            "id": "xyfz-rtyu-2456-ojns-yu6s",</span>
+</span><span id="line-4"><span class="go">            "name": "dataset-artifact",</span>
+</span><span id="line-5"><span class="go">            "url": "ai://default/eval_dataset"</span>
+</span><span id="line-6"><span class="go">            ...</span>
+</span><span id="line-7"><span class="go">        },</span>
+</span><span id="line-8"><span class="go">        path= "rootfolder/data.csv,</span>
+</span><span id="line-9"><span class="go">        file_type="csv"</span>
+</span><span id="line-10"><span class="go">    )</span>
+</span><span id="line-11"><span class="gp">&gt;&gt;&gt; </span><span class="n">ArtifactSource</span><span class="p">(</span>
+</span><span id="line-12"><span class="go">        artifact="xyfz-rtyu-2456-ojns-yu6s",</span>
+</span><span id="line-13"><span class="go">        path="rootfolder/data.json,</span>
+</span><span id="line-14"><span class="go">        file_type="json"</span>
+</span><span id="line-15"><span class="go">    )</span>
+</span><span id="line-16"><span class="go">)</span>
+</span></code></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.ArtifactSource.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artifact</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="simple">
+<dt>Parameters:</dt><dd><p>artifact(Union[str,Artifact]): Can just provide the artifact id as a string or the Artifact object of the AI_API_Client sdk.
+path(Optional[str]): Relative path within the artifact path provided and should point to a single file.
+file_type(Literal["csv", "json", "jsonl"]): One of the supported file_types</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_type</strong> (<em>Literal</em><em>[</em><em>'csv'</em><em>, </em><em>'json'</em><em>, </em><em>'jsonl'</em><em>]</em>)</p></li>
+<li><p><strong>artifact</strong> (<em>str</em><em> | </em><em>Artifact</em>)</p></li>
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.Dataset">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Dataset</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Dataset object for the evaluations flow.</p>
+<p>The Dataset class accepts various source types for evaluation datasets including
+local file paths (as strings or Path objects) or AI Core artifacts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>, </em><a class="reference internal" href="#gen_ai_hub.evaluations.models.ArtifactSource" title="gen_ai_hub.evaluations.models.ArtifactSource"><em>ArtifactSource</em></a><em>]</em>) -- Source of the dataset - can be a file path string, Path object, or ArtifactSource</p>
+</dd>
+</dl>
+<p><strong>Examples</strong>:</p>
+<p>Using a Path object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"data/sample.json"</span><span class="p">))</span>
+</span></code></pre></div>
+</div>
+<p>Using a string path:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"data/sample.json"</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<p>Using an ArtifactSource with artifact dictionary:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span>
+</span><span id="line-2"><span class="gp">... </span>    <span class="n">ArtifactSource</span><span class="p">(</span>
+</span><span id="line-3"><span class="gp">... </span>        <span class="n">artifact</span><span class="o">=</span><span class="p">{</span>
+</span><span id="line-4"><span class="gp">... </span>            <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"xyfz-rtyu-2456-ojns-yu6s"</span><span class="p">,</span>
+</span><span id="line-5"><span class="gp">... </span>            <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"dataset-artifact"</span><span class="p">,</span>
+</span><span id="line-6"><span class="gp">... </span>            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"ai://default/eval_dataset"</span>
+</span><span id="line-7"><span class="gp">... </span>        <span class="p">},</span>
+</span><span id="line-8"><span class="gp">... </span>        <span class="n">path</span><span class="o">=</span><span class="s2">"rootfolder/data.csv"</span><span class="p">,</span>
+</span><span id="line-9"><span class="gp">... </span>        <span class="n">file_type</span><span class="o">=</span><span class="s2">"csv"</span>
+</span><span id="line-10"><span class="gp">... </span>    <span class="p">)</span>
+</span><span id="line-11"><span class="gp">... </span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<p>Using an ArtifactSource with artifact ID:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span>
+</span><span id="line-2"><span class="gp">... </span>    <span class="n">ArtifactSource</span><span class="p">(</span>
+</span><span id="line-3"><span class="gp">... </span>        <span class="n">artifact</span><span class="o">=</span><span class="s2">"xyfz-rtyu-2456-ojns-yu6s"</span><span class="p">,</span>
+</span><span id="line-4"><span class="gp">... </span>        <span class="n">path</span><span class="o">=</span><span class="s2">"rootfolder/data.csv"</span><span class="p">,</span>
+</span><span id="line-5"><span class="gp">... </span>        <span class="n">file_type</span><span class="o">=</span><span class="s2">"csv"</span>
+</span><span id="line-6"><span class="gp">... </span>    <span class="p">)</span>
+</span><span id="line-7"><span class="gp">... </span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.Dataset.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initialize a Dataset instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>, </em><a class="reference internal" href="#gen_ai_hub.evaluations.models.ArtifactSource" title="gen_ai_hub.evaluations.models.ArtifactSource"><em>ArtifactSource</em></a><em>]</em>) -- Source of the dataset - can be a file path string, Path object, or ArtifactSource</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.Dataset.file_type">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>Infer the file type from the source.</p>
+<p>For ArtifactSource, returns the explicitly set file_type.
+For file paths, infers the type from the file extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>File type (e.g., "json", "jsonl", "csv") or None if cannot be determined</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EvaluationConfig</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines the evaluation configuration object for the Evaluations flow.</p>
+<p>This class encapsulates all configuration parameters needed to run an evaluation job,
+including the model/template configuration, dataset, metrics, and execution settings.</p>
+<p>At least one of the following must be provided:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">llm</span></code> and <code class="docutils literal notranslate"><span class="pre">template</span></code> combination (using orchestration_v2 models)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">orchestration_registry_reference</span></code> (UUID of a registered orchestration configuration)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_config</strong> (<a class="reference internal" href="#gen_ai_hub.evaluations.models.Dataset" title="gen_ai_hub.evaluations.models.Dataset"><em>Dataset</em></a>) -- Dataset configuration object specifying the evaluation dataset</p></li>
+<li><p><strong>metrics</strong> (<em>List</em><em>[</em><a class="reference internal" href="#gen_ai_hub.evaluations.models.MetricConfig" title="gen_ai_hub.evaluations.models.MetricConfig"><em>MetricConfig</em></a><em>]</em>) -- List of metric configurations for evaluation</p></li>
+<li><p><strong>llm</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.llm.LLM" title="gen_ai_hub.orchestration.models.llm.LLM"><em>LLM</em></a><em>]</em>) -- LLM configuration from orchestration_v2 (LLMModelDetails)</p></li>
+<li><p><strong>template</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="gen_ai_hub.prompt_registry.html#gen_ai_hub.prompt_registry.PromptTemplateSpec" title="gen_ai_hub.prompt_registry.PromptTemplateSpec"><em>PromptTemplateSpec</em></a><em>, </em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.template_ref.TemplateRef" title="gen_ai_hub.orchestration.models.template_ref.TemplateRef"><em>TemplateRef</em></a><em>]</em><em>]</em>) -- Prompt template as string, PromptTemplateSpec, or TemplateRef</p></li>
+<li><p><strong>orchestration_registry_reference</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) -- UUID of registered orchestration configuration</p></li>
+<li><p><strong>template_variable_mapping</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) -- Variable mapping for the prompt template</p></li>
+<li><p><strong>test_row_count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Number of rows to sample from dataset (-1 for all rows), defaults to -1</p></li>
+<li><p><strong>repetitions</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Number of times to repeat evaluation over the dataset, defaults to 1</p></li>
+<li><p><strong>tags</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) -- User-defined metadata as key-value pairs, defaults to "{}"</p></li>
+<li><p><strong>debug_mode</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) -- Enable debug logs in hyperscaler output path, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module uses orchestration_v2 models directly.</p>
+</div>
+<p><strong>Example using TemplateRef with ID</strong>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.evaluations.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationConfig</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">MetricConfig</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.orchestration_v2.models.llm_model_details</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMModelDetails</span> <span class="k">as</span> <span class="n">LLM</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.orchestration_v2.models.template_ref</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemplateRef</span><span class="p">,</span> <span class="n">TemplateRefByID</span>
+</span><span id="line-4"><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">EvaluationConfig</span><span class="p">(</span>
+</span><span id="line-5"><span class="gp">... </span>    <span class="n">dataset_config</span><span class="o">=</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"data/test.jsonl"</span><span class="p">),</span>
+</span><span id="line-6"><span class="gp">... </span>    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">MetricConfig</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"accuracy"</span><span class="p">)],</span>
+</span><span id="line-7"><span class="gp">... </span>    <span class="n">llm</span><span class="o">=</span><span class="n">LLM</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">"latest"</span><span class="p">),</span>
+</span><span id="line-8"><span class="gp">... </span>    <span class="n">template</span><span class="o">=</span><span class="n">TemplateRef</span><span class="p">(</span><span class="n">template_ref</span><span class="o">=</span><span class="n">TemplateRefByID</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"template-id-here"</span><span class="p">)),</span>
+</span><span id="line-9"><span class="gp">... </span>    <span class="n">test_row_count</span><span class="o">=</span><span class="mi">100</span>
+</span><span id="line-10"><span class="gp">... </span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<p><strong>Example using TemplateRef with scenario/name/version</strong>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.orchestration_v2.models.template_ref</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemplateRefByScenarioNameVersion</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">EvaluationConfig</span><span class="p">(</span>
+</span><span id="line-3"><span class="gp">... </span>    <span class="n">dataset_config</span><span class="o">=</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"data/test.jsonl"</span><span class="p">),</span>
+</span><span id="line-4"><span class="gp">... </span>    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">MetricConfig</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"accuracy"</span><span class="p">)],</span>
+</span><span id="line-5"><span class="gp">... </span>    <span class="n">llm</span><span class="o">=</span><span class="n">LLM</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">"latest"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}),</span>
+</span><span id="line-6"><span class="gp">... </span>    <span class="n">template</span><span class="o">=</span><span class="n">TemplateRef</span><span class="p">(</span><span class="n">template_ref</span><span class="o">=</span><span class="n">TemplateRefByScenarioNameVersion</span><span class="p">(</span>
+</span><span id="line-7"><span class="gp">... </span>        <span class="n">scenario</span><span class="o">=</span><span class="s2">"foundation-models"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"prompt1"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">"1.0"</span>
+</span><span id="line-8"><span class="gp">... </span>    <span class="p">)),</span>
+</span><span id="line-9"><span class="gp">... </span>    <span class="n">test_row_count</span><span class="o">=</span><span class="mi">100</span>
+</span><span id="line-10"><span class="gp">... </span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationConfig.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">llm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orchestration_registry_reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_variable_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_row_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initialize an EvaluationConfig instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_config</strong> (<a class="reference internal" href="#gen_ai_hub.evaluations.models.Dataset" title="gen_ai_hub.evaluations.models.Dataset"><em>Dataset</em></a>) -- Dataset configuration object</p></li>
+<li><p><strong>metrics</strong> (<em>List</em><em>[</em><a class="reference internal" href="#gen_ai_hub.evaluations.models.MetricConfig" title="gen_ai_hub.evaluations.models.MetricConfig"><em>MetricConfig</em></a><em>]</em>) -- List of metric configurations</p></li>
+<li><p><strong>llm</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.llm.LLM" title="gen_ai_hub.orchestration.models.llm.LLM"><em>LLM</em></a><em>]</em>) -- LLM object from orchestration_v2 (LLMModelDetails), defaults to None</p></li>
+<li><p><strong>template</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="gen_ai_hub.prompt_registry.html#gen_ai_hub.prompt_registry.PromptTemplateSpec" title="gen_ai_hub.prompt_registry.PromptTemplateSpec"><em>PromptTemplateSpec</em></a><em>, </em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.template_ref.TemplateRef" title="gen_ai_hub.orchestration.models.template_ref.TemplateRef"><em>TemplateRef</em></a><em>]</em><em>]</em>) -- Prompt template (string, PromptTemplateSpec, or TemplateRef), defaults to None</p></li>
+<li><p><strong>orchestration_registry_reference</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) -- UUID of orchestration config, defaults to None</p></li>
+<li><p><strong>template_variable_mapping</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) -- Variable mapping for prompt template, defaults to None</p></li>
+<li><p><strong>test_row_count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Number of dataset rows to sample (-1 for all), defaults to -1</p></li>
+<li><p><strong>repetitions</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Number of evaluation repetitions (minimum: 1), defaults to 1</p></li>
+<li><p><strong>tags</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) -- Key-value metadata pairs applied to all runs, defaults to "{}"</p></li>
+<li><p><strong>debug_mode</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) -- Enable debug logging, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- If neither (llm, template) nor orchestration_registry_reference is provided</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EvaluationRun</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents an individual EvaluationRun object and its associated context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>) -- Unique identifier for the evaluation run</p></li>
+<li><p><strong>execution_id</strong> (<em>str</em>) -- ID of the AI Core execution</p></li>
+<li><p><strong>ai_core_client</strong> (<em>AICoreV2Client</em>) -- AI Core client instance</p></li>
+<li><p><strong>configuration_id</strong> (<em>str</em>) -- ID of the configuration, defaults to None</p></li>
+<li><p><strong>artifact_id</strong> (<em>str</em>) -- ID of the artifact, defaults to None</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- Resource group name, defaults to None</p></li>
+<li><p><strong>object_store_credentials</strong> (<em>_AWSObjectStoreData</em>) -- Object store credentials, defaults to None</p></li>
+<li><p><strong>metrics_list</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) -- List of metrics to evaluate, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ai_core_client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuration_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artifact_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_store_credentials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>execution_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>ai_core_client</strong> (<em>AICoreV2Client</em>)</p></li>
+<li><p><strong>configuration_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>artifact_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+<li><p><strong>object_store_credentials</strong> (<em>_AWSObjectStoreData</em>)</p></li>
+<li><p><strong>metrics_list</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun.get_current_status">
+<span class="sig-name descname"><span class="pre">get_current_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the current status of the evaluation run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current status of the run</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Status</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If failed to retrieve the current status</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun.get_debug_info">
+<span class="sig-name descname"><span class="pre">get_debug_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Provide debug information when execution status is FAILED or DEAD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Execution status details including failed pod information</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ExecutionStatusDetails</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun.get_debug_logs">
+<span class="sig-name descname"><span class="pre">get_debug_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the complete trace of execution logs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of log entries as dictionaries</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun.load_results_tables">
+<span class="sig-name descname"><span class="pre">load_results_tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Download results from S3 and load the required table data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary containing completions and metrics table data</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> -- If failed to download results</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun.results">
+<span class="sig-name descname"><span class="pre">results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the results of the evaluation run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Results object for accessing completion and metric results</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#gen_ai_hub.evaluations.models.Results" title="gen_ai_hub.evaluations.models.Results">Results</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If execution is not completed</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun.set_cached_results_data">
+<span class="sig-name descname"><span class="pre">set_cached_results_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Set the cached results data from the child results class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Any</em>) -- Results data to cache</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.EvaluationRun.wait_for_completion">
+<span class="sig-name descname"><span class="pre">wait_for_completion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Wait for the evaluation run to complete by polling status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Maximum time to wait in seconds, defaults to 3600 (1 hour)</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.MetricConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricConfig</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines the metric config of the evaluation flow</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>reference(MetricRef): Provide the reference of metric to be evaluated, can be one of name,uuid(id), scenario/name/version
+variable_mapping(Optional[dict]): Any variable maping associated with the metric</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.MetricConfig.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reference</strong> (<a class="reference internal" href="#gen_ai_hub.evaluations.models.metric_config.MetricRef" title="gen_ai_hub.evaluations.models.metric_config.MetricRef"><em>MetricRef</em></a>)</p></li>
+<li><p><strong>variable_mapping</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.MetricRef">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricRef</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a reference to a specific metric definition.</p>
+<p>A metric can be identified in multiple ways:
+- By its UUID from metric management service (<cite>id</cite>)
+- By name (<cite>name</cite>)
+- By a combination of scenario, name, and version (<cite>scenario</cite>, <cite>name</cite>, <cite>version</cite>)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.MetricRef.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>)</p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>version</strong> (<em>str</em>)</p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.Results">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Results</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents the Results handler for an EvaluationRun object.</p>
+<p>This class provides methods to access completion results, metric results,
+and aggregated results for a specific evaluation run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun" title="gen_ai_hub.evaluations.models.EvaluationRun"><em>EvaluationRun</em></a>) -- The parent EvaluationRun object</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.Results.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun" title="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun"><em>EvaluationRun</em></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.Results.aggregations">
+<span class="sig-name descname"><span class="pre">aggregations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the aggregated results for the run from the tracking service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing aggregated metric results</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If error occurs while fetching aggregation results</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.Results.completions">
+<span class="sig-name descname"><span class="pre">completions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the completion results for the run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame containing completion results for the run</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If error occurs while fetching completions</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.Results.metrics">
+<span class="sig-name descname"><span class="pre">metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the metric-level results for the run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame containing metric results for the run</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If error occurs while fetching metric results</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<section id="submodules">
+<h2>Submodules</h2>
+</section>
+<section id="module-gen_ai_hub.evaluations.models.artifact_source">
+<span id="gen-ai-hub-evaluations-models-artifact-source-module"></span><h2>gen_ai_hub.evaluations.models.artifact_source module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.artifact_source.ArtifactSource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ArtifactSource</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Extends the artifact object with the relative path user can provide inside to be used for EvaluationConfig
+Example Usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">ArtifactSource</span><span class="p">(</span>
+</span><span id="line-2"><span class="go">        artifact={</span>
+</span><span id="line-3"><span class="go">            "id": "xyfz-rtyu-2456-ojns-yu6s",</span>
+</span><span id="line-4"><span class="go">            "name": "dataset-artifact",</span>
+</span><span id="line-5"><span class="go">            "url": "ai://default/eval_dataset"</span>
+</span><span id="line-6"><span class="go">            ...</span>
+</span><span id="line-7"><span class="go">        },</span>
+</span><span id="line-8"><span class="go">        path= "rootfolder/data.csv,</span>
+</span><span id="line-9"><span class="go">        file_type="csv"</span>
+</span><span id="line-10"><span class="go">    )</span>
+</span><span id="line-11"><span class="gp">&gt;&gt;&gt; </span><span class="n">ArtifactSource</span><span class="p">(</span>
+</span><span id="line-12"><span class="go">        artifact="xyfz-rtyu-2456-ojns-yu6s",</span>
+</span><span id="line-13"><span class="go">        path="rootfolder/data.json,</span>
+</span><span id="line-14"><span class="go">        file_type="json"</span>
+</span><span id="line-15"><span class="go">    )</span>
+</span><span id="line-16"><span class="go">)</span>
+</span></code></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.artifact_source.ArtifactSource.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artifact</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="simple">
+<dt>Parameters:</dt><dd><p>artifact(Union[str,Artifact]): Can just provide the artifact id as a string or the Artifact object of the AI_API_Client sdk.
+path(Optional[str]): Relative path within the artifact path provided and should point to a single file.
+file_type(Literal["csv", "json", "jsonl"]): One of the supported file_types</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_type</strong> (<em>Literal</em><em>[</em><em>'csv'</em><em>, </em><em>'json'</em><em>, </em><em>'jsonl'</em><em>]</em>)</p></li>
+<li><p><strong>artifact</strong> (<em>str</em><em> | </em><em>Artifact</em>)</p></li>
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-gen_ai_hub.evaluations.models.dataset_config">
+<span id="gen-ai-hub-evaluations-models-dataset-config-module"></span><h2>gen_ai_hub.evaluations.models.dataset_config module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.dataset_config.Dataset">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Dataset</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Dataset object for the evaluations flow.</p>
+<p>The Dataset class accepts various source types for evaluation datasets including
+local file paths (as strings or Path objects) or AI Core artifacts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>, </em><a class="reference internal" href="gen_ai_hub.evaluations.html#gen_ai_hub.evaluations.ArtifactSource" title="gen_ai_hub.evaluations.ArtifactSource"><em>ArtifactSource</em></a><em>]</em>) -- Source of the dataset - can be a file path string, Path object, or ArtifactSource</p>
+</dd>
+</dl>
+<p><strong>Examples</strong>:</p>
+<p>Using a Path object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"data/sample.json"</span><span class="p">))</span>
+</span></code></pre></div>
+</div>
+<p>Using a string path:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"data/sample.json"</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<p>Using an ArtifactSource with artifact dictionary:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span>
+</span><span id="line-2"><span class="gp">... </span>    <span class="n">ArtifactSource</span><span class="p">(</span>
+</span><span id="line-3"><span class="gp">... </span>        <span class="n">artifact</span><span class="o">=</span><span class="p">{</span>
+</span><span id="line-4"><span class="gp">... </span>            <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"xyfz-rtyu-2456-ojns-yu6s"</span><span class="p">,</span>
+</span><span id="line-5"><span class="gp">... </span>            <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"dataset-artifact"</span><span class="p">,</span>
+</span><span id="line-6"><span class="gp">... </span>            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"ai://default/eval_dataset"</span>
+</span><span id="line-7"><span class="gp">... </span>        <span class="p">},</span>
+</span><span id="line-8"><span class="gp">... </span>        <span class="n">path</span><span class="o">=</span><span class="s2">"rootfolder/data.csv"</span><span class="p">,</span>
+</span><span id="line-9"><span class="gp">... </span>        <span class="n">file_type</span><span class="o">=</span><span class="s2">"csv"</span>
+</span><span id="line-10"><span class="gp">... </span>    <span class="p">)</span>
+</span><span id="line-11"><span class="gp">... </span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<p>Using an ArtifactSource with artifact ID:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span>
+</span><span id="line-2"><span class="gp">... </span>    <span class="n">ArtifactSource</span><span class="p">(</span>
+</span><span id="line-3"><span class="gp">... </span>        <span class="n">artifact</span><span class="o">=</span><span class="s2">"xyfz-rtyu-2456-ojns-yu6s"</span><span class="p">,</span>
+</span><span id="line-4"><span class="gp">... </span>        <span class="n">path</span><span class="o">=</span><span class="s2">"rootfolder/data.csv"</span><span class="p">,</span>
+</span><span id="line-5"><span class="gp">... </span>        <span class="n">file_type</span><span class="o">=</span><span class="s2">"csv"</span>
+</span><span id="line-6"><span class="gp">... </span>    <span class="p">)</span>
+</span><span id="line-7"><span class="gp">... </span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.dataset_config.Dataset.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initialize a Dataset instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>, </em><a class="reference internal" href="gen_ai_hub.evaluations.html#gen_ai_hub.evaluations.ArtifactSource" title="gen_ai_hub.evaluations.ArtifactSource"><em>ArtifactSource</em></a><em>]</em>) -- Source of the dataset - can be a file path string, Path object, or ArtifactSource</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.dataset_config.Dataset.file_type">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>Infer the file type from the source.</p>
+<p>For ArtifactSource, returns the explicitly set file_type.
+For file paths, infers the type from the file extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>File type (e.g., "json", "jsonl", "csv") or None if cannot be determined</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-gen_ai_hub.evaluations.models.evaluation_config">
+<span id="gen-ai-hub-evaluations-models-evaluation-config-module"></span><h2>gen_ai_hub.evaluations.models.evaluation_config module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_config.EvaluationConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EvaluationConfig</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines the evaluation configuration object for the Evaluations flow.</p>
+<p>This class encapsulates all configuration parameters needed to run an evaluation job,
+including the model/template configuration, dataset, metrics, and execution settings.</p>
+<p>At least one of the following must be provided:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">llm</span></code> and <code class="docutils literal notranslate"><span class="pre">template</span></code> combination (using orchestration_v2 models)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">orchestration_registry_reference</span></code> (UUID of a registered orchestration configuration)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_config</strong> (<a class="reference internal" href="gen_ai_hub.evaluations.html#gen_ai_hub.evaluations.Dataset" title="gen_ai_hub.evaluations.Dataset"><em>Dataset</em></a>) -- Dataset configuration object specifying the evaluation dataset</p></li>
+<li><p><strong>metrics</strong> (<em>List</em><em>[</em><a class="reference internal" href="gen_ai_hub.evaluations.html#gen_ai_hub.evaluations.MetricConfig" title="gen_ai_hub.evaluations.MetricConfig"><em>MetricConfig</em></a><em>]</em>) -- List of metric configurations for evaluation</p></li>
+<li><p><strong>llm</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.llm.LLM" title="gen_ai_hub.orchestration.models.llm.LLM"><em>LLM</em></a><em>]</em>) -- LLM configuration from orchestration_v2 (LLMModelDetails)</p></li>
+<li><p><strong>template</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="gen_ai_hub.prompt_registry.html#gen_ai_hub.prompt_registry.PromptTemplateSpec" title="gen_ai_hub.prompt_registry.PromptTemplateSpec"><em>PromptTemplateSpec</em></a><em>, </em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.template_ref.TemplateRef" title="gen_ai_hub.orchestration.models.template_ref.TemplateRef"><em>TemplateRef</em></a><em>]</em><em>]</em>) -- Prompt template as string, PromptTemplateSpec, or TemplateRef</p></li>
+<li><p><strong>orchestration_registry_reference</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) -- UUID of registered orchestration configuration</p></li>
+<li><p><strong>template_variable_mapping</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) -- Variable mapping for the prompt template</p></li>
+<li><p><strong>test_row_count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Number of rows to sample from dataset (-1 for all rows), defaults to -1</p></li>
+<li><p><strong>repetitions</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Number of times to repeat evaluation over the dataset, defaults to 1</p></li>
+<li><p><strong>tags</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) -- User-defined metadata as key-value pairs, defaults to "{}"</p></li>
+<li><p><strong>debug_mode</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) -- Enable debug logs in hyperscaler output path, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module uses orchestration_v2 models directly.</p>
+</div>
+<p><strong>Example using TemplateRef with ID</strong>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.evaluations.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationConfig</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">MetricConfig</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.orchestration_v2.models.llm_model_details</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMModelDetails</span> <span class="k">as</span> <span class="n">LLM</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.orchestration_v2.models.template_ref</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemplateRef</span><span class="p">,</span> <span class="n">TemplateRefByID</span>
+</span><span id="line-4"><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">EvaluationConfig</span><span class="p">(</span>
+</span><span id="line-5"><span class="gp">... </span>    <span class="n">dataset_config</span><span class="o">=</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"data/test.jsonl"</span><span class="p">),</span>
+</span><span id="line-6"><span class="gp">... </span>    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">MetricConfig</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"accuracy"</span><span class="p">)],</span>
+</span><span id="line-7"><span class="gp">... </span>    <span class="n">llm</span><span class="o">=</span><span class="n">LLM</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">"latest"</span><span class="p">),</span>
+</span><span id="line-8"><span class="gp">... </span>    <span class="n">template</span><span class="o">=</span><span class="n">TemplateRef</span><span class="p">(</span><span class="n">template_ref</span><span class="o">=</span><span class="n">TemplateRefByID</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"template-id-here"</span><span class="p">)),</span>
+</span><span id="line-9"><span class="gp">... </span>    <span class="n">test_row_count</span><span class="o">=</span><span class="mi">100</span>
+</span><span id="line-10"><span class="gp">... </span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<p><strong>Example using TemplateRef with scenario/name/version</strong>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.orchestration_v2.models.template_ref</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemplateRefByScenarioNameVersion</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">EvaluationConfig</span><span class="p">(</span>
+</span><span id="line-3"><span class="gp">... </span>    <span class="n">dataset_config</span><span class="o">=</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"data/test.jsonl"</span><span class="p">),</span>
+</span><span id="line-4"><span class="gp">... </span>    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">MetricConfig</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"accuracy"</span><span class="p">)],</span>
+</span><span id="line-5"><span class="gp">... </span>    <span class="n">llm</span><span class="o">=</span><span class="n">LLM</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">"latest"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}),</span>
+</span><span id="line-6"><span class="gp">... </span>    <span class="n">template</span><span class="o">=</span><span class="n">TemplateRef</span><span class="p">(</span><span class="n">template_ref</span><span class="o">=</span><span class="n">TemplateRefByScenarioNameVersion</span><span class="p">(</span>
+</span><span id="line-7"><span class="gp">... </span>        <span class="n">scenario</span><span class="o">=</span><span class="s2">"foundation-models"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"prompt1"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">"1.0"</span>
+</span><span id="line-8"><span class="gp">... </span>    <span class="p">)),</span>
+</span><span id="line-9"><span class="gp">... </span>    <span class="n">test_row_count</span><span class="o">=</span><span class="mi">100</span>
+</span><span id="line-10"><span class="gp">... </span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_config.EvaluationConfig.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">llm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orchestration_registry_reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_variable_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_row_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initialize an EvaluationConfig instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_config</strong> (<a class="reference internal" href="gen_ai_hub.evaluations.html#gen_ai_hub.evaluations.Dataset" title="gen_ai_hub.evaluations.Dataset"><em>Dataset</em></a>) -- Dataset configuration object</p></li>
+<li><p><strong>metrics</strong> (<em>List</em><em>[</em><a class="reference internal" href="gen_ai_hub.evaluations.html#gen_ai_hub.evaluations.MetricConfig" title="gen_ai_hub.evaluations.MetricConfig"><em>MetricConfig</em></a><em>]</em>) -- List of metric configurations</p></li>
+<li><p><strong>llm</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.llm.LLM" title="gen_ai_hub.orchestration.models.llm.LLM"><em>LLM</em></a><em>]</em>) -- LLM object from orchestration_v2 (LLMModelDetails), defaults to None</p></li>
+<li><p><strong>template</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="gen_ai_hub.prompt_registry.html#gen_ai_hub.prompt_registry.PromptTemplateSpec" title="gen_ai_hub.prompt_registry.PromptTemplateSpec"><em>PromptTemplateSpec</em></a><em>, </em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.template_ref.TemplateRef" title="gen_ai_hub.orchestration.models.template_ref.TemplateRef"><em>TemplateRef</em></a><em>]</em><em>]</em>) -- Prompt template (string, PromptTemplateSpec, or TemplateRef), defaults to None</p></li>
+<li><p><strong>orchestration_registry_reference</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) -- UUID of orchestration config, defaults to None</p></li>
+<li><p><strong>template_variable_mapping</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) -- Variable mapping for prompt template, defaults to None</p></li>
+<li><p><strong>test_row_count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Number of dataset rows to sample (-1 for all), defaults to -1</p></li>
+<li><p><strong>repetitions</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Number of evaluation repetitions (minimum: 1), defaults to 1</p></li>
+<li><p><strong>tags</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) -- Key-value metadata pairs applied to all runs, defaults to "{}"</p></li>
+<li><p><strong>debug_mode</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) -- Enable debug logging, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- If neither (llm, template) nor orchestration_registry_reference is provided</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-gen_ai_hub.evaluations.models.evaluation_run">
+<span id="gen-ai-hub-evaluations-models-evaluation-run-module"></span><h2>gen_ai_hub.evaluations.models.evaluation_run module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EvaluationRun</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents an individual EvaluationRun object and its associated context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>) -- Unique identifier for the evaluation run</p></li>
+<li><p><strong>execution_id</strong> (<em>str</em>) -- ID of the AI Core execution</p></li>
+<li><p><strong>ai_core_client</strong> (<em>AICoreV2Client</em>) -- AI Core client instance</p></li>
+<li><p><strong>configuration_id</strong> (<em>str</em>) -- ID of the configuration, defaults to None</p></li>
+<li><p><strong>artifact_id</strong> (<em>str</em>) -- ID of the artifact, defaults to None</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- Resource group name, defaults to None</p></li>
+<li><p><strong>object_store_credentials</strong> (<em>_AWSObjectStoreData</em>) -- Object store credentials, defaults to None</p></li>
+<li><p><strong>metrics_list</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) -- List of metrics to evaluate, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ai_core_client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configuration_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artifact_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_store_credentials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>execution_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>ai_core_client</strong> (<em>AICoreV2Client</em>)</p></li>
+<li><p><strong>configuration_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>artifact_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+<li><p><strong>object_store_credentials</strong> (<em>_AWSObjectStoreData</em>)</p></li>
+<li><p><strong>metrics_list</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_current_status">
+<span class="sig-name descname"><span class="pre">get_current_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the current status of the evaluation run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current status of the run</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Status</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If failed to retrieve the current status</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_debug_info">
+<span class="sig-name descname"><span class="pre">get_debug_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Provide debug information when execution status is FAILED or DEAD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Execution status details including failed pod information</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ExecutionStatusDetails</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_debug_logs">
+<span class="sig-name descname"><span class="pre">get_debug_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the complete trace of execution logs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of log entries as dictionaries</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.load_results_tables">
+<span class="sig-name descname"><span class="pre">load_results_tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Download results from S3 and load the required table data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary containing completions and metrics table data</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> -- If failed to download results</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.results">
+<span class="sig-name descname"><span class="pre">results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the results of the evaluation run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Results object for accessing completion and metric results</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.Results" title="gen_ai_hub.evaluations.models.evaluation_run.Results">Results</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If execution is not completed</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.set_cached_results_data">
+<span class="sig-name descname"><span class="pre">set_cached_results_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Set the cached results data from the child results class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Any</em>) -- Results data to cache</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.wait_for_completion">
+<span class="sig-name descname"><span class="pre">wait_for_completion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Wait for the evaluation run to complete by polling status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- Maximum time to wait in seconds, defaults to 3600 (1 hour)</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.Results">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Results</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents the Results handler for an EvaluationRun object.</p>
+<p>This class provides methods to access completion results, metric results,
+and aggregated results for a specific evaluation run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun" title="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun"><em>EvaluationRun</em></a>) -- The parent EvaluationRun object</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.Results.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun" title="gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun"><em>EvaluationRun</em></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.Results.aggregations">
+<span class="sig-name descname"><span class="pre">aggregations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the aggregated results for the run from the tracking service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing aggregated metric results</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If error occurs while fetching aggregation results</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.Results.completions">
+<span class="sig-name descname"><span class="pre">completions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the completion results for the run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame containing completion results for the run</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If error occurs while fetching completions</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.evaluation_run.Results.metrics">
+<span class="sig-name descname"><span class="pre">metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the metric-level results for the run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame containing metric results for the run</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If error occurs while fetching metric results</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-gen_ai_hub.evaluations.models.metric_config">
+<span id="gen-ai-hub-evaluations-models-metric-config-module"></span><h2>gen_ai_hub.evaluations.models.metric_config module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.metric_config.MetricConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricConfig</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines the metric config of the evaluation flow</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>reference(MetricRef): Provide the reference of metric to be evaluated, can be one of name,uuid(id), scenario/name/version
+variable_mapping(Optional[dict]): Any variable maping associated with the metric</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.metric_config.MetricConfig.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reference</strong> (<a class="reference internal" href="#gen_ai_hub.evaluations.models.metric_config.MetricRef" title="gen_ai_hub.evaluations.models.metric_config.MetricRef"><em>MetricRef</em></a>)</p></li>
+<li><p><strong>variable_mapping</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.metric_config.MetricRef">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricRef</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a reference to a specific metric definition.</p>
+<p>A metric can be identified in multiple ways:
+- By its UUID from metric management service (<cite>id</cite>)
+- By name (<cite>name</cite>)
+- By a combination of scenario, name, and version (<cite>scenario</cite>, <cite>name</cite>, <cite>version</cite>)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.evaluations.models.metric_config.MetricRef.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>)</p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>version</strong> (<em>str</em>)</p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.ArtifactSource'" class="reference internal" href="#gen_ai_hub.evaluations.models.ArtifactSource"><code class="docutils literal notranslate"><span class="pre">ArtifactSource</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.ArtifactSource.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.ArtifactSource.__init__"><code class="docutils literal notranslate"><span class="pre">ArtifactSource.__init__()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.Dataset'" class="reference internal" href="#gen_ai_hub.evaluations.models.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.Dataset.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.Dataset.__init__"><code class="docutils literal notranslate"><span class="pre">Dataset.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.Dataset.file_type'" class="reference internal" href="#gen_ai_hub.evaluations.models.Dataset.file_type"><code class="docutils literal notranslate"><span class="pre">Dataset.file_type</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationConfig'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationConfig"><code class="docutils literal notranslate"><span class="pre">EvaluationConfig</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationConfig.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationConfig.__init__"><code class="docutils literal notranslate"><span class="pre">EvaluationConfig.__init__()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun"><code class="docutils literal notranslate"><span class="pre">EvaluationRun</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun.__init__"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun.get_current_status'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun.get_current_status"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.get_current_status()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun.get_debug_info'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun.get_debug_info"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.get_debug_info()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun.get_debug_logs'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun.get_debug_logs"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.get_debug_logs()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun.load_results_tables'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun.load_results_tables"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.load_results_tables()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun.results'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun.results"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.results()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun.set_cached_results_data'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun.set_cached_results_data"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.set_cached_results_data()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.EvaluationRun.wait_for_completion'" class="reference internal" href="#gen_ai_hub.evaluations.models.EvaluationRun.wait_for_completion"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.wait_for_completion()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.MetricConfig'" class="reference internal" href="#gen_ai_hub.evaluations.models.MetricConfig"><code class="docutils literal notranslate"><span class="pre">MetricConfig</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.MetricConfig.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.MetricConfig.__init__"><code class="docutils literal notranslate"><span class="pre">MetricConfig.__init__()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.MetricRef'" class="reference internal" href="#gen_ai_hub.evaluations.models.MetricRef"><code class="docutils literal notranslate"><span class="pre">MetricRef</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.MetricRef.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.MetricRef.__init__"><code class="docutils literal notranslate"><span class="pre">MetricRef.__init__()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.Results'" class="reference internal" href="#gen_ai_hub.evaluations.models.Results"><code class="docutils literal notranslate"><span class="pre">Results</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.Results.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.Results.__init__"><code class="docutils literal notranslate"><span class="pre">Results.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.Results.aggregations'" class="reference internal" href="#gen_ai_hub.evaluations.models.Results.aggregations"><code class="docutils literal notranslate"><span class="pre">Results.aggregations()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.Results.completions'" class="reference internal" href="#gen_ai_hub.evaluations.models.Results.completions"><code class="docutils literal notranslate"><span class="pre">Results.completions()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.Results.metrics'" class="reference internal" href="#gen_ai_hub.evaluations.models.Results.metrics"><code class="docutils literal notranslate"><span class="pre">Results.metrics()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#submodules'" class="reference internal" href="#submodules">Submodules</a></li>
+<li><a :data-current="activeSection === '#module-gen_ai_hub.evaluations.models.artifact_source'" class="reference internal" href="#module-gen_ai_hub.evaluations.models.artifact_source">gen_ai_hub.evaluations.models.artifact_source module</a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.artifact_source.ArtifactSource'" class="reference internal" href="#gen_ai_hub.evaluations.models.artifact_source.ArtifactSource"><code class="docutils literal notranslate"><span class="pre">ArtifactSource</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.artifact_source.ArtifactSource.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.artifact_source.ArtifactSource.__init__"><code class="docutils literal notranslate"><span class="pre">ArtifactSource.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-gen_ai_hub.evaluations.models.dataset_config'" class="reference internal" href="#module-gen_ai_hub.evaluations.models.dataset_config">gen_ai_hub.evaluations.models.dataset_config module</a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.dataset_config.Dataset'" class="reference internal" href="#gen_ai_hub.evaluations.models.dataset_config.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.dataset_config.Dataset.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.dataset_config.Dataset.__init__"><code class="docutils literal notranslate"><span class="pre">Dataset.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.dataset_config.Dataset.file_type'" class="reference internal" href="#gen_ai_hub.evaluations.models.dataset_config.Dataset.file_type"><code class="docutils literal notranslate"><span class="pre">Dataset.file_type</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-gen_ai_hub.evaluations.models.evaluation_config'" class="reference internal" href="#module-gen_ai_hub.evaluations.models.evaluation_config">gen_ai_hub.evaluations.models.evaluation_config module</a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_config.EvaluationConfig'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_config.EvaluationConfig"><code class="docutils literal notranslate"><span class="pre">EvaluationConfig</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_config.EvaluationConfig.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_config.EvaluationConfig.__init__"><code class="docutils literal notranslate"><span class="pre">EvaluationConfig.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-gen_ai_hub.evaluations.models.evaluation_run'" class="reference internal" href="#module-gen_ai_hub.evaluations.models.evaluation_run">gen_ai_hub.evaluations.models.evaluation_run module</a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun"><code class="docutils literal notranslate"><span class="pre">EvaluationRun</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.__init__"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_current_status'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_current_status"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.get_current_status()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_debug_info'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_debug_info"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.get_debug_info()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_debug_logs'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.get_debug_logs"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.get_debug_logs()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.load_results_tables'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.load_results_tables"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.load_results_tables()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.results'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.results"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.results()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.set_cached_results_data'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.set_cached_results_data"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.set_cached_results_data()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.wait_for_completion'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.EvaluationRun.wait_for_completion"><code class="docutils literal notranslate"><span class="pre">EvaluationRun.wait_for_completion()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.Results'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.Results"><code class="docutils literal notranslate"><span class="pre">Results</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.Results.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.Results.__init__"><code class="docutils literal notranslate"><span class="pre">Results.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.Results.aggregations'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.Results.aggregations"><code class="docutils literal notranslate"><span class="pre">Results.aggregations()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.Results.completions'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.Results.completions"><code class="docutils literal notranslate"><span class="pre">Results.completions()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.evaluation_run.Results.metrics'" class="reference internal" href="#gen_ai_hub.evaluations.models.evaluation_run.Results.metrics"><code class="docutils literal notranslate"><span class="pre">Results.metrics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-gen_ai_hub.evaluations.models.metric_config'" class="reference internal" href="#module-gen_ai_hub.evaluations.models.metric_config">gen_ai_hub.evaluations.models.metric_config module</a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.metric_config.MetricConfig'" class="reference internal" href="#gen_ai_hub.evaluations.models.metric_config.MetricConfig"><code class="docutils literal notranslate"><span class="pre">MetricConfig</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.metric_config.MetricConfig.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.metric_config.MetricConfig.__init__"><code class="docutils literal notranslate"><span class="pre">MetricConfig.__init__()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.metric_config.MetricRef'" class="reference internal" href="#gen_ai_hub.evaluations.models.metric_config.MetricRef"><code class="docutils literal notranslate"><span class="pre">MetricRef</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.evaluations.models.metric_config.MetricRef.__init__'" class="reference internal" href="#gen_ai_hub.evaluations.models.metric_config.MetricRef.__init__"><code class="docutils literal notranslate"><span class="pre">MetricRef.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>

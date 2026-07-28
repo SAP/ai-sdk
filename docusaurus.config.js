@@ -1,4 +1,3 @@
-import { createRequire } from 'module';
 import { themes } from 'prism-react-renderer';
 import webpack from 'webpack';
 
@@ -247,6 +246,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/python',
         sidebarPath: './sidebarsDocsPython.js',
+        exclude: ['gen/**'],
         lastVersion: 'current',
         versions: {
           current: {
@@ -361,7 +361,8 @@ export default {
               rules: [
                 // Docusaurus generates files in .docusaurus/ with require() calls;
                 // treat them as non-strict so require is available in the bundle.
-                { test: /\.docusaurus\/.*\.js$/, type: 'javascript/auto' }
+                // Use [/\\] to match both Unix and Windows path separators.
+                { test: /\.docusaurus[/\\].*\.js$/, type: 'javascript/auto' }
               ]
             }
           };

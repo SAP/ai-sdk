@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Streaming | SAP Cloud SDK for AI (Python) - generative v7.2.0</title>
+<meta content="Streaming | SAP Cloud SDK for AI (Python) - generative v7.2.0" property="og:title"/>
+<meta content="Streaming | SAP Cloud SDK for AI (Python) - generative v7.2.0" name="twitter:title"/>
+<link href="../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="prompt-registry.html" rel="next" title="Prompt Registry"/>
+<link href="gen_ai_hub.html" rel="prev" title="Native Client Integrations"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README_sphynx.html">Introduction</a></li>
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../examples.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.html">Native Client Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.html#langchain-integration">Langchain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.html#sap-rpt-1-models">SAP RPT-1 Models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prompt-registry.html">Prompt Registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orchestration-service.html">Orchestration Service [Deprecated]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orchestration-service2.html">Orchestration Service V2 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document-grounding.html">Document Grounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async-examples.html">Async examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluations.html">Generative AI Custom Evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE_NOTES.html">Release Notes</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.html">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.batch_service.html">gen_ai_hub.batch_service package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.batch_service.models.html">gen_ai_hub.batch_service.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.document_grounding.html">gen_ai_hub.document_grounding package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.document_grounding.clients.html">gen_ai_hub.document_grounding.clients package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.document_grounding.models.html">gen_ai_hub.document_grounding.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.evaluations.html">gen_ai_hub.evaluations package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.evaluations.exceptions.html">gen_ai_hub.evaluations.exceptions package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.evaluations.helpers.html">gen_ai_hub.evaluations.helpers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.evaluations.models.html">gen_ai_hub.evaluations.models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.evaluations.utils.html">gen_ai_hub.evaluations.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.orchestration.html">gen_ai_hub.orchestration package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.orchestration.models.html">gen_ai_hub.orchestration.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.orchestration_v2.html">gen_ai_hub.orchestration_v2 package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.prompt_registry.html">gen_ai_hub.prompt_registry package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.prompt_registry.models.html">gen_ai_hub.prompt_registry.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.proxy.html">gen_ai_hub.proxy package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.core.html">gen_ai_hub.proxy.core package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.gen_ai_hub_proxy.html">gen_ai_hub.proxy.gen_ai_hub_proxy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.langchain.html">gen_ai_hub.proxy.langchain package</a></li>
+<li class="toctree-l3" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.proxy.native.html">gen_ai_hub.proxy.native package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l4"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.native.amazon.html">gen_ai_hub.proxy.native.amazon package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.native.google_genai.html">gen_ai_hub.proxy.native.google_genai package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.native.openai.html">gen_ai_hub.proxy.native.openai package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.native.sap.html">gen_ai_hub.proxy.native.sap package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../examples.html">Examples</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Streaming</span>
+</nav>
+<div id="content" role="main">
+<section id="streaming">
+<h1>Streaming</h1>
+<p>Streaming in AI models enables real-time data generation. With native SDKs, invocation and response formats vary by provider and model. Langchain simplifies this by offering a unified stream method.</p>
+<section id="native-sdks">
+<h2>Native SDKs</h2>
+<section id="openai-chatgpt">
+<h3>OpenAI - ChatGPT</h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.proxy.native.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">chat</span>
+</span><span id="line-2">
+</span><span id="line-3"><span class="k">def</span><span class="w"> </span><span class="nf">stream_openai</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'gpt-4o-mini'</span><span class="p">):</span>
+</span><span id="line-4">    <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-5">        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"You are a helpful assistant."</span><span class="p">},</span>
+</span><span id="line-6">        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}</span>
+</span><span id="line-7">    <span class="p">]</span>
+</span><span id="line-8">    
+</span><span id="line-9">    <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-10">    <span class="n">stream</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="line-11">    
+</span><span id="line-12">    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+</span><span id="line-13">        <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">:</span>
+</span><span id="line-14">            <span class="n">content</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
+</span><span id="line-15">            <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
+</span><span id="line-16">                <span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stream_openai</span><span class="p">(</span><span class="s2">"Why is the sky blue?"</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<section id="structured-model-outputs">
+<h4>Structured model outputs</h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.proxy</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_proxy_client</span>
+</span><span id="line-2"><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.proxy.native.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">chat</span><span class="p">,</span> <span class="n">OpenAI</span>
+</span><span id="line-3"><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+</span><span id="line-4">
+</span><span id="line-5"><span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="line-6">    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="line-7">    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="line-8">
+</span><span id="line-9"><span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Tell me about John Doe, aged 30."</span><span class="p">}]</span>
+</span><span id="line-10">
+</span><span id="line-11"><span class="k">def</span><span class="w"> </span><span class="nf">stream_openai_structured_outputs</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">response_object</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+</span><span id="line-12">     <span class="c1"># For more information, see:</span>
+</span><span id="line-13">     <span class="c1"># https://www.github.com/openai/openai-python#with_streaming_response and</span>
+</span><span id="line-14">     <span class="c1"># https://platform.openai.com/docs/guides/structured-outputs#streaming</span>
+</span><span id="line-15">    <span class="k">with</span> <span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">with_streaming_response</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+</span><span id="line-16">        <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+</span><span id="line-17">        <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+</span><span id="line-18">        <span class="n">response_format</span><span class="o">=</span><span class="n">Person</span>
+</span><span id="line-19">    <span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+</span><span id="line-20">        <span class="n">response</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span> <span class="c1"># takes care of the stream chunks and returns the final response</span>
+</span><span id="line-21">    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">parsed</span>
+</span><span id="line-22">
+</span><span id="line-23"><span class="nb">print</span><span class="p">(</span><span class="n">stream_openai_structured_outputs</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">Person</span><span class="p">,</span> <span class="s2">"gpt-4o-mini"</span><span class="p">))</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="k">def</span><span class="w"> </span><span class="nf">stream_beta_openai_structured_outputs</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">response_object</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+</span><span id="line-2">    <span class="n">chat</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">proxy_client</span><span class="o">=</span><span class="n">get_proxy_client</span><span class="p">())</span>
+</span><span id="line-3">    <span class="k">with</span> <span class="n">chat</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span>
+</span><span id="line-4">        <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+</span><span id="line-5">        <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+</span><span id="line-6">        <span class="n">response_format</span><span class="o">=</span><span class="n">Person</span>
+</span><span id="line-7">    <span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+</span><span id="line-8">        <span class="n">response</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_final_completion</span><span class="p">()</span> <span class="c1"># This will wait for the full response to be received</span>
+</span><span id="line-9">    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">parsed</span>
+</span><span id="line-10">
+</span><span id="line-11"><span class="nb">print</span><span class="p">(</span><span class="n">stream_beta_openai_structured_outputs</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">Person</span><span class="p">,</span> <span class="s2">"gpt-4o-mini"</span><span class="p">))</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="google-genai">
+<h3>Google - GenAI</h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.proxy</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_proxy_client</span>
+</span><span id="line-2"><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.proxy.native.google_genai</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+</span><span id="line-3"><span class="kn">from</span><span class="w"> </span><span class="nn">google.genai.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenerateContentConfig</span>
+</span><span id="line-4">
+</span><span id="line-5"><span class="k">def</span><span class="w"> </span><span class="nf">stream_genai</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'gemini-2.0-flash'</span><span class="p">):</span>
+</span><span id="line-6">    <span class="n">proxy_client</span> <span class="o">=</span> <span class="n">get_proxy_client</span><span class="p">(</span><span class="s1">'gen-ai-hub'</span><span class="p">)</span>
+</span><span id="line-7">    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">proxy_client</span><span class="o">=</span><span class="n">proxy_client</span><span class="p">)</span>
+</span><span id="line-8">    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">generate_content_stream</span><span class="p">(</span>
+</span><span id="line-9">        <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+</span><span id="line-10">        <span class="n">contents</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+</span><span id="line-11">        <span class="n">config</span><span class="o">=</span><span class="n">GenerateContentConfig</span><span class="p">(</span><span class="n">max_output_tokens</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+</span><span id="line-12">    <span class="p">)</span>
+</span><span id="line-13">    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+</span><span id="line-14">        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stream_genai</span><span class="p">(</span><span class="s2">"Why is the sky blue?"</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="anthropic-claude">
+<h3>Anthropic - Claude</h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="line-2"><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.proxy.native.amazon</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
+</span><span id="line-3">
+</span><span id="line-4"><span class="k">def</span><span class="w"> </span><span class="nf">stream_claude</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'anthropic--claude-3-haiku'</span><span class="p">):</span>
+</span><span id="line-5">    <span class="n">bedrock</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+</span><span id="line-6">    <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+</span><span id="line-7">      <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+</span><span id="line-8">      <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}],</span>
+</span><span id="line-9">      <span class="s2">"anthropic_version"</span><span class="p">:</span> <span class="s2">"bedrock-2023-05-31"</span>
+</span><span id="line-10">    <span class="p">})</span>
+</span><span id="line-11">    
+</span><span id="line-12">    <span class="n">response</span> <span class="o">=</span> <span class="n">bedrock</span><span class="o">.</span><span class="n">invoke_model_with_response_stream</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+</span><span id="line-13">    <span class="n">stream</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"body"</span><span class="p">)</span>
+</span><span id="line-14">    
+</span><span id="line-15">    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+</span><span id="line-16">        <span class="n">chunk</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s2">"chunk"</span><span class="p">][</span><span class="s2">"bytes"</span><span class="p">])</span>
+</span><span id="line-17">        <span class="k">if</span> <span class="n">chunk</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"content_block_delta"</span><span class="p">:</span>
+</span><span id="line-18">          <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stream_claude</span><span class="p">(</span><span class="s2">"Why is the sky blue?"</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="amazon-bedrock">
+<h3>Amazon - Bedrock</h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="line-2"><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.proxy.native.amazon</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
+</span><span id="line-3">
+</span><span id="line-4"><span class="k">def</span><span class="w"> </span><span class="nf">stream_bedrock</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'amazon--nova-pro'</span><span class="p">):</span>
+</span><span id="line-5">    <span class="n">bedrock</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+</span><span id="line-6">    <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+</span><span id="line-7">        <span class="s2">"schemaVersion"</span><span class="p">:</span> <span class="s2">"messages-v1"</span><span class="p">,</span>
+</span><span id="line-8">        <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"text"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}]}],</span>
+</span><span id="line-9">        <span class="s2">"system"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Act as a creative writing assistant."</span><span class="p">}],</span>
+</span><span id="line-10">        <span class="s2">"inferenceConfig"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"maxTokens"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s2">"topP"</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">"topK"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+</span><span id="line-11">    <span class="p">})</span>
+</span><span id="line-12">
+</span><span id="line-13">    <span class="n">response</span> <span class="o">=</span> <span class="n">bedrock</span><span class="o">.</span><span class="n">invoke_model_with_response_stream</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+</span><span id="line-14">    <span class="n">stream</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"body"</span><span class="p">)</span>
+</span><span id="line-15">    <span class="n">chunk_count</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="line-16">    <span class="n">answer</span> <span class="o">=</span> <span class="s2">""</span>
+</span><span id="line-17">    <span class="k">if</span> <span class="n">stream</span><span class="p">:</span>
+</span><span id="line-18">        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+</span><span id="line-19">            <span class="n">chunk</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"chunk"</span><span class="p">)</span>
+</span><span id="line-20">            <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
+</span><span id="line-21">                <span class="n">chunk_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"bytes"</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span><span id="line-22">                <span class="n">content_block_delta</span> <span class="o">=</span> <span class="n">chunk_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"contentBlockDelta"</span><span class="p">)</span>
+</span><span id="line-23">                <span class="k">if</span> <span class="n">content_block_delta</span><span class="p">:</span>
+</span><span id="line-24">                    <span class="n">chunk_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="line-25">                    <span class="n">answer</span> <span class="o">+=</span> <span class="n">content_block_delta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"delta"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+</span><span id="line-26">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total chunks: </span><span class="si">{</span><span class="n">chunk_count</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-27">        <span class="nb">print</span><span class="p">(</span><span class="s2">"Final answer:"</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+</span><span id="line-28">    <span class="k">else</span><span class="p">:</span>
+</span><span id="line-29">        <span class="nb">print</span><span class="p">(</span><span class="s2">"No response stream received."</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stream_bedrock</span><span class="p">(</span><span class="s2">"Why is the sky blue?"</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="langchain">
+<h2>Langchain</h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">gen_ai_hub.proxy.langchain</span><span class="w"> </span><span class="kn">import</span> <span class="n">init_llm</span>
+</span><span id="line-2">
+</span><span id="line-3"><span class="k">def</span><span class="w"> </span><span class="nf">stream_langchain</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+</span><span id="line-4">    <span class="n">llm</span> <span class="o">=</span> <span class="n">init_llm</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</span><span id="line-5">    
+</span><span id="line-6">    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">llm</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">prompt</span><span class="p">):</span>
+</span><span id="line-7">        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stream_langchain</span><span class="p">(</span><span class="s2">"How do airplanes stay in the air?"</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'gpt-4o-mini'</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stream_langchain</span><span class="p">(</span><span class="s2">"How do airplanes stay in the air?"</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'gemini-2.0-flash'</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stream_langchain</span><span class="p">(</span><span class="s2">"How do airplanes stay in the air?"</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'anthropic--claude-3-haiku'</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">stream_langchain</span><span class="p">(</span><span class="s2">"How do airplanes stay in the air?"</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'amazon--nova-premier'</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#native-sdks'" class="reference internal" href="#native-sdks">Native SDKs</a><ul>
+<li><a :data-current="activeSection === '#openai-chatgpt'" class="reference internal" href="#openai-chatgpt">OpenAI - ChatGPT</a><ul>
+<li><a :data-current="activeSection === '#structured-model-outputs'" class="reference internal" href="#structured-model-outputs">Structured model outputs</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#google-genai'" class="reference internal" href="#google-genai">Google - GenAI</a></li>
+<li><a :data-current="activeSection === '#anthropic-claude'" class="reference internal" href="#anthropic-claude">Anthropic - Claude</a></li>
+<li><a :data-current="activeSection === '#amazon-bedrock'" class="reference internal" href="#amazon-bedrock">Amazon - Bedrock</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#langchain'" class="reference internal" href="#langchain">Langchain</a></li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>

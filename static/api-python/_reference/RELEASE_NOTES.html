@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Release Notes | SAP Cloud SDK for AI (Python) - generative v7.2.0</title>
+<meta content="Release Notes | SAP Cloud SDK for AI (Python) - generative v7.2.0" property="og:title"/>
+<meta content="Release Notes | SAP Cloud SDK for AI (Python) - generative v7.2.0" name="twitter:title"/>
+<link href="../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../_api_doc/gen_ai_hub.html" rel="next" title="gen_ai_hub package"/>
+<link href="evaluations.html" rel="prev" title="Generative AI Custom Evaluation"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README_sphynx.html">Introduction</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../examples.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.html">Native Client Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.html#langchain-integration">Langchain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.html#sap-rpt-1-models">SAP RPT-1 Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prompt-registry.html">Prompt Registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orchestration-service.html">Orchestration Service [Deprecated]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orchestration-service2.html">Orchestration Service V2 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document-grounding.html">Document Grounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async-examples.html">Async examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluations.html">Generative AI Custom Evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Release Notes</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.html">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.batch_service.html">gen_ai_hub.batch_service package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.batch_service.models.html">gen_ai_hub.batch_service.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.document_grounding.html">gen_ai_hub.document_grounding package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.document_grounding.clients.html">gen_ai_hub.document_grounding.clients package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.document_grounding.models.html">gen_ai_hub.document_grounding.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.evaluations.html">gen_ai_hub.evaluations package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.evaluations.exceptions.html">gen_ai_hub.evaluations.exceptions package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.evaluations.helpers.html">gen_ai_hub.evaluations.helpers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.evaluations.models.html">gen_ai_hub.evaluations.models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.evaluations.utils.html">gen_ai_hub.evaluations.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.orchestration.html">gen_ai_hub.orchestration package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.orchestration.models.html">gen_ai_hub.orchestration.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.orchestration_v2.html">gen_ai_hub.orchestration_v2 package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.prompt_registry.html">gen_ai_hub.prompt_registry package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.prompt_registry.models.html">gen_ai_hub.prompt_registry.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.proxy.html">gen_ai_hub.proxy package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.core.html">gen_ai_hub.proxy.core package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.gen_ai_hub_proxy.html">gen_ai_hub.proxy.gen_ai_hub_proxy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.langchain.html">gen_ai_hub.proxy.langchain package</a></li>
+<li class="toctree-l3" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../_api_doc/gen_ai_hub.proxy.native.html">gen_ai_hub.proxy.native package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l4"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.native.amazon.html">gen_ai_hub.proxy.native.amazon package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.native.google_genai.html">gen_ai_hub.proxy.native.google_genai package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.native.openai.html">gen_ai_hub.proxy.native.openai package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_api_doc/gen_ai_hub.proxy.native.sap.html">gen_ai_hub.proxy.native.sap package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Release Notes</span>
+</nav>
+<div id="content" role="main">
+<section id="release-notes">
+<h1>Release Notes</h1>
+<section id="id1">
+<h2>7.2.0</h2>
+<section id="features">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added Support for LLM Batch Service, see <a class="reference internal" href="../_api_doc/gen_ai_hub.batch_service.html#module-gen_ai_hub.batch_service" title="gen_ai_hub.batch_service"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">batch_service</span></code></a></p></li>
+</ul>
+</section>
+<section id="bugfixes">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Upgraded langchain</p></li>
+<li><p>Upgraded langchain-aws</p></li>
+<li><p>Upgraded langchain-google-genai</p></li>
+<li><p>Upgraded langchain-openai</p></li>
+<li><p>Upgraded google-genai to v2</p></li>
+<li><p>Fixed OrchestrationV2 response handling</p></li>
+<li><p>Removed hard-coded model lists. New versions of existing models will be automatically supported.</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2>6.10.0</h2>
+<section id="id3">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added model_version as model identifier</p></li>
+<li><p>Updated Prompt Registry Client to align with API changes</p></li>
+<li><p>Added support for OpenAI Responses API, see <a class="reference internal" href="gen_ai_hub.html#responses-api"><span class="std std-ref">Responses API</span></a></p></li>
+<li><p>Enabled flat import for Model/Client classes</p></li>
+<li><p>Added support for newly added models to the AI Core, see <a class="reference internal" href="README_sphynx.html#supported-models"><span class="std std-ref">Supported Models</span></a></p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Upgraded google-genai</p></li>
+<li><p>Upgraded langchain</p></li>
+</ul>
+</section>
+</section>
+<section id="id5">
+<h2>6.7.0</h2>
+<section id="id6">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for Orchestration Config API of Prompt Registry, see <a class="reference internal" href="prompt-registry.html#orchestration-config-api"><span class="std std-ref">Orchestration Config Management</span></a></p></li>
+<li><p>Added retry logic for token retrieval</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Upgraded langchain-aws</p></li>
+</ul>
+</section>
+</section>
+<section id="id8">
+<h2>6.6.0</h2>
+<section id="id9">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Replaced the lingua-language-detector library, which was causing version conflict issues.</p></li>
+</ul>
+</section>
+</section>
+<section id="id10">
+<h2>6.5.0</h2>
+<section id="id11">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Enabled providing additional headers for Grounding Clients (Pipeline API Client, Retrieval API Client &amp; Vector API Client)</p></li>
+<li><p>Added support for Orchestration V2 API /embeddings endpoint, see <a class="reference internal" href="orchestration-service2.html#orchestration2"><span class="std std-ref">Orchestration Service V2 API</span></a></p></li>
+<li><p>Added Evaluations Client, see <a class="reference internal" href="evaluations.html#evaluations"><span class="std std-ref">Generative AI Custom Evaluation</span></a></p></li>
+<li><p>Added support for RPT-1 models, see <a class="reference internal" href="gen_ai_hub.html#rpt-models"><span class="std std-ref">SAP RPT-1 Models</span></a></p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Fixed the issue regarding the handling of large streaming responses in AsyncSSEClient</p></li>
+<li><p>Upgraded langchain version</p></li>
+<li><p>Adjusted to the changes in Orchestration V2 API</p></li>
+<li><p>Removed aiboto3 dependency in favor of aibotocore</p></li>
+</ul>
+</section>
+</section>
+<section id="id13">
+<h2>6.1.2</h2>
+<section id="breaking-changes">
+<h3>Breaking Changes</h3>
+<ul class="simple">
+<li><p>Switch to <a class="reference external" href="https://docs.langchain.com/oss/python/langchain/overview">langchain 1.x</a> This also results in upgrading of dependent langchain libraries. You need to ensure your code works with the upgraded dependencies. Langchain 0.3.x is no longer supported in the SDK. Please refer to <a class="reference internal" href="README_sphynx.html#package-dependencies"><span class="std std-ref">Package dependencies</span></a> for details on the dependencies.</p></li>
+<li><p>Switch from langchain-google-vertexai to langchain-google-genai and google-cloud-aiplatform to google-genai due to <a class="reference external" href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/deprecations/genai-vertexai-sdk">deprecation of these libraries</a></p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for additional embedding models: Amazon Titan Embedding, Llama 3.2 Embedding, Google Gemini Embedding</p></li>
+</ul>
+</section>
+</section>
+<section id="id15">
+<h2>5.11.0</h2>
+<section id="id16">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for orchestration V2 API. For details, see <a class="reference internal" href="orchestration-service2.html#orchestration2"><span class="std std-ref">Orchestration Service V2 API</span></a>.</p></li>
+<li><p>Added API reference documentation</p></li>
+<li><p>Added support for new models: Claude 4.5 Sonnet, Claude 4.5 Haiku, Cohere Command-a-reasoning, Cohere reranker, Gemini 2.5 Flash Lite, Perplexity Sonar, Perplexity Sonar-Pro, Mistral Medium</p></li>
+<li><p>Removed decomissioned models: IBM granite 13b, Meta Llama 3.1, Claude 3 Opus</p></li>
+</ul>
+</section>
+</section>
+<section id="id17">
+<h2>5.10.0</h2>
+<section id="id18">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added retry logic for orchestration service with exponential backoff. Use method "run_with_retries" instead of "run" for your orchestration service instance.</p></li>
+</ul>
+</section>
+</section>
+<section id="id19">
+<h2>5.9.0</h2>
+<section id="id20">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Upgraded boto3 and langchain-aws dependencies and relaxed the dependecy to pydantic libary, see <a class="reference internal" href="README_sphynx.html#package-dependencies"><span class="std std-ref">Package dependencies</span></a> for details.</p></li>
+</ul>
+</section>
+</section>
+<section id="id21">
+<h2>5.8.0</h2>
+<section id="id22">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added additional apis for document grounding: vector api and retrieval api support and additional methods for pipelines api.</p></li>
+</ul>
+</section>
+</section>
+<section id="id23">
+<h2>5.7.5</h2>
+<section id="id24">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for new models: Amazon Nova Premier, Claude 4 Opus, Gemini 2.5-flash, Gemini 2.5-pro, GPT-5, GPT-5-mini, GPT-5-nano, Mistral Small Instruct. See <a class="reference internal" href="README_sphynx.html#supported-models"><span class="std std-ref">Supported Models</span></a> for a comprehensive overview of supported models.</p></li>
+<li><p>Removed old models: Amazon Titan Text Express/Lite, Gemini 1.5-flash, Gemini 1.5-pro, Claude 3 Sonnet</p></li>
+<li><p>Allow botocore.config as input for Amazon Bedrock to set additional parameters, e.g. connect_timeout</p></li>
+</ul>
+</section>
+<section id="id25">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Upgraded langchain-google-vertexai to fix a <a class="reference external" href="https://github.com/langchain-ai/langchain-google/issues/1057">bug in ChatVertexAI</a></p></li>
+<li><p>Upgraded boto3 and langchain-aws dependencies to allow tool binding with Claude 4</p></li>
+</ul>
+</section>
+</section>
+<section id="id26">
+<h2>5.6.3</h2>
+<section id="id27">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for converse_stream for aws models and event streams</p></li>
+</ul>
+</section>
+<section id="id28">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Display deployment not found error in orchestration</p></li>
+<li><p>Return http headers from orchestration in case of error</p></li>
+</ul>
+</section>
+</section>
+<section id="id29">
+<h2>5.5.0</h2>
+<section id="id30">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for Claude 4 Sonnet</p></li>
+</ul>
+</section>
+<section id="id31">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Upgraded langchain-google-vertexai to fix a bug with streaming on newer gemini models</p></li>
+<li><p>Fix issue where template input parameters would be converted to CamelCase when sending to prompt registry API</p></li>
+</ul>
+</section>
+</section>
+<section id="id32">
+<h2>5.4.5</h2>
+<section id="id33">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for additional storage types (S3/SFTP) for the Grounding module of the Orchestration Service.</p></li>
+</ul>
+</section>
+</section>
+<section id="id34">
+<h2>5.4.1</h2>
+<section id="id35">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for images in the orchestration service. See <a class="reference internal" href="orchestration-service2.html#input-images"><span class="std std-ref">Using Images as Input</span></a> for details.</p></li>
+<li><p>Added timeout parameter for amazon native streaming calls in method <code class="docutils literal notranslate"><span class="pre">invoke_model_with_response_stream</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="id36">
+<h2>5.3.4</h2>
+<section id="id37">
+<h3>Breaking Changes</h3>
+<ul class="simple">
+<li><p>Switch to different distribution name as part of a rebranding to <code class="docutils literal notranslate"><span class="pre">SAP</span> <span class="pre">Cloud</span> <span class="pre">SDK</span> <span class="pre">for</span> <span class="pre">AI</span> <span class="pre">(Python)</span> <span class="pre">-</span> <span class="pre">generative</span></code>. See <a class="reference internal" href="README_sphynx.html#installation"><span class="std std-ref">Installation</span></a> for details. The package and subpackage names are unchanged, therefore no code adjustment is necessary, only the installation of the SDK has changed.</p></li>
+</ul>
+</section>
+<section id="id38">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for the translation module in the orchestration service. See <a class="reference internal" href="orchestration-service2.html#translation"><span class="std std-ref">Translation</span></a> for details.</p></li>
+<li><p>Added support for function calling in the orchestration service. See <a class="reference internal" href="orchestration-service2.html#tool-calling"><span class="std std-ref">Tool Calling (Function Calling)</span></a> for details.</p></li>
+<li><p>Added support for OpenAI o3, o4-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano models.</p></li>
+<li><p>Reworked the langchain dependency chain, only installing the vendor specific langchain libraries on demand, see <a class="reference internal" href="README_sphynx.html#installation"><span class="std std-ref">Installation</span></a> for details.</p></li>
+</ul>
+</section>
+<section id="id39">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Set the dependency to h11 library and relaxed the dependecy to pydantic libary, see <a class="reference internal" href="README_sphynx.html#package-dependencies"><span class="std std-ref">Package dependencies</span></a> for details.</p></li>
+</ul>
+</section>
+</section>
+<section id="id40">
+<h2>4.12.1</h2>
+<section id="id41">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for Anthropic Claude 3.7 Sonnet model.</p></li>
+<li><p>Added support for gemini-2.0 and gemini-2.0-flash models.</p></li>
+<li><p>Retirement of Gemini 1.0 Pro.</p></li>
+<li><p>Added async examples for bedrock and vertex models. See <a class="reference internal" href="async-examples.html#async-examples"><span class="std std-ref">Async examples</span></a> for details.</p></li>
+<li><p>Deprecation of SAP Generative AI Hub SDK, as it will be rebranded to sap-ai-sdk-gen.</p></li>
+</ul>
+</section>
+</section>
+<section id="id42">
+<h2>4.10.2</h2>
+<section id="id43">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Added support for OpenAI o1 and o3-mini models.</p></li>
+<li><p>Added support for AWS amazon--nova-micro, amazon--nova-lite, and amazon--nova-pro models.</p></li>
+<li><p>Added support for asynchronous calls to Bedrock models.</p></li>
+<li><p>Added support for asynchronous calls to Vertex models.</p></li>
+<li><p>Added support for <code class="docutils literal notranslate"><span class="pre">masked_grounding_input</span></code> and <code class="docutils literal notranslate"><span class="pre">allowlist</span></code> also for the grounding output in the orchestration service. See <a class="reference internal" href="orchestration-service2.html#allow-list"><span class="std std-ref">Configuration Options</span></a> for details.</p></li>
+<li><p>Deprecation of <code class="docutils literal notranslate"><span class="pre">input_filters</span></code> and <code class="docutils literal notranslate"><span class="pre">output_filters</span></code> in the orchestration configuration, use <code class="docutils literal notranslate"><span class="pre">ContentFiltering</span></code> instead. See <a class="reference internal" href="orchestration-service2.html#content-filtering"><span class="std std-ref">Content Filtering</span></a> for details.</p></li>
+</ul>
+</section>
+</section>
+<section id="id44">
+<h2>4.4.3</h2>
+<section id="id45">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Add support for LlamaGuard38b content filtering in the orchestration service. You can use LlamaGuard38b filters for filtering input and output along different content categories, see <a class="reference external" href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering?locale=en-US">SAP AI Core help documentation</a>. For usage examples, see <a class="reference internal" href="orchestration-service2.html#content-filtering"><span class="std std-ref">Content Filtering</span></a></p></li>
+<li><p>Add support for grounding metadata parameters, see <a class="reference external" href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/metadata?locale=en-US">SAP AI Core help documentation</a></p></li>
+<li><p>Add support for asynchronous calls to orchestration service. See <a class="reference internal" href="orchestration-service2.html#orchestration-async"><span class="std std-ref">Async Support</span></a> for details.</p></li>
+</ul>
+</section>
+</section>
+<section id="id46">
+<h2>4.3.1</h2>
+<section id="id47">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Add support for prompt registry APIs. You can create, retrieve and modify prompt templates from the prompt repository. For example usage, see <a class="reference internal" href="prompt-registry.html#prompt-registry-notebook"><span class="std std-ref">Prompt Registry</span></a></p></li>
+<li><p>Add support for grounding in orchestration. You can now configure the grounding module in the orchestration service.</p></li>
+<li><p>Add support for structured output in the orchestration service by specifying the response format, for instance text or json. See <a class="reference internal" href="orchestration-service2.html#response-format"><span class="std std-ref">Overview of response_format Parameter Options</span></a> for details.</p></li>
+<li><p>Add autodiscovery for orchestration deployments. See <a class="reference internal" href="orchestration-service2.html#orchestration-deployment"><span class="std std-ref">Understanding Deployment Resolution</span></a> for details.</p></li>
+</ul>
+</section>
+<section id="id48">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>OpenAI deprecated max_tokens in favor of max_completion_tokens parameter. This was now also included in the generative AI Hub SDK and the dependency of the langchain-openai version could be relaxed.</p></li>
+</ul>
+</section>
+</section>
+<section id="id49">
+<h2>4.1.1</h2>
+<section id="id50">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Add support for prompt registry templates in orchestration. You can now configure a prompt registry template in the orchestration service call by referencing the ID or scenario, template name, and version. See <a class="reference internal" href="orchestration-service2.html#prompt-registry"><span class="std std-ref">Referencing Templates in the Prompt Registry</span></a></p></li>
+</ul>
+</section>
+<section id="id51">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Set langchain-openai==0.2.9 due to max_completion_token issues with later versions.</p></li>
+</ul>
+</section>
+</section>
+<section id="id52">
+<h2>4.0.0</h2>
+<section id="id53">
+<h3>Breaking Changes</h3>
+<ul class="simple">
+<li><p>Switch to <a class="reference external" href="https://python.langchain.com/docs/versions/v0_3/">langchain 0.3.x</a> This also results in upgrading of dependent langchain libraries and a transition to pydantic v2. You need to ensure your code works with the upgraded dependencies. Langchain 0.2.x is no longer supported in the SDK. Please refer to <a class="reference internal" href="README_sphynx.html#package-dependencies"><span class="std std-ref">Package dependencies</span></a> for details on the dependencies.</p></li>
+</ul>
+</section>
+<section id="id54">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Add support for streaming in orchestration service. See the example notebook here: <a class="reference internal" href="orchestration-service2.html#orchestration-streaming"><span class="std std-ref">Streaming</span></a>.</p></li>
+<li><p>Add enhanced debug logging: When log level debug is enabled the source of configuration will be logged to support troubleshooting.</p></li>
+</ul>
+</section>
+</section>
+<section id="id55">
+<h2>3.8.0</h2>
+<section id="id56">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Add support for mistralai--mistral-large-instruct model</p></li>
+<li><p>Add support for ibm--granite-13b-chat model</p></li>
+<li><p>Add capability to access unsupported models, see the example notebook <a class="reference internal" href="#unsupported_models"><code class="xref myst docutils literal notranslate"><span class="pre">unsupported_models</span></code></a> for details.</p></li>
+<li><p>Add enhanced logging for API calls</p>
+<ul>
+<li><p>By setting the environment variable <code class="docutils literal notranslate"><span class="pre">DEBUG_LOG_API_CALLS</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, all calls to the backend are logged for better error diagnosis</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id57">
+<h2>3.2.6</h2>
+<section id="id58">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Add support for orchestration service: data masking. See the example notebook section <a class="reference internal" href="orchestration-service2.html#content-filtering"><span class="std std-ref">Content Filtering</span></a> for details.</p></li>
+</ul>
+</section>
+<section id="id59">
+<h3>Bugfixes</h3>
+<ul class="simple">
+<li><p>Bugfix for x509 certificate authentication support</p></li>
+</ul>
+</section>
+</section>
+<section id="id60">
+<h2>3.1.1</h2>
+<section id="id61">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Add support for gpt-4o model</p></li>
+</ul>
+</section>
+</section>
+<section id="id62">
+<h2>3.1.0</h2>
+<section id="id63">
+<h3>Breaking Changes</h3>
+<ul class="simple">
+<li><p>Switch to vertexAI SDK for native Google model access. The previous library 'google-generativeai' is no longer supported by the generative AI Hub SDK.</p></li>
+</ul>
+</section>
+<section id="id64">
+<h3>Features</h3>
+<ul class="simple">
+<li><p>Add support for orchestration service: templating, content safety, inference. See the example notebook <a class="reference internal" href="orchestration-service.html#orchestration"><span class="std std-ref">Orchestration Service [Deprecated]</span></a> for details.</p></li>
+<li><p>Add support for anthropic--claude-3.5-sonnet model</p></li>
+</ul>
+</section>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#id1'" class="reference internal" href="#id1">7.2.0</a><ul>
+<li><a :data-current="activeSection === '#features'" class="reference internal" href="#features">Features</a></li>
+<li><a :data-current="activeSection === '#bugfixes'" class="reference internal" href="#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id2'" class="reference internal" href="#id2">6.10.0</a><ul>
+<li><a :data-current="activeSection === '#id3'" class="reference internal" href="#id3">Features</a></li>
+<li><a :data-current="activeSection === '#id4'" class="reference internal" href="#id4">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id5'" class="reference internal" href="#id5">6.7.0</a><ul>
+<li><a :data-current="activeSection === '#id6'" class="reference internal" href="#id6">Features</a></li>
+<li><a :data-current="activeSection === '#id7'" class="reference internal" href="#id7">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id8'" class="reference internal" href="#id8">6.6.0</a><ul>
+<li><a :data-current="activeSection === '#id9'" class="reference internal" href="#id9">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id10'" class="reference internal" href="#id10">6.5.0</a><ul>
+<li><a :data-current="activeSection === '#id11'" class="reference internal" href="#id11">Features</a></li>
+<li><a :data-current="activeSection === '#id12'" class="reference internal" href="#id12">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id13'" class="reference internal" href="#id13">6.1.2</a><ul>
+<li><a :data-current="activeSection === '#breaking-changes'" class="reference internal" href="#breaking-changes">Breaking Changes</a></li>
+<li><a :data-current="activeSection === '#id14'" class="reference internal" href="#id14">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id15'" class="reference internal" href="#id15">5.11.0</a><ul>
+<li><a :data-current="activeSection === '#id16'" class="reference internal" href="#id16">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id17'" class="reference internal" href="#id17">5.10.0</a><ul>
+<li><a :data-current="activeSection === '#id18'" class="reference internal" href="#id18">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id19'" class="reference internal" href="#id19">5.9.0</a><ul>
+<li><a :data-current="activeSection === '#id20'" class="reference internal" href="#id20">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id21'" class="reference internal" href="#id21">5.8.0</a><ul>
+<li><a :data-current="activeSection === '#id22'" class="reference internal" href="#id22">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id23'" class="reference internal" href="#id23">5.7.5</a><ul>
+<li><a :data-current="activeSection === '#id24'" class="reference internal" href="#id24">Features</a></li>
+<li><a :data-current="activeSection === '#id25'" class="reference internal" href="#id25">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id26'" class="reference internal" href="#id26">5.6.3</a><ul>
+<li><a :data-current="activeSection === '#id27'" class="reference internal" href="#id27">Features</a></li>
+<li><a :data-current="activeSection === '#id28'" class="reference internal" href="#id28">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id29'" class="reference internal" href="#id29">5.5.0</a><ul>
+<li><a :data-current="activeSection === '#id30'" class="reference internal" href="#id30">Features</a></li>
+<li><a :data-current="activeSection === '#id31'" class="reference internal" href="#id31">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id32'" class="reference internal" href="#id32">5.4.5</a><ul>
+<li><a :data-current="activeSection === '#id33'" class="reference internal" href="#id33">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id34'" class="reference internal" href="#id34">5.4.1</a><ul>
+<li><a :data-current="activeSection === '#id35'" class="reference internal" href="#id35">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id36'" class="reference internal" href="#id36">5.3.4</a><ul>
+<li><a :data-current="activeSection === '#id37'" class="reference internal" href="#id37">Breaking Changes</a></li>
+<li><a :data-current="activeSection === '#id38'" class="reference internal" href="#id38">Features</a></li>
+<li><a :data-current="activeSection === '#id39'" class="reference internal" href="#id39">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id40'" class="reference internal" href="#id40">4.12.1</a><ul>
+<li><a :data-current="activeSection === '#id41'" class="reference internal" href="#id41">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id42'" class="reference internal" href="#id42">4.10.2</a><ul>
+<li><a :data-current="activeSection === '#id43'" class="reference internal" href="#id43">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id44'" class="reference internal" href="#id44">4.4.3</a><ul>
+<li><a :data-current="activeSection === '#id45'" class="reference internal" href="#id45">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id46'" class="reference internal" href="#id46">4.3.1</a><ul>
+<li><a :data-current="activeSection === '#id47'" class="reference internal" href="#id47">Features</a></li>
+<li><a :data-current="activeSection === '#id48'" class="reference internal" href="#id48">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id49'" class="reference internal" href="#id49">4.1.1</a><ul>
+<li><a :data-current="activeSection === '#id50'" class="reference internal" href="#id50">Features</a></li>
+<li><a :data-current="activeSection === '#id51'" class="reference internal" href="#id51">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id52'" class="reference internal" href="#id52">4.0.0</a><ul>
+<li><a :data-current="activeSection === '#id53'" class="reference internal" href="#id53">Breaking Changes</a></li>
+<li><a :data-current="activeSection === '#id54'" class="reference internal" href="#id54">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id55'" class="reference internal" href="#id55">3.8.0</a><ul>
+<li><a :data-current="activeSection === '#id56'" class="reference internal" href="#id56">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id57'" class="reference internal" href="#id57">3.2.6</a><ul>
+<li><a :data-current="activeSection === '#id58'" class="reference internal" href="#id58">Features</a></li>
+<li><a :data-current="activeSection === '#id59'" class="reference internal" href="#id59">Bugfixes</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id60'" class="reference internal" href="#id60">3.1.1</a><ul>
+<li><a :data-current="activeSection === '#id61'" class="reference internal" href="#id61">Features</a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#id62'" class="reference internal" href="#id62">3.1.0</a><ul>
+<li><a :data-current="activeSection === '#id63'" class="reference internal" href="#id63">Breaking Changes</a></li>
+<li><a :data-current="activeSection === '#id64'" class="reference internal" href="#id64">Features</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>
