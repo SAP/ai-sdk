@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>ai_core_sdk package | SAP Cloud SDK for AI (Python) - core v3.3.1</title>
+<meta content="ai_core_sdk package | SAP Cloud SDK for AI (Python) - core v3.3.1" property="og:title"/>
+<meta content="ai_core_sdk package | SAP Cloud SDK for AI (Python) - core v3.3.1" name="twitter:title"/>
+<link href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom-override.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="ai_core_sdk.helpers.html" rel="next" title="ai_core_sdk.helpers package"/>
+<link href="../index.html" rel="prev" title="SAP Cloud SDK for AI (Python) - core"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="current reference internal expandable" href="#">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.helpers.html">ai_core_sdk.helpers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.models.html">ai_core_sdk.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.resource_clients.html">ai_core_sdk.resource_clients package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.tracking.html">ai_core_sdk.tracking package</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">ai_core_sdk package</span>
+</nav>
+<div id="content" role="main">
+<section id="module-ai_core_sdk">
+<span id="ai-core-sdk-package"></span><h1>ai_core_sdk package</h1>
+<section id="subpackages">
+<h2>Subpackages</h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ai_core_sdk.helpers.html">ai_core_sdk.helpers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ai_core_sdk.models.html">ai_core_sdk.models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ai_core_sdk.resource_clients.html">ai_core_sdk.resource_clients package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ai_core_sdk.tracking.html">ai_core_sdk.tracking package</a></li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules</h2>
+</section>
+<section id="module-ai_core_sdk.ai_core_v2_client">
+<span id="ai-core-sdk-ai-core-v2-client-module"></span><h2>ai_core_sdk.ai_core_v2_client module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.ai_core_v2_client.AICoreV2Client">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AICoreV2Client</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The AICoreV2Client is the class implemented to interact with the AI Core endpoints. The user can use its
+attributes corresponding to the resources, for interacting with endpoints related to that resource. (i.e.,
+aicoreclient.scenario)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<em>str</em>) -- Base URL of the AI Core. Should include the base path as well. (i.e., "&lt;base_url&gt;/lm/scenarios"
+should work)</p></li>
+<li><p><strong>auth_url</strong> (<em>str</em><em>, </em><em>optional</em>) -- URL of the authorization endpoint. Should be the full URL (including /oauth/token), defaults to
+None</p></li>
+<li><p><strong>client_id</strong> (<em>str</em><em>, </em><em>optional</em>) -- client id to be used for authorization, defaults to None</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em><em>, </em><em>optional</em>) -- client secret to be used for authorization, defaults to None</p></li>
+<li><p><strong>cert_str</strong> (<em>str</em><em>, </em><em>optional</em>) -- certificate file content, needs to be provided alongside the key_str parameter, defaults to None</p></li>
+<li><p><strong>key_str</strong> (<em>str</em><em>, </em><em>optional</em>) -- key file content, needs to be provided alongside the cert_str parameter, defaults to None</p></li>
+<li><p><strong>cert_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) -- path to the certificate file, needs to be provided alongside the key_file_path parameter,
+defaults to None</p></li>
+<li><p><strong>key_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) -- path to the key file, needs to be provided alongside the cert_file_path parameter,
+defaults to None</p></li>
+<li><p><strong>token_creator</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- the function which returns the Bearer token, when called. Either this, or
+auth_url &amp; client_id &amp; client_secret should be specified, defaults to None</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em><em>, </em><em>optional</em>) -- The default resource group which will be used while sending the requests to the server. If
+not set, the resource_group should be specified with every request to the server, defaults to None</p></li>
+<li><p><strong>client_type</strong> (<em>str</em><em>, </em><em>optional</em>) -- The client type which will be sent in the User-Agent header of the requests, defaults to
+"AI Core Python SDK"</p></li>
+<li><p><strong>**kwargs</strong> -- <ul>
+<li><p><em>read_timeout</em> (int): Read timeout for requests in seconds, defaults to 60s</p></li>
+<li><p><em>connect_timeout</em> (int): Connect timeout for requests in seconds, defaults to 60s</p></li>
+<li><p><em>num_request_retries</em> (int): Number of retries for failing requests with http status code 429, 500, 502, 503 or 504, defaults to 10</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.ai_core_v2_client.AICoreV2Client.from_env">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Alternative way to create an AICoreV2Client object.
+Parameters for base_url, auth_url, client_id, client_secret, x.509 credentials (either as file path or string)
+and resource_group can be passed as keyword or are pulled from environment variables.
+It is also possible to use a profile, which is a json file in the config directory. The profile name can be
+passed as keyword or is pulled from the environment variable AICORE_PROFILE. If no profile is specified,
+the default profile is used.
+A specific path to a config, that should be used, can be set via the environment variable AICORE_CONFIG.
+The hierarchy of precedence is:
+1. keyword argument
+2. environment variable
+3. configuration file
+4. value from VCAP_SERVICES environment variable, if exists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>profile_name</strong> (<em>optional</em><em>, </em><em>str</em>) -- name of the profile to use, defaults to None. If None is passed, the profile is read from
+the environment variable AICORE_PROFILE. If this is not set, the default profile is used.
+The default profile is read from $AICORE_HOME/config.json.</p>
+</dd>
+</dl>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs: check the parameters of the class constructor</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.ai_core_v2_client.AICoreV2Client.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_creator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AI</span> <span class="pre">Core</span> <span class="pre">Python</span> <span class="pre">SDK'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>auth_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em>)</p></li>
+<li><p><strong>cert_str</strong> (<em>str</em>)</p></li>
+<li><p><strong>key_str</strong> (<em>str</em>)</p></li>
+<li><p><strong>cert_file_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>key_file_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>token_creator</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_type</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.ai_core_v2_client.AICoreV2Client.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">ai_core_sdk</span> <span class="pre">(INFO)&gt;</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.cli">
+<span id="ai-core-sdk-cli-module"></span><h2>ai_core_sdk.cli module</h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.confirm_resource_group">
+<span class="sig-name descname"><span class="pre">confirm_resource_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource_group</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.create_config">
+<span class="sig-name descname"><span class="pre">create_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.create_config_file">
+<span class="sig-name descname"><span class="pre">create_config_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_path</strong> (<em>Path</em>)</p></li>
+<li><p><strong>auth_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em>)</p></li>
+<li><p><strong>cert_file_path</strong> (<em>Path</em>)</p></li>
+<li><p><strong>key_file_path</strong> (<em>Path</em>)</p></li>
+<li><p><strong>base_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.get_auth_url">
+<span class="sig-name descname"><span class="pre">get_auth_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>auth_url</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.get_base_url">
+<span class="sig-name descname"><span class="pre">get_base_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>base_url</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.get_profile_config_path">
+<span class="sig-name descname"><span class="pre">get_profile_config_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>profile</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.get_str_value">
+<span class="sig-name descname"><span class="pre">get_str_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>)</p></li>
+<li><p><strong>value</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.is_valid_url">
+<span class="sig-name descname"><span class="pre">is_valid_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_forbidden</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.load_service_key">
+<span class="sig-name descname"><span class="pre">load_service_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service_key_json</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>service_key_json</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.cli.prompt_for_input">
+<span class="sig-name descname"><span class="pre">prompt_for_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_forbidden</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+</section>
+<section id="module-ai_core_sdk.credentials">
+<span id="ai-core-sdk-credentials-module"></span><h2>ai_core_sdk.credentials module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.CredentialsValue">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CredentialsValue</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>CredentialsValue(name: 'str', vcap_key: 'Optional[Tuple[str, ...]]' = None, transform_fn: 'Optional[Callable]' = None)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.CredentialsValue.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vcap_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>vcap_key</strong> (<em>Tuple</em><em>[</em><em>str</em><em>, </em><em>...</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>transform_fn</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.CredentialsValue.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.CredentialsValue.transform_fn">
+<span class="sig-name descname"><span class="pre">transform_fn</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.CredentialsValue.vcap_key">
+<span class="sig-name descname"><span class="pre">vcap_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Service">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Service</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Service.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>env</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Service.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NoDefault</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Service.label">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Service.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Source">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Source</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Source(name: 'str', get: 'Callable[[CredentialsValue], Optional[str]]')</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Source.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>get</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#ai_core_sdk.credentials.CredentialsValue" title="ai_core_sdk.credentials.CredentialsValue"><em>CredentialsValue</em></a><em>]</em><em>, </em><em>str</em><em> | </em><em>None</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Source.get">
+<span class="sig-name descname"><span class="pre">get</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ai_core_sdk.credentials.CredentialsValue" title="ai_core_sdk.credentials.CredentialsValue"><span class="pre">CredentialsValue</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.Source.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.VCAPEnvironment">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VCAPEnvironment</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>VCAPEnvironment(services: 'List[Service]')</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.VCAPEnvironment.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>env</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.VCAPEnvironment.from_env">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>env_var</strong> (<em>str</em><em> | </em><em>None</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.VCAPEnvironment.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">services</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>services</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.credentials.Service" title="ai_core_sdk.credentials.Service"><em>Service</em></a><em>]</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.VCAPEnvironment.get_service">
+<span class="sig-name descname"><span class="pre">get_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exactly_one</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exactly_one</strong> (<em>bool</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ai_core_sdk.credentials.Service" title="ai_core_sdk.credentials.Service"><em>Service</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.VCAPEnvironment.get_service_by_name">
+<span class="sig-name descname"><span class="pre">get_service_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exactly_one</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exactly_one</strong> (<em>bool</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ai_core_sdk.credentials.Service" title="ai_core_sdk.credentials.Service"><em>Service</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.VCAPEnvironment.services">
+<span class="sig-name descname"><span class="pre">services</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ai_core_sdk.credentials.Service" title="ai_core_sdk.credentials.Service"><span class="pre">Service</span></a><span class="p"><span class="pre">]</span></span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.fetch_credentials">
+<span class="sig-name descname"><span class="pre">fetch_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">profile=None,</span> <span class="pre">credential_values=[CredentialsValue(name='client_id',</span> <span class="pre">vcap_key=('credentials',</span> <span class="pre">'clientid'),</span> <span class="pre">transform_fn=None),</span> <span class="pre">CredentialsValue(name='client_secret',</span> <span class="pre">vcap_key=('credentials',</span> <span class="pre">'clientsecret'),</span> <span class="pre">transform_fn=None),</span> <span class="pre">CredentialsValue(name='auth_url',</span> <span class="pre">vcap_key=('credentials',</span> <span class="pre">'url'),</span> <span class="pre">transform_fn=&lt;lambda&gt;),</span> <span class="pre">CredentialsValue(name='base_url',</span> <span class="pre">vcap_key=('credentials',</span> <span class="pre">'serviceurls',</span> <span class="pre">'AI_API_URL'),</span> <span class="pre">transform_fn=&lt;lambda&gt;),</span> <span class="pre">CredentialsValue(name='resource_group',</span> <span class="pre">vcap_key=None,</span> <span class="pre">transform_fn=None),</span> <span class="pre">CredentialsValue(name='cert_url',</span> <span class="pre">vcap_key=('credentials',</span> <span class="pre">'certurl'),</span> <span class="pre">transform_fn=&lt;lambda&gt;),</span> <span class="pre">CredentialsValue(name='cert_file_path',</span> <span class="pre">vcap_key=None,</span> <span class="pre">transform_fn=None),</span> <span class="pre">CredentialsValue(name='key_file_path',</span> <span class="pre">vcap_key=None,</span> <span class="pre">transform_fn=None),</span> <span class="pre">CredentialsValue(name='cert_str',</span> <span class="pre">vcap_key=('credentials',</span> <span class="pre">'certificate'),</span> <span class="pre">transform_fn=&lt;lambda&gt;),</span> <span class="pre">CredentialsValue(name='key_str',</span> <span class="pre">vcap_key=('credentials',</span> <span class="pre">'key'),</span> <span class="pre">transform_fn=&lt;lambda&gt;)],</span> <span class="pre">validate=True,</span> <span class="pre">**kwargs</span></em><span class="sig-paren">)</span></dt>
+<dd><p>Fetch credentials from a single source based on precedence.</p>
+<p>Precedence order: kwargs &gt; environment variables &gt; config file &gt; VCAP service</p>
+<p>Once a source is selected (first one with any credential), all credentials
+come from that source only. Resource group is an exception and follows
+precedence independently.</p>
+<p>If credential_values is provided and it's not extended from the CORE_CREDENTIAL_VALUES, set validate to False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>profile</strong> (<em>str</em>)</p></li>
+<li><p><strong>credential_values</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.credentials.CredentialsValue" title="ai_core_sdk.credentials.CredentialsValue"><em>CredentialsValue</em></a><em>]</em>)</p></li>
+<li><p><strong>validate</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Dict</em>[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.get_nested_value">
+<span class="sig-name descname"><span class="pre">get_nested_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve a nested value from a dictionary using a list of strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_dict</strong> -- The dictionary to search.</p></li>
+<li><p><strong>keys</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) -- A list of strings representing nested keys.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value associated with the nested keys, or None if not found.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.init_conf">
+<span class="sig-name descname"><span class="pre">init_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>profile</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.resolve_resource_group">
+<span class="sig-name descname"><span class="pre">resolve_resource_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Find resource_group from the first source that defines it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sources</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.credentials.Source" title="ai_core_sdk.credentials.Source"><em>Source</em></a><em>]</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_core_sdk.credentials.validate_credentials">
+<span class="sig-name descname"><span class="pre">validate_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">credentials</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Validate that we have a complete authentication method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>credentials</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.exception">
+<span id="ai-core-sdk-exception-module"></span><h2>ai_core_sdk.exception module</h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ai_core_sdk.exception.AICoreInvalidInputException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AICoreInvalidInputException</span></span></dt>
+<dd><p>Bases: <a class="reference internal" href="#ai_core_sdk.exception.AICoreSDKException" title="ai_core_sdk.exception.AICoreSDKException"><code class="xref py py-class docutils literal notranslate"><span class="pre">AICoreSDKException</span></code></a></p>
+<p>Exception thrown in case of invalid input</p>
+</dd></dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ai_core_sdk.exception.AICoreSDKException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AICoreSDKException</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base Exception class for AI Core SDK exceptions</p>
+</dd></dl>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#subpackages'" class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a :data-current="activeSection === '#submodules'" class="reference internal" href="#submodules">Submodules</a></li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.ai_core_v2_client'" class="reference internal" href="#module-ai_core_sdk.ai_core_v2_client">ai_core_sdk.ai_core_v2_client module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.ai_core_v2_client.AICoreV2Client'" class="reference internal" href="#ai_core_sdk.ai_core_v2_client.AICoreV2Client"><code class="docutils literal notranslate"><span class="pre">AICoreV2Client</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.ai_core_v2_client.AICoreV2Client.from_env'" class="reference internal" href="#ai_core_sdk.ai_core_v2_client.AICoreV2Client.from_env"><code class="docutils literal notranslate"><span class="pre">AICoreV2Client.from_env()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.ai_core_v2_client.AICoreV2Client.__init__'" class="reference internal" href="#ai_core_sdk.ai_core_v2_client.AICoreV2Client.__init__"><code class="docutils literal notranslate"><span class="pre">AICoreV2Client.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.ai_core_v2_client.AICoreV2Client.logger'" class="reference internal" href="#ai_core_sdk.ai_core_v2_client.AICoreV2Client.logger"><code class="docutils literal notranslate"><span class="pre">AICoreV2Client.logger</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.cli'" class="reference internal" href="#module-ai_core_sdk.cli">ai_core_sdk.cli module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.confirm_resource_group'" class="reference internal" href="#ai_core_sdk.cli.confirm_resource_group"><code class="docutils literal notranslate"><span class="pre">confirm_resource_group()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.create_config'" class="reference internal" href="#ai_core_sdk.cli.create_config"><code class="docutils literal notranslate"><span class="pre">create_config()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.create_config_file'" class="reference internal" href="#ai_core_sdk.cli.create_config_file"><code class="docutils literal notranslate"><span class="pre">create_config_file()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.get_auth_url'" class="reference internal" href="#ai_core_sdk.cli.get_auth_url"><code class="docutils literal notranslate"><span class="pre">get_auth_url()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.get_base_url'" class="reference internal" href="#ai_core_sdk.cli.get_base_url"><code class="docutils literal notranslate"><span class="pre">get_base_url()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.get_profile_config_path'" class="reference internal" href="#ai_core_sdk.cli.get_profile_config_path"><code class="docutils literal notranslate"><span class="pre">get_profile_config_path()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.get_str_value'" class="reference internal" href="#ai_core_sdk.cli.get_str_value"><code class="docutils literal notranslate"><span class="pre">get_str_value()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.is_valid_url'" class="reference internal" href="#ai_core_sdk.cli.is_valid_url"><code class="docutils literal notranslate"><span class="pre">is_valid_url()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.load_service_key'" class="reference internal" href="#ai_core_sdk.cli.load_service_key"><code class="docutils literal notranslate"><span class="pre">load_service_key()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.cli.prompt_for_input'" class="reference internal" href="#ai_core_sdk.cli.prompt_for_input"><code class="docutils literal notranslate"><span class="pre">prompt_for_input()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.credentials'" class="reference internal" href="#module-ai_core_sdk.credentials">ai_core_sdk.credentials module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.CredentialsValue'" class="reference internal" href="#ai_core_sdk.credentials.CredentialsValue"><code class="docutils literal notranslate"><span class="pre">CredentialsValue</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.CredentialsValue.__init__'" class="reference internal" href="#ai_core_sdk.credentials.CredentialsValue.__init__"><code class="docutils literal notranslate"><span class="pre">CredentialsValue.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.CredentialsValue.name'" class="reference internal" href="#ai_core_sdk.credentials.CredentialsValue.name"><code class="docutils literal notranslate"><span class="pre">CredentialsValue.name</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.CredentialsValue.transform_fn'" class="reference internal" href="#ai_core_sdk.credentials.CredentialsValue.transform_fn"><code class="docutils literal notranslate"><span class="pre">CredentialsValue.transform_fn</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.CredentialsValue.vcap_key'" class="reference internal" href="#ai_core_sdk.credentials.CredentialsValue.vcap_key"><code class="docutils literal notranslate"><span class="pre">CredentialsValue.vcap_key</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Service'" class="reference internal" href="#ai_core_sdk.credentials.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Service.__init__'" class="reference internal" href="#ai_core_sdk.credentials.Service.__init__"><code class="docutils literal notranslate"><span class="pre">Service.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Service.get'" class="reference internal" href="#ai_core_sdk.credentials.Service.get"><code class="docutils literal notranslate"><span class="pre">Service.get()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Service.label'" class="reference internal" href="#ai_core_sdk.credentials.Service.label"><code class="docutils literal notranslate"><span class="pre">Service.label</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Service.name'" class="reference internal" href="#ai_core_sdk.credentials.Service.name"><code class="docutils literal notranslate"><span class="pre">Service.name</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Source'" class="reference internal" href="#ai_core_sdk.credentials.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Source.__init__'" class="reference internal" href="#ai_core_sdk.credentials.Source.__init__"><code class="docutils literal notranslate"><span class="pre">Source.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Source.get'" class="reference internal" href="#ai_core_sdk.credentials.Source.get"><code class="docutils literal notranslate"><span class="pre">Source.get</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.Source.name'" class="reference internal" href="#ai_core_sdk.credentials.Source.name"><code class="docutils literal notranslate"><span class="pre">Source.name</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.VCAPEnvironment'" class="reference internal" href="#ai_core_sdk.credentials.VCAPEnvironment"><code class="docutils literal notranslate"><span class="pre">VCAPEnvironment</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.VCAPEnvironment.from_dict'" class="reference internal" href="#ai_core_sdk.credentials.VCAPEnvironment.from_dict"><code class="docutils literal notranslate"><span class="pre">VCAPEnvironment.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.VCAPEnvironment.from_env'" class="reference internal" href="#ai_core_sdk.credentials.VCAPEnvironment.from_env"><code class="docutils literal notranslate"><span class="pre">VCAPEnvironment.from_env()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.VCAPEnvironment.__init__'" class="reference internal" href="#ai_core_sdk.credentials.VCAPEnvironment.__init__"><code class="docutils literal notranslate"><span class="pre">VCAPEnvironment.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.VCAPEnvironment.get_service'" class="reference internal" href="#ai_core_sdk.credentials.VCAPEnvironment.get_service"><code class="docutils literal notranslate"><span class="pre">VCAPEnvironment.get_service()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.VCAPEnvironment.get_service_by_name'" class="reference internal" href="#ai_core_sdk.credentials.VCAPEnvironment.get_service_by_name"><code class="docutils literal notranslate"><span class="pre">VCAPEnvironment.get_service_by_name()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.VCAPEnvironment.services'" class="reference internal" href="#ai_core_sdk.credentials.VCAPEnvironment.services"><code class="docutils literal notranslate"><span class="pre">VCAPEnvironment.services</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.fetch_credentials'" class="reference internal" href="#ai_core_sdk.credentials.fetch_credentials"><code class="docutils literal notranslate"><span class="pre">fetch_credentials()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.get_nested_value'" class="reference internal" href="#ai_core_sdk.credentials.get_nested_value"><code class="docutils literal notranslate"><span class="pre">get_nested_value()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.init_conf'" class="reference internal" href="#ai_core_sdk.credentials.init_conf"><code class="docutils literal notranslate"><span class="pre">init_conf()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.resolve_resource_group'" class="reference internal" href="#ai_core_sdk.credentials.resolve_resource_group"><code class="docutils literal notranslate"><span class="pre">resolve_resource_group()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.credentials.validate_credentials'" class="reference internal" href="#ai_core_sdk.credentials.validate_credentials"><code class="docutils literal notranslate"><span class="pre">validate_credentials()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.exception'" class="reference internal" href="#module-ai_core_sdk.exception">ai_core_sdk.exception module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.exception.AICoreInvalidInputException'" class="reference internal" href="#ai_core_sdk.exception.AICoreInvalidInputException"><code class="docutils literal notranslate"><span class="pre">AICoreInvalidInputException</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.exception.AICoreSDKException'" class="reference internal" href="#ai_core_sdk.exception.AICoreSDKException"><code class="docutils literal notranslate"><span class="pre">AICoreSDKException</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../../_static/doctools.js?v=9bcbadda"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>
