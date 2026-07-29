@@ -392,3 +392,53 @@ button.copy:hover {
 main {
   word-wrap: break-word;
 }
+
+/* --- Global word-wrap fix --- */
+* {
+  min-width: 0;
+}
+
+p, li, td, th, dd, dt, span, a {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Signature lines */
+dt.sig, .sig, .sig-name, .sig-param, .sig-return-annotation,
+.descclassname, .descname, .viewcode-link,
+.py-attribute, .py-class, .py-function, .py-method {
+  white-space: normal !important;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* Code literals and inline code */
+code, pre, .docutils.literal, tt {
+  white-space: pre-wrap !important;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* Tables */
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+table td, table th {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* On this page / right-side TOC */
+.right-sidebar, #right-sidebar, nav[aria-label="On this page"] {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+nav[aria-label="On this page"] a,
+nav[aria-label="On this page"] span {
+  white-space: normal !important;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
