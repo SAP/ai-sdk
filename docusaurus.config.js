@@ -263,7 +263,7 @@ export default {
         filename: 'sitemap-js.xml',
         changefreq: 'weekly',
         priority: 0.5,
-        ignorePatterns: ['**/docs/java/**']
+        ignorePatterns: ['**/docs/java/**', '**/docs/python/**']
       }
     ],
     [
@@ -273,7 +273,7 @@ export default {
         filename: 'sitemap-java.xml',
         changefreq: 'weekly',
         priority: 0.5,
-        ignorePatterns: ['**/docs/js/**']
+        ignorePatterns: ['**/docs/js/**', '**/docs/python/**']
       }
     ],
     [
