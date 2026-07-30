@@ -27,7 +27,7 @@ export default {
         {
           type: 'link',
           label: 'SAP Cloud SDK for AI (Python) - generative',
-          href: 'pathname:///api-python/_api_doc/gen_ai_hub.html'
+          href: 'pathname:///api-python/_api_doc/gen/gen_ai_hub.html'
         },
         {
           type: 'link',
