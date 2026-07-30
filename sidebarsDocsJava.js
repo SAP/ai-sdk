@@ -18,7 +18,8 @@ export default {
           items: [
             'foundation-models/openai/chat-completion',
             'foundation-models/openai/embedding',
-            'foundation-models/openai/responses'
+            'foundation-models/openai/responses',
+            'foundation-models/openai/realtime'
           ]
         },
         {
