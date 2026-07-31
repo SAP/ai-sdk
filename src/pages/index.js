@@ -17,7 +17,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="docs/overview/overview-cloud-sdk-for-ai"
+            to="docs/overview/overview"
           >
             Getting Started
           </Link>

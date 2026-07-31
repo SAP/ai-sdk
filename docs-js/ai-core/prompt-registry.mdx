@@ -60,7 +60,7 @@ const response: PromptTemplateListResponse =
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core.mdx#using-a-destination) section.
 
 ## Custom Request Configuration
 
@@ -135,7 +135,7 @@ console.log(response.id);
 The response contains the generated `id` property, which uniquely identifies the orchestration configuration.
 
 :::note
-To use [streaming](../orchestration/chat-completion#streaming) with an orchestration configuration, include streaming settings in the `spec` property when creating the configuration.
+To use [streaming](../orchestration/chat-completion.mdx#streaming) with an orchestration configuration, include streaming settings in the `spec` property when creating the configuration.
 :::
 
 ### List Orchestration Configurations
@@ -148,4 +148,4 @@ const configs = await OrchestrationConfigsApi.listOrchestrationConfigs({
 }).execute();
 ```
 
-To use a stored orchestration configuration with the `OrchestrationClient`, refer to the [Initialization with Orchestration Configuration](../orchestration/chat-completion#initialization-with-orchestration-configuration) section in the chat completion guide.
+To use a stored orchestration configuration with the `OrchestrationClient`, refer to the [Initialization with Orchestration Configuration](../orchestration/chat-completion.mdx#initialization-with-orchestration-configuration) section in the chat completion guide.

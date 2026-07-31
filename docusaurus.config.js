@@ -48,12 +48,12 @@ export default {
         {
           label: 'Overview',
           type: 'doc',
-          docId: 'overview-cloud-sdk-for-ai',
+          docId: 'overview',
           position: 'left'
         },
         {
           label: '☕ Java',
-          to: 'docs/java/overview-cloud-sdk-for-ai-java',
+          to: 'docs/java/overview',
           position: 'left',
           docsPluginId: 'docs-java',
           activeBasePath: 'docs/java',
@@ -61,7 +61,7 @@ export default {
         },
         {
           label: '🚀 JavaScript',
-          to: 'docs/js/overview-cloud-sdk-for-ai-js',
+          to: 'docs/js/overview',
           position: 'left',
           docsPluginId: 'docs-js',
           activeBasePath: 'docs/js',
@@ -343,6 +343,35 @@ export default {
           {
             from: '/docs/js/guides/connecting-to-ai-core',
             to: '/docs/js/connecting-to-ai-core'
+          },
+          // SEO slug renames
+          {
+            from: '/docs/overview/overview-cloud-sdk-for-ai',
+            to: '/docs/overview/overview'
+          },
+          {
+            from: '/docs/overview/cloud-sdk-feature-matrix',
+            to: '/docs/overview/feature-matrix'
+          },
+          {
+            from: '/docs/java/overview-cloud-sdk-for-ai-java',
+            to: '/docs/java/overview'
+          },
+          {
+            from: '/docs/js/overview-cloud-sdk-for-ai-js',
+            to: '/docs/js/overview'
+          },
+          {
+            from: '/docs/js/tutorials/getting-started-with-agents',
+            to: '/docs/js/tutorials/getting-started-agents'
+          },
+          {
+            from: '/docs/js/tutorials/using-llm-batch-api',
+            to: '/docs/js/tutorials/llm-batch-api'
+          },
+          {
+            from: '/docs/js/tutorials/using-scoped-prompt-registry-templates',
+            to: '/docs/js/tutorials/scoped-prompt-registry-templates'
           }
         ]
       }

@@ -1,5 +1,5 @@
 ---
-id: overview-cloud-sdk-for-ai-js
+id: overview
 title: JavaScript SDK Overview
 hide_title: false
 hide_table_of_contents: false
@@ -17,7 +17,7 @@ import ThemedImage from '@theme/ThemedImage';
 
 ## Quick Start
 
-For a quick start, check out the [Getting Started](getting-started) section.
+For a quick start, check out the [Getting Started](getting-started.mdx) section.
 
 ## Why the SAP Cloud SDK for AI (SAP AI SDK)?
 
@@ -33,19 +33,19 @@ Below you can find an overview of the currently available features and documenta
 
 | Feature                            |                                    Orchestration                                    |             Orchestration with LangChain             |                                 OpenAI                                 |              OpenAI with LangChain              |
 | ---------------------------------- | :---------------------------------------------------------------------------------: | :--------------------------------------------------: | :--------------------------------------------------------------------: | :---------------------------------------------: |
-| **Chat Completion**                |               ✅ [docs](./orchestration/chat-completion#quick-start)                | ✅ [docs](./langchain/orchestration#chat-completion) | ✅ [docs](./foundation-models/openai/chat-completion#making-requests)  |  ✅ [docs](./langchain/openai#chat-completion)  |
-| **Templates**                      |            ✅ [docs](./orchestration/chat-completion#prompt-templating)             |                          ❌                          |                                   ❌                                   |                       ➖                        |
-| **Content Moderation (Filtering)** |            ✅ [docs](./orchestration/chat-completion#content-filtering)             |                        ✅ \*                         |                                   ➖                                   |                       ➖                        |
-| **Data Masking**                   |               ✅ [docs](./orchestration/chat-completion#data-masking)               |                        ✅ \*                         |                                   ➖                                   |                       ➖                        |
-| **Grounding**                      |                ✅ [docs](./orchestration/chat-completion#grounding)                 |                          ❌                          |                                   ❌                                   |                       ➖                        |
-| **Chat Memory / Message History**  |             ✅ [docs](./orchestration/chat-completion#message-history)              |                        ✅ \*                         | ✅ [docs](./foundation-models/openai/chat-completion#message-history)  |                       ➖                        |
-| **JSON Configuration**             | ✅ [docs](./orchestration/chat-completion#use-json-configuration-from-ai-launchpad) |                          ➖                          |                                   ➖                                   |                       ➖                        |
-| **Stream Chat Completion**         |                ✅ [docs](./orchestration/chat-completion#streaming)                 |    ✅ [docs](./langchain/orchestration#streaming)    |    ✅ [docs](./foundation-models/openai/chat-completion#streaming)     |     ✅ [docs](./langchain/openai#streaming)     |
-| **Multi-modal Messages**           |            ✅ [docs](./orchestration/chat-completion#image-recognition)             |                          ❌                          |                                   ❌                                   |                       ➖                        |
-| **Response Format**                |             ✅ [docs](./orchestration/chat-completion#response-format)              |                          ❌                          | ✅ [docs](./foundation-models/openai/chat-completion#response-format)  | ✅ [docs](./langchain/openai#structured-output) |
-| **Translation Service**            |               ✅ [docs](./orchestration/chat-completion#translation)                |                          ❌                          |                                   ➖                                   |                       ➖                        |
-| **Chat Completion: Tool Call**     |             ✅ [docs](./orchestration/chat-completion#function-calling)             |                        ✅ \*                         | ✅ [docs](./foundation-models/openai/chat-completion#function-calling) |                      ✅ \*                      |
-| **Embedding**                      |                                         ❌                                          |                          ❌                          |    ✅ [docs](./foundation-models/openai/embedding#making-requests)     |     ✅ [docs](./langchain/openai#embedding)     |
+| **Chat Completion**                |               ✅ [docs](./orchestration/chat-completion.mdx#quick-start)                | ✅ [docs](./langchain/orchestration.mdx#chat-completion) | ✅ [docs](./foundation-models/openai/chat-completion.mdx#making-requests)  |  ✅ [docs](./langchain/openai.mdx#chat-completion)  |
+| **Templates**                      |            ✅ [docs](./orchestration/chat-completion.mdx#prompt-templating)             |                          ❌                          |                                   ❌                                   |                       ➖                        |
+| **Content Moderation (Filtering)** |            ✅ [docs](./orchestration/chat-completion.mdx#content-filtering)             |                        ✅ \*                         |                                   ➖                                   |                       ➖                        |
+| **Data Masking**                   |               ✅ [docs](./orchestration/chat-completion.mdx#data-masking)               |                        ✅ \*                         |                                   ➖                                   |                       ➖                        |
+| **Grounding**                      |                ✅ [docs](./orchestration/chat-completion.mdx#grounding)                 |                          ❌                          |                                   ❌                                   |                       ➖                        |
+| **Chat Memory / Message History**  |             ✅ [docs](./orchestration/chat-completion.mdx#message-history)              |                        ✅ \*                         | ✅ [docs](./foundation-models/openai/chat-completion.mdx#message-history)  |                       ➖                        |
+| **JSON Configuration**             | ✅ [docs](./orchestration/chat-completion.mdx#use-json-configuration-from-ai-launchpad) |                          ➖                          |                                   ➖                                   |                       ➖                        |
+| **Stream Chat Completion**         |                ✅ [docs](./orchestration/chat-completion.mdx#streaming)                 |    ✅ [docs](./langchain/orchestration.mdx#streaming)    |    ✅ [docs](./foundation-models/openai/chat-completion.mdx#streaming)     |     ✅ [docs](./langchain/openai.mdx#streaming)     |
+| **Multi-modal Messages**           |            ✅ [docs](./orchestration/chat-completion.mdx#image-recognition)             |                          ❌                          |                                   ❌                                   |                       ➖                        |
+| **Response Format**                |             ✅ [docs](./orchestration/chat-completion.mdx#response-format)              |                          ❌                          | ✅ [docs](./foundation-models/openai/chat-completion.mdx#response-format)  | ✅ [docs](./langchain/openai.mdx#structured-output) |
+| **Translation Service**            |               ✅ [docs](./orchestration/chat-completion.mdx#translation)                |                          ❌                          |                                   ➖                                   |                       ➖                        |
+| **Chat Completion: Tool Call**     |             ✅ [docs](./orchestration/chat-completion.mdx#function-calling)             |                        ✅ \*                         | ✅ [docs](./foundation-models/openai/chat-completion.mdx#function-calling) |                      ✅ \*                      |
+| **Embedding**                      |                                         ❌                                          |                          ❌                          |    ✅ [docs](./foundation-models/openai/embedding.mdx#making-requests)     |     ✅ [docs](./langchain/openai.mdx#embedding)     |
 
 :::note
 \*: The LangChain clients conform to LangChain interface.
@@ -81,7 +81,7 @@ This relies on Node.js 22's built-in `require(ESM)` support, which is stable sin
   - Alternatively, you can create a deployment using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
   - Once a deployment is complete, access the model via the `deploymentUrl`.
 
-Refer to [Connecting to AI Core](connecting-to-ai-core) section for **how to connect the SAP Cloud SDK for AI to AI Core**.
+Refer to [Connecting to AI Core](connecting-to-ai-core.mdx) section for **how to connect the SAP Cloud SDK for AI to AI Core**.
 
 ## Availability of Generative AI Models
 

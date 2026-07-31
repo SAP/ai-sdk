@@ -119,7 +119,7 @@ ChatResponse response = client.call(prompt);
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-For detailed information on the behaviour of input and output filters, check the [Filter Documentation for Orchestration](../orchestration/chat-completion#filtering).
+For detailed information on the behaviour of input and output filters, check the [Filter Documentation for Orchestration](../orchestration/chat-completion.mdx#filtering).
 
 ## Stream chat completion
 
@@ -257,7 +257,7 @@ var opts = new OrchestrationChatOptions(config.withTemplateConfig(template));
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-For detailed information on setting a response format, check the corresponding [Documentation for Orchestration](../orchestration/chat-completion#response-format).
+For detailed information on setting a response format, check the corresponding [Documentation for Orchestration](../orchestration/chat-completion.mdx#response-format).
 
 ## Templates from Prompt Registry
 
@@ -273,11 +273,11 @@ var prompt = new Prompt(List.of(), opts);
 ChatResponse response = client.call(prompt);
 ```
 
-For more information on prompt registry, we refer to the corresponding [documentation](../ai-core/prompt-registry).
+For more information on prompt registry, we refer to the corresponding [documentation](../ai-core/prompt-registry.mdx).
 
 ### Prompt Registry with input parameters and chat memory
 
-Please see this [documentation](../ai-core/prompt-registry#using-templates-in-springai).
+Please see this [documentation](../ai-core/prompt-registry.mdx#using-templates-in-springai).
 
 ## Embeddings
 
