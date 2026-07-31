@@ -105,6 +105,8 @@ try (TextInputChannel channel = OpenAiClient.realtimeClient().textToSpeech(audio
 } // connection closes automatically
 ```
 
+Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
+
 ## Speech to Speech
 
 Stream microphone input as PCM audio chunks and receive the model's audio response in real-time.
@@ -121,6 +123,8 @@ try (AudioInputChannel channel = OpenAiClient.realtimeClient().speechToSpeech(au
 ```
 
 The audio format for both input and output is **raw PCM, mono, 24 000 Hz, 16-bit little-endian**.
+
+Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
 
 ## Optional Parameters
 
@@ -144,6 +148,8 @@ TextInputChannel channel = OpenAiClient.realtimeClient()
     .textToSpeech(audioOutput, RealtimeParamVoice.unsafeWithExplicitVoice("shimmer"));
 ```
 
+Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
+
 ### Turn Detection
 
 Control when the model decides to respond:
@@ -158,6 +164,8 @@ AudioInputChannel channel = OpenAiClient.realtimeClient()
     .speechToSpeech(audioOutput, RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN);
 ```
 
+Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
+
 ### System Prompt
 
 Override the default system prompt:
@@ -166,6 +174,8 @@ Override the default system prompt:
 TextInputChannel channel = OpenAiClient.realtimeClient()
     .textToSpeech(audioOutput, new RealtimeParamSystemPrompt("You are a helpful assistant."));
 ```
+
+Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
 
 ### Combining Parameters
 
@@ -179,6 +189,8 @@ AudioInputChannel channel = OpenAiClient.realtimeClient()
         RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN,
         new RealtimeParamSystemPrompt("You are a concise assistant."));
 ```
+
+Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
 
 ## Custom Destination
 
@@ -197,6 +209,6 @@ try (TextInputChannel channel = client.textToSpeech(audioOutput)) {
 
 ## Sample Application
 
-See the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
+Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
 
 ![Realtime API in Sample application](realtime-api-example.svg)
