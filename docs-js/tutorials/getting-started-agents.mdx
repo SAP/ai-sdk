@@ -1,5 +1,5 @@
 ---
-id: getting-started-with-agents
+id: getting-started-agents
 title: Getting Started with Agents using LangChain
 sidebar_label: Getting Started with Agents
 description: Building a Travel Itinerary Assistant with LangGraph and LangChain Client
@@ -55,19 +55,20 @@ Replace with real API calls to integrate live data.
 :::
 
 ```js reference referenceLinkText=" " title="Restaurant tool definition"
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L23-L42
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L25-L44
 ```
 
 Set up an MCP server and define the `get_weather` tool using the free [Open-Meteo](https://open-meteo.com/) Weather API to fetch weather data.
+For API usage terms, visit [Open-Meteo License](https://open-meteo.com/en/license).
 
 ```js reference referenceLinkText=" " title="Weather MCP Server"
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/weather-mcp-server.ts#L4-L60
 ```
 
-To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://langchain-ai.github.io/langgraphjs/agents/mcp/?h=mcp#use-mcp-tools).
+To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://docs.langchain.com/oss/javascript/langchain/mcp#use-mcp-tools).
 
 ```js reference referenceLinkText=" " title="MCP Adapter"
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-adapter.ts
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/mcp-adapter.ts#L3-L19
 ```
 
 ## Setup the Agent
@@ -77,7 +78,7 @@ Set up a `ToolNode` for routing tool calls.
 
 <!-- vale off -->
 
-<Tabs 
+<Tabs
   groupId="client"
   defaultValue="orchestration"
   values={[
@@ -86,34 +87,28 @@ Set up a `ToolNode` for routing tool calls.
   ]}>
 
 <TabItem value="openai">
-  ```js reference referenceLinkText=" " title="Initialize Client"
-  https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L44-L56
-  ```
-</TabItem>
-
-<TabItem value="orchestration">
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/langchain';
-import { ToolNode } from '@langchain/langgraph/prebuilt';
-import { getMcpTools } from '../mcp/mcp-adapter.js';
-
-const tools = [...getMcpTools, getRestaurantsTool];
+// Define the tools for the agent to use
+const tools = [...(await mcpClient.getTools()), getRestaurantsTool];
+const toolNode = new ToolNode(tools);
 
 // Create a model
-const model = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: {
-      temperature: 0.7
-    }
-  }
+const model = new AzureOpenAiChatClient({
+  modelName: 'gpt-5-mini',
+  maxRetries: 0
 });
 
 // create a model with access to the tools
 const modelWithTools = model.bindTools(tools);
+```
 
-const toolNode = new ToolNode(tools);
+</TabItem>
+
+<TabItem value="orchestration">
+
+```js reference referenceLinkText=" " title="Initialize Client"
+  https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L46-L63
 ```
 
 </TabItem>
@@ -126,17 +121,17 @@ const toolNode = new ToolNode(tools);
 Configure a `StateGraph` that routes between `agent` → `tool` → `agent`, and uses intelligent routing to determine when to ask for human input or end the conversation.
 
 ```js reference referenceLinkText=" " title="Configure Agent flow"
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L58-L89
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L65-L96
 ```
 
 ## Build the Workflow
 
 ```js reference referenceLinkText=" " title="Build the workflow"
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L91-L101
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L98-L108
 ```
 
 :::note
-Using [`MemorySaver`](https://langchain-ai.github.io/langgraphjs/how-tos/persistence/?h=memory+saver#add-memory) allows sharing context across multiple interactions in a single conversational thread (`conv-1`).
+Using [`MemorySaver`](https://docs.langchain.com/oss/javascript/langgraph/persistence) allows sharing context across multiple interactions in a single conversational thread (`conv-1`).
 In this example, it enables the agent to remember the previously mentioned city.
 :::
 
@@ -156,7 +151,7 @@ The following example simulates a full interaction, with detailed console output
 4. The conversation continues until the user is satisfied.
 
 ```js reference referenceLinkText=" " title="Call the agent with initial message"
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L103-L119
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L110-L127
 ```
 
 When the agent receives the initial request, it first determines that it needs both weather and restaurant data to create a comprehensive itinerary.
@@ -186,7 +181,7 @@ The LLM response includes tool calls to gather this information:
 The agent executes these tool calls through the `tools` node to gather the necessary data, then returns to the agent node to generate a natural language response with the complete itinerary.
 
 ```js reference referenceLinkText=" "
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L121-L122
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L129-L130
 ```
 
 ```console
@@ -216,7 +211,7 @@ next:  [ 'askHuman' ]
 Provide the response by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
 
 ```js reference referenceLinkText=" "
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L124-L129
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L132-L137
 ```
 
 The assistant responds with an updated itinerary:
@@ -243,7 +238,7 @@ Does this itinerary suit your preferences, or would you like further adjustments
 The agent loop ends when the user expresses satisfaction with the proposed itinerary.
 
 ```js reference referenceLinkText=" "
-https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts#L131-L138
+https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L139-L147
 ```
 
 ```console
@@ -258,17 +253,17 @@ Assistant: I'm glad you like the itinerary! If you have any more questions or ne
 <Tabs>
   <TabItem value="Itinerary Planner">
     ```js reference referenceLinkText="View on GitHub"
-    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/travel-itinerary-agent.ts
+    https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts
     ```
   </TabItem>
   <TabItem value="MCP Adapter">
     ```js reference referenceLinkText="View on GitHub"
-    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/mcp-adapter.ts
+    https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/mcp-adapter.ts
     ```
   </TabItem>
   <TabItem value="Weather MCP Server">
     ```js reference referenceLinkText="View on GitHub"
-    https://github.com/SAP/ai-sdk-js/blob/v1-main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
+    https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/weather-mcp-server.ts
     ```
   </TabItem>
 </Tabs>
@@ -279,9 +274,9 @@ Assistant: I'm glad you like the itinerary! If you have any more questions or ne
 
 This tutorial demonstrates how to implement a simple agent workflow using:
 
-- The `AzureOpenAiChatClient` with `bindTools()` method to integrate external capabilities.
+- The `OrchestrationClient` with `bindTools()` method to integrate external capabilities.
 - Defining a LangGraph `StateGraph` for branching logic and conditional tool use.
 - Interrupting the flow with a human tool via `interrupt()` and handling it inside the graph.
 - Maintaining context across interactions with `MemorySaver`.
 
-Explore additional capabilities and patterns in [LangGraph documentation](https://langchain-ai.github.io/langgraphjs/tutorials/quickstart/).
+Explore additional capabilities and patterns in [LangGraph documentation](https://docs.langchain.com/oss/javascript/langgraph/quickstart/).
