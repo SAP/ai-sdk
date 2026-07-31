@@ -11,6 +11,7 @@ export default {
   url: 'https://sap.github.io/',
   baseUrl: '/ai-sdk/',
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
   markdown: { hooks: { onBrokenMarkdownLinks: 'throw' } },
   favicon: 'img/AI-SDK-Logo.svg',
   organizationName: 'SAP',
