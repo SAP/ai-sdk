@@ -1,7 +1,3 @@
 export default {
-  docsCommonSidebar: [
-    'overview',
-    'feature-matrix',
-    'get-support'
-  ]
+  docsCommonSidebar: ['overview', 'feature-matrix', 'get-support']
 };
