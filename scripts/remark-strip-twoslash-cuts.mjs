@@ -2,6 +2,29 @@ import { visit } from 'unist-util-visit';
 
 const isCutDirective = (s, l) =>
   new RegExp(`^\\s*\\/\\/\\s*---cut${s}---\\s*$`).test(l);
+const twoslashNotationRe = /^\s*\/\/\s*(@(?!ts-)[\w]+|\^\?|\^\||\^\^\^)\s*$/;
+
+// notations with visual effects that warrant a warning when stripped
+const warnNotations = new Set([
+  '@errors',
+  '@showEmit',
+  '@showEmittedFile',
+  '@filename',
+  '^?',
+  '^|',
+  '^^^'
+]);
+
+function stripUnsupported(lines, fileInfo, warn) {
+  return lines.filter((l, i) => {
+    const match = twoslashNotationRe.exec(l);
+    if (warnNotations.has(match?.[1]))
+      warn(
+        `remark-strip-twoslash-cuts: unsupported twoslash notation "${match[1]}" at ${fileInfo} line ${i + 1} — stripped`
+      );
+    return !match;
+  });
+}
 
 function cutBefore(lines) {
   const idx = lines.findLastIndex(l => isCutDirective('(-before)?', l));
@@ -53,7 +76,9 @@ export default function stripTwoslashCutDirectives() {
     visit(tree, 'code', node => {
       if (!node.meta?.includes('twoslash')) return;
       const fileInfo = `${file.path ?? 'unknown'}:${node.position?.start.line ?? '?'}`;
+      const warn = msg => file.message(msg);
       let lines = node.value.split('\n');
+      lines = stripUnsupported(lines, fileInfo, warn);
       lines = cutBefore(lines);
       lines = cutAfter(lines);
       lines = cutBlocks(lines, fileInfo);
