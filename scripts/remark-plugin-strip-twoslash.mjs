@@ -15,12 +15,12 @@ const warnNotations = new Set([
   '^^^'
 ]);
 
-function stripUnsupported(lines, fileInfo, warn) {
+function stripUnsupported(lines, fileInfo) {
   return lines.filter((l, i) => {
     const match = twoslashNotationRe.exec(l);
     if (warnNotations.has(match?.[1]))
-      warn(
-        `remark-strip-twoslash-cuts: unsupported twoslash notation "${match[1]}" at ${fileInfo} line ${i + 1} — stripped`
+      console.warn(
+        `[remark-plugin-strip-twoslash] unsupported twoslash notation "${match[1]}" at ${fileInfo} line ${i + 1} — stripped`
       );
     return !match;
   });
@@ -42,7 +42,7 @@ function cutBlock(lines, startIdx, fileInfo) {
     .findIndex(l => isCutDirective('-end', l));
   if (relativeEndIdx === -1) {
     throw new Error(
-      `remark-strip-twoslash-cuts: ---cut-start--- has no matching ---cut-end--- (${fileInfo})`
+      `[remark-plugin-strip-twoslash] ---cut-start--- has no matching ---cut-end--- (${fileInfo})`
     );
   }
   const endIdx = startIdx + 1 + relativeEndIdx;
@@ -59,7 +59,7 @@ function cutBlocks(lines, fileInfo) {
   );
   if (cutLines.some(l => isCutDirective('-end', l))) {
     throw new Error(
-      `remark-strip-twoslash-cuts: ---cut-end--- has no matching ---cut-start--- (${fileInfo})`
+      `[remark-plugin-strip-twoslash] ---cut-end--- has no matching ---cut-start--- (${fileInfo})`
     );
   }
   return cutLines;
@@ -71,14 +71,13 @@ function cutBlocks(lines, fileInfo) {
  * https://twoslash.netlify.app/refs/notations#cutting-a-code-sample
  *
  */
-export default function stripTwoslashCutDirectives() {
+export default function remarkStripTwoslash() {
   return (tree, file) => {
     visit(tree, 'code', node => {
       if (!node.meta?.includes('twoslash')) return;
       const fileInfo = `${file.path ?? 'unknown'}:${node.position?.start.line ?? '?'}`;
-      const warn = msg => file.message(msg);
       let lines = node.value.split('\n');
-      lines = stripUnsupported(lines, fileInfo, warn);
+      lines = stripUnsupported(lines, fileInfo);
       lines = cutBefore(lines);
       lines = cutAfter(lines);
       lines = cutBlocks(lines, fileInfo);

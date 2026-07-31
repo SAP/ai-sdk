@@ -234,7 +234,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: './sidebarsDocsJs.js',
-        remarkPlugins: [remarkEnforceMdxLinks, remarkStripTwoslashCuts],
+        remarkPlugins: [remarkEnforceMdxLinks, remarkStripTwoslash],
         lastVersion: 'current',
         versions: {
           current: {
