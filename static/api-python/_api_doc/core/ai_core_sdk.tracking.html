@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>ai_core_sdk.tracking package | SAP Cloud SDK for AI (Python) - core v3.3.1</title>
+<meta content="ai_core_sdk.tracking package | SAP Cloud SDK for AI (Python) - core v3.3.1" property="og:title"/>
+<meta content="ai_core_sdk.tracking package | SAP Cloud SDK for AI (Python) - core v3.3.1" name="twitter:title"/>
+<link href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom-override.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="ai_core_sdk.resource_clients.html" rel="prev" title="ai_core_sdk.resource_clients package"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="ai_core_sdk.html">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.helpers.html">ai_core_sdk.helpers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.models.html">ai_core_sdk.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.resource_clients.html">ai_core_sdk.resource_clients package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ai_core_sdk.tracking package</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="ai_core_sdk.html">ai_core_sdk package</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">ai_core_sdk.tracking package</span>
+</nav>
+<div id="content" role="main">
+<section id="module-ai_core_sdk.tracking">
+<span id="ai-core-sdk-tracking-package"></span><h1>ai_core_sdk.tracking package</h1>
+<section id="submodules">
+<h2>Submodules</h2>
+</section>
+<section id="module-ai_core_sdk.tracking.tracking">
+<span id="ai-core-sdk-tracking-tracking-module"></span><h2>ai_core_sdk.tracking.tracking module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.tracking.tracking.Tracking">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tracking</span></span></dt>
+<dd><p>Bases: <a class="reference internal" href="ai_core_sdk.resource_clients.html#ai_core_sdk.resource_clients.metrics_client.MetricsCoreClient" title="ai_core_sdk.resource_clients.metrics_client.MetricsCoreClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricsCoreClient</span></code></a></p>
+<p>Tracking is a class implemented for interacting with the metrics related
+endpoints of the server. It is a wrapper around the base class
+<a class="reference internal" href="ai_core_sdk.resource_clients.html#ai_core_sdk.resource_clients.metrics_client.MetricsCoreClient" title="ai_core_sdk.resource_clients.metrics_client.MetricsCoreClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.resource_clients.metrics_client.MetricsCoreClient</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>base_url</strong> -- Base URL of the AI Core. Should include the base path as well. (i.e., "&lt;base_url&gt;/lm/scenarios"</p>
+</dd>
+</dl>
+<p>should work)
+:type base_url: str
+:param auth_url: URL of the authorization endpoint. Should be the full URL (including /oauth/token), defaults to</p>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_id</strong> (<em>str</em><em>, </em><em>optional</em>) -- client id to be used for authorization, defaults to None</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em><em>, </em><em>optional</em>) -- client secret to be used for authorization, defaults to None</p></li>
+<li><p><strong>cert_str</strong> (<em>str</em><em>, </em><em>optional</em>) -- certificate file content, needs to be provided alongside the key_str parameter, defaults to None</p></li>
+<li><p><strong>key_str</strong> (<em>str</em><em>, </em><em>optional</em>) -- key file content, needs to be provided alongside the cert_str parameter, defaults to None</p></li>
+<li><p><strong>cert_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) -- path to the certificate file, needs to be provided alongside the key_file_path parameter,
+defaults to None</p></li>
+<li><p><strong>key_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) -- path to the key file, needs to be provided alongside the cert_file_path parameter,
+defaults to None</p></li>
+<li><p><strong>token_creator</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- the function which returns the Bearer token, when called. Either this, or
+auth_url &amp; client_id &amp; client_secret should be specified, defaults to None</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em><em>, </em><em>optional</em>) -- The default resource group which will be used while sending the requests to the server. If
+not set, the resource_group should be specified with every request to the server, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.tracking.tracking.Tracking.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_creator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>auth_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em>)</p></li>
+<li><p><strong>cert_str</strong> (<em>str</em>)</p></li>
+<li><p><strong>key_str</strong> (<em>str</em>)</p></li>
+<li><p><strong>cert_file_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>key_file_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>token_creator</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.tracking.tracking.Tracking.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">execution_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Deletes the metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>execution_id</strong> (<em>str</em>) -- ID of the execution, of which the metrics should be deleted.</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- Resource Group which the request should be sent on behalf. Either this or a default
+resource group in the <code class="xref py py-class docutils literal notranslate"><span class="pre">ai_api_client_sdk.ai_api_v2_client.AIAPIV2Client</span></code> should be specified,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIAuthorizationException</cite> if a 401 response is received from the
+server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPINotFoundException</cite> if a 404 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.tracking.tracking.Tracking.log_metrics">
+<span class="sig-name descname"><span class="pre">log_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artifact_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Creates or updates the metrics for an execution.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param metrics<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of the metrics related to the execution,</p>
+</dd>
+<dt class="field-even">type metrics<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[class:<cite>ai_api_client_sdk.metric.Metric</cite>]</p>
+</dd>
+<dt class="field-odd">param execution_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ID of the execution, of which the metrics should be modified.</p>
+</dd>
+<dt class="field-even">type execution_id<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param artifact_name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the artifact to associate with a metric, defaults to None</p>
+</dd>
+<dt class="field-even">type artifact_name<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param resource_group<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Resource Group which the request should be sent on behalf. Either this or a default
+resource group in the <code class="xref py py-class docutils literal notranslate"><span class="pre">ai_api_client_sdk.ai_api_v2_client.AIAPIV2Client</span></code> should be specified,
+defaults to None</p>
+</dd>
+<dt class="field-even">type resource_group<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>server</dt><dd><dl class="field-list simple">
+<dt class="field-odd">raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metrics</strong> (<em>List</em><em>[</em><em>Metric</em><em>]</em>)</p></li>
+<li><p><strong>execution_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>artifact_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.tracking.tracking.Tracking.modify">
+<span class="sig-name descname"><span class="pre">modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">execution_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Creates or updates the metrics for an execution.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param execution_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ID of the execution, of which the metrics should be modified.</p>
+</dd>
+<dt class="field-even">type execution_id<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param metrics<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of the metrics related to the execution, defaults to None</p>
+</dd>
+<dt class="field-even">type metrics<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[class:<cite>ai_api_client_sdk.metric.Metric</cite>], optional</p>
+</dd>
+<dt class="field-odd">param tags<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of the tags related to the execution, defaults to None</p>
+</dd>
+<dt class="field-even">type tags<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[class:'ai_api_client_sdk.models.metric_tag.MetricTag'], optional</p>
+</dd>
+<dt class="field-odd">param custom_info<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of custom info related to the execution, defaults to None</p>
+</dd>
+<dt class="field-even">type custom_info<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[class:<cite>ai_api_client_sdk.models.metric_custom_info.MetricCustomInfo</cite>], optional</p>
+</dd>
+<dt class="field-odd">param resource_group<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Resource Group which the request should be sent on behalf. Either this or a default
+resource group in the <code class="xref py py-class docutils literal notranslate"><span class="pre">ai_api_client_sdk.ai_api_v2_client.AIAPIV2Client</span></code> should be specified,
+defaults to None</p>
+</dd>
+<dt class="field-even">type resource_group<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>server</dt><dd><dl class="field-list simple">
+<dt class="field-odd">raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>execution_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>metrics</strong> (<em>List</em><em>[</em><em>Metric</em><em>]</em>)</p></li>
+<li><p><strong>tags</strong> (<em>List</em><em>[</em><em>MetricTag</em><em>]</em>)</p></li>
+<li><p><strong>custom_info</strong> (<em>List</em><em>[</em><em>MetricCustomInfo</em><em>]</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.tracking.tracking.Tracking.query">
+<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Creates or updates the metrics for an execution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filter</strong> (<em>str</em><em>, </em><em>optional</em>) -- Deprecated. Use parameter execution_ids instead. A filter expression that filters the metric
+resources using execution IDs. User can only use in, eq operators in filter expression, defaults to None</p></li>
+<li><p><strong>execution_ids</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- IDs of the executions, of which the metrics should be retrieved, defaults to None</p></li>
+<li><p><strong>select</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- Values of select can be metrics,tags,customInfo or any of the combinations of these or <a href="#id1"><span class="problematic" id="id2">*</span></a>.
+Can be used to select(project) only the resources specified</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- Resource Group which the request should be sent on behalf. Either this or a default
+resource group in the <code class="xref py py-class docutils literal notranslate"><span class="pre">ai_api_client_sdk.ai_api_v2_client.AIAPIV2Client</span></code> should be specified,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIAuthorizationException</cite> if a 401 response is received from the
+server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An object representing the response from the server</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.models.metrics_query_response.MetricsQueryResponse</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.tracking.tracking.Tracking.set_custom_info">
+<span class="sig-name descname"><span class="pre">set_custom_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="simple">
+<dt>log custom info against the given execution</dt><dd><p>captures consumption semantics for the metrics or complex metric in JSON format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param custom_info<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of custom info related to the execution</p>
+</dd>
+<dt class="field-even">type custom_info<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[class:<cite>ai_api_client_sdk.models.metric_custom_info.MetricCustomInfo</cite>], optional</p>
+</dd>
+<dt class="field-odd">param execution_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ID of the execution, of which the metrics should be modified.</p>
+</dd>
+<dt class="field-even">type execution_id<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param resource_group<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Resource Group which the request should be sent on behalf. Either this or a default
+resource group in the <code class="xref py py-class docutils literal notranslate"><span class="pre">ai_api_client_sdk.ai_api_v2_client.AIAPIV2Client</span></code> should be specified,
+defaults to None</p>
+</dd>
+<dt class="field-even">type resource_group<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the</p>
+</dd>
+</dl>
+</dd>
+<dt>server</dt><dd><dl class="field-list simple">
+<dt class="field-odd">raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>custom_info</strong> (<em>List</em><em>[</em><em>MetricCustomInfo</em><em>]</em>)</p></li>
+<li><p><strong>execution_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.tracking.tracking.Tracking.set_tags">
+<span class="sig-name descname"><span class="pre">set_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tags</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>log tags against the given execution</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param tags<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of the tags related to the execution, defaults to None</p>
+</dd>
+<dt class="field-even">type tags<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[class:'ai_api_client_sdk.models.metric_tag.MetricTag']</p>
+</dd>
+<dt class="field-odd">param execution_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ID of the execution, of which the metrics should be modified.</p>
+</dd>
+<dt class="field-even">type execution_id<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param resource_group<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Resource Group which the request should be sent on behalf. Either this or a default
+resource group in the <code class="xref py py-class docutils literal notranslate"><span class="pre">ai_api_client_sdk.ai_api_v2_client.AIAPIV2Client</span></code> should be specified,
+defaults to None</p>
+</dd>
+<dt class="field-even">type resource_group<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>server</dt><dd><dl class="field-list simple">
+<dt class="field-odd">raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tags</strong> (<em>List</em><em>[</em><em>MetricTag</em><em>]</em>)</p></li>
+<li><p><strong>execution_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#submodules'" class="reference internal" href="#submodules">Submodules</a></li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.tracking.tracking'" class="reference internal" href="#module-ai_core_sdk.tracking.tracking">ai_core_sdk.tracking.tracking module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.tracking.tracking.Tracking'" class="reference internal" href="#ai_core_sdk.tracking.tracking.Tracking"><code class="docutils literal notranslate"><span class="pre">Tracking</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.tracking.tracking.Tracking.__init__'" class="reference internal" href="#ai_core_sdk.tracking.tracking.Tracking.__init__"><code class="docutils literal notranslate"><span class="pre">Tracking.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.tracking.tracking.Tracking.delete'" class="reference internal" href="#ai_core_sdk.tracking.tracking.Tracking.delete"><code class="docutils literal notranslate"><span class="pre">Tracking.delete()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.tracking.tracking.Tracking.log_metrics'" class="reference internal" href="#ai_core_sdk.tracking.tracking.Tracking.log_metrics"><code class="docutils literal notranslate"><span class="pre">Tracking.log_metrics()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.tracking.tracking.Tracking.modify'" class="reference internal" href="#ai_core_sdk.tracking.tracking.Tracking.modify"><code class="docutils literal notranslate"><span class="pre">Tracking.modify()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.tracking.tracking.Tracking.query'" class="reference internal" href="#ai_core_sdk.tracking.tracking.Tracking.query"><code class="docutils literal notranslate"><span class="pre">Tracking.query()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.tracking.tracking.Tracking.set_custom_info'" class="reference internal" href="#ai_core_sdk.tracking.tracking.Tracking.set_custom_info"><code class="docutils literal notranslate"><span class="pre">Tracking.set_custom_info()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.tracking.tracking.Tracking.set_tags'" class="reference internal" href="#ai_core_sdk.tracking.tracking.Tracking.set_tags"><code class="docutils literal notranslate"><span class="pre">Tracking.set_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../../_static/doctools.js?v=9bcbadda"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>
