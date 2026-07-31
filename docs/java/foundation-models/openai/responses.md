@@ -52,7 +52,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
   * Refer to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core) for setup instructions.
 
-  * In case the model is deployed in a custom resource group, refer to [this section](#using-a-custom-resource-group).
+  * In case the model is deployed in a custom resource group, refer to [this section](/ai-sdk/docs/java/foundation-models/openai/chat-completion.md#using-a-custom-resource-group).
 
   * Example deployed model from the AI Core `/deployments` endpoint
 
