@@ -21,7 +21,7 @@ The client reuses the orchestration client from `@sap-ai-sdk/orchestration` and 
 Therefore, the client initialization combines the configuration of the orchestration client and LangChain options.
 
 Similar to the orchestration client, the `OrchestrationClient` LangChain client can be initialized with an orchestration configuration.
-Refer to [Orchestration Chat Completion](../orchestration/chat-completion) for more information about the configuration.
+Refer to [Orchestration Chat Completion](../orchestration/chat-completion.mdx) for more information about the configuration.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
@@ -54,7 +54,7 @@ const client = new OrchestrationClient(
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core.mdx#using-a-destination) section.
 
 ## Chat Completion
 
@@ -73,7 +73,7 @@ const response = await client.invoke(history, {
 The [`OrchestrationClient`](pathname:///api/v2/classes/langchain_src.OrchestrationClient.html) supports module fallback, which allows you to provide multiple orchestration configurations that are tried in sequence until one succeeds.
 Pass a non-empty array of [`LangChainOrchestrationModuleConfig`](pathname:///api/v2/types/langchain_src.LangChainOrchestrationModuleConfig.html) objects when initializing the client, using the [`LangChainOrchestrationModuleConfigList`](pathname:///api/v2/types/langchain_src.LangChainOrchestrationModuleConfigList.html) type.
 
-For a full explanation of when fallback is triggered and how it works with the orchestration service, refer to [Module Fallback](../orchestration/chat-completion#module-fallback) in the orchestration documentation.
+For a full explanation of when fallback is triggered and how it works with the orchestration service, refer to [Module Fallback](../orchestration/chat-completion.mdx#module-fallback) in the orchestration documentation.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
@@ -253,7 +253,7 @@ The `stream()` method will still return an iterable, but it will yield a single 
 LangChain offers a unified way to connect tools to language models.
 Use the `bindTools()` method to define the set of tools a model can access.
 For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling).
-For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents#define-tools).
+For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-agents.mdx#define-tools).
 
 ### Basic Agent Usage
 

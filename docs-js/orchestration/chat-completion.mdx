@@ -449,7 +449,7 @@ For details on storing a template in the Prompt Registry, refer to [this guide](
 ### Scoped Prompt Registry
 
 :::info Tutorial: Creating Scoped Prompt Templates with Headers
-For a step-by-step guide on creating orchestration deployment and configuring scoped prompt registry templates, see the [Using Scoped Prompt Registry Templates](../tutorials/using-scoped-prompt-registry-templates) tutorial.
+For a step-by-step guide on creating orchestration deployment and configuring scoped prompt registry templates, see the [Scoped Prompt Registry Templates](../tutorials/scoped-prompt-registry-templates.mdx) tutorial.
 :::
 
 Prompt templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) can be scoped to different levels.
@@ -941,7 +941,7 @@ Multiple filters can be applied at the same time for both input and output filte
 :::tip
 The `chatCompletion()` method can throw an error with HTTP status code `400` if content filters hit.
 In case of a `200` HTTP response, the `getContent()` method can throw an error if the output filters hit.
-See the [Error Handling](../error-handling) page for more details.
+See the [Error Handling](../error-handling.mdx) page for more details.
 :::
 
 ### Azure Content Filter
@@ -1536,7 +1536,7 @@ The `messages` property defined in the `template` array are appended after any e
 When using an orchestration configuration reference, [streaming](#streaming) is only available if the stored configuration includes streaming settings.
 :::
 
-For details on creating and managing orchestration configurations, refer to the [Orchestration Configuration](../ai-core/prompt-registry#orchestration-configuration) section in the prompt registry guide.
+For details on creating and managing orchestration configurations, refer to the [Orchestration Configuration](../ai-core/prompt-registry.mdx#orchestration-configuration) section in the prompt registry guide.
 
 ## Custom Deployment Configuration
 
@@ -1645,7 +1645,7 @@ const orchestrationClient = new OrchestrationClient(
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core.mdx#using-a-destination) section.
 
 ## Resilience
 

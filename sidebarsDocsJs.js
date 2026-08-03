@@ -1,6 +1,6 @@
 export default {
   docsJsSidebar: [
-    'overview-cloud-sdk-for-ai-js',
+    'overview',
     'getting-started',
     'connecting-to-ai-core',
     {
@@ -51,9 +51,9 @@ export default {
       type: 'category',
       label: 'Tutorials',
       items: [
-        'tutorials/getting-started-with-agents',
-        'tutorials/using-scoped-prompt-registry-templates',
-        'tutorials/using-llm-batch-api',
+        'tutorials/getting-started-agents',
+        'tutorials/scoped-prompt-registry-templates',
+        'tutorials/llm-batch-api',
         {
           type: 'link',
           label: 'TechEd: Build Your Own AI Agent',
