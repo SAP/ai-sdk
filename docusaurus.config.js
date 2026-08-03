@@ -1,7 +1,7 @@
 import { themes } from 'prism-react-renderer';
 import webpack from 'webpack';
 import remarkEnforceMdxLinks from './plugins/remark-enforce-mdx-links.js';
-import remarkStripTwoslashCuts from './scripts/remark-strip-twoslash.js';
+import remarkStripTwoslashCuts from './scripts/remark-plugin-strip-twoslash.js';
 
 const { ProvidePlugin } = webpack;
 
