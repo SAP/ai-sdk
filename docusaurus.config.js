@@ -1,6 +1,7 @@
 import { createRequire } from 'module';
 import { themes } from 'prism-react-renderer';
 import webpack from 'webpack';
+import remarkEnforceMdxLinks from './plugins/remark-enforce-mdx-links.mjs';
 
 const { ProvidePlugin } = webpack;
 
@@ -192,7 +193,8 @@ export default {
           sidebarPath: './sidebarsDocsCommon.js',
           editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
           routeBasePath: 'docs/overview',
-          path: 'docs'
+          path: 'docs',
+          remarkPlugins: [remarkEnforceMdxLinks]
         },
         theme: {
           customCss: './src/css/custom.css'
@@ -214,6 +216,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/java',
         sidebarPath: './sidebarsDocsJava.js',
+        remarkPlugins: [remarkEnforceMdxLinks],
         lastVersion: 'current',
         versions: {
           current: {
@@ -231,6 +234,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: './sidebarsDocsJs.js',
+        remarkPlugins: [remarkEnforceMdxLinks],
         lastVersion: 'current',
         versions: {
           current: {
@@ -253,6 +257,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/python',
         sidebarPath: './sidebarsDocsPython.js',
+        remarkPlugins: [remarkEnforceMdxLinks],
         lastVersion: 'current',
         versions: {
           current: {
