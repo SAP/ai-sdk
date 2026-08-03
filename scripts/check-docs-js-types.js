@@ -30,10 +30,13 @@ function extractTwoslashBlocks(content, filePath) {
 }
 
 function reportError(filePath, line, message) {
+  const text = Array.isArray(message)
+    ? message.map(e => `Line ${(e.line ?? 0) + 1}: TS${e.code} ${e.text}`).join('\n  ')
+    : message;
   console.error(
     `\n✗ ${relative(process.cwd(), filePath)} (block starting at line ${line})`
   );
-  console.error(`  ${message}`);
+  console.error(`  ${text}`);
 }
 
 async function main() {
@@ -68,13 +71,7 @@ async function main() {
           const result = twoslasher(code, 'ts');
           if (result.errors.length) {
             failed++;
-            reportError(
-              filePath,
-              line,
-              result.errors
-                .map(e => `Line ${(e.line ?? 0) + 1}: TS${e.code} ${e.text}`)
-                .join('\n  ')
-            );
+            reportError(filePath, line, result.errors);
           }
         } catch (e) {
           failed++;
