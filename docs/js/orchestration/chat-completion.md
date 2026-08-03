@@ -638,7 +638,7 @@ A prompt template can be referenced either by ID, or by a combination of name, s
 
 Tutorial: Creating Scoped Prompt Templates with Headers
 
-For a step-by-step guide on creating orchestration deployment and configuring scoped prompt registry templates, see the [Using Scoped Prompt Registry Templates](/ai-sdk/docs/js/tutorials/using-scoped-prompt-registry-templates.md) tutorial.
+For a step-by-step guide on creating orchestration deployment and configuring scoped prompt registry templates, see the [Scoped Prompt Registry Templates](/ai-sdk/docs/js/tutorials/scoped-prompt-registry-templates.md) tutorial.
 
 Prompt templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) can be scoped to different levels. By default, prompts are stored in the `tenant` scope, making them accessible across all resource groups within the tenant, ensuring broad availability.
 

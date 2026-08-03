@@ -1,0 +1,342 @@
+# Getting Started with Agents using LangChain
+
+## Introduction[​](#introduction "Direct link to Introduction")
+
+In this tutorial, you'll build a simple travel assistant agent using a LangChain Client, either `OrchestrationClient` or `AzureOpenAiChatClient` from the `@sap-ai-sdk/langchain` package alongside `LangGraph`. The agent creates an itinerary based on current weather conditions and supports follow-up queries.
+
+The assistant performs these steps:
+
+* Accepts a user travel request.
+* Calls a weather tool to fetch the current weather.
+* Creates a weather-aware 3-item itinerary, including restaurant recommendations.
+* Asks for human input (via interruption) when confirmation is required.
+
+## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
+
+Refer to the prerequisites outlined [here](/ai-sdk/docs/js/overview.md#prerequisites).
+
+This tutorial assumes a basic understanding of TypeScript, LLMs, and LangChain concepts.
+
+## Installation[​](#installation "Direct link to Installation")
+
+Install the following dependencies:
+
+```
+npm install @sap-ai-sdk/langchain langchain @langchain/langgraph @langchain/core @langchain/mcp-adapters @modelcontextprotocol/sdk zod
+```
+
+## Define Tools[​](#define-tools "Direct link to Define Tools")
+
+The following tools are defined:
+
+* `get_weather` for returning weather by city.
+* `get_restaurants` for city-based restaurant recommendations.
+
+info
+
+The `get_restaurants` tool uses mocked data for simplicity. Replace with real API calls to integrate live data.
+
+Restaurant tool definition
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L25-L44)
+
+Set up an MCP server and define the `get_weather` tool using the free [Open-Meteo](https://open-meteo.com/) Weather API to fetch weather data. For API usage terms, visit [Open-Meteo License](https://open-meteo.com/en/license).
+
+Weather MCP Server
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/weather-mcp-server.ts#L4-L60)
+
+To access tools defined in the MCP server, set up LangChain's [MCP Adapter](https://docs.langchain.com/oss/javascript/langchain/mcp#use-mcp-tools).
+
+MCP Adapter
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/mcp-adapter.ts#L3-L19)
+
+## Setup the Agent[​](#setup-the-agent "Direct link to Setup the Agent")
+
+Initialize the client and add tools using the `buildTools()` method. Set up a `ToolNode` for routing tool calls.
+
+* Orchestration Client
+* OpenAI Client
+
+```
+// Define the tools for the agent to use
+
+const tools = [...(await mcpClient.getTools()), getRestaurantsTool];
+
+const toolNode = new ToolNode(tools);
+
+
+
+// Create a model
+
+const model = new AzureOpenAiChatClient({
+
+  modelName: 'gpt-5-mini',
+
+  maxRetries: 0
+
+});
+
+
+
+// create a model with access to the tools
+
+const modelWithTools = model.bindTools(tools);
+```
+
+Initialize Client
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L46-L63)
+
+## Define Agent Logic and LangGraph Flow[​](#define-agent-logic-and-langgraph-flow "Direct link to Define Agent Logic and LangGraph Flow")
+
+Configure a `StateGraph` that routes between `agent` → `tool` → `agent`, and uses intelligent routing to determine when to ask for human input or end the conversation.
+
+Configure Agent flow
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L65-L96)
+
+## Build the Workflow[​](#build-the-workflow "Direct link to Build the Workflow")
+
+Build the workflow
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L98-L108)
+
+note
+
+Using [`MemorySaver`](https://docs.langchain.com/oss/javascript/langgraph/persistence) allows sharing context across multiple interactions in a single conversational thread (`conv-1`). In this example, it enables the agent to remember the previously mentioned city.
+
+![LangGraph Flow](/ai-sdk/img/Langgraph-State.png)
+
+## Run the assistant[​](#run-the-assistant "Direct link to Run the assistant")
+
+The following example simulates a full interaction, with detailed console output at each step:
+
+1. The assistant receives an initial itinerary request and fetches weather data.
+2. It creates a weather-aware itinerary with restaurant recommendations and asks for user feedback.
+3. It handles follow-up requests and modifications based on user input.
+4. The conversation continues until the user is satisfied.
+
+Call the agent with initial message
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L110-L127)
+
+When the agent receives the initial request, it first determines that it needs both weather and restaurant data to create a comprehensive itinerary. The LLM response includes tool calls to gather this information:
+
+```
+"tool_calls": [
+
+  {
+
+    "id": "call_bnMuoAGpN6zUnpEm1DwqykvV",
+
+    "name": "get_weather",
+
+    "args": {
+
+      "city": "Paris"
+
+    },
+
+    "type": "tool_call"
+
+  },
+
+  {
+
+    "id": "call_NnlDugZMjAd4JrSqBa4lFpHE",
+
+    "name": "get_restaurants",
+
+    "args": {
+
+      "city": "Paris"
+
+    },
+
+    "type": "tool_call"
+
+  }
+
+]
+```
+
+The agent executes these tool calls through the `tools` node to gather the necessary data, then returns to the agent node to generate a natural language response with the complete itinerary.
+
+sample-code/src/tutorials/travel-itinerary-agent.ts
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L129-L130)
+
+```
+Assistant: Here's a 3-item itinerary for your visit to Paris:
+
+
+
+1. **Morning: Explore the Louvre Museum**
+
+   - Start your day by visiting the world-renowned Louvre Museum. Take your time to explore its vast collection of art and history.
+
+   - Weather: 22°C, Mild and pleasant – perfect for a stroll through the museum and its gardens.
+
+
+
+2. **Afternoon: Lunch at Le Comptoir du Relais**
+
+   - Enjoy a delicious lunch at Le Comptoir du Relais, a popular Parisian restaurant known for its authentic French cuisine.
+
+   - After lunch, you can take a leisurely walk around the nearby Saint-Germain-des-Prés area, soaking in the Parisian ambiance.
+
+
+
+3. **Evening: Dinner at L'As du Fallafel**
+
+   - Head to L'As du Fallafel for dinner, where you can savor some of the best falafel in the city. It's a unique spot that offers a taste of multicultural Paris.
+
+   - You can conclude your evening with a walk in the vibrant Marais district, where the restaurant is located.
+
+
+
+Would you like to make any changes to this itinerary or add something else?
+```
+
+After presenting the itinerary, the graph pauses at the `askHuman` node and waits for the human's response.
+
+```
+next:  [ 'askHuman' ]
+```
+
+Provide the response by invoking the graph with a `new Command({ resume: <follow_up_question>" })` input:
+
+sample-code/src/tutorials/travel-itinerary-agent.ts
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L132-L137)
+
+The assistant responds with an updated itinerary:
+
+```
+Assistant: Here's an updated itinerary with more outdoor activities:
+
+
+
+1. **Morning: Visit the Eiffel Tower and Picnic at Champ de Mars**
+
+   - Start your day with a visit to the iconic Eiffel Tower. You can either marvel at its structure from below or take a ride to the top for breathtaking views of Paris.
+
+   - Weather: 22°C, Mild and pleasant – ideal for an outdoor picnic.
+
+   - After the visit, enjoy a relaxing picnic at the nearby Champ de Mars park, where you can unwind and soak in the views.
+
+
+
+2. **Afternoon: Stroll Along the Seine River**
+
+   - Spend your afternoon walking along the Seine River. You can admire the beautiful bridges and architecture, and maybe even catch a boat tour for a different perspective of the city.
+
+   - Stop by a local café for a light lunch or grab a snack from one of the nearby street vendors.
+
+
+
+3. **Evening: Dinner at Breizh Café**
+
+   - Conclude your day with dinner at Breizh Café, known for its delicious crêpes. It's located in a charming area where you can enjoy a pleasant outdoor dining experience.
+
+   - After dinner, take a leisurely walk through the lively streets of the Marais district and enjoy the evening atmosphere.
+
+
+
+Does this itinerary suit your preferences, or would you like further adjustments?
+```
+
+The agent loop ends when the user expresses satisfaction with the proposed itinerary.
+
+sample-code/src/tutorials/travel-itinerary-agent.ts
+
+```
+loading...
+```
+
+[](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts#L139-L147)
+
+```
+Assistant: I'm glad you like the itinerary! If you have any more questions or need further assistance while planning your trip, feel free to reach out. Enjoy your time in Paris! Safe travels! 🌟
+```
+
+## Full Code[​](#full-code "Direct link to Full Code")
+
+Travel Itinerary Planner Agent
+
+* Itinerary Planner
+* MCP Adapter
+* Weather MCP Server
+
+sample-code/src/tutorials/travel-itinerary-agent.ts
+
+```
+loading...
+```
+
+[View on GitHub](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/travel-itinerary-agent.ts)
+
+sample-code/src/tutorials/mcp/mcp-adapter.ts
+
+```
+loading...
+```
+
+[View on GitHub](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/mcp-adapter.ts)
+
+sample-code/src/tutorials/mcp/weather-mcp-server.ts
+
+```
+loading...
+```
+
+[View on GitHub](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/tutorials/mcp/weather-mcp-server.ts)
+
+## Summary[​](#summary "Direct link to Summary")
+
+This tutorial demonstrates how to implement a simple agent workflow using:
+
+* The `OrchestrationClient` with `bindTools()` method to integrate external capabilities.
+* Defining a LangGraph `StateGraph` for branching logic and conditional tool use.
+* Interrupting the flow with a human tool via `interrupt()` and handling it inside the graph.
+* Maintaining context across interactions with `MemorySaver`.
+
+Explore additional capabilities and patterns in [LangGraph documentation](https://docs.langchain.com/oss/javascript/langgraph/quickstart/).

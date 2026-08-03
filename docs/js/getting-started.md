@@ -6,7 +6,7 @@ In this quickstart, you'll use the OpenAI GPT-5 model via the [Orchestration Ser
 
 ### Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-Refer to prerequisites outlined [here](/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js.md#prerequisites).
+Refer to prerequisites outlined [here](/ai-sdk/docs/js/overview.md#prerequisites).
 
 This quickstart assumes you are using the `default` resource group of your AI Core instance. If you need to [use a different resource group](/ai-sdk/docs/js/orchestration/chat-completion.md#custom-deployment-configuration), make sure it has an [orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) available.
 

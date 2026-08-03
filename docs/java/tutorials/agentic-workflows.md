@@ -21,7 +21,7 @@ An example implementation of this tutorial can be found in [our Spring Boot appl
 
 This tutorial requires basic knowledge of Java, the SAP AI SDK, and Spring. Also, a basic understanding of concepts regarding LLMs and the above mentioned [article on building agents with SpringAI](https://spring.io/blog/2025/01/21/spring-ai-agentic-patterns) are assumed.
 
-For technical prerequisites please refer to our [general requirements](/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java.md#general-requirements).
+For technical prerequisites please refer to our [general requirements](/ai-sdk/docs/java/overview.md#general-requirements).
 
 ## Create Mock Tools[​](#create-mock-tools "Direct link to Create Mock Tools")
 

@@ -10,7 +10,7 @@ $ npm install @sap-ai-sdk/foundation-models
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-Refer to prerequisites outlined [here](/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js.md#prerequisites).
+Refer to prerequisites outlined [here](/ai-sdk/docs/js/v1/overview-cloud-sdk-for-ai-js.md#prerequisites).
 
 ## Client Initialization[​](#client-initialization "Direct link to Client Initialization")
 
@@ -76,7 +76,7 @@ const client = await new AzureOpenAiChatClient('gpt-4o', {
 
 By default, the fetched destination is cached. To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](/ai-sdk/docs/js/connecting-to-ai-core.md#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](/ai-sdk/docs/js/v1/connecting-to-ai-core.md#using-a-destination) section.
 
 ## Custom Request Configuration[​](#custom-request-configuration "Direct link to Custom Request Configuration")
 

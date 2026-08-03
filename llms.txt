@@ -17,7 +17,7 @@
 - [Getting Started](/docs/java/getting-started.md): Get up to speed with SAP Cloud SDK for Java in no time
 - [Chat Completion](/docs/java/orchestration/chat-completion.md): How to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
 - [Embedding](/docs/java/orchestration/embedding.md): How to use the SAP AI SDK for Java to perform embedding tasks using Orchestration models deployed on SAP AI Core.
-- [Java SDK Overview](/docs/java/overview-cloud-sdk-for-ai-java.md): The SAP Cloud SDK for AI Java significantly simplifies extending and developing an application with SAP Business Technology Platform
+- [Java SDK Overview](/docs/java/overview.md): The SAP Cloud SDK for AI Java significantly simplifies extending and developing an application with SAP Business Technology Platform
 - [Release Notes](/docs/java/release-notes.md): Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations.
 - [release-notes-0-to-14](/docs/java/release-notes/release-notes-0-to-14.md): 1.14.0 - January 08, 2026
 - [release-notes-15-to-29](/docs/java/release-notes/release-notes-15-to-29.md): 1.22.0 - July 09, 2026
@@ -58,17 +58,17 @@
 - [OpenAI](/docs/js/openai.md): How to use the @sap-ai-sdk/openai package to access Azure OpenAI models on SAP AI Core using the official openai npm package.
 - [Chat Completion](/docs/js/orchestration/chat-completion.md): How to use the SAP Cloud SDK for AI to perform chat completion tasks using orchestration service from SAP AI Core.
 - [Embedding](/docs/js/orchestration/embedding.md): How to use the SAP Cloud SDK for AI to generate embeddings using the Orchestration service on SAP AI Core.
-- [JavaScript SDK Overview](/docs/js/overview-cloud-sdk-for-ai-js.md): The SAP Cloud SDK for AI JavaScript/TypeScript significantly simplifies extending and developing an application with SAP Business Technology Platform
+- [JavaScript SDK Overview](/docs/js/overview.md): The SAP Cloud SDK for AI JavaScript/TypeScript significantly simplifies extending and developing an application with SAP Business Technology Platform
 - [Release Notes](/docs/js/release-notes.md): Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations.
 - [Release Policy](/docs/js/release-policy.md): Release policy of SAP Cloud SDK for AI, including versioning strategy, major release schedule, and maintenance information.
 - [SAP RPT-1 (Beta)](/docs/js/rpt.md): How to use SAP Cloud SDK for AI to interact with the SAP RPT-1 model for Tabular AI on SAP AI Core.
-- [Getting Started with Agents using LangChain](/docs/js/tutorials/getting-started-with-agents.md): Building a Travel Itinerary Assistant with LangGraph and LangChain Client
-- [Processing Batch LLM Requests with the Batch API](/docs/js/tutorials/using-llm-batch-api.md): Learn how to submit and manage asynchronous LLM batch jobs using the SAP AI SDK for JavaScript.
-- [Using Scoped Prompt Registry Templates](/docs/js/tutorials/using-scoped-prompt-registry-templates.md): Learn how to create orchestration deployments and use scoped prompt registry templates with custom headers for resource group isolation.
+- [Getting Started with Agents using LangChain](/docs/js/tutorials/getting-started-agents.md): Building a Travel Itinerary Assistant with LangGraph and LangChain Client
+- [Processing Batch LLM Requests with the Batch API](/docs/js/tutorials/llm-batch-api.md): Learn how to submit and manage asynchronous LLM batch jobs using the SAP AI SDK for JavaScript.
+- [Using Scoped Prompt Registry Templates](/docs/js/tutorials/scoped-prompt-registry-templates.md): Learn how to create orchestration deployments and use scoped prompt registry templates with custom headers for resource group isolation.
 - [Upgrade Guide](/docs/js/upgrade-guide.md): Guide for upgrading from SAP Cloud SDK for AI
-- [Feature Matrix](/docs/overview/cloud-sdk-feature-matrix.md): Key features of SAP Cloud SDK for AI to seamlessly build and extend SAP services and applications.
+- [Feature Matrix](/docs/overview/feature-matrix.md): Key features of SAP Cloud SDK for AI to seamlessly build and extend SAP services and applications.
 - [Support](/docs/overview/get-support.md): If you're stuck and can't find a solution to you problem with SAP Cloud SDK for AI, we're here to help you.
-- [About the SAP Cloud SDK for AI](/docs/overview/overview-cloud-sdk-for-ai.md): SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service.
+- [About the SAP Cloud SDK for AI](/docs/overview/overview.md): SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service.
 - [AI vs AI](/docs/python/examples/ai-vs-ai.md): This example demonstrates a multi-model conversation where two LLMs talk to each other using LangChain, each maintaining its own message history via RunnableWithMessageHistory.
 - [Async Examples](/docs/python/examples/async-examples.md): Async Amazon Native
 - [LLM Batch Service](/docs/python/examples/batch-service.md): The LLM Batch Service lets you process large volumes of LLM requests asynchronously. Instead of individual synchronous calls, you submit a JSONL input file and the service processes it in the background.

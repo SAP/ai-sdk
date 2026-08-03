@@ -10,7 +10,7 @@ All classes in the `...model` and `...client` packages are generated from an Ope
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-Before using the Document Grounding module, ensure that you have met all the general requirements outlined in the [overview](/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java.md#general-requirements).
+Before using the Document Grounding module, ensure that you have met all the general requirements outlined in the [overview](/ai-sdk/docs/java/overview.md#general-requirements).
 
 Additionally, make sure your [resource group has the Document Grounding service enabled](https://help.sap.com/docs/sap-ai-core/generative-ai/create-resource-group-for-grounding-e32efa5402154101b4cc05c03ef5be09).
 

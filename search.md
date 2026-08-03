@@ -2,7 +2,7 @@
 
 [![SAP Cloud SDK for AI](/ai-sdk/img/AI-SDK-Logo.svg)![SAP Cloud SDK for AI](/ai-sdk/img/AI-SDK-Logo.svg)](/ai-sdk/)
 
-[**SAP Cloud SDK for AI**](/ai-sdk/)[Overview](/ai-sdk/docs/overview/overview-cloud-sdk-for-ai.md)[☕ Java](/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java.md)[🚀 JavaScript](/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js.md)[🐍 Python](/ai-sdk/docs/python/overview.md)
+[**SAP Cloud SDK for AI**](/ai-sdk/)[Overview](/ai-sdk/docs/overview/overview.md)[☕ Java](/ai-sdk/docs/java/overview.md)[🚀 JavaScript](/ai-sdk/docs/js/overview.md)[🐍 Python](/ai-sdk/docs/python/overview.md)
 
 Search
 

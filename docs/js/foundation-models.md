@@ -10,7 +10,7 @@ npm install @sap-ai-sdk/foundation-models
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-Refer to prerequisites outlined [here](/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js.md#prerequisites).
+Refer to prerequisites outlined [here](/ai-sdk/docs/js/overview.md#prerequisites).
 
 ## Client Initialization[​](#client-initialization "Direct link to Client Initialization")
 

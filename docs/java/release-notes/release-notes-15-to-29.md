@@ -74,7 +74,7 @@
 
 ### 📈 Improvements[​](#-improvements-1 "Direct link to 📈 Improvements")
 
-* Aggregated JavaDocs are now published on our [documentation portal](/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java.md).
+* Aggregated JavaDocs are now published on our [documentation portal](/ai-sdk/docs/java/overview.md).
 
 ## 1.18.0 - April 16, 2026[​](#1180---april-16-2026 "Direct link to 1.18.0 - April 16, 2026")
 

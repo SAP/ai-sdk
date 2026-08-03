@@ -336,7 +336,7 @@ Reasoning models require a specific API version. Ensure you use `2024-12-01-prev
 
 ### Tool Calling[​](#tool-calling "Direct link to Tool Calling")
 
-LangChain offers a unified way to connect tools to language models. Use the `bindTools()` method to define the set of tools a model can access. For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling). For a usage example, refer to the [getting started with agents tutorial](/ai-sdk/docs/js/tutorials/getting-started-with-agents.md#define-tools).
+LangChain offers a unified way to connect tools to language models. Use the `bindTools()` method to define the set of tools a model can access. For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling). For a usage example, refer to the [getting started with agents tutorial](/ai-sdk/docs/js/tutorials/getting-started-agents.md#define-tools).
 
 ### Structured Output[​](#structured-output "Direct link to Structured Output")
 

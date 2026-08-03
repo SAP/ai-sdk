@@ -8,7 +8,7 @@ Refer to the [OpenAI Responses API reference](https://platform.openai.com/docs/a
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java.md#general-requirements). Additionally, include the necessary Maven dependency in your project.
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](/ai-sdk/docs/java/overview.md#general-requirements). Additionally, include the necessary Maven dependency in your project.
 
 ### Maven Dependencies[​](#maven-dependencies "Direct link to Maven Dependencies")
 

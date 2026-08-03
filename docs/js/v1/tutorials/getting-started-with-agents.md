@@ -13,7 +13,7 @@ The assistant performs these steps:
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-Refer to the prerequisites outlined [here](/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js.md#prerequisites).
+Refer to the prerequisites outlined [here](/ai-sdk/docs/js/v1/overview-cloud-sdk-for-ai-js.md#prerequisites).
 
 This tutorial assumes a basic understanding of TypeScript, LLMs, and LangChain concepts.
 

@@ -26,7 +26,7 @@ npm install @sap-ai-sdk/openai openai
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-See the [prerequisites](/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js.md#prerequisites) section.
+See the [prerequisites](/ai-sdk/docs/js/overview.md#prerequisites) section.
 
 ## Client Initialization[​](#client-initialization "Direct link to Client Initialization")
 

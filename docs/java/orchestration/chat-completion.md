@@ -12,7 +12,7 @@ All classes under any of the `...model` packages are generated from an OpenAPI s
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-Before using the Orchestration module, ensure that you have met all the general requirements outlined in the [overview](/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java.md#general-requirements).
+Before using the Orchestration module, ensure that you have met all the general requirements outlined in the [overview](/ai-sdk/docs/java/overview.md#general-requirements).
 
 To use the Orchestration capabilities, a deployment of Orchestration is needed in AI Core. When using the `default` resource group, this is provided by default and no further setup is needed.
 

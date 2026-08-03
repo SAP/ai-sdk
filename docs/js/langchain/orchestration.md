@@ -350,7 +350,7 @@ When streaming is disabled, both the `invoke()` and `stream()` methods use non-s
 
 ### Tool Calling[​](#tool-calling "Direct link to Tool Calling")
 
-LangChain offers a unified way to connect tools to language models. Use the `bindTools()` method to define the set of tools a model can access. For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling). For a usage example, refer to the [getting started with agents tutorial](/ai-sdk/docs/js/tutorials/getting-started-with-agents.md#define-tools).
+LangChain offers a unified way to connect tools to language models. Use the `bindTools()` method to define the set of tools a model can access. For more details, see the [official LangChain documentation on tool binding](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling). For a usage example, refer to the [getting started with agents tutorial](/ai-sdk/docs/js/tutorials/getting-started-agents.md#define-tools).
 
 ### Basic Agent Usage[​](#basic-agent-usage "Direct link to Basic Agent Usage")
 
