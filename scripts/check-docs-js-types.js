@@ -9,23 +9,15 @@
  * rendered output while still including them for type-checking.
  */
 import { createTwoslasher } from 'twoslash';
-import { readFile, readdir } from 'fs/promises';
-import { join, relative, dirname } from 'path';
+import { readFile, glob } from 'node:fs/promises';
+import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const docsDir = join(repoRoot, 'docs-js');
-const tsconfigPath = join(docsDir, 'tsconfig.json');
-
-async function findMdxFiles(dir) {
-  return (await readdir(dir, { recursive: true, withFileTypes: true }))
-    .filter(
-      e => e.isFile() && (e.name.endsWith('.mdx') || e.name.endsWith('.md'))
-    )
-    .map(e => join(e.parentPath, e.name));
-}
+const configPath = join(docsDir, 'twoslash-config.json');
 
 function extractTwoslashBlocks(content, filePath) {
   // Match ```ts twoslash or ```typescript twoslash fenced code blocks
@@ -45,18 +37,26 @@ function reportError(filePath, line, message) {
 }
 
 async function main() {
-  const parsed = ts.parseJsonConfigFileContent(
-    ts.readConfigFile(tsconfigPath, ts.sys.readFile).config,
-    ts.sys,
-    docsDir
+  const config = ts.readConfigFile(configPath, ts.sys.readFile).config;
+  const { include = [], exclude = [], files: explicitFiles = [] } = config;
+  const { options } = ts.parseJsonConfigFileContent(config, ts.sys, docsDir);
+
+  const included = await Array.fromAsync(
+    glob(include, { cwd: docsDir, exclude })
   );
+
+  const files = [...included, ...explicitFiles].map(f => join(docsDir, f));
+
+  if (!files.length) {
+    console.error('No files matched the file patterns in twoslash-config.json');
+    process.exit(1);
+  }
+
   const twoslasher = createTwoslasher({
     vfsRoot: repoRoot,
-    compilerOptions: parsed.options,
+    compilerOptions: options,
     extraFiles: { 'package.json': '{"type":"module"}' }
   });
-
-  const files = await findMdxFiles(docsDir);
 
   const results = await Promise.all(
     files.map(async file => {
