@@ -44,7 +44,9 @@ Alternatively, create a resource group via AI API by referring to the [Creating 
 The following examples show how to list pipelines, create a new pipeline, and view its current status.
 Refer to the [Pipelines API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipelines-api-d8cc0e369f994091b95a6d80aeadbc7f) for more details.
 
-```ts
+```ts twoslash
+import { PipelinesApi } from '@sap-ai-sdk/document-grounding';
+// ---cut---
 const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
   {
     $top: 10
@@ -57,8 +59,8 @@ const getAllPipelinesResponse = await PipelinesApi.getAllPipelines(
 const createPipelineResponse = await PipelinesApi.createPipeline(
   {
     configuration: {
-      destination: 'my-destination'
-      sharepoint: {
+      destination: 'my-destination',
+      sharePoint: {
         site: {
           name: 'sharepoint-site-name'
         }
@@ -84,7 +86,9 @@ const getPipelineStatusResponse = await PipelinesApi.getPipelineStatus(
 The following example shows how to create a collection using Vector API.
 For more details, refer to the [Vector API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-08e3d008addb4362986c73ff0151638c).
 
-```ts
+```ts twoslash
+import { VectorApi } from '@sap-ai-sdk/document-grounding';
+// ---cut---
 const response = await VectorApi.createCollection(
   {
     title: 'my-collection-title',
@@ -98,14 +102,18 @@ const response = await VectorApi.createCollection(
   }
 ).executeRaw();
 
-const collectionId = (response.headers.location as string).split('/').at(-2);
+const collectionId = response.headers.location.split('/').at(-2);
 ```
 
 ### Create a Document
 
 The following example shows how to create a document using Vector API.
 
-```ts
+```ts twoslash
+import { VectorApi } from '@sap-ai-sdk/document-grounding';
+import type { DocumentsListResponse } from '@sap-ai-sdk/document-grounding';
+declare const collectionId: string;
+// ---cut---
 const response: DocumentsListResponse = await VectorApi.createDocuments(
   collectionId,
   {
@@ -133,8 +141,11 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
 The following example shows how to search results using Retrieve API.
 Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api-281e8cf31d654b108a6e128a4a6cdbae) for more details.
 
-```ts
-const response: RetrievalSearchResults = RetrievalApi.search(
+```ts twoslash
+import { RetrievalApi } from '@sap-ai-sdk/document-grounding';
+import type { RetrievalSearchResults } from '@sap-ai-sdk/document-grounding';
+// ---cut---
+const response: RetrievalSearchResults = await RetrievalApi.search(
   {
     query: 'What is SAP Cloud SDK for AI?',
     filters: [
@@ -163,7 +174,10 @@ Refer to [Orchestration Grounding](../orchestration/chat-completion.mdx#groundin
 When calling the `execute()` method, it is possible to provide a custom destination for your SAP AI Core instance.
 For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
 
-```ts
+```ts twoslash
+import { VectorApi } from '@sap-ai-sdk/document-grounding';
+declare const collectionId: string;
+// ---cut---
 const response = await VectorApi.deleteCollectionById(collectionId, {
   'AI-Resource-Group': 'default'
 }).execute({
@@ -180,7 +194,11 @@ For more information about configuring a destination, refer to the [Using a Dest
 
 Set custom request configuration in the `requestConfig` parameter when calling the `.execute()` method.
 
-```ts
+```ts twoslash
+import { VectorApi } from '@sap-ai-sdk/document-grounding';
+import type { DocumentsListResponse } from '@sap-ai-sdk/document-grounding';
+declare const collectionId: string;
+// ---cut---
 const response: DocumentsListResponse = await VectorApi.createDocuments(
   collectionId,
   {
@@ -199,16 +217,14 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
   {
     'AI-Resource-Group': 'default'
   }
-).execute({
-  requestConfig: {
-    headers: {
-      'x-custom-header': 'custom-value'
-      // Add more headers here
-    },
-    params: {
-      // Add more parameters here
-    }
-    // Add more request configuration here
+).execute(undefined, {
+  headers: {
+    'x-custom-header': 'custom-value'
+    // Add more headers here
+  },
+  params: {
+    // Add more parameters here
   }
+  // Add more request configuration here
 });
 ```

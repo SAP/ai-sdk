@@ -23,7 +23,10 @@ Refer to the [Custom Request Configuration](../foundation-models.mdx#custom-requ
 
 ## Making Requests
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 const response = await client.run({
   messages: [
     {
@@ -40,7 +43,10 @@ console.log(response.getContent());
 Multiple messages can be sent in a single request, enabling the model to reference the conversation history.
 Include `max_tokens` and `temperature` in the request to control the completion behavior:
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 const response = await client.run({
   messages: [
     {
@@ -68,9 +74,9 @@ console.log(response.getContent());
 
 const tokenUsage = response.getTokenUsage();
 console.log(
-  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+  `Total tokens consumed by the request: ${tokenUsage?.total_tokens}\n` +
+    `Input prompt tokens consumed: ${tokenUsage?.prompt_tokens}\n` +
+    `Output text completion tokens consumed: ${tokenUsage?.completion_tokens}\n`
 );
 ```
 
@@ -83,7 +89,10 @@ The `AzureOpenAiChatClient` supports streaming response for chat completion requ
 Use the `stream()` method to receive a stream of chunk responses from the model.
 After consuming the stream, call the helper methods to get the finish reason and token usage information.
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 const response = await client.stream({
   messages: [
     {
@@ -108,7 +117,13 @@ console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 
 Use `toContentStream()` method to create a stream generating delta content string.
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+const response = await client.stream({
+  messages: [{ role: 'user', content: '' }]
+});
+// ---cut---
 for await (const chunk of response.stream.toContentStream()) {
   console.log(chunk); // will log the delta content
 }
@@ -120,7 +135,13 @@ Use `getToolCalls()` method to get the tool calls at the end of a stream.
 While `getDeltaToolCalls()` method can be called on individual chunks, partial tool calls are typically not useful.
 Therefore, it is recommended to use the `getToolCalls()` method on the full response instead.
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+const response = await client.stream({
+  messages: [{ role: 'user', content: '' }]
+});
+// ---cut---
 for await (const _ of response.stream) {
   console.log('Waiting for the stream to end ...');
 }
@@ -134,9 +155,12 @@ Streaming request can be aborted using the `AbortController` API.
 In case of an error, SAP Cloud SDK for AI will automatically close the stream.
 Additionally, it can be aborted manually by calling the `stream()` method with an `AbortSignal` object.
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 const controller = new AbortController();
-const response = await client.stream(
+const streamResponse = await client.stream(
   {
     messages: [
       {
@@ -153,7 +177,7 @@ setTimeout(() => {
   controller.abort();
 }, 1000);
 
-for await (const chunk of response.stream) {
+for await (const chunk of streamResponse.stream) {
   console.log(JSON.stringify(chunk));
 }
 ```
@@ -168,7 +192,10 @@ It is useful when model is not calling a tool and should still return a structur
 
 The example below returns a JSON Schema with `strict: true` to let the response adhere to the schema definition.
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 const response = await client.run({
   messages: [
     {
@@ -234,7 +261,9 @@ Here's an example of temperature conversion using tool calls:
 
 First, define the tool with `name`, `description` and `parameters` properties:
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatCompletionTool } from '@sap-ai-sdk/foundation-models';
+// ---cut---
 const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
   type: 'function',
   function: {
@@ -259,10 +288,20 @@ For more information refer to the [OpenAI documentation](https://platform.openai
 
 Initialize the client and send the initial request with the tool definition:
 
-```ts
+```ts twoslash
+import {
+  AzureOpenAiChatClient,
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiChatCompletionRequestMessage
+} from '@sap-ai-sdk/foundation-models';
+declare const convertTemperatureTool: AzureOpenAiChatCompletionTool;
+// ---cut---
 const client = new AzureOpenAiChatClient('gpt-5');
-const messages = [
-  { role: 'user', content: 'Convert 20 degrees Celsius to Fahrenheit.' }
+const messages: AzureOpenAiChatCompletionRequestMessage[] = [
+  {
+    role: 'user',
+    content: 'Convert 20 degrees Celsius to Fahrenheit.'
+  }
 ];
 
 const response = await client.run({
@@ -274,8 +313,29 @@ const response = await client.run({
 When the model decides to use a tool, it returns the function name and input arguments in the response.
 Use the model response to execute the function.
 
-```ts
-const initialResponse = response.data.choices[0].message;
+```ts twoslash
+import {
+  AzureOpenAiChatClient,
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiChatCompletionRequestToolMessage,
+  AzureOpenAiChatCompletionRequestMessage
+} from '@sap-ai-sdk/foundation-models';
+declare const convertTemperatureTool: AzureOpenAiChatCompletionTool;
+declare function callFunction(name: string, args: any): string;
+
+const client = new AzureOpenAiChatClient('gpt-5');
+const messages: AzureOpenAiChatCompletionRequestMessage[] = [
+  {
+    role: 'user',
+    content: 'Convert 20 degrees Celsius to Fahrenheit.'
+  }
+];
+const response = await client.run({
+  messages,
+  tools: [convertTemperatureTool]
+});
+// ---cut---
+const initialResponse = response._data.choices[0].message;
 messages.push(initialResponse);
 let toolMessage: AzureOpenAiChatCompletionRequestToolMessage;
 
@@ -297,7 +357,7 @@ if (initialResponse.tool_calls) {
 
 The `callFunction` function routes the calls to the actual implementations.
 
-```ts
+```ts twoslash
 function callFunction(name: string, args: any): string {
   switch (name) {
     case 'convert_temperature_to_fahrenheit':
@@ -314,7 +374,17 @@ function convertTemperatureToFahrenheit(temperature: number): string {
 
 Send the function result back to the model to get it's final response:
 
-```ts
+```ts twoslash
+import {
+  AzureOpenAiChatClient,
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiChatCompletionRequestToolMessage
+} from '@sap-ai-sdk/foundation-models';
+declare const convertTemperatureTool: AzureOpenAiChatCompletionTool;
+declare const messages: { role: 'user'; content: string }[];
+declare const toolMessage: AzureOpenAiChatCompletionRequestToolMessage;
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 const finalResponse = await client.run({
   messages: [...messages, toolMessage],
   tools: [convertTemperatureTool]
@@ -328,7 +398,10 @@ console.log(finalResponse.getContent());
 The SAP Cloud SDK for AI provides access to the underlying HTTP response through the `rawResponse` property on response objects.
 Use this for advanced scenarios such as accessing response headers, inspecting HTTP status codes, or debugging.
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 const response = await client.run({
   messages: [{ role: 'user', content: 'Hello World!' }]
 });
@@ -355,12 +428,18 @@ If you need access to the raw HTTP response for streaming requests, please open 
 Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
 By default, it enables a circuit breaker and a 10-second timeout.
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 import { resilience } from '@sap-cloud-sdk/resilience';
 
 const request = {
   messages: [
-    { role: 'user', content: 'Where is the deepest place on earth located?' }
+    {
+      role: 'user' as const,
+      content: 'Where is the deepest place on earth located?'
+    }
   ]
 };
 
@@ -378,7 +457,12 @@ Customize the behavior by passing options:
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
+import { resilience } from '@sap-cloud-sdk/resilience';
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+const request = { messages: [{ role: 'user' as const, content: '' }] };
+// ---cut---
 const response = await client.run(request, {
   middleware: resilience({
     timeout: 5000, // 5 seconds; true for default 10s, false to disable
@@ -398,7 +482,10 @@ Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when
 This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
 Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
 
-```ts
+```ts twoslash
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+const client = new AzureOpenAiChatClient('gpt-5');
+// ---cut---
 const controller = new AbortController();
 
 const response = client.run(
@@ -420,7 +507,7 @@ setTimeout(() => {
 
 try {
   await response;
-} catch (error) {
+} catch (error: any) {
   console.error('Request was cancelled:', error.message);
 }
 ```
