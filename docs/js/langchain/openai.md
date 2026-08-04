@@ -111,7 +111,7 @@ const llmChain = promptTemplate.pipe(chatClient).pipe(parser);
 
 // Invoke the chain
 
-return llmChain.invoke({
+const response = await llmChain.invoke({
 
   language: 'german',
 
@@ -127,9 +127,7 @@ The client supports streaming responses for chat completion requests. Use the `s
 By default, the last chunk contains the finish reason and token usage information.
 
 ```
-const client = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
-
-const response = await client.stream([
+const stream = await client.stream([
 
   {
 

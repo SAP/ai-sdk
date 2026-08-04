@@ -53,10 +53,6 @@ The `rawResponse` property is available on embedding response objects.
 Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests. By default, it enables a circuit breaker and a 10-second timeout.
 
 ```
-import { resilience } from '@sap-cloud-sdk/resilience';
-
-
-
 const response = await client.run(
 
   { input: 'What is the capital of Germany?' },
@@ -135,7 +131,7 @@ try {
 
   await response;
 
-} catch (error) {
+} catch (error: any) {
 
   console.error('Request was cancelled:', error.message);
 

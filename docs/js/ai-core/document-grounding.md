@@ -51,9 +51,9 @@ const createPipelineResponse = await PipelinesApi.createPipeline(
 
     configuration: {
 
-      destination: 'my-destination'
+      destination: 'my-destination',
 
-      sharepoint: {
+      sharePoint: {
 
         site: {
 
@@ -123,7 +123,7 @@ const response = await VectorApi.createCollection(
 
 
 
-const collectionId = (response.headers.location as string).split('/').at(-2);
+const collectionId = response.headers.location.split('/').at(-2);
 ```
 
 ### Create a Document[​](#create-a-document "Direct link to Create a Document")
@@ -177,7 +177,7 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
 The following example shows how to search results using Retrieve API. Please refer to [Retrieval API documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api-281e8cf31d654b108a6e128a4a6cdbae) for more details.
 
 ```
-const response: RetrievalSearchResults = RetrievalApi.search(
+const response: RetrievalSearchResults = await RetrievalApi.search(
 
   {
 
@@ -279,27 +279,23 @@ const response: DocumentsListResponse = await VectorApi.createDocuments(
 
   }
 
-).execute({
+).execute(undefined, {
 
-  requestConfig: {
+  headers: {
 
-    headers: {
+    'x-custom-header': 'custom-value'
 
-      'x-custom-header': 'custom-value'
+    // Add more headers here
 
-      // Add more headers here
+  },
 
-    },
+  params: {
 
-    params: {
-
-      // Add more parameters here
-
-    }
-
-    // Add more request configuration here
+    // Add more parameters here
 
   }
+
+  // Add more request configuration here
 
 });
 ```

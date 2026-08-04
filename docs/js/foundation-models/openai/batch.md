@@ -75,7 +75,7 @@ await FileApi.fileUpload(
 Then create the batch job referencing the input file and an output directory using the `ai://SECRET_NAME/` URI format:
 
 ```
-import { BatchesApi } from '@sap-ai-sdk/batch-api';
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
 
 
 
@@ -123,7 +123,7 @@ let status = '';
 
 while (!TERMINAL_STATUSES.includes(status)) {
 
-  const result = await BatchesApi.getBatchStatus(response.id, {
+  const result = await BatchesApi.getBatchStatus(response.id!, {
 
     'AI-Resource-Group': 'MY_RESOURCE_GROUP'
 

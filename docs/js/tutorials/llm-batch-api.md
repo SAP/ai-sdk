@@ -116,7 +116,7 @@ await FileApi.fileUpload(
 ## Create a Batch Job[​](#create-a-batch-job "Direct link to Create a Batch Job")
 
 ```
-import { BatchesApi } from '@sap-ai-sdk/batch-api';
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
 
 
 
@@ -152,7 +152,7 @@ The response contains the batch job ID used to track its progress.
 Batch jobs are processed asynchronously and can take anywhere from minutes to hours depending on the number of requests. Use the status endpoint to check progress:
 
 ```
-const { current_status } = await BatchesApi.getBatchStatus(response.id, {
+const { current_status } = await BatchesApi.getBatchStatus(response.id!, {
 
   'AI-Resource-Group': 'MY_RESOURCE_GROUP'
 

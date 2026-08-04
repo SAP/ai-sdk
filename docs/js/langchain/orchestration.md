@@ -11,9 +11,11 @@ Similar to the orchestration client, the `OrchestrationClient` LangChain client 
 ```
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
 
-const config: OrchestrationModuleConfig = {
+
+const config: LangChainOrchestrationModuleConfig = {
 
   promptTemplating: {
 
@@ -77,8 +79,6 @@ The [`OrchestrationClient`](/ai-sdk/api/v2/classes/langchain_src.OrchestrationCl
 For a full explanation of when fallback is triggered and how it works with the orchestration service, refer to [Module Fallback](/ai-sdk/docs/js/orchestration/chat-completion.md#module-fallback) in the orchestration documentation.
 
 ```
-import { OrchestrationClient } from '@sap-ai-sdk/langchain';
-
 import type { LangChainOrchestrationModuleConfigList } from '@sap-ai-sdk/langchain';
 
 
@@ -167,22 +167,6 @@ warning
 The orchestration service currently doesn't support multiple choices during streaming.
 
 ```
-const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-
-  promptTemplating: {
-
-    model: {
-
-      name: 'gpt-5'
-
-    }
-
-  }
-
-};
-
-
-
 const client = new OrchestrationClient(orchestrationConfig);
 
 const response = await client.stream([
@@ -245,22 +229,6 @@ console.log(finalResult?.response_metadata?.token_usage);
 The client supports aborting streaming requests using the `AbortController` API. In case of an error, SAP Cloud SDK for AI will automatically close the stream. It can also be manually aborted if an `AbortSignal` object associated with an `AbortController` was provided when calling the `stream()` method.
 
 ```
-const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-
-  promptTemplating: {
-
-    model: {
-
-      name: 'gpt-5'
-
-    }
-
-  }
-
-};
-
-
-
 const client = new OrchestrationClient(orchestrationConfig);
 
 const controller = new AbortController();

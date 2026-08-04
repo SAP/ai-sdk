@@ -30,7 +30,7 @@ The examples below demonstrate the usage of the most commonly used APIs in SAP A
 ```
 async function createArtifact() {
 
-  const requestBody: ArtifactPostData = {
+  const requestBody: AiArtifactPostData = {
 
     name: 'training-test-dataset',
 
@@ -44,7 +44,7 @@ async function createArtifact() {
 
 
 
-  const responseData: ArtifactCreationResponse =
+  const responseData: AiArtifactCreationResponse =
 
     await ArtifactApi.artifactCreate(requestBody, {
 
@@ -62,7 +62,7 @@ async function createArtifact() {
 ```
 async function createConfiguration() {
 
-  const requestBody: ConfigurationBaseData = {
+  const requestBody: AiConfigurationBaseData = {
 
     name: 'gpt-5',
 
@@ -96,7 +96,7 @@ async function createConfiguration() {
 
 
 
-  const responseData: ConfigurationCreationResponse =
+  const responseData: AiConfigurationCreationResponse =
 
     await ConfigurationApi.configurationCreate(requestBody, {
 
@@ -114,13 +114,13 @@ async function createConfiguration() {
 ```
 async function createDeployment() {
 
-  const requestBody: DeploymentCreationRequest = {
+  const requestBody: AiDeploymentCreationRequest = {
 
     configurationId: '0a1b2c3d-4e5f6g7h'
 
   };
 
-  const responseData: DeploymentCreationResponse =
+  const responseData: AiDeploymentCreationResponse =
 
     await DeploymentApi.deploymentCreate(requestBody, {
 
@@ -144,7 +144,7 @@ async function modifyDeployment() {
 
 
 
-  const deployment: DeploymentResponseWithDetails =
+  const deployment: AiDeploymentResponseWithDetails =
 
     await DeploymentApi.deploymentGet(
 
@@ -162,7 +162,7 @@ async function modifyDeployment() {
 
     // Only RUNNING deployments can be STOPPED.
 
-    const requestBody: DeploymentModificationRequest = {
+    const requestBody: AiDeploymentModificationRequest = {
 
       targetStatus: 'STOPPED'
 
@@ -194,13 +194,13 @@ async function modifyDeployment() {
 When calling the `execute()` method, it is possible to provide a custom destination for your SAP AI Core instance. For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
 
 ```
-const queryParams = status ? { status } : {};
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 
-return DeploymentApi.deploymentQuery(queryParams, {
+const deployments = DeploymentApi.deploymentQuery(
 
-  'AI-Resource-Group': resourceGroup
+  //...
 
-}).execute({
+).execute({
 
   destinationName: 'my-destination'
 

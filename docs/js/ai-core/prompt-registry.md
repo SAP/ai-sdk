@@ -63,31 +63,35 @@ const response: PromptTemplateListResponse =
 
     scenario: 'test'
 
-  }).execute({
+  }).execute(
 
-    destinationName: 'my-destination',
+    { destinationName: 'my-destination' },
 
-    requestConfig: {
+    {
 
-      headers: {
+      requestConfig: {
 
-        'x-custom-header': 'custom-value'
+        headers: {
 
-        // Add more headers here
+          'x-custom-header': 'custom-value'
 
-      },
+          // Add more headers here
 
-      params: {
+        },
 
-        // Add more parameters here
+        params: {
+
+          // Add more parameters here
+
+        }
+
+        // Add more request configuration here
 
       }
 
-      // Add more request configuration here
-
     }
 
-  });
+  );
 ```
 
 ## Orchestration Configuration[​](#orchestration-configuration "Direct link to Orchestration Configuration")
@@ -115,33 +119,37 @@ const orchestrationConfig = {
 
   spec: {
 
-    promptTemplating: {
+    modules: {
 
-      model: {
+      prompt_templating: {
 
-        name: 'gpt-5',
+        model: {
 
-        version: 'latest'
+          name: 'gpt-5',
 
-      },
+          version: 'latest'
 
-      prompt: {
+        },
 
-        template: [
+        prompt: {
 
-          {
+          template: [
 
-            role: 'system',
+            {
 
-            content:
+              role: 'system' as const,
 
-              'You are a helpful customer support assistant. Answer customer questions professionally and accurately.'
+              content:
 
-          },
+                'You are a helpful customer support assistant. Answer customer questions professionally and accurately.'
 
-          { role: 'user', content: '{{?customerQuestion}}' }
+            },
 
-        ]
+            { role: 'user' as const, content: '{{?customerQuestion}}' }
+
+          ]
+
+        }
 
       }
 

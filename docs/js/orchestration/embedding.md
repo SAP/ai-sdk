@@ -298,7 +298,7 @@ try {
 
   await response;
 
-} catch (error) {
+} catch (error: any) {
 
   console.error('Request was cancelled:', error.message);
 

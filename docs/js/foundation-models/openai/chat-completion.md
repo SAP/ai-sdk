@@ -85,11 +85,11 @@ const tokenUsage = response.getTokenUsage();
 
 console.log(
 
-  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
+  `Total tokens consumed by the request: ${tokenUsage?.total_tokens}\n` +
 
-    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
+    `Input prompt tokens consumed: ${tokenUsage?.prompt_tokens}\n` +
 
-    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+    `Output text completion tokens consumed: ${tokenUsage?.completion_tokens}\n`
 
 );
 ```
@@ -175,7 +175,7 @@ Streaming request can be aborted using the `AbortController` API. In case of an 
 ```
 const controller = new AbortController();
 
-const response = await client.stream(
+const streamResponse = await client.stream(
 
   {
 
@@ -209,7 +209,7 @@ setTimeout(() => {
 
 
 
-for await (const chunk of response.stream) {
+for await (const chunk of streamResponse.stream) {
 
   console.log(JSON.stringify(chunk));
 
@@ -377,9 +377,15 @@ Initialize the client and send the initial request with the tool definition:
 ```
 const client = new AzureOpenAiChatClient('gpt-5');
 
-const messages = [
+const messages: AzureOpenAiChatCompletionRequestMessage[] = [
 
-  { role: 'user', content: 'Convert 20 degrees Celsius to Fahrenheit.' }
+  {
+
+    role: 'user',
+
+    content: 'Convert 20 degrees Celsius to Fahrenheit.'
+
+  }
 
 ];
 
@@ -397,7 +403,7 @@ const response = await client.run({
 When the model decides to use a tool, it returns the function name and input arguments in the response. Use the model response to execute the function.
 
 ```
-const initialResponse = response.data.choices[0].message;
+const initialResponse = response._data.choices[0].message;
 
 messages.push(initialResponse);
 
@@ -525,7 +531,13 @@ const request = {
 
   messages: [
 
-    { role: 'user', content: 'Where is the deepest place on earth located?' }
+    {
+
+      role: 'user' as const,
+
+      content: 'Where is the deepest place on earth located?'
+
+    }
 
   ]
 
@@ -611,7 +623,7 @@ try {
 
   await response;
 
-} catch (error) {
+} catch (error: any) {
 
   console.error('Request was cancelled:', error.message);
 

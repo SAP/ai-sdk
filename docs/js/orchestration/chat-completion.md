@@ -819,8 +819,6 @@ When the model decides to use a tool, it returns the function name and input arg
 ```
 const initialResponse = response.getAssistantMessage();
 
-let toolMessage: ToolChatMessage;
-
 
 
 if (initialResponse && initialResponse.tool_calls) {
@@ -839,7 +837,7 @@ if (initialResponse && initialResponse.tool_calls) {
 
 
 
-  toolMessage: ToolChatMessage = {
+  const toolMessage: ToolChatMessage = {
 
     role: 'tool',
 
@@ -903,43 +901,49 @@ For general response formatting, use the `response_format` parameter. It is usef
 The example below returns a JSON Schema with `strict` set to `true` to let the response adhere to the schema definition.
 
 ```
-const templating: TemplatingModuleConfig = {
+const templating: PromptTemplatingModule = {
 
-  response_format: {
+  model: { name: 'gpt-5' },
 
-    type: 'json_schema',
+  prompt: {
 
-    json_schema: {
+    response_format: {
 
-      name: 'capital_response',
+      type: 'json_schema',
 
-      strict: true,
+      json_schema: {
 
-      schema: {
+        name: 'capital_response',
 
-        type: 'object',
+        strict: true,
 
-        properties: {
+        schema: {
 
-          country_name: {
+          type: 'object',
 
-            type: 'string',
+          properties: {
 
-            description: 'The name of the country provided by the user.'
+            country_name: {
+
+              type: 'string',
+
+              description: 'The name of the country provided by the user.'
+
+            },
+
+            capital: {
+
+              type: 'string',
+
+              description: 'The capital city of the country.'
+
+            }
 
           },
 
-          capital: {
+          required: ['country_name', 'capital']
 
-            type: 'string',
-
-            description: 'The capital city of the country.'
-
-          }
-
-        },
-
-        required: ['country_name', 'capital']
+        }
 
       }
 
@@ -1233,7 +1237,7 @@ const response = await orchestrationClient.chatCompletion({
 
 const usage = response.getTokenUsage();
 
-console.log('Cache details', usage.prompt_tokens_details ?? usage);
+console.log('Cache details', usage?.prompt_tokens_details ?? usage);
 ```
 
 ### File Input[​](#file-input "Direct link to File Input")
@@ -1317,9 +1321,21 @@ This feature allows filtering both [input](https://help.sap.com/docs/sap-ai-core
 The following example demonstrates how to use content filtering with the orchestration client. See the sections below for details on the available content filters and how to build them.
 
 ```
-const inputFilter: InputFilterConfig = ... // Use a build function to create an input content filter
+const inputFilter = buildSomeContentSafetyFilter(
 
-const outputFilter: OutputFilterConfig = ... // Use a build function to create an output content filter
+  'input',
+
+  // { ... }
+
+); // Use a build function to create an input content filter
+
+const outputFilter = buildSomeContentSafetyFilter(
+
+  'output',
+
+  // { ... }
+
+); // Use a build function to create an output content filter
 
 
 
@@ -1458,7 +1474,7 @@ const outputFilter = buildLlamaGuard38BFilter('output', [
 
   'self_harm',
 
-  'violence'
+  'violent_crimes'
 
 ]);
 ```
@@ -1470,7 +1486,13 @@ Use the orchestration client with the masking module to mask sensitive informati
 The following example demonstrates how to use data masking with the orchestration client. See the sections below for details on the available masking providers and how to build them.
 
 ```
-const maskingProvider: MaskingProviderConfig = ... // Use a build function to create a masking provider
+// Use a build function to create a masking provider
+
+const maskingProvider = buildSomeMaskingProvider({
+
+  // ...
+
+});
 
 
 
@@ -1524,7 +1546,7 @@ Orchestration service offers a masking provider "SAP Data Privacy Integration (D
 ```
 const maskingProvider = buildDpiMaskingProvider({
 
-  method: 'annonymization',
+  method: 'anonymization',
 
   entities: [
 
@@ -1784,21 +1806,7 @@ const outputTranslation = buildTranslationConfig('output', {
 
   sourceLanguage: 'en-US',
 
-  targetLanguage: 'de-DE',
-
-  applyTo: [
-
-    {
-
-      category: 'placeholders',
-
-      items: ['country'],
-
-      sourceLanguage: 'en-US'
-
-    }
-
-  ]
+  targetLanguage: 'de-DE'
 
 });
 ```
@@ -1824,13 +1832,7 @@ const translationConfig = buildTranslationConfig('input', {
 If you already have an orchestration workflow created in your SAP AI Launchpad instance, you can either download the configuration as a JSON file or copy the JSON string in code to configure the orchestration client.
 
 ```
-const jsonConfig = await fs.promises.readFile(
-
-  'path/to/orchestration-config.json',
-
-  'utf-8'
-
-);
+const jsonConfig = await readFile('path/to/orchestration-config.json', 'utf-8');
 
 // Alternatively, you can provide the JSON string in code directly.
 
@@ -2032,7 +2034,7 @@ const response = orchestrationClient.stream(
 
   {
 
-    llm: { include_usage: false },
+    promptTemplating: { include_usage: false },
 
     global: { chunk_size: 10 },
 
@@ -2246,11 +2248,7 @@ Set custom request configuration in the `requestConfig` parameter when calling t
 ```
 const response = await orchestrationClient.chatCompletion(
 
-  {
-
-    ...
-
-  },
+  // { ... },
 
   {
 
@@ -2418,7 +2416,13 @@ const request = {
 
   messages: [
 
-    { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
+    {
+
+      role: 'user' as const,
+
+      content: 'Hello World! Why is this phrase so famous?'
+
+    }
 
   ]
 
@@ -2500,7 +2504,7 @@ try {
 
   await response;
 
-} catch (error) {
+} catch (error: any) {
 
   console.error('Request was cancelled:', error.message);
 

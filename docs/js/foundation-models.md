@@ -83,11 +83,7 @@ Set custom request configuration in the `requestConfig` parameter when calling t
 ```
 const response = await client.run(
 
-  {
-
-    ...
-
-  },
+  // ...
 
   {
 
@@ -115,15 +111,21 @@ const response = await client.run(
 This can be useful, e.g., to overwrite the API version of Azure OpenAI by defining the `api-version` parameter in the `params` object.
 
 ```
-{
+const response = await client.run(
 
-  params: {
+  // ...
 
-    'api-version': 'AZURE_OPENAI_API_VERSION'
+  {
+
+    params: {
+
+      'api-version': 'AZURE_OPENAI_API_VERSION'
+
+    }
 
   }
 
-}
+);
 ```
 
 ### Custom Headers[​](#custom-headers "Direct link to Custom Headers")
@@ -141,15 +143,11 @@ const response = await client.run(
 
   {
 
-    requestConfig: {
+    headers: {
 
-      headers: {
+      'premium-billing': 'premium-plan',
 
-        'premium-billing': 'premium-plan',
-
-        'user-context': 'userId=12345;role=developer'
-
-      }
+      'user-context': 'userId=12345;role=developer'
 
     }
 

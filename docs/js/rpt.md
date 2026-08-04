@@ -61,6 +61,8 @@ const prediction = await client.predictWithSchema(
 
     { name: 'PRODUCTION_DATE', dtype: 'date' },
 
+    { name: 'ID', dtype: 'string' },
+
     { name: 'SALESGROUP', dtype: 'string' }
 
   ],
@@ -142,9 +144,17 @@ When you store the schema and prediction data in variables, declare the schema w
 Example:
 
 ```
-const schema = [...] as const;
+const schema = [
 
-const data: PredictionData<typeof schema> = {...};
+  // ...
+
+] as const;
+
+const data: PredictionData<typeof schema> = {
+
+  // ...
+
+};
 
 
 
@@ -298,10 +308,6 @@ The RPT client automatically compresses prediction requests to improve performan
 To customize compression settings, pass a `customRequest` parameter with a `compress` configuration to the `predictWithSchema()` or `predictWithoutSchema()` methods:
 
 ```
-import * as zlib from 'zlib';
-
-
-
 const prediction = await client.predictWithSchema(schema, predictionData, {
 
   compress: {
@@ -378,6 +384,10 @@ tip
 Customize the behavior by passing options:
 
 ```
+import { resilience } from '@sap-cloud-sdk/resilience';
+
+
+
 const prediction = await client.predictWithSchema(schema, predictionData, {
 
   middleware: resilience({
@@ -404,13 +414,15 @@ import { compress } from '@sap-cloud-sdk/http-client';
 
 import { resilience } from '@sap-cloud-sdk/resilience';
 
+import type { HttpMiddleware } from '@sap-cloud-sdk/http-client';
+
 
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
 
   middleware: [
 
-    ...resilience(),
+    ...(resilience() as HttpMiddleware[]),
 
     compress({ mode: 'always' }) // Explicit position in the middleware chain
 

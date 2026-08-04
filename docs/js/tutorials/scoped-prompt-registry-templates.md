@@ -43,11 +43,13 @@ const deploymentPostData: AiDeploymentCreationRequest = {
 
 
 
-const deploymentResponse = await createDeployment(deploymentPostData, {
+const deploymentResponse = await DeploymentApi.deploymentCreate(
 
-  'AI-Resource-Group': 'MY_RESOURCE_GROUP'
+  deploymentPostData,
 
-});
+  { 'AI-Resource-Group': 'MY_RESOURCE_GROUP' }
+
+).execute();
 ```
 
 ## Create Prompt Template with Specific Resource Group Scope[​](#create-prompt-template-with-specific-resource-group-scope "Direct link to Create Prompt Template with Specific Resource Group Scope")

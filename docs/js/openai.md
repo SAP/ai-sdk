@@ -39,13 +39,13 @@ import { SapOpenAi } from '@sap-ai-sdk/openai';
 
 // By model name (shorthand)
 
-const client = await SapOpenAi.createClient('gpt-5.4');
+const clientA = await SapOpenAi.createClient('gpt-5.4');
 
 
 
 // By model name and version
 
-const client = await SapOpenAi.createClient({
+const clientB = await SapOpenAi.createClient({
 
   deployment: { modelName: 'gpt-5.4', modelVersion: '2025-04-14' }
 
@@ -55,7 +55,7 @@ const client = await SapOpenAi.createClient({
 
 // By deployment ID
 
-const client = await SapOpenAi.createClient({
+const clientC = await SapOpenAi.createClient({
 
   deployment: { deploymentId: 'DEPLOYMENT_ID' }
 
@@ -176,14 +176,14 @@ const response = await client.responses.parse({
 
 ## Per-Request Model Override[​](#per-request-model-override "Direct link to Per-Request Model Override")
 
-You can override the model for individual requests by passing a `model` parameter. This lets a single client instance send requests to different deployments without re-initializing.
+You can override the model or deployment configuration for individual requests by passing a `model` parameter. This lets a single client instance send requests to different deployments without re-initializing.
 
 ```
 const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
 
 
 
-// Uses the client's configured deployment (gpt-5.4)
+// Use the client's configured deployment (gpt-5.4)
 
 const defaultResponse = await client.chat.completions.create({
 
@@ -193,11 +193,35 @@ const defaultResponse = await client.chat.completions.create({
 
 
 
-// Overrides to a different model for this request only
+// Override with a different model for this request only
 
-const overrideResponse = await client.chat.completions.create({
+const differentModelResponse = await client.chat.completions.create({
 
   model: 'gpt-5.4-nano',
+
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+
+});
+
+
+
+// Override with a different model and version for this request only
+
+const differentModelVersionResponse = await client.chat.completions.create({
+
+  model: { modelName: 'gpt-5.4-nano', modelVersion: 'latest' },
+
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+
+});
+
+
+
+// Override with a different deployment for this request only
+
+const differentDeploymentResponse = await client.chat.completions.create({
+
+  model: { deploymentId: 'DEPLOYMENT_ID' },
 
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 
