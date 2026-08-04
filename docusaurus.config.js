@@ -1,7 +1,7 @@
-import { createRequire } from 'module';
 import { themes } from 'prism-react-renderer';
 import webpack from 'webpack';
-import remarkEnforceMdxLinks from './plugins/remark-enforce-mdx-links.mjs';
+import remarkEnforceMdxLinks from './plugins/remark-enforce-mdx-links.js';
+import remarkStripTwoslash from './scripts/remark-plugin-strip-twoslash.js';
 
 const { ProvidePlugin } = webpack;
 
@@ -234,7 +234,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: './sidebarsDocsJs.js',
-        remarkPlugins: [remarkEnforceMdxLinks],
+        remarkPlugins: [remarkEnforceMdxLinks, remarkStripTwoslash],
         lastVersion: 'current',
         versions: {
           current: {
