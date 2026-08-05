@@ -1,6 +1,6 @@
-module.exports = {
+export default {
   docsJavaSidebar: [
-    'overview-cloud-sdk-for-ai-java',
+    'overview',
     'getting-started',
     'connecting-to-ai-core',
     {

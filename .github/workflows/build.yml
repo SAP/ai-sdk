@@ -1,4 +1,4 @@
-name: Build Cloud SDK Documentation
+name: build
 
 on:
   pull_request:
@@ -14,20 +14,23 @@ jobs:
       pull-requests: write # for review-dog comments
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Determine Changed Files
         id: changed-files
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          ALL_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[] | select(.additions > 0) | .path')
-          CHANGED_FILES="${ALL_FILES//$'\n'/,}"
+          all_files=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[] | select(.additions > 0) | .path')
+          changed_files="${all_files//$'\n'/,}"
 
-          echo "[DEBUG] Following files have been changed: $CHANGED_FILES"
-          echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "[DEBUG] Following files have been changed: $changed_files"
+          echo "changed-files=$changed_files" >> $GITHUB_OUTPUT
+
+          docs_js_changed=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '[.files.[] | select(.path | startswith("docs-js/"))] | length')
+          echo "docs-js-changed=$docs_js_changed" >> $GITHUB_OUTPUT
       - name: Vale Linter
         # vale fails if the PR is too large, e.g. when updating API docs
-        if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.CHANGED_FILES != '' }}
+        if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.changed-files != '' }}
         env:
           # Required
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -37,7 +40,7 @@ jobs:
           # see https://github.com/vale-cli/vale for all releases
           version: 3.14.1
           # changed files. computed in the step above
-          files: ${{ steps.changed-files.outputs.CHANGED_FILES }}
+          files: ${{ steps.changed-files.outputs.changed-files }}
           # the separator for the file list. we are using a comma (see step above)
           separator: ","
           # let review dog fail if there are errors
@@ -45,7 +48,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          node-version: 26
       - id: cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -55,6 +58,9 @@ jobs:
         run: npm ci
       - name: ESlint and Prettier
         run: npm run lint
+      - name: Check docs-js types
+        if: ${{ steps.changed-files.outputs.docs-js-changed != '0' }}
+        run: npm run check:docs-js-types
 
   build:
     runs-on: ubuntu-latest
@@ -63,11 +69,11 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          node-version: 26
       - id: cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:

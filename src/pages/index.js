@@ -4,7 +4,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
-import HomepageFeatures from './components/HomepageFeatures';
+import HomepageFeatures from './components/HomepageFeatures.js';
 import Head from '@docusaurus/Head';
 
 function HomepageHeader() {
@@ -17,7 +17,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="docs/overview/overview-cloud-sdk-for-ai"
+            to="docs/overview/overview"
           >
             Getting Started
           </Link>
