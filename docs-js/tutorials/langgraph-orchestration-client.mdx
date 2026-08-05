@@ -29,7 +29,7 @@ use one client with the template for the **first node**, and a second client wit
 
 ## Prerequisites
 
-Refer to the prerequisites outlined [here](../overview-cloud-sdk-for-ai-js#prerequisites).
+Refer to the prerequisites outlined [here](../overview.mdx#prerequisites).
 
 This tutorial assumes a basic understanding of TypeScript, LangGraph, and the orchestration client.
 
@@ -263,11 +263,11 @@ console.log(followUp.messages.at(-1)?.content);
 The same `StateGraph` approach applies to the `template_ref` two-client pattern — swap `clientWithTemplate` for `clientWithTemplateRef` in the `firstTurnNode`.
 :::
 
-For a more advanced example with tool use, human-in-the-loop interruption, and MCP integration, see the [Getting Started with Agents tutorial](./getting-started-with-agents).
+For a more advanced example with tool use, human-in-the-loop interruption, and MCP integration, see the [Getting Started with Agents tutorial](./getting-started-agents.mdx).
 
 ## Further Reading
 
-- [Orchestration Template Configuration](../orchestration/chat-completion#template-configuration)
-- [Orchestration Prompt Registry](../orchestration/chat-completion#prompt-registry)
-- [LangChain Orchestration Integration](../langchain/orchestration#template-and-prompt-registry-behavior)
-- [Getting Started with Agents tutorial](./getting-started-with-agents)
+- [Orchestration Template Configuration](../orchestration/chat-completion.mdx#template-configuration)
+- [Orchestration Prompt Registry](../orchestration/chat-completion.mdx#prompt-registry)
+- [LangChain Orchestration Integration](../langchain/orchestration.mdx#template-and-prompt-registry-behavior)
+- [Getting Started with Agents tutorial](./getting-started-agents.mdx)

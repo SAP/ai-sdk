@@ -51,10 +51,10 @@ export default {
       type: 'category',
       label: 'Tutorials',
       items: [
-        'tutorials/getting-started-with-agents',
+        'tutorials/getting-started-agents',
         'tutorials/langgraph-template-orchestration-client',
-        'tutorials/using-scoped-prompt-registry-templates',
-        'tutorials/using-llm-batch-api',
+        'tutorials/scoped-prompt-registry-templates',
+        'tutorials/llm-batch-api',
         {
           type: 'link',
           label: 'TechEd: Build Your Own AI Agent',
