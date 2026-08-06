@@ -42,7 +42,7 @@ The following shows the different ways to use the RPT client to interact with th
 Initialize a client using `RptClient` constructor with optional parameters.
 By default, the 'sap-rpt-1-small' model is chosen as the prediction model.
 
-```typescript
+```ts twoslash
 import { RptClient } from '@sap-ai-sdk/rpt';
 
 const client = new RptClient();
@@ -50,11 +50,13 @@ const client = new RptClient();
 
 To use the 'sap-rpt-1-large' model, specify the model name in the constructor:
 
-```typescript
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
+// ---cut---
 const client = new RptClient('sap-rpt-1-large');
 ```
 
-Follow the instructions in the [Foundation Models documentation](./foundation-models#client-initialization)
+Follow the instructions in the [Foundation Models documentation](./foundation-models/foundation-models.mdx#client-initialization)
 to specify a model version, use a model with an explicit deployment ID, select a specific resource group, or target a custom AI Core instance.
 
 :::tip
@@ -71,13 +73,17 @@ Prefer providing the data schema if it is known instead of relying on the auto-i
 
 For information about custom request options such as compression, custom headers, or timeout, refer to the [Advanced Usage](#advanced-usage) section.
 
-```typescript
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
+const client = new RptClient();
+// ---cut---
 const prediction = await client.predictWithSchema(
   // Data schema
   [
     { name: 'PRODUCT', dtype: 'string' },
     { name: 'PRICE', dtype: 'numeric' },
     { name: 'PRODUCTION_DATE', dtype: 'date' },
+    { name: 'ID', dtype: 'string' },
     { name: 'SALESGROUP', dtype: 'string' }
   ],
   // Prediction data
@@ -133,9 +139,33 @@ If you pass the data directly to `predictWithSchema()`, you do not need addition
 
 Example:
 
-```typescript
-const schema = [...] as const;
-const data: PredictionData<typeof schema> = {...};
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
+import type { PredictionData } from '@sap-ai-sdk/rpt';
+declare const client: RptClient;
+// ---cut---
+const schema = [
+  // ...
+  // ---cut-start---
+  { name: 'PRODUCT', dtype: 'string' },
+  { name: 'SALESGROUP', dtype: 'string' }
+  // ---cut-end---
+] as const;
+const data: PredictionData<typeof schema> = {
+  // ...
+  // ---cut-start---
+  prediction_config: {
+    target_columns: [
+      {
+        name: 'SALESGROUP',
+        prediction_placeholder: '[PREDICT]',
+        task_type: 'classification'
+      }
+    ]
+  },
+  rows: [{ PRODUCT: 'Laptop', SALESGROUP: '[PREDICT]' }]
+  // ---cut-end---
+};
 
 client.predictWithSchema(schema, data);
 ```
@@ -156,7 +186,10 @@ The data schema will be inferred from the input data.
 
 For information about custom request options such as compression, custom headers, or timeout, refer to the [Advanced Usage](#advanced-usage) section.
 
-```typescript
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
+const client = new RptClient();
+// ---cut---
 const prediction = await client.predictWithoutSchema(
   // Prediction data
   {
@@ -213,7 +246,7 @@ The RPT client supports advanced features for specialized use cases.
 To make predictions on Parquet files, use the `predictParquet()` method.
 Pass a [`ParquetPayload` object](pathname:///api/v2/types/rpt_src.ParquetPayload.html) containing the Parquet file, prediction configuration, and optional arguments such as `index_column` and `parse_data_types`.
 
-```typescript
+```ts twoslash
 import { RptClient } from '@sap-ai-sdk/rpt';
 import { openAsBlob } from 'node:fs';
 
@@ -247,9 +280,16 @@ To customize compression settings, pass a `customRequest` parameter with a `comp
 
 <!-- vale off -->
 
-```typescript
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
 import * as zlib from 'zlib';
-
+declare const client: RptClient;
+declare const schema: readonly [
+  { name: 'PRODUCT'; dtype: 'string' },
+  { name: 'SALESGROUP'; dtype: 'string' }
+];
+declare const predictionData: Parameters<RptClient['predictWithSchema']>[1];
+// ---cut---
 const prediction = await client.predictWithSchema(schema, predictionData, {
   compress: {
     mode: 'always', // Force compression regardless of payload size (default 'auto')
@@ -279,7 +319,15 @@ The compression middleware is automatically prepended to the middleware chain, u
 
 The following example demonstrates how to include custom HTTP headers in your request configuration:
 
-```typescript
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
+declare const client: RptClient;
+declare const schema: readonly [
+  { name: 'PRODUCT'; dtype: 'string' },
+  { name: 'SALESGROUP'; dtype: 'string' }
+];
+declare const predictionData: Parameters<RptClient['predictWithSchema']>[1];
+// ---cut---
 const prediction = await client.predictWithSchema(schema, predictionData, {
   headers: {
     'x-custom-header': 'value'
@@ -296,7 +344,15 @@ const prediction = await client.predictWithSchema(schema, predictionData, {
 Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
 By default, it enables a circuit breaker and a 10-second timeout.
 
-```typescript
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
+declare const client: RptClient;
+declare const schema: readonly [
+  { name: 'PRODUCT'; dtype: 'string' },
+  { name: 'SALESGROUP'; dtype: 'string' }
+];
+declare const predictionData: Parameters<RptClient['predictWithSchema']>[1];
+// ---cut---
 import { resilience } from '@sap-cloud-sdk/resilience';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
@@ -313,7 +369,17 @@ Customize the behavior by passing options:
 
 <!-- vale off -->
 
-```typescript
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
+declare const client: RptClient;
+declare const schema: readonly [
+  { name: 'PRODUCT'; dtype: 'string' },
+  { name: 'SALESGROUP'; dtype: 'string' }
+];
+declare const predictionData: Parameters<RptClient['predictWithSchema']>[1];
+// ---cut---
+import { resilience } from '@sap-cloud-sdk/resilience';
+
 const prediction = await client.predictWithSchema(schema, predictionData, {
   middleware: resilience({
     timeout: 5000, // 5 seconds; true for default 10s, false to disable
@@ -331,13 +397,22 @@ For advanced resilience patterns, refer to the [SAP Cloud SDK documentation on r
 
 When you need precise control over middleware ordering — for example, placing the compression middleware at a specific position relative to resilience — disable automatic compression and manage the full middleware chain yourself:
 
-```typescript
+```ts twoslash
+import { RptClient } from '@sap-ai-sdk/rpt';
+declare const client: RptClient;
+declare const schema: readonly [
+  { name: 'PRODUCT'; dtype: 'string' },
+  { name: 'SALESGROUP'; dtype: 'string' }
+];
+declare const predictionData: Parameters<RptClient['predictWithSchema']>[1];
+// ---cut---
 import { compress } from '@sap-cloud-sdk/http-client';
 import { resilience } from '@sap-cloud-sdk/resilience';
+import type { HttpMiddleware } from '@sap-cloud-sdk/http-client';
 
 const prediction = await client.predictWithSchema(schema, predictionData, {
   middleware: [
-    ...resilience(),
+    ...(resilience() as HttpMiddleware[]),
     compress({ mode: 'always' }) // Explicit position in the middleware chain
   ],
   compress: {

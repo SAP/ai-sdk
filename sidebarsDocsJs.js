@@ -1,13 +1,6 @@
-// Get the current version label from docusaurus config
-const docusaurusConfig = require('./docusaurus.config.js');
-const jsDocsPlugin = docusaurusConfig.plugins.find(
-  plugin => Array.isArray(plugin) && plugin[1]?.id === 'docs-js'
-);
-const currentVersionLabel = jsDocsPlugin?.[1]?.versions?.current?.label || 'v2';
-
-module.exports = {
+export default {
   docsJsSidebar: [
-    'overview-cloud-sdk-for-ai-js',
+    'overview',
     'getting-started',
     'connecting-to-ai-core',
     {
@@ -58,9 +51,9 @@ module.exports = {
       type: 'category',
       label: 'Tutorials',
       items: [
-        'tutorials/getting-started-with-agents',
-        'tutorials/using-scoped-prompt-registry-templates',
-        'tutorials/using-llm-batch-api',
+        'tutorials/getting-started-agents',
+        'tutorials/scoped-prompt-registry-templates',
+        'tutorials/llm-batch-api',
         {
           type: 'link',
           label: 'TechEd: Build Your Own AI Agent',
@@ -71,7 +64,7 @@ module.exports = {
     {
       type: 'link',
       label: 'API Reference',
-      href: `pathname:///api/${currentVersionLabel}/index.html`
+      href: `pathname:///api/v2/index.html`
     },
     'error-handling',
     'release-notes',

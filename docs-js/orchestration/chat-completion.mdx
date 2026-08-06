@@ -32,7 +32,7 @@ Initialize a client with proper orchestration configuration for each module.
 Below is an example for configuring the mandatory `promptTemplating` module.
 In addition, you can find more sample code [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -59,7 +59,12 @@ Use the following convenience methods for handling chat completion response:
 - `getCitations()` returns the list of citations from the response, useful when using models like [Perplexity Sonar](#using-citations-with-perplexity-sonar-models).
 - `getIntermediateFailures()` returns information about non-fatal errors that occurred during the request, such as when using [module fallback](#module-fallback).
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const response = await orchestrationClient.chatCompletion({
   messages: [
     { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
@@ -80,7 +85,7 @@ The following sections provide detailed configuration for each module.
 Choose the LLM by setting the `name` property in the `promptTemplating.model` configuration.
 Optionally, define `version` (default: `latest`) and `params` for custom settings.
 
-```ts
+```ts twoslash
 const promptTemplating = {
   model: {
     name: 'gpt-5',
@@ -105,7 +110,7 @@ This flexibility accommodates model-specific requirements, such as varying param
 To use module fallback, provide an array of `OrchestrationModuleConfig` objects when initializing the client.
 The orchestration service will try each configuration in order until one succeeds.
 
-```ts
+```ts twoslash
 import {
   OrchestrationClient,
   buildAzureContentSafetyFilter
@@ -194,7 +199,13 @@ For more information on timeouts in orchestration, refer to the [Orchestration R
 
 The `getIntermediateFailures()` method returns information about any failed attempts before a successful response is obtained.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+const response = await orchestrationClient.chatCompletion({ messages: [] });
+// ---cut---
 const failures = response.getIntermediateFailures();
 if (failures) {
   failures.forEach(failure => {
@@ -284,7 +295,7 @@ Citations are currently only supported by Perplexity Sonar models.
 
 Use the `getCitations()` method to retrieve citations from the response:
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -323,7 +334,7 @@ When using this model, input and output filtering is configured by default.
 
 The following example shows how to consume the `sap-abap-1` model:
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -374,7 +385,9 @@ Use the orchestration client with the `promptTemplating.prompt.template` configu
 This prompt can include placeholders, which are replaced with values from `placeholderValues` during a `chatCompletion()` method call.
 This setup is useful when the base structure of your prompt remains the same across requests.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -398,7 +411,9 @@ The `promptTemplating.prompt.template` messages defined in the client configurat
 For more dynamic prompts, i.e., you want to vary the full message list per request without re-initializing the client, use the `messages` property instead.
 :::
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -417,7 +432,9 @@ const response = await orchestrationClient.chatCompletion({
 
 You can define template content within the templating configuration, or refer to a template defined in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry).
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -449,7 +466,7 @@ For details on storing a template in the Prompt Registry, refer to [this guide](
 ### Scoped Prompt Registry
 
 :::info Tutorial: Creating Scoped Prompt Templates with Headers
-For a step-by-step guide on creating orchestration deployment and configuring scoped prompt registry templates, see the [Using Scoped Prompt Registry Templates](../tutorials/using-scoped-prompt-registry-templates) tutorial.
+For a step-by-step guide on creating orchestration deployment and configuring scoped prompt registry templates, see the [Scoped Prompt Registry Templates](../tutorials/scoped-prompt-registry-templates.mdx) tutorial.
 :::
 
 Prompt templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) can be scoped to different levels.
@@ -461,7 +478,9 @@ This is useful when prompt templates need to be isolated and should not be share
 To reference a scoped prompt template, specify the `scope` property in the `template_ref` alongside either the template `id` or template `name`, `scenario`, and `version`.
 When using a non-default resource group, make sure to also provide the `resourceGroup` parameter in the client deployment config.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient(
   {
     promptTemplating: {
@@ -489,7 +508,7 @@ const orchestrationClient = new OrchestrationClient(
 You can define the template in a YAML file and pass its content as a string to the `promptTemplating.prompt` property.
 This is useful for testing a prompt template locally before storing it in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry).
 
-```ts
+```ts twoslash
 import { readFileSync } from 'fs';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
@@ -522,7 +541,9 @@ Here's an example of temperature conversion using tool calls:
 
 First, define the tool with `name`, `description` and `parameters` properties:
 
-```ts
+```ts twoslash
+import { ChatCompletionTool } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const convertTemperatureTool: ChatCompletionTool = {
   type: 'function',
   function: {
@@ -547,7 +568,13 @@ For more information refer to Orchestration [Tool Calling](https://help.sap.com/
 
 Initialize the client and send the initial request with the tool definition:
 
-```ts
+```ts twoslash
+import {
+  OrchestrationClient,
+  ChatCompletionTool
+} from '@sap-ai-sdk/orchestration';
+declare const convertTemperatureTool: ChatCompletionTool;
+// ---cut---
 const client = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -569,9 +596,19 @@ const response = await client.chatCompletion({
 When the model decides to use a tool, it returns the function name and input arguments in the response.
 Use the model response to execute the function.
 
-```ts
+```ts twoslash
+import {
+  OrchestrationClient,
+  ChatCompletionTool,
+  ToolChatMessage
+} from '@sap-ai-sdk/orchestration';
+declare const client: OrchestrationClient;
+declare const response: Awaited<
+  ReturnType<OrchestrationClient['chatCompletion']>
+>;
+declare function callFunction(name: string, args: any): string;
+// ---cut---
 const initialResponse = response.getAssistantMessage();
-let toolMessage: ToolChatMessage;
 
 if (initialResponse && initialResponse.tool_calls) {
   const toolCall = initialResponse.tool_calls[0];
@@ -581,7 +618,7 @@ if (initialResponse && initialResponse.tool_calls) {
   // Execute the function with the provided arguments
   const toolResult = callFunction(name, args);
 
-  toolMessage: ToolChatMessage = {
+  const toolMessage: ToolChatMessage = {
     role: 'tool',
     content: toolResult,
     tool_call_id: toolCall.id
@@ -591,7 +628,7 @@ if (initialResponse && initialResponse.tool_calls) {
 
 The `callFunction()` function routes the calls to the actual function implementations.
 
-```ts
+```ts twoslash
 function callFunction(name: string, args: any): string {
   switch (name) {
     case 'convert_temperature_to_fahrenheit':
@@ -608,7 +645,18 @@ function convertTemperatureToFahrenheit(temperature: number): string {
 
 Send the function result back to the model to get its final response:
 
-```ts
+```ts twoslash
+import {
+  OrchestrationClient,
+  ChatCompletionTool,
+  ToolChatMessage
+} from '@sap-ai-sdk/orchestration';
+declare const client: OrchestrationClient;
+declare const response: Awaited<
+  ReturnType<OrchestrationClient['chatCompletion']>
+>;
+declare const toolMessage: ToolChatMessage;
+// ---cut---
 const finalResponse = await client.chatCompletion({
   messages: [toolMessage],
   messagesHistory: response.getAllMessages()
@@ -624,26 +672,31 @@ It is useful when the model is **not calling a tool** and should still return a 
 
 The example below returns a JSON Schema with `strict` set to `true` to let the response adhere to the schema definition.
 
-```ts
-const templating: TemplatingModuleConfig = {
-  response_format: {
-    type: 'json_schema',
-    json_schema: {
-      name: 'capital_response',
-      strict: true,
-      schema: {
-        type: 'object',
-        properties: {
-          country_name: {
-            type: 'string',
-            description: 'The name of the country provided by the user.'
+```ts twoslash
+import { PromptTemplatingModule } from '@sap-ai-sdk/orchestration';
+// ---cut---
+const templating: PromptTemplatingModule = {
+  model: { name: 'gpt-5' },
+  prompt: {
+    response_format: {
+      type: 'json_schema',
+      json_schema: {
+        name: 'capital_response',
+        strict: true,
+        schema: {
+          type: 'object',
+          properties: {
+            country_name: {
+              type: 'string',
+              description: 'The name of the country provided by the user.'
+            },
+            capital: {
+              type: 'string',
+              description: 'The capital city of the country.'
+            }
           },
-          capital: {
-            type: 'string',
-            description: 'The capital city of the country.'
-          }
-        },
-        required: ['country_name', 'capital']
+          required: ['country_name', 'capital']
+        }
       }
     }
   }
@@ -686,7 +739,9 @@ This allows the model to remember previous messages in the conversation, enablin
 
 Provide the message history in the `messagesHistory` parameter when calling the `chatCompletion()` method.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -725,7 +780,9 @@ The `image_url` content type can only be used in messages with `role: 'user'`.
 Attempting to use `image_url` in non-user messages will result in an error.
 :::
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -784,7 +841,7 @@ Some models can also apply `cache_control` to tool calls.
 Use the `getTokenUsage()` method to inspect cache activity.
 For supported models, the `prompt_tokens_details` property on the tokens usage object will contain the amount of tokens read and written to the cache.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -831,7 +888,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 
 const usage = response.getTokenUsage();
-console.log('Cache details', usage.prompt_tokens_details ?? usage);
+console.log('Cache details', usage?.prompt_tokens_details ?? usage);
 ```
 
 ### File Input
@@ -868,7 +925,7 @@ Adjust the file path, MIME type and model name as needed, for PDF files use `app
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
 import { readFile } from 'node:fs/promises';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
@@ -905,9 +962,26 @@ This feature allows filtering both [input](https://help.sap.com/docs/sap-ai-core
 The following example demonstrates how to use content filtering with the orchestration client.
 See the sections below for details on the available content filters and how to build them.
 
-```ts
-const inputFilter: InputFilterConfig = ... // Use a build function to create an input content filter
-const outputFilter: OutputFilterConfig = ... // Use a build function to create an output content filter
+```ts twoslash
+import {
+  OrchestrationClient,
+  buildAzureContentSafetyFilter as buildSomeContentSafetyFilter
+} from '@sap-ai-sdk/orchestration';
+// ---cut---
+const inputFilter = buildSomeContentSafetyFilter(
+  'input',
+  // { ... }
+  // ---cut-start---
+  { hate: 'ALLOW_SAFE' }
+  // ---cut-end---
+); // Use a build function to create an input content filter
+const outputFilter = buildSomeContentSafetyFilter(
+  'output',
+  // { ... }
+  // ---cut-start---
+  { hate: 'ALLOW_SAFE' }
+  // ---cut-end---
+); // Use a build function to create an output content filter
 
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
@@ -941,7 +1015,7 @@ Multiple filters can be applied at the same time for both input and output filte
 :::tip
 The `chatCompletion()` method can throw an error with HTTP status code `400` if content filters hit.
 In case of a `200` HTTP response, the `getContent()` method can throw an error if the output filters hit.
-See the [Error Handling](../error-handling) page for more details.
+See the [Error Handling](../error-handling.mdx) page for more details.
 :::
 
 ### Azure Content Filter
@@ -968,7 +1042,7 @@ Set the `prompt_shield` property to `true` to enable the detection.
 This option is only available for input filters.
 For more information, refer to [Prompt Shields in Azure AI Content Safety](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection).
 
-```ts
+```ts twoslash
 import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
 
 const inputFilter = buildAzureContentSafetyFilter('input', {
@@ -991,7 +1065,7 @@ To enable protected material code detection, set the `protected_material_code` p
 The property is only supported for output filter configurations.
 For more information, refer to [Azure AI Content Safety Protected Material Detection](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/protected-material).
 
-```ts
+```ts twoslash
 import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
 
 const filterConfig = buildAzureContentSafetyFilter('output', {
@@ -1009,13 +1083,13 @@ Set the `type` parameter to `input` to build input filter configuration and `out
 Available categories can be found with autocompletion.
 Pass the categories as an array to the function to enable them.
 
-```ts
+```ts twoslash
 import { buildLlamaGuard38BFilter } from '@sap-ai-sdk/orchestration';
 
 const inputFilter = buildLlamaGuard38BFilter('input', ['self_harm']);
 const outputFilter = buildLlamaGuard38BFilter('output', [
   'self_harm',
-  'violence'
+  'violent_crimes'
 ]);
 ```
 
@@ -1026,8 +1100,20 @@ Use the orchestration client with the masking module to mask sensitive informati
 The following example demonstrates how to use data masking with the orchestration client.
 See the sections below for details on the available masking providers and how to build them.
 
-```ts
-const maskingProvider: MaskingProviderConfig = ... // Use a build function to create a masking provider
+```ts twoslash
+import {
+  OrchestrationClient,
+  buildDpiMaskingProvider as buildSomeMaskingProvider
+} from '@sap-ai-sdk/orchestration';
+// ---cut---
+// Use a build function to create a masking provider
+const maskingProvider = buildSomeMaskingProvider({
+  // ...
+  // ---cut-start---
+  method: 'anonymization',
+  entities: ['profile-person']
+  // ---cut-end---
+});
 
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
@@ -1061,9 +1147,11 @@ Configure `replacement_strategy` to control how entities are masked.
 Set method to `constant` to replace an entity with the specified value followed by an incrementing number.
 Set method to `fabricated_data` to replace an entity with a randomly generated value appropriate to its type.
 
-```ts
+```ts twoslash
+import { buildDpiMaskingProvider } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const maskingProvider = buildDpiMaskingProvider({
-  method: 'annonymization',
+  method: 'anonymization',
   entities: [
     'profile-person',
     {
@@ -1094,7 +1182,12 @@ Set `mask_grounding_input` to `true` to mask [Grounding](#grounding) input as we
 Grounding enables integrating external, contextually relevant, domain-specific, or real-time data into AI processes.
 Use `buildDocumentGroundingConfig()` function to build configuration for document grounding service.
 
-```ts
+```ts twoslash
+import {
+  OrchestrationClient,
+  buildDocumentGroundingConfig
+} from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -1151,7 +1244,12 @@ For available translation options, consult the [list of supported languages](htt
 Input and output translation configurations are differentiated.
 Set the `type` parameter to `input` to build the input configuration and `output` to build the output configuration.
 
-```ts
+```ts twoslash
+import {
+  OrchestrationClient,
+  buildTranslationConfig
+} from '@sap-ai-sdk/orchestration';
+// ---cut---
 const inputTranslation = buildTranslationConfig('input', {
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE'
@@ -1213,7 +1311,9 @@ There is no need to specify a fixed target language, instead reference the `appl
 
 For more information check out [this](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation-48be058d01bd4df2a82e5430561e6f44#automatic-target-language-inference) link.
 
-```ts
+```ts twoslash
+import { buildTranslationConfig } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const inputTranslation = buildTranslationConfig('input', {
   sourceLanguage: 'en-US',
   targetLanguage: 'de-DE',
@@ -1233,14 +1333,7 @@ const inputTranslation = buildTranslationConfig('input', {
 
 const outputTranslation = buildTranslationConfig('output', {
   sourceLanguage: 'en-US',
-  targetLanguage: 'de-DE',
-  applyTo: [
-    {
-      category: 'placeholders',
-      items: ['country'],
-      sourceLanguage: 'en-US'
-    }
-  ]
+  targetLanguage: 'de-DE'
 });
 ```
 
@@ -1249,7 +1342,9 @@ const outputTranslation = buildTranslationConfig('output', {
 By default, chat history messages are translated.
 If chat history message translation is not necessary, set the `translateMessagesHistory` to `false`.
 
-```ts
+```ts twoslash
+import { buildTranslationConfig } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const translationConfig = buildTranslationConfig('input', {
   sourceLanguage: 'de-DE',
   targetLanguage: 'en-US',
@@ -1261,11 +1356,11 @@ const translationConfig = buildTranslationConfig('input', {
 
 If you already have an orchestration workflow created in your SAP AI Launchpad instance, you can either download the configuration as a JSON file or copy the JSON string in code to configure the orchestration client.
 
-```ts
-const jsonConfig = await fs.promises.readFile(
-  'path/to/orchestration-config.json',
-  'utf-8'
-);
+```ts twoslash
+import { readFile } from 'node:fs/promises';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
+const jsonConfig = await readFile('path/to/orchestration-config.json', 'utf-8');
 // Alternatively, you can provide the JSON string in code directly.
 // const jsonConfig = 'YOUR_JSON_CONFIG'
 
@@ -1279,7 +1374,15 @@ The `OrchestrationClient` supports streaming responses for chat completion reque
 Use the `stream()` method to receive a stream of chunk responses from the model.
 After consuming the stream, call the helper methods to get the finish reason and token usage information.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' },
+    prompt: { template: [{ role: 'user', content: '{{?country}}' }] }
+  }
+});
+// ---cut---
 const response = await orchestrationClient.stream({
   placeholderValues: { country: 'France' }
 });
@@ -1299,7 +1402,13 @@ console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 
 Use `toContentStream()` method to create a stream generating delta content string.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+const response = await orchestrationClient.stream({ messages: [] });
+// ---cut---
 for await (const chunk of response.stream.toContentStream()) {
   console.log(chunk); // will log the delta content
 }
@@ -1311,7 +1420,13 @@ Use `getToolCalls()` method to get the tool calls at the end of a stream.
 While `getDeltaToolCalls()` method can be called on individual chunks, partial tool calls are typically not useful.
 Therefore, it is recommended to use the `getToolCalls()` method on the full response instead.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+const response = await orchestrationClient.stream({ messages: [] });
+// ---cut---
 for await (const _ of response.stream) {
   console.log('Waiting for the stream to end ...');
 }
@@ -1325,7 +1440,9 @@ Streaming request can be aborted using the `AbortController` API.
 In case of an error, SAP Cloud SDK for AI will automatically close the stream.
 It can also be manually aborted if an `AbortSignal` object was provided when calling the `stream()` method.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -1363,7 +1480,12 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 When using models that support citations, citations are available after the stream completes and can be retrieved using the `getCitations()` method.
 For more information on the citation properties, refer to the [API documentation](pathname:///api/v2/types/orchestration_src.Citation.html).
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'sonar' } }
+});
+// ---cut---
 const response = await orchestrationClient.stream({
   messages: [
     {
@@ -1395,7 +1517,16 @@ You can check the list of available stream options [here](https://help.sap.com/d
 
 Below is an example for setting the streaming options when calling the `stream()` method.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' },
+    prompt: { template: [{ role: 'user', content: '{{?country}}' }] }
+  }
+});
+declare const controller: AbortSignal;
+// ---cut---
 const response = orchestrationClient.stream(
   {
     messages: [
@@ -1405,7 +1536,7 @@ const response = orchestrationClient.stream(
   },
   controller,
   {
-    llm: { include_usage: false },
+    promptTemplating: { include_usage: false },
     global: { chunk_size: 10 },
     outputFiltering: { overlap: 200 }
   }
@@ -1425,7 +1556,12 @@ When initializing a client with JSON module config, it is not possible to provid
 The service tries each configuration in sequence, and you can access intermediate failures after the stream completes.
 For details on configuring module fallback, see the [Module Fallback section](#module-fallback).
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const response = await orchestrationClient.stream({
   messages: [
     { role: 'user', content: 'Explain quantum computing in simple terms.' }
@@ -1461,7 +1597,12 @@ When an override is provided for a specific configuration index, it replaces the
 If no override is provided for a configuration, it uses the base options from the top-level properties (everything except `global` and `overrides`).
 Overrides cannot modify global options or contain additional overrides.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const response = await orchestrationClient.stream(
   {
     messages: [{ role: 'user', content: 'Tell me a story.' }]
@@ -1493,7 +1634,7 @@ This approach enables configuration reuse across applications and centralized ma
 
 Reference an orchestration configuration by its unique identifier:
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -1505,7 +1646,7 @@ const orchestrationClient = new OrchestrationClient({
 
 Reference an orchestration configuration by its scenario, name, and version:
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -1517,7 +1658,12 @@ const orchestrationClient = new OrchestrationClient({
 
 Once initialized with an orchestration configuration reference, use the client as usual:
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  id: 'c1a4f2e2-BETA-4d2b-9f7a-1234567890ab'
+});
+// ---cut---
 const response = await orchestrationClient.chatCompletion({
   placeholderValues: {
     customerQuestion: 'How do I reset my password?'
@@ -1579,7 +1725,7 @@ Request-level stream options passed to the `stream()` method are not supported w
 Configure streaming settings through `overrideConfig` or in the stored orchestration configuration instead.
 :::
 
-For details on creating and managing orchestration configurations, refer to the [Orchestration Configuration](../ai-core/prompt-registry#orchestration-configuration) section in the prompt registry guide.
+For details on creating and managing orchestration configurations, refer to the [Orchestration Configuration](../ai-core/prompt-registry.mdx#orchestration-configuration) section in the prompt registry guide.
 
 ## Custom Deployment Configuration
 
@@ -1587,7 +1733,13 @@ By default, there should be an orchestration deployment in the `default` [Resour
 
 If the orchestration service has been deployed in a different resource group, it is possible to specify the resource group name in the `resourceGroup` property when creating the client.
 
-```ts
+```ts twoslash
+import {
+  OrchestrationClient,
+  OrchestrationModuleConfig
+} from '@sap-ai-sdk/orchestration';
+declare const orchestrationConfig: OrchestrationModuleConfig;
+// ---cut---
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
   resourceGroup: 'my-custom-resource-group'
 });
@@ -1596,7 +1748,13 @@ const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
 Additionally, it is possible to manually specify a deployment ID using the `deploymentId` property instead of letting the SDK resolve it.
 Make sure to set a correct resource group, in which the deployment was created.
 
-```ts
+```ts twoslash
+import {
+  OrchestrationClient,
+  OrchestrationModuleConfig
+} from '@sap-ai-sdk/orchestration';
+declare const orchestrationConfig: OrchestrationModuleConfig;
+// ---cut---
 const orchestrationClient = new OrchestrationClient(orchestrationConfig, {
   deploymentId: 'my-custom-deployment-id'
 });
@@ -1608,11 +1766,19 @@ Refer to [Create a Deployment for Orchestration](https://help.sap.com/docs/sap-a
 
 Set custom request configuration in the `requestConfig` parameter when calling the `chatCompletion()` method.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const response = await orchestrationClient.chatCompletion(
+  // { ... },
+  // ---cut-start---
   {
-    ...
+    messages: [{ role: 'user', content: 'Hello' }]
   },
+  // ---cut-end---
   {
     headers: {
       'x-custom-header': 'custom-value'
@@ -1629,7 +1795,12 @@ const response = await orchestrationClient.chatCompletion(
 Use a custom request configuration to attach SAP internal metering headers to enable internal cost allocation and context propagation.
 Use `premium-billing` to indicate the billing plan or token (e.g., "premium-plan") and `user-context` to pass caller metadata.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const response = await orchestrationClient.chatCompletion(
   {
     messages: [{ role: 'user', content: 'Generate a report.' }]
@@ -1648,7 +1819,12 @@ const response = await orchestrationClient.chatCompletion(
 The SAP Cloud SDK for AI provides access to the underlying HTTP response through the `rawResponse` property on response objects.
 Use this for advanced scenarios such as accessing response headers, inspecting HTTP status codes, or debugging.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const response = await orchestrationClient.chatCompletion({
   messages: [{ role: 'user', content: 'Hello World!' }]
 });
@@ -1675,7 +1851,16 @@ For embedding responses, access the raw HTTP response through the `response` pro
 When initializing the client, it is possible to provide a custom destination.
 For example, when targeting a destination with the name `my-destination`, the following code can be used:
 
-```ts
+```ts twoslash
+import {
+  OrchestrationClient,
+  OrchestrationModuleConfig
+} from '@sap-ai-sdk/orchestration';
+declare const orchestrationConfig: OrchestrationModuleConfig;
+declare const deploymentConfig: ConstructorParameters<
+  typeof OrchestrationClient
+>[1];
+// ---cut---
 const orchestrationClient = new OrchestrationClient(
   orchestrationConfig,
   deploymentConfig,
@@ -1688,7 +1873,7 @@ const orchestrationClient = new OrchestrationClient(
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core.mdx#using-a-destination) section.
 
 ## Resilience
 
@@ -1717,7 +1902,9 @@ For example, to configure retry and timeout options:
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   promptTemplating: {
     model: {
@@ -1742,12 +1929,20 @@ Some orchestration service resilience features (timeout and retry) are also enab
 Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add SDK-level resilience.
 By default, it enables a circuit breaker and a 10-second timeout.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 import { resilience } from '@sap-cloud-sdk/resilience';
 
 const request = {
   messages: [
-    { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
+    {
+      role: 'user' as const,
+      content: 'Hello World! Why is this phrase so famous?'
+    }
   ]
 };
 
@@ -1765,7 +1960,14 @@ Customize the behavior by passing options:
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
+import { resilience } from '@sap-cloud-sdk/resilience';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+const request = { messages: [{ role: 'user' as const, content: '' }] };
+// ---cut---
 const response = await orchestrationClient.chatCompletion(request, {
   middleware: resilience({
     timeout: 5000, // 5 seconds; true for default 10s, false to disable
@@ -1785,7 +1987,12 @@ Cancel HTTP requests using the `AbortSignal` API to stop in-flight requests when
 This is useful when end-users navigate away from a page, close a dialog, or explicitly cancel an operation.
 Pass an `AbortSignal` through the `signal` property of the request configuration parameter and call the `abort()` method on the controller when you want to cancel the request.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const controller = new AbortController();
 
 const response = orchestrationClient.chatCompletion(
@@ -1805,7 +2012,7 @@ setTimeout(() => {
 
 try {
   await response;
-} catch (error) {
+} catch (error: any) {
   console.error('Request was cancelled:', error.message);
 }
 ```

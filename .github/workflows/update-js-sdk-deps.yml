@@ -1,0 +1,98 @@
+name: update js sdk dependencies
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # every Monday at 6am UTC
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update-canary:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20
+      - name: Re-resolve canary packages
+        run: |
+          npm install \
+            @sap-ai-sdk/ai-api@canary \
+            @sap-ai-sdk/core@canary \
+            @sap-ai-sdk/document-grounding@canary \
+            @sap-ai-sdk/foundation-models@canary \
+            @sap-ai-sdk/langchain@canary \
+            @sap-ai-sdk/llm-batch@canary \
+            @sap-ai-sdk/openai@canary \
+            @sap-ai-sdk/orchestration@canary \
+            @sap-ai-sdk/rpt@canary
+
+      - name: Prepare PR
+        id: prep
+        run: |
+          if git diff --quiet package-lock.json; then
+            echo "package-lock.json unchanged, nothing to do"
+            echo "create-pr=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          version=$(npm info @sap-ai-sdk/core dist-tags.canary)
+          branch="update-canary-deps-${version}"
+          if git ls-remote --exit-code origin "refs/heads/${branch}" > /dev/null 2>&1; then
+            echo "Branch ${branch} already exists, skipping"
+            echo "create-pr=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "create-pr=true" >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "branch=${branch}" >> "$GITHUB_OUTPUT"
+          
+      - name: Open PR
+        id: open-pr
+        if: steps.prep.outputs.create-pr == 'true'
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BRANCH: ${{ steps.prep.outputs.branch }}
+          VERSION: ${{ steps.prep.outputs.version }}
+        run: |
+          git config user.email "$BOT_EMAIL"
+          git config user.name "$BOT_NAME"
+          git checkout -b "$BRANCH"
+          git add package-lock.json
+          git commit -m "chore: update @sap-ai-sdk canary dependencies to $VERSION"
+          git push origin "$BRANCH"
+          pr_url=$(gh pr create \
+            --title "chore: update @sap-ai-sdk canary dependencies to $VERSION" \
+            --body "Automated weekly update of \`@sap-ai-sdk\` canary packages to \`$VERSION\`." \
+            --base main \
+            --head "$BRANCH")
+          echo "pr_url=${pr_url}" >> "$GITHUB_OUTPUT"
+
+      - name: Close outdated canary PRs
+        if: steps.prep.outputs.create-pr == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BRANCH: ${{ steps.prep.outputs.branch }}
+          PR_URL: ${{ steps.open-pr.outputs.pr_url }}
+        run: |
+          gh pr list --state open --json number,headRefName \
+            --jq ".[] | select(.headRefName | startswith(\"update-canary-deps-\")) | select(.headRefName != \"$BRANCH\") | .number" \
+            | xargs -r -I {} gh pr close {} --comment "Superseded by $PR_URL" --delete-branch
