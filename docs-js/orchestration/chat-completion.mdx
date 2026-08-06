@@ -712,7 +712,7 @@ If you're upgrading from an earlier version, refer to the [Zod v4 migration guid
 
 You can also define JSON schema using [Zod](https://zod.dev/) schema as shown below:
 
-```ts
+```ts twoslash
 import * as z from 'zod';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration';
@@ -1683,7 +1683,7 @@ The `messages` property defined in the `template` array are appended after any e
 You can reuse a stored orchestration configuration while adjusting parts of it for specific requests.
 Provide an `overrideConfig` on the configuration reference to override individual modules, such as switching the model, or to customize streaming behavior, without changing the stored configuration itself.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -1711,7 +1711,9 @@ console.log(response.getContent());
 To customize streaming behavior, provide the streaming settings in `overrideConfig.stream`.
 Streaming is enabled automatically when you call `stream()`, regardless of the stored configuration's streaming settings.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
 const orchestrationClient = new OrchestrationClient({
   id: 'MY_CONFIG_ID',
   overrideConfig: {
