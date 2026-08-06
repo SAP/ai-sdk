@@ -78,7 +78,7 @@ Use the URI format `ai://MY_OBJECT_STORE/input-batch.jsonl` to reference it.
 
 Upload the file programmatically using `FileApi` from `@sap-ai-sdk/ai-api`:
 
-```ts
+```ts twoslash
 import { createBatchInput } from '@sap-ai-sdk/foundation-models';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 
@@ -107,8 +107,8 @@ await FileApi.fileUpload(
 
 ## Create a Batch Job
 
-```ts
-import { BatchesApi } from '@sap-ai-sdk/batch-api';
+```ts twoslash
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
 
 const response = await BatchesApi.createBatch(
   {
@@ -132,8 +132,12 @@ The response contains the batch job ID used to track its progress.
 Batch jobs are processed asynchronously and can take anywhere from minutes to hours depending on the number of requests.
 Use the status endpoint to check progress:
 
-```ts
-const { current_status } = await BatchesApi.getBatchStatus(response.id, {
+```ts twoslash
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
+import type { BatchCreateResponse } from '@sap-ai-sdk/llm-batch';
+declare const response: BatchCreateResponse;
+// ---cut---
+const { current_status } = await BatchesApi.getBatchStatus(response.id!, {
   'AI-Resource-Group': 'MY_RESOURCE_GROUP'
 }).execute();
 
@@ -170,7 +174,9 @@ For example, if `output.uri` is `ai://MY_OBJECT_STORE/output/`, the output file 
 
 Download the output file using `FileApi` from `@sap-ai-sdk/ai-api`:
 
-```ts
+```ts twoslash
+declare const response: { id: string };
+// ---cut---
 import { parseBatchOutput } from '@sap-ai-sdk/foundation-models';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 
