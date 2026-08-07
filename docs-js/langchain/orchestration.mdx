@@ -343,7 +343,7 @@ For a full overview, refer to the [prompt caching documentation](https://help.sa
 :::
 
 Prompt caching reduces latency and cost by reusing cached content at the model provider level.
-The SDK supports a per-call option to enable it.
+The SDK offers two approaches: a per-call option and an agent middleware.
 
 #### Per-Call Cache Control
 
@@ -372,6 +372,46 @@ console.log(response.usage_metadata?.input_token_details);
   { cache_read: TOKEN_COUNT, cache_creation: 0 }   // identical repeated call: tokens read from cache
 */
 ```
+
+#### Prompt Caching Middleware
+
+For agents, use `orchestrationPromptCachingMiddleware()` to manage cache breakpoints automatically across turns.
+Pass it to `createAgent()` via the `middleware` option.
+
+:::note
+The middleware is exported from a sub-path that requires the `langchain` package to be installed as a direct dependency.
+You can install it with `npm install langchain`.
+:::
+
+<!-- vale off -->
+
+```ts
+import { createAgent } from 'langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { orchestrationPromptCachingMiddleware } from '@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware';
+
+const model = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku'
+    }
+  }
+});
+
+const agent = createAgent({
+  model,
+  middleware: [orchestrationPromptCachingMiddleware({ ttl: '5m' })],
+  tools: []
+});
+
+const result = await agent.invoke({
+  messages: [{ role: 'user', content: 'What is the speed of light?' }]
+});
+```
+
+<!-- vale on -->
+
+For configuration options such as `minMessagesToCache` and `unsupportedModelBehavior`, refer to the [LangChain `anthropicPromptCachingMiddleware()` middleware documentation](https://reference.langchain.com/javascript/langchain/browser/anthropicPromptCachingMiddleware).
 
 ### Structured Output
 
