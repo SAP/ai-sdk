@@ -142,6 +142,15 @@ var client = new OpenAIClient();
 var result = client.withHeader("foo", "bar").chatCompletion("Hello World! Why is this phrase so famous?");
 ```
 
+Or, to add multiple headers at once, use `withHeaders`.
+
+```java
+var client = new OpenAIClient();
+var headers = Map.of("foo", "bar", "foot", "baz");
+
+var result = client.withHeaders(headers).chatCompletion("Hello World! Why is this phrase so famous?");
+```
+
 ## Message history
 
 **Since v1.4.0**
