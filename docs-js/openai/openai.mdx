@@ -183,19 +183,19 @@ const defaultResponse = await client.chat.completions.create({
 });
 
 // Override with a different model for this request only
-const differentModelResponse = await client.chat.completions.create({
+const overrideResponse = await client.chat.completions.create({
   model: 'gpt-5.4-nano',
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
 
 // Override with a different model and version for this request only
-const differentModelVersionResponse = await client.chat.completions.create({
-  model: { modelName: 'gpt-5.4-nano', modelVersion: 'latest' },
+const overrideResponse = await client.chat.completions.create({
+  model: { model: 'gpt-5.4-nano', version: 'latest' },
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
 
 // Override with a different deployment for this request only
-const differentDeploymentResponse = await client.chat.completions.create({
+const overrideResponse = await client.chat.completions.create({
   model: { deploymentId: 'DEPLOYMENT_ID' },
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
