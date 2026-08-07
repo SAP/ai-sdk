@@ -715,7 +715,7 @@ You can also define JSON schema using [Zod](https://zod.dev/) schema as shown be
 ```ts twoslash
 import * as z from 'zod';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
-import { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration';
+import type { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration/internal.js';
 
 const countryCapitalSchema = z.strictObject({
   country_name: z.string(),

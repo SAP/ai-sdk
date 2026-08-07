@@ -16,7 +16,8 @@
     "lint": "eslint . && prettier . --config .prettierrc -c",
     "lint:fix": "eslint . --fix --quiet && prettier . --config .prettierrc -w --log-level error",
     "style": "npm run lint && vale .",
-    "check:docs-js-types": "node scripts/check-docs-js-types.js"
+    "check:docs-js-types": "node scripts/check-docs-js-types.js",
+    "update:ai-sdk-js": "npm update @sap-ai-sdk/ai-api @sap-ai-sdk/core @sap-ai-sdk/document-grounding @sap-ai-sdk/foundation-models @sap-ai-sdk/langchain @sap-ai-sdk/llm-batch @sap-ai-sdk/openai @sap-ai-sdk/orchestration @sap-ai-sdk/rpt"
   },
   "dependencies": {
     "@docusaurus/core": "^3.10.2",
