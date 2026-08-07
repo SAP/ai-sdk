@@ -1,0 +1,273 @@
+---
+id: langgraph-template-orchestration-client
+title: Using Orchestration Templates in LangGraph Agents
+sidebar_label: Using Orchestration Templates in LangGraph Agents
+description: How to use template and template_ref with the Orchestration client in LangGraph workflows, using the two-client pattern to avoid message duplication.
+keywords:
+  - tutorial
+  - orchestration
+  - langchain
+  - langgraph
+  - template
+  - template_ref
+  - prompt registry
+---
+
+## Introduction
+
+This tutorial shows how to use the `OrchestrationClient` from `@sap-ai-sdk/langchain` inside [LangGraph](https://docs.langchain.com/oss/javascript/langgraph) workflows when a prompt `template` or `template_ref` is involved.
+
+There are two behaviors to be aware of:
+
+- **Inline template (`template`)** — the template messages are **always prepended** to every request.
+  Reusing the same client across multiple turns causes the template to be duplicated in each call.
+- **Prompt Registry reference (`template_ref`)** — the template is stored remotely and cannot be extended inline.
+  Any messages passed alongside a `template_ref` are automatically routed to `messages_history` instead of being merged into the template.
+
+The recommended pattern for both cases is the **two-client approach**:
+use one client with the template for the **first node**, and a second client without the template for all **subsequent conversational nodes**.
+
+## Prerequisites
+
+Refer to the prerequisites outlined [here](../overview.mdx#prerequisites).
+
+This tutorial assumes a basic understanding of TypeScript, LangGraph, and the orchestration client.
+
+## Installation
+
+```bash
+npm install @sap-ai-sdk/langchain langchain @langchain/langgraph @langchain/core
+```
+
+## Inline Template: Two-Client Approach
+
+When a `template` is defined on an `OrchestrationClient` and that client is reused across multiple turns, the template is prepended on **every** call.
+In a LangGraph agent loop this means the system prompt repeats with each turn.
+The SDK logs an `info` message on the first call and a `warn` on subsequent calls.
+
+Use two clients: one with the template for the first node, one without for all subsequent nodes.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+// First node: template is applied once for the opening turn.
+const clientWithTemplate = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' },
+    prompt: {
+      template: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful travel assistant. Always respond in a friendly tone.'
+        }
+      ]
+    }
+  }
+});
+
+// Subsequent nodes: no template, used for all follow-up turns.
+const clientWithoutTemplate = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' }
+  }
+});
+```
+
+:::tip
+If you only need the system prompt once, you can also use a single client without a `template` and pass the system message as the first entry in `messagesHistory` on the opening call.
+:::
+
+## Prompt Registry Reference: Two-Client Approach
+
+When `template_ref` is configured, the orchestration service fetches the template from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) at request time.
+Messages cannot be merged into a remotely stored template — they are automatically routed to `messages_history`.
+The SDK logs a `warn` when messages are passed alongside a `template_ref`.
+
+Use the same two-client pattern: one client with `template_ref` for the first node, one without for subsequent nodes.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+// First node: fetches and applies the remote template once.
+const clientWithTemplateRef = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' },
+    prompt: {
+      template_ref: {
+        name: 'my-travel-assistant-template',
+        scenario: 'travel',
+        version: '1.0.0'
+      }
+    }
+  }
+});
+
+// Subsequent nodes: no template_ref, messages are used directly.
+const clientForFollowUp = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' }
+  }
+});
+```
+
+## How to create a LangGraph Workflow
+
+This section shows how to wire the clients into a complete multi-turn LangGraph workflow using the two-client pattern.
+
+Two common entry points exist in LangChain:
+
+- **`createAgent()`** — the simplest option for a single-model, single-system-prompt agent.
+- **`StateGraph`** — gives you full control over nodes, edges, and routing when you need more than one step.
+
+### Option 1 — `createAgent()`
+
+`createAgent()` builds a prebuilt `agent → tools → agent` loop for you.
+Call it once with the client that carries the template, then reuse the compiled graph for every follow-up turn.
+
+<!-- vale off -->
+
+```ts
+import { createAgent } from 'langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { MemorySaver } from '@langchain/langgraph';
+
+// Client with the system-prompt template — used as the agent model.
+const clientWithTemplate = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' },
+    prompt: {
+      template: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful travel assistant. Always respond in a friendly tone.'
+        }
+      ]
+    }
+  }
+});
+
+// createAgent() compiles the graph internally; MemorySaver threads context across turns.
+const agent = createAgent({
+  model: clientWithTemplate,
+  tools: [],
+  checkpointSaver: new MemorySaver()
+});
+
+const threadConfig = { configurable: { thread_id: 'conv-1' } };
+
+// First turn — the template is applied once.
+const first = await agent.invoke(
+  { messages: [{ role: 'user', content: 'Plan a day trip to Paris.' }] },
+  threadConfig
+);
+console.log(first.messages.at(-1)?.content);
+
+// Follow-up turns reuse the same compiled graph; the template is NOT re-applied.
+const followUp = await agent.invoke(
+  { messages: [{ role: 'user', content: 'Add more outdoor activities.' }] },
+  threadConfig
+);
+console.log(followUp.messages.at(-1)?.content);
+```
+
+<!-- vale on -->
+
+### Option 2 — `StateGraph` with the two-client pattern
+
+Use `StateGraph` when you need an explicit first-turn node that applies the template exactly once, then a separate conversational node for every subsequent turn.
+
+<!-- vale off -->
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import {
+  StateGraph,
+  MessagesAnnotation,
+  START,
+  END
+} from '@langchain/langgraph';
+import { MemorySaver } from '@langchain/langgraph';
+
+// First-turn client: carries the system-prompt template.
+const clientWithTemplate = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gpt-5' },
+    prompt: {
+      template: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful travel assistant. Always respond in a friendly tone.'
+        }
+      ]
+    }
+  }
+});
+
+// Follow-up client: no template — messages are passed as-is.
+const clientWithoutTemplate = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+
+// Node executed only for the opening turn.
+async function firstTurnNode(state: typeof MessagesAnnotation.State) {
+  const response = await clientWithTemplate.invoke(state.messages);
+  return { messages: [response] };
+}
+
+// Node executed for every subsequent turn.
+async function conversationNode(state: typeof MessagesAnnotation.State) {
+  const response = await clientWithoutTemplate.invoke(state.messages);
+  return { messages: [response] };
+}
+
+// Route: if this is the first AI response, go to firstTurnNode, otherwise conversationNode.
+function routeByTurn(state: typeof MessagesAnnotation.State): string {
+  const hasAiMessage = state.messages.some(m => m._getType() === 'ai');
+  return hasAiMessage ? 'conversationNode' : 'firstTurnNode';
+}
+
+const graph = new StateGraph(MessagesAnnotation)
+  .addNode('firstTurnNode', firstTurnNode)
+  .addNode('conversationNode', conversationNode)
+  .addConditionalEdges(START, routeByTurn, [
+    'firstTurnNode',
+    'conversationNode'
+  ])
+  .addEdge('firstTurnNode', END)
+  .addEdge('conversationNode', END)
+  .compile({ checkpointer: new MemorySaver() });
+
+const threadConfig = { configurable: { thread_id: 'conv-1' } };
+
+// First turn — routes to firstTurnNode, template is applied once.
+const first = await graph.invoke(
+  { messages: [{ role: 'user', content: 'Plan a day trip to Paris.' }] },
+  threadConfig
+);
+console.log(first.messages.at(-1)?.content);
+
+// Follow-up — routes to conversationNode, no template duplication.
+const followUp = await graph.invoke(
+  { messages: [{ role: 'user', content: 'Add more outdoor activities.' }] },
+  threadConfig
+);
+console.log(followUp.messages.at(-1)?.content);
+```
+
+<!-- vale on -->
+
+:::tip
+The same `StateGraph` approach applies to the `template_ref` two-client pattern — swap `clientWithTemplate` for `clientWithTemplateRef` in the `firstTurnNode`.
+:::
+
+For a more advanced example with tool use, human-in-the-loop interruption, and MCP integration, see the [Getting Started with Agents tutorial](./getting-started-agents.mdx).
+
+## Further Reading
+
+- [Orchestration Template Configuration](../orchestration/chat-completion.mdx#template-configuration)
+- [Orchestration Prompt Registry](../orchestration/chat-completion.mdx#prompt-registry)
+- [LangChain Orchestration Integration](../langchain/orchestration.mdx#template-and-prompt-registry-behavior)
+- [Getting Started with Agents tutorial](./getting-started-agents.mdx)
