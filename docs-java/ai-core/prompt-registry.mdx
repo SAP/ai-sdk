@@ -24,7 +24,7 @@ No additional convenience API layer is provided.
 
 ## Prerequisites
 
-Before using the Prompt Registry module, ensure that you have met all the general requirements outlined in the [overview](../overview-cloud-sdk-for-ai-java#general-requirements).
+Before using the Prompt Registry module, ensure that you have met all the general requirements outlined in the [overview](../overview.mdx#general-requirements).
 Additionally, include the necessary Maven dependency in your project.
 
 ### Maven Dependencies
@@ -133,7 +133,7 @@ PromptTemplatePostResponse response = client.createUpdatePromptTemplate(updatedT
 
 You can retrieve a prompt template by ID, or by the combination of name, scenario, and version.
 
-Prompt templates can also be retrieved and consumed in orchestration. For more information, see [Templating](../orchestration/chat-completion#templating).
+Prompt templates can also be retrieved and consumed in orchestration. For more information, see [Templating](../orchestration/chat-completion.mdx#templating).
 
 ```java
 PromptClient client = new PromptClient();
@@ -295,14 +295,14 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 ## Locally Test a Prompt Template
 
 Note that you can also locally test a prompt, without needing it to be deployed in the Prompt Registry.
-For more information, see [the Orchestration documentation](../orchestration/chat-completion#locally-test-a-prompt-template).
+For more information, see [the Orchestration documentation](../orchestration/chat-completion.mdx#locally-test-a-prompt-template).
 
 ## Orchestration Configurations in Prompt Registry
 
 The orchestration config API available as part of Prompt Registry allows to persist Orchestration configurations.
 Once stored, you can reference and use them through your `OrchestrationClient` instead of defining the configuration during runtime.
 
-Please refer to the [chapter on chat completion](../orchestration/chat-completion#using-a-prepared-configuration) for details on how to use a stored Orchestration configuration with your `OrchestrationClient`.
+Please refer to the [chapter on chat completion](../orchestration/chat-completion.mdx#using-a-prepared-configuration) for details on how to use a stored Orchestration configuration with your `OrchestrationClient`.
 
 For more details about orchestration configuration management, refer to the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/orchestration-config-management).
 

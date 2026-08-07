@@ -1,31 +1,27 @@
-const { ProvidePlugin } = require('webpack');
+import { themes } from 'prism-react-renderer';
+import webpack from 'webpack';
+import remarkEnforceMdxLinks from './plugins/remark-enforce-mdx-links.js';
+import remarkStripTwoslash from './scripts/remark-plugin-strip-twoslash.js';
 
-// We have to polyfill some Node APIs because Docusaurus migrated to Webpack 5
-// This is mainly required because of remark related modules which don't load otherwise
-// Also process is required for local runs
-class ESMPolyfillWrapper {
-  apply(compiler) {
-    compiler.options.plugins.push(
-      new ProvidePlugin({
-        process: 'process/browser.js'
-      })
-    );
-  }
-}
+const { ProvidePlugin } = webpack;
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+export default {
   title: 'SAP Cloud SDK for AI',
   tagline: 'The one-stop shop for integrating AI into SAP Cloud applications.',
   url: 'https://sap.github.io/',
   baseUrl: '/ai-sdk/',
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
   markdown: { hooks: { onBrokenMarkdownLinks: 'throw' } },
   favicon: 'img/AI-SDK-Logo.svg',
   organizationName: 'SAP',
   projectName: 'ai-sdk',
   trailingSlash: false,
-  themes: ['@saucelabs/theme-github-codeblock'],
+  themes: [
+    '@saucelabs/theme-github-codeblock',
+    'docusaurus-plugin-copy-page-button'
+  ],
   themeConfig: {
     colorMode: {
       respectPrefersColorScheme: true,
@@ -33,8 +29,8 @@ module.exports = {
     },
     prism: {
       additionalLanguages: ['powershell', 'java', 'groovy'],
-      theme: require('prism-react-renderer').themes.github,
-      darkTheme: require('prism-react-renderer').themes.dracula
+      theme: themes.github,
+      darkTheme: themes.dracula
     },
     algolia: {
       apiKey: '441c57554e5a0ca9338cc9f047fb10c8',
@@ -53,12 +49,12 @@ module.exports = {
         {
           label: 'Overview',
           type: 'doc',
-          docId: 'overview-cloud-sdk-for-ai',
+          docId: 'overview',
           position: 'left'
         },
         {
           label: '☕ Java',
-          to: 'docs/java/overview-cloud-sdk-for-ai-java',
+          to: 'docs/java/overview',
           position: 'left',
           docsPluginId: 'docs-java',
           activeBasePath: 'docs/java',
@@ -66,7 +62,7 @@ module.exports = {
         },
         {
           label: '🚀 JavaScript',
-          to: 'docs/js/overview-cloud-sdk-for-ai-js',
+          to: 'docs/js/overview',
           position: 'left',
           docsPluginId: 'docs-js',
           activeBasePath: 'docs/js',
@@ -194,13 +190,14 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          sidebarPath: require.resolve('./sidebarsDocsCommon.js'),
+          sidebarPath: './sidebarsDocsCommon.js',
           editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
           routeBasePath: 'docs/overview',
-          path: 'docs'
+          path: 'docs',
+          remarkPlugins: [remarkEnforceMdxLinks]
         },
         theme: {
-          customCss: [require.resolve('./src/css/custom.css')]
+          customCss: './src/css/custom.css'
         },
         sitemap: {
           changefreq: 'weekly',
@@ -210,7 +207,6 @@ module.exports = {
       }
     ]
   ],
-  customFields: {},
   plugins: [
     [
       '@docusaurus/plugin-content-docs',
@@ -219,7 +215,8 @@ module.exports = {
         path: 'docs-java',
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/java',
-        sidebarPath: require.resolve('./sidebarsDocsJava.js'),
+        sidebarPath: './sidebarsDocsJava.js',
+        remarkPlugins: [remarkEnforceMdxLinks],
         lastVersion: 'current',
         versions: {
           current: {
@@ -236,7 +233,8 @@ module.exports = {
         path: 'docs-js',
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
-        sidebarPath: require.resolve('./sidebarsDocsJs.js'),
+        sidebarPath: './sidebarsDocsJs.js',
+        remarkPlugins: [remarkEnforceMdxLinks, remarkStripTwoslash],
         lastVersion: 'current',
         versions: {
           current: {
@@ -258,7 +256,8 @@ module.exports = {
         path: 'docs-python',
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/python',
-        sidebarPath: require.resolve('./sidebarsDocsPython.js'),
+        sidebarPath: './sidebarsDocsPython.js',
+        remarkPlugins: [remarkEnforceMdxLinks],
         lastVersion: 'current',
         versions: {
           current: {
@@ -349,16 +348,52 @@ module.exports = {
           {
             from: '/docs/js/guides/connecting-to-ai-core',
             to: '/docs/js/connecting-to-ai-core'
+          },
+          // SEO slug renames
+          {
+            from: '/docs/overview/overview-cloud-sdk-for-ai',
+            to: '/docs/overview/overview'
+          },
+          {
+            from: '/docs/overview/cloud-sdk-feature-matrix',
+            to: '/docs/overview/feature-matrix'
+          },
+          {
+            from: '/docs/java/overview-cloud-sdk-for-ai-java',
+            to: '/docs/java/overview'
+          },
+          {
+            from: '/docs/js/overview-cloud-sdk-for-ai-js',
+            to: '/docs/js/overview'
+          },
+          {
+            from: '/docs/js/tutorials/getting-started-with-agents',
+            to: '/docs/js/tutorials/getting-started-agents'
+          },
+          {
+            from: '/docs/js/tutorials/using-llm-batch-api',
+            to: '/docs/js/tutorials/llm-batch-api'
+          },
+          {
+            from: '/docs/js/tutorials/using-scoped-prompt-registry-templates',
+            to: '/docs/js/tutorials/scoped-prompt-registry-templates'
           }
         ]
       }
     ],
-    function nodeWebpackPolyfillPlugin(context, options) {
+    function nodeWebpackPolyfillPlugin() {
       return {
         name: 'nodeWebpackPolyfill',
-        configureWebpack(config, isServer) {
+        configureWebpack() {
           return {
-            plugins: [new ESMPolyfillWrapper()]
+            plugins: [new ProvidePlugin({ process: 'process/browser.js' })],
+            module: {
+              rules: [
+                // Docusaurus generates files in .docusaurus/ with require() calls;
+                // treat them as non-strict so require is available in the bundle.
+                { test: /\.docusaurus\/.*\.js$/, type: 'javascript/auto' }
+              ]
+            }
           };
         }
       };

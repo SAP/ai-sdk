@@ -50,19 +50,19 @@ See the [prerequisites](../overview.mdx#prerequisites) section.
 Use the `SapOpenAi.createClient()` method to create a pre-configured client.
 Pass a model name string or a deployment identifier object via the `deployment` option:
 
-```ts
+```ts twoslash
 import { SapOpenAi } from '@sap-ai-sdk/openai';
 
 // By model name (shorthand)
-const client = await SapOpenAi.createClient('gpt-5.4');
+const clientA = await SapOpenAi.createClient('gpt-5.4');
 
 // By model name and version
-const client = await SapOpenAi.createClient({
+const clientB = await SapOpenAi.createClient({
   deployment: { modelName: 'gpt-5.4', modelVersion: '2025-04-14' }
 });
 
 // By deployment ID
-const client = await SapOpenAi.createClient({
+const clientC = await SapOpenAi.createClient({
   deployment: { deploymentId: 'DEPLOYMENT_ID' }
 });
 ```
@@ -70,7 +70,9 @@ const client = await SapOpenAi.createClient({
 Use the `resourceGroup` property to target a specific resource group.
 The resource group defaults to `default`:
 
-```ts
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+// ---cut---
 const client = await SapOpenAi.createClient({
   deployment: { modelName: 'gpt-5.4', resourceGroup: 'my-resource-group' }
 });
@@ -78,7 +80,9 @@ const client = await SapOpenAi.createClient({
 
 To use a custom SAP AI Core destination, pass the `destination` option:
 
-```ts
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+// ---cut---
 const client = await SapOpenAi.createClient({
   deployment: { modelName: 'gpt-5.4' },
   destination: { destinationName: 'DESTINATION_NAME' }
@@ -93,7 +97,10 @@ You can optionally [pass a `model` parameter](#per-request-model-override) in in
 
 ### Chat Completions
 
-```ts
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+const client = await SapOpenAi.createClient('gpt-5.4');
+// ---cut---
 const response = await client.chat.completions.create({
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
@@ -101,7 +108,10 @@ const response = await client.chat.completions.create({
 
 Use the `parse()` method for structured output with a Zod schema:
 
-```ts
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+const client = await SapOpenAi.createClient('gpt-5.4');
+// ---cut---
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
@@ -115,7 +125,9 @@ const response = await client.chat.completions.parse({
 
 ### Embeddings
 
-```ts
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+// ---cut---
 const embeddingClient = await SapOpenAi.createClient({
   deployment: 'text-embedding-3-small'
 });
@@ -127,7 +139,10 @@ const response = await embeddingClient.embeddings.create({
 
 ### Responses API
 
-```ts
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+const client = await SapOpenAi.createClient('gpt-5.4');
+// ---cut---
 const response = await client.responses.create({
   instructions: 'You are a helpful assistant.',
   input: 'What is the capital of France?'
@@ -136,7 +151,10 @@ const response = await client.responses.create({
 
 Use the `parse()` method for structured output with a Zod schema:
 
-```ts
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+const client = await SapOpenAi.createClient('gpt-5.4');
+// ---cut---
 import { zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
@@ -154,7 +172,9 @@ const response = await client.responses.parse({
 You can override the model or deployment configuration for individual requests by passing a `model` parameter.
 This lets a single client instance send requests to different deployments without re-initializing.
 
-```ts
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+// ---cut---
 const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
 
 // Use the client's configured deployment (gpt-5.4)
@@ -191,7 +211,7 @@ Deployment resolution results are cached, so overriding the model on repeated re
 Use the `createOpenAiConfig()` function to get an `AzureClientOptions` object for direct instantiation of `AzureOpenAI`.
 This is useful when you need endpoints not exposed by `SapOpenAi`:
 
-```ts
+```ts twoslash
 import { AzureOpenAI } from 'openai';
 import { createOpenAiConfig } from '@sap-ai-sdk/openai';
 
@@ -204,7 +224,7 @@ const client = new AzureOpenAI(config);
 Use the `createTokenProvider()` function when you need an `azureADTokenProvider`-compatible function for custom `AzureOpenAI` configurations.
 It is used internally by `createOpenAiConfig()`.
 
-```ts
+```ts twoslash
 import { AzureOpenAI } from 'openai';
 import { createTokenProvider } from '@sap-ai-sdk/openai';
 

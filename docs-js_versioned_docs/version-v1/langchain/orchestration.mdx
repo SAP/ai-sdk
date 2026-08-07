@@ -21,7 +21,7 @@ The client reuses the orchestration client from `@sap-ai-sdk/orchestration` and 
 Therefore, the client initialization combines the configuration of the orchestration client and LangChain options.
 
 Similar to the orchestration client, the `OrchestrationClient` LangChain client can be initialized with an orchestration configuration.
-Refer to [Orchestration Chat Completion](../orchestration/chat-completion) for more information about the configuration.
+Refer to [Orchestration Chat Completion](../orchestration/chat-completion.mdx) for more information about the configuration.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
@@ -52,7 +52,7 @@ const client = new OrchestrationClient(
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core.mdx#using-a-destination) section.
 
 ## Chat Completion
 
@@ -157,7 +157,7 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 LangChain offers a unified way to connect tools to language models.
 Use the `bindTools()` method to define the set of tools a model can access.
 For more details, see the [official LangChain documentation on tool binding](https://js.langchain.com/docs/concepts/tool_calling/#tool-binding).
-For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents#define-tools).
+For a usage example, refer to the [getting started with agents tutorial](../tutorials/getting-started-with-agents.mdx#define-tools).
 
 ## Resilience
 
