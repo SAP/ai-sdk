@@ -203,7 +203,7 @@ import { SapOpenAi } from '@sap-ai-sdk/openai';
 const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
 // ---cut---
 const response = await client.chat.completions.create({
-  model: { model: 'gpt-5.4-nano', version: 'latest' },
+  model: { modelName: 'gpt-5.4-nano', modelVersion: 'latest' },
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
 ```
