@@ -172,30 +172,49 @@ const response = await client.responses.parse({
 You can override the model or deployment configuration for individual requests by passing a `model` parameter.
 This lets a single client instance send requests to different deployments without re-initializing.
 
+Use the client's configured deployment:
+
 ```ts twoslash
 import { SapOpenAi } from '@sap-ai-sdk/openai';
 // ---cut---
 const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
 
-// Use the client's configured deployment (gpt-5.4)
-const defaultResponse = await client.chat.completions.create({
+const response = await client.chat.completions.create({
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
+```
 
-// Override with a different model for this request only
-const differentModelResponse = await client.chat.completions.create({
+Override with a different model for this request only:
+
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
+// ---cut---
+const response = await client.chat.completions.create({
   model: 'gpt-5.4-nano',
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
+```
 
-// Override with a different model and version for this request only
-const differentModelVersionResponse = await client.chat.completions.create({
+Override with a different model and version for this request only:
+
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
+// ---cut---
+const response = await client.chat.completions.create({
   model: { modelName: 'gpt-5.4-nano', modelVersion: 'latest' },
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
+```
 
-// Override with a different deployment for this request only
-const differentDeploymentResponse = await client.chat.completions.create({
+Override with a different deployment for this request only:
+
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+const client = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
+// ---cut---
+const response = await client.chat.completions.create({
   model: { deploymentId: 'DEPLOYMENT_ID' },
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
