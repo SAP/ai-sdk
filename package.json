@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --fix --quiet && prettier . --config .prettierrc -w --log-level error",
     "style": "npm run lint && vale .",
     "check:docs-js-types": "node scripts/check-docs-js-types.js",
-    "update:ai-sdk-js": "npm update @sap-ai-sdk/ai-api @sap-ai-sdk/core @sap-ai-sdk/document-grounding @sap-ai-sdk/foundation-models @sap-ai-sdk/langchain @sap-ai-sdk/llm-batch @sap-ai-sdk/openai @sap-ai-sdk/orchestration @sap-ai-sdk/rpt"
+    "update:ai-sdk-js": "npm install @sap-ai-sdk/ai-api@canary @sap-ai-sdk/core@canary @sap-ai-sdk/document-grounding@canary @sap-ai-sdk/foundation-models@canary @sap-ai-sdk/langchain@canary @sap-ai-sdk/llm-batch@canary @sap-ai-sdk/openai@canary @sap-ai-sdk/orchestration@canary @sap-ai-sdk/rpt@canary"
   },
   "dependencies": {
     "@docusaurus/core": "^3.10.2",
@@ -50,8 +50,8 @@
     "@sap-ai-sdk/openai": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/rpt": "canary",
-    "@typescript-eslint/eslint-plugin": "^8.65.0",
-    "@typescript-eslint/parser": "^8.62.0",
+    "@typescript-eslint/eslint-plugin": "^8.66.0",
+    "@typescript-eslint/parser": "^8.66.0",
     "assert": "^2.1.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
