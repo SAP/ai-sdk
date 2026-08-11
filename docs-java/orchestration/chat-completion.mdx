@@ -835,4 +835,37 @@ String content = response.getContent();
 List<Citation> citations = response.getOriginalResponse().getFinalResult().getCitations();
 ```
 
+## Prompt caching
+
+Use the [**prompt caching**](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching) to reduce usage costs for repetitive prompts:
+
+```java
+
+var systemMessage = Message.system("<Long frequently used prompt here>", new CacheControl("1h"));
+var userMessage = Message.user("<Variable user prompt>");
+
+var prompt = new OrchestrationPrompt(systemMessage, userMessage);
+
+var result =
+    new OrchestrationClient().chatCompletion(prompt, config);
+```
+
+In this example, the system message (prompt) will be cached so its intermediate model calculation results could be reused on subsequent requests.
+
+User messages and tool messages can also be cached.
+
+Caching is only supported for the following models currently:
+
+| Model name       | Max caching points per request | Min tokens per cache point | Supported TTLs | Default TTL |
+|------------------|--------------------------------|----------------------------|----------------|-------------|
+|CLAUDE_4_5_OPUS   |4                               |4096                        |5m or 1h        |5m           |
+|CLAUDE_4_6_OPUS   |4                               |4096                        |5m or 1h        |5m           |
+|CLAUDE_4_5_SONNET |4                               |4096                        |5m or 1h        |5m           |
+|CLAUDE_4_6_SONNET |4                               |1024                        |5m or 1h        |5m           |
+|CLAUDE_4_5_HAIKU  |4                               |4096                        |5m or 1h        |5m           |
+|CLAUDE_4_OPUS     |4                               |4096                        |5m              |5m           |
+|CLAUDE_4_7_OPUS   |4                               |4096                        |5m or 1h        |5m           |
+|CLAUDE_4_8_OPUS   |4                               |4096                        |5m or 1h        |5m           |
+
+
 Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
