@@ -965,7 +965,7 @@ import * as z from 'zod';
 
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 
-import { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration';
+import type { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration/internal.js';
 
 
 
@@ -2162,7 +2162,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
 
-  id: 'c1a4f2e2-BETA-4d2b-9f7a-1234567890ab'
+  id: 'MY_CONFIG_ID'
 
 });
 ```
@@ -2209,9 +2209,75 @@ Messages with Orchestration Configuration References
 
 When initializing the client with an orchestration configuration reference, any messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored configuration's prompt template. The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
 
+### Overriding the Stored Configuration[​](#overriding-the-stored-configuration "Direct link to Overriding the Stored Configuration")
+
+You can reuse a stored orchestration configuration while adjusting parts of it for specific requests. Provide an `overrideConfig` on the configuration reference to override individual modules, such as switching the model, or to customize streaming behavior, without changing the stored configuration itself.
+
+```
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+
+
+const orchestrationClient = new OrchestrationClient({
+
+  id: 'MY_CONFIG_ID',
+
+  overrideConfig: {
+
+    modules: {
+
+      prompt_templating: {
+
+        model: {
+
+          name: 'gpt-5.4-nano',
+
+          version: '1',
+
+          params: {}
+
+        }
+
+      }
+
+    }
+
+  }
+
+});
+
+
+
+const response = await orchestrationClient.chatCompletion({
+
+  placeholderValues: { customerQuestion: 'How do I reset my password?' }
+
+});
+
+
+
+console.log(response.getContent());
+```
+
+To customize streaming behavior, provide the streaming settings in `overrideConfig.stream`. Streaming is enabled automatically when you call `stream()`, regardless of the stored configuration's streaming settings.
+
+```
+const orchestrationClient = new OrchestrationClient({
+
+  id: 'MY_CONFIG_ID',
+
+  overrideConfig: {
+
+    stream: { chunk_size: 100 }
+
+  }
+
+});
+```
+
 note
 
-When using an orchestration configuration reference, [streaming](#streaming) is only available if the stored configuration includes streaming settings.
+Request-level stream options passed to the `stream()` method are not supported with a configuration reference. Configure streaming settings through `overrideConfig` or in the stored orchestration configuration instead.
 
 For details on creating and managing orchestration configurations, refer to the [Orchestration Configuration](/ai-sdk/docs/js/ai-core/prompt-registry.md#orchestration-configuration) section in the prompt registry guide.
 
