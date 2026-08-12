@@ -897,13 +897,14 @@ Some models can expose their intermediate reasoning steps in addition to the fin
 Enable reasoning by setting the harmonized `reasoning_effort` model parameter.
 Orchestration maps this single parameter to each provider's native reasoning configuration, so the same client code works across different models.
 
+:::note
+Anthropic Claude, GCP Gemini, and OpenAI reasoning models are among the models that expose reasoning content.
+Every reasoning model accepts the `reasoning_effort` values `minimal`, `low`, `medium`, `high`, and `none`, though each model maps them differently. You can also pass a model's native reasoning options directly.
+See the [SAP AI Core reasoning documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning?locale=en-US) for details.
+:::
+
 Use the `getReasoningContent()` method to retrieve the reasoning content from the response.
 It returns an array of reasoning text blocks, or `undefined` when the model did not produce any reasoning content.
-
-:::note
-Reasoning content is only returned by models that support reasoning, such as Anthropic Claude, GCP Gemini, and OpenAI reasoning models.
-The set of supported `reasoning_effort` values (for example `low`, `medium`, and `high`) depends on the model.
-:::
 
 ```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -929,6 +930,8 @@ if (reasoning) {
 }
 console.log(response.getContent());
 ```
+
+`getReasoningContent()` exposes only the human-readable reasoning text; any encrypted or redacted reasoning blocks the model returns are excluded.
 
 To preserve the reasoning context across turns, pass the result of `getAllMessages()` as `messagesHistory` in the next request.
 The reasoning blocks are included in the returned messages automatically, so you do not need to handle them manually.
