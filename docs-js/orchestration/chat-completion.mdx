@@ -1505,7 +1505,9 @@ const response = await orchestrationClient.stream({
 
 for await (const chunk of response.stream) {
   const reasoningDelta = chunk.getDeltaReasoningContent();
-  reasoningDelta?.forEach(block => console.log(`<delta-reasoning>${block}</delta-reasoning>`));
+  reasoningDelta?.forEach(block =>
+    console.log(`<delta-reasoning>${block}</delta-reasoning>`)
+  );
 }
 
 const finalReasoning = response.getReasoningContent();
