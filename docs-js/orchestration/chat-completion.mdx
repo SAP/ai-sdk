@@ -941,7 +941,9 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 const response = await orchestrationClient.chatCompletion({
-  messages: [{ role: 'user', content: 'Explain step by step: what is 15 * 17?' }]
+  messages: [
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+  ]
 });
 // ---cut---
 const followUp = await orchestrationClient.chatCompletion({
