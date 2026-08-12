@@ -1481,7 +1481,7 @@ When streaming, reasoning content is delivered incrementally alongside the regul
 Use the `getDeltaReasoningContent()` method on each chunk to read the reasoning delta as it arrives.
 Use the `getReasoningContent()` method on the full response after the stream ends to read the accumulated reasoning content.
 
-Enable reasoning by setting the harmonized `reasoning_effort` model parameter, exactly as for non-streaming requests.
+Configure reasoning by setting the harmonized `reasoning_effort` model parameter, the same as for non-streaming requests.
 
 ```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
