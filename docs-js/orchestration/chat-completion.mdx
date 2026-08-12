@@ -899,7 +899,8 @@ Orchestration maps this single parameter to each provider's native reasoning con
 
 :::note
 Anthropic Claude, GCP Gemini, and OpenAI reasoning models are among the models that expose reasoning content.
-Every reasoning model accepts the `reasoning_effort` values `minimal`, `low`, `medium`, `high`, and `none`, though each model maps them differently. You can also pass a model's native reasoning options directly.
+Every reasoning model accepts the `reasoning_effort` values `minimal`, `low`, `medium`, `high`, and `none`, though each model maps them differently.
+You can also pass a model's native reasoning options directly.
 See the [SAP AI Core reasoning documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning?locale=en-US) for details.
 :::
 
@@ -925,9 +926,7 @@ const response = await orchestrationClient.chatCompletion({
 });
 
 const reasoning = response.getReasoningContent();
-if (reasoning) {
-  reasoning.forEach(block => console.log(block));
-}
+reasoning?.forEach(block => console.log(`<reasoning>${block}</reasoning>`));
 console.log(response.getContent());
 ```
 
@@ -1506,12 +1505,10 @@ const response = await orchestrationClient.stream({
 
 for await (const chunk of response.stream) {
   const reasoningDelta = chunk.getDeltaReasoningContent();
-  if (reasoningDelta) {
-    reasoningDelta.forEach(block => console.log(block));
-  }
+  reasoningDelta?.forEach(block => console.log(`<delta-reasoning>${block}</delta-reasoning>`));
 }
 
-const reasoning = response.getReasoningContent();
+const finalReasoning = response.getReasoningContent();
 ```
 
 ### Streaming with Tool Calls
