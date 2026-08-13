@@ -12,7 +12,21 @@ import { createTwoslasher } from 'twoslash';
 import { readFile, glob } from 'node:fs/promises';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import ts from 'typescript';
+
+const require = createRequire(import.meta.url);
+// TS7 ships lib declarations in a separate @typescript/old package; resolve it
+// at runtime so TSVFS can locate individual lib.*.d.ts files.
+let tsLibDirectory;
+try {
+  tsLibDirectory = dirname(
+    require.resolve('@typescript/old/lib/typescript.js')
+  );
+} catch {
+  // Pre-TS7: lib files live alongside typescript.js
+  tsLibDirectory = undefined;
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
@@ -60,7 +74,8 @@ async function main() {
   const twoslasher = createTwoslasher({
     vfsRoot: repoRoot,
     compilerOptions: options,
-    extraFiles: { 'package.json': '{"type":"module"}' }
+    extraFiles: { 'package.json': '{"type":"module"}' },
+    ...(tsLibDirectory ? { tsLibDirectory } : {})
   });
 
   const results = await Promise.all(
