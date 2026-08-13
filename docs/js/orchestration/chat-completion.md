@@ -1240,6 +1240,72 @@ const usage = response.getTokenUsage();
 console.log('Cache details', usage?.prompt_tokens_details ?? usage);
 ```
 
+### Reasoning Content[​](#reasoning-content "Direct link to Reasoning Content")
+
+Some models can expose their intermediate reasoning steps in addition to the final answer. Enable reasoning by setting the harmonized `reasoning_effort` model parameter. Orchestration maps this single parameter to each provider's native reasoning configuration, so the same client code works across different models.
+
+note
+
+Anthropic Claude, GCP Gemini, and OpenAI reasoning models are among the models that expose reasoning content. Every reasoning model accepts the `reasoning_effort` values `minimal`, `low`, `medium`, `high`, and `none`, though each model maps them differently. You can also pass a model's native reasoning options directly. See the [SAP AI Core reasoning documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning?locale=en-US) for details.
+
+Use the `getReasoningContent()` method to retrieve the reasoning content from the response. It returns an array of reasoning text blocks, or `undefined` when the model did not produce any reasoning content.
+
+```
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+
+
+const orchestrationClient = new OrchestrationClient({
+
+  promptTemplating: {
+
+    model: {
+
+      name: 'gemini-3.5-flash',
+
+      params: { reasoning_effort: 'high' }
+
+    }
+
+  }
+
+});
+
+
+
+const response = await orchestrationClient.chatCompletion({
+
+  messages: [
+
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+
+  ]
+
+});
+
+
+
+const reasoning = response.getReasoningContent();
+
+reasoning?.forEach(block => console.log(`<reasoning>${block}</reasoning>`));
+
+console.log(response.getContent());
+```
+
+`getReasoningContent()` exposes only the human-readable reasoning text; any encrypted or redacted reasoning blocks the model returns are excluded.
+
+To preserve the reasoning context across turns, pass the result of `getAllMessages()` as `messagesHistory` in the next request. The reasoning blocks are included in the returned messages automatically, so you do not need to handle them manually.
+
+```
+const followUp = await orchestrationClient.chatCompletion({
+
+  messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+
+  messagesHistory: response.getAllMessages()
+
+});
+```
+
 ### File Input[​](#file-input "Direct link to File Input")
 
 Some models in the orchestration service accept files as input, such as PDFs, CSV files, Word documents, and audio files.
@@ -1887,6 +1953,60 @@ for await (const chunk of response.stream.toContentStream()) {
   console.log(chunk); // will log the delta content
 
 }
+```
+
+### Streaming Reasoning Content[​](#streaming-reasoning-content "Direct link to Streaming Reasoning Content")
+
+When streaming, reasoning content is delivered incrementally alongside the regular content. Use the `getDeltaReasoningContent()` method on each chunk to read the reasoning delta as it arrives. Use the `getReasoningContent()` method on the full response after the stream ends to read the accumulated reasoning content.
+
+Configure reasoning by setting the harmonized `reasoning_effort` model parameter, the same as for non-streaming requests.
+
+```
+const orchestrationClient = new OrchestrationClient({
+
+  promptTemplating: {
+
+    model: {
+
+      name: 'gemini-3.5-flash',
+
+      params: { reasoning_effort: 'high' }
+
+    }
+
+  }
+
+});
+
+
+
+const response = await orchestrationClient.stream({
+
+  messages: [
+
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+
+  ]
+
+});
+
+
+
+for await (const chunk of response.stream) {
+
+  const reasoningDelta = chunk.getDeltaReasoningContent();
+
+  reasoningDelta?.forEach(block =>
+
+    console.log(`<delta-reasoning>${block}</delta-reasoning>`)
+
+  );
+
+}
+
+
+
+const finalReasoning = response.getReasoningContent();
 ```
 
 ### Streaming with Tool Calls[​](#streaming-with-tool-calls "Direct link to Streaming with Tool Calls")
