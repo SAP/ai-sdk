@@ -43,16 +43,22 @@ In addition to the examples below, you can find more sample code [here](https://
 
 ### Create an Artifact
 
-```ts
+```ts twoslash
+import { ArtifactApi } from '@sap-ai-sdk/ai-api';
+import type {
+  AiArtifactPostData,
+  AiArtifactCreationResponse
+} from '@sap-ai-sdk/ai-api';
+// ---cut---
 async function createArtifact() {
-  const requestBody: ArtifactPostData = {
+  const requestBody: AiArtifactPostData = {
     name: 'training-test-dataset',
     kind: 'dataset',
     url: 'https://ai.example.com',
     scenarioId: 'foundation-models'
   };
 
-  const responseData: ArtifactCreationResponse =
+  const responseData: AiArtifactCreationResponse =
     await ArtifactApi.artifactCreate(requestBody, {
       'AI-Resource-Group': 'default'
     }).execute();
@@ -62,9 +68,15 @@ async function createArtifact() {
 
 ### Create a Configuration
 
-```ts
+```ts twoslash
+import { ConfigurationApi } from '@sap-ai-sdk/ai-api';
+import type {
+  AiConfigurationBaseData,
+  AiConfigurationCreationResponse
+} from '@sap-ai-sdk/ai-api';
+// ---cut---
 async function createConfiguration() {
-  const requestBody: ConfigurationBaseData = {
+  const requestBody: AiConfigurationBaseData = {
     name: 'gpt-5',
     executableId: 'azure-openai',
     scenarioId: 'foundation-models',
@@ -81,7 +93,7 @@ async function createConfiguration() {
     inputArtifactBindings: []
   };
 
-  const responseData: ConfigurationCreationResponse =
+  const responseData: AiConfigurationCreationResponse =
     await ConfigurationApi.configurationCreate(requestBody, {
       'AI-Resource-Group': 'default'
     }).execute();
@@ -91,12 +103,18 @@ async function createConfiguration() {
 
 ### Create a Deployment
 
-```ts
+```ts twoslash
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import type {
+  AiDeploymentCreationRequest,
+  AiDeploymentCreationResponse
+} from '@sap-ai-sdk/ai-api';
+// ---cut---
 async function createDeployment() {
-  const requestBody: DeploymentCreationRequest = {
+  const requestBody: AiDeploymentCreationRequest = {
     configurationId: '0a1b2c3d-4e5f6g7h'
   };
-  const responseData: DeploymentCreationResponse =
+  const responseData: AiDeploymentCreationResponse =
     await DeploymentApi.deploymentCreate(requestBody, {
       'AI-Resource-Group': 'default'
     }).execute();
@@ -109,11 +127,17 @@ async function createDeployment() {
 Only deployments with `targetStatus: STOPPED` can be deleted.
 Thus, a modification request must be sent before deletion can occur.
 
-```ts
+```ts twoslash
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import type {
+  AiDeploymentResponseWithDetails,
+  AiDeploymentModificationRequest
+} from '@sap-ai-sdk/ai-api';
+// ---cut---
 async function modifyDeployment() {
   let deploymentId: string = '0a1b2c3d4e5f';
 
-  const deployment: DeploymentResponseWithDetails =
+  const deployment: AiDeploymentResponseWithDetails =
     await DeploymentApi.deploymentGet(
       deploymentId,
       {},
@@ -122,7 +146,7 @@ async function modifyDeployment() {
 
   if (deployment.targetStatus === 'RUNNING') {
     // Only RUNNING deployments can be STOPPED.
-    const requestBody: DeploymentModificationRequest = {
+    const requestBody: AiDeploymentModificationRequest = {
       targetStatus: 'STOPPED'
     };
 
@@ -142,11 +166,15 @@ async function modifyDeployment() {
 When calling the `execute()` method, it is possible to provide a custom destination for your SAP AI Core instance.
 For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
 
-```ts
-const queryParams = status ? { status } : {};
-return DeploymentApi.deploymentQuery(queryParams, {
-  'AI-Resource-Group': resourceGroup
-}).execute({
+```ts twoslash
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+const deployments = DeploymentApi.deploymentQuery(
+  // ---cut-start---
+  {},
+  { 'AI-Resource-Group': 'default' }
+  // ---cut-end---
+  //...
+).execute({
   destinationName: 'my-destination'
 });
 ```
@@ -154,13 +182,13 @@ return DeploymentApi.deploymentQuery(queryParams, {
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core#using-a-destination) section.
+For more information about configuring a destination, refer to the [Using a Destination](../connecting-to-ai-core.mdx#using-a-destination) section.
 
 ### Resolve a Deployment URL
 
 Use `resolveDeploymentUrl()` method to get deployment URL that matches the given criteria.
 
-```ts
+```ts twoslash
 import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api';
 
 const deploymentUrl = await resolveDeploymentUrl({
@@ -174,7 +202,9 @@ const deploymentUrl = await resolveDeploymentUrl({
 Use the `resilience()` function from `@sap-cloud-sdk/resilience` to add resilience to requests.
 By default, it enables a circuit breaker and a 10-second timeout.
 
-```ts
+```ts twoslash
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+// ---cut---
 import { resilience } from '@sap-cloud-sdk/resilience';
 
 const deployments = await DeploymentApi.deploymentQuery(
@@ -192,7 +222,10 @@ Customize the behavior by passing options:
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
+import { resilience } from '@sap-cloud-sdk/resilience';
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+// ---cut---
 const deployments = await DeploymentApi.deploymentQuery(
   {},
   { 'AI-Resource-Group': 'default' }

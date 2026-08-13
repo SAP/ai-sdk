@@ -1,0 +1,178 @@
+---
+id: metering
+title: Metering for AI Units
+hide_title: false
+hide_table_of_contents: false
+---
+
+Your application needs to report business metrics that reflect the value of AI functionality and cover the cost of GenAI/LLM services. The generative AI hub can report these metrics to Unified Metering on your behalf.
+
+Each LLM request must supply additional headers as documented in the [SAP Help Portal](https://help.sap.com/docs/sap-ai-core/generative-ai/batch-consumption).
+
+Required headers:
+
+- `X-USECASE-ID`
+- `X-BUSINESS-CONTEXT`
+- `X-LOCALTENANT-ID`
+- `X-PRODUCT-TYPE`
+
+## Common Setup
+
+```python
+from gen_ai_hub.proxy import get_proxy_client
+from gen_ai_hub.proxy.gen_ai_hub_proxy import temporary_headers_addition
+
+METERING_HEADERS = {
+    'X-USECASE-ID': 'my-usecase',
+    'X-BUSINESS-CONTEXT': 'my-context',
+    'X-LOCALTENANT-ID': 'tenant-123',
+    'X-PRODUCT-TYPE': 'my-product'
+}
+
+proxy_client = get_proxy_client('gen-ai-hub')
+proxy_client.set_headers_addition(headers=METERING_HEADERS)
+```
+
+## Native LLM Clients
+
+### Instance-level headers
+
+```python
+from gen_ai_hub.proxy.native.openai import OpenAI
+
+# All requests from this client include metering headers
+client = OpenAI(proxy_client=proxy_client)
+response = client.chat.completions.create(
+    model='gpt-4o',
+    messages=[{'role': 'user', 'content': 'Hello!'}]
+)
+print(response.choices[0].message.content)
+```
+
+### Request-level headers
+
+```python
+from gen_ai_hub.proxy.native.openai import OpenAI
+
+client = OpenAI()
+
+# Only this request includes metering headers
+with temporary_headers_addition(headers=METERING_HEADERS):
+    response = client.chat.completions.create(
+        model='gpt-4o',
+        messages=[{'role': 'user', 'content': 'Hello!'}]
+    )
+    print(response.choices[0].message.content)
+```
+
+## Orchestration Service
+
+### Instance-level headers
+
+```python
+from gen_ai_hub.orchestration_v2 import (
+    OrchestrationService, OrchestrationConfig, ModuleConfig, Template,
+    PromptTemplatingModuleConfig, LLMModelDetails, UserMessage
+)
+
+config = OrchestrationConfig(
+    modules=ModuleConfig(
+        prompt_templating=PromptTemplatingModuleConfig(
+            prompt=Template(template=[UserMessage(content='{{?input}}')]),
+            model=LLMModelDetails(name='gpt-4o')
+        )
+    )
+)
+
+# All requests from this service include metering headers
+service = OrchestrationService(proxy_client=proxy_client, config=config)
+response = service.run(placeholder_values={'input': 'Hello!'})
+print(response.final_result.choices[0].message.content)
+```
+
+### Request-level headers
+
+```python
+from gen_ai_hub.orchestration_v2 import OrchestrationService
+
+service = OrchestrationService(config=config)
+
+with temporary_headers_addition(headers=METERING_HEADERS):
+    response = service.run(placeholder_values={'input': 'Hello!'})
+    print(response.final_result.choices[0].message.content)
+```
+
+## Prompt Registry
+
+### Instance-level headers
+
+```python
+from gen_ai_hub.prompt_registry import PromptTemplateClient
+
+client = PromptTemplateClient(proxy_client=proxy_client)
+templates = client.get_prompt_templates(scenario='my-scenario')
+print(f"Found {templates.count} templates")
+```
+
+### Request-level headers
+
+```python
+from gen_ai_hub.prompt_registry import PromptTemplateClient
+
+client = PromptTemplateClient()
+
+with temporary_headers_addition(headers=METERING_HEADERS):
+    templates = client.get_prompt_templates(scenario='my-scenario')
+    print(f"Found {templates.count} templates")
+```
+
+## Document Grounding Clients
+
+### Instance-level headers
+
+```python
+from gen_ai_hub.document_grounding import PipelineAPIClient, RetrievalAPIClient, VectorAPIClient
+
+pipeline_client = PipelineAPIClient(proxy_client=proxy_client)
+retrieval_client = RetrievalAPIClient(proxy_client=proxy_client)
+vector_client = VectorAPIClient(proxy_client=proxy_client)
+
+print(f"Found {pipeline_client.get_pipelines().count} pipelines")
+print(f"Found {retrieval_client.get_data_repositories().count} repositories")
+print(f"Found {vector_client.get_collections().count} collections")
+```
+
+### Request-level headers
+
+```python
+from gen_ai_hub.document_grounding import RetrievalAPIClient
+
+client = RetrievalAPIClient()
+
+with temporary_headers_addition(headers=METERING_HEADERS):
+    repositories = client.get_data_repositories()
+    print(f"Found {repositories.count} repositories")
+```
+
+## Combining Instance and Request-level Headers
+
+Request-level headers are merged with instance-level headers. If the same header is set at both levels, the request-level value takes precedence.
+
+```python
+from gen_ai_hub.proxy.native.openai import OpenAI
+
+proxy_client.set_headers_addition({
+    'X-USECASE-ID': 'default-usecase',
+    'X-LOCALTENANT-ID': 'tenant-123'
+})
+
+client = OpenAI(proxy_client=proxy_client)
+
+with temporary_headers_addition({'X-USECASE-ID': 'special-usecase'}):
+    # X-USECASE-ID: 'special-usecase' (request-level wins)
+    # X-LOCALTENANT-ID: 'tenant-123' (from instance-level)
+    response = client.chat.completions.create(
+        model='gpt-4o',
+        messages=[{'role': 'user', 'content': 'Hello!'}]
+    )
+```

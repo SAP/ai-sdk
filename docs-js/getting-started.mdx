@@ -19,10 +19,10 @@ The application will send a prompt to the AI model and display the generated res
 
 ### Prerequisites
 
-Refer to prerequisites outlined [here](./overview-cloud-sdk-for-ai-js#prerequisites).
+Refer to prerequisites outlined [here](./overview.mdx#prerequisites).
 
 This quickstart assumes you are using the `default` resource group of your AI Core instance.
-If you need to [use a different resource group](orchestration/chat-completion#custom-deployment-configuration), make sure it has an [orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) available.
+If you need to [use a different resource group](orchestration/chat-completion.mdx#custom-deployment-configuration), make sure it has an [orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) available.
 
 ### Add `@sap-ai-sdk/orchestration` as a Dependency
 
@@ -34,7 +34,7 @@ npm install @sap-ai-sdk/orchestration
 
 Initialize an orchestration client with an LLM model and a prompt template.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -54,7 +54,12 @@ const orchestrationClient = new OrchestrationClient({
 Next, send a chat completion request with a value defined for the `question` input parameter.
 The value replaces the `{{?question}}` placeholder in the template.
 
-```ts
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+// ---cut---
 const response = await orchestrationClient.chatCompletion({
   placeholderValues: {
     question: 'Why is the phrase "Hello world!" so famous?'
@@ -78,4 +83,4 @@ AICORE_SERVICE_KEY='{
 
 Load the `.env` file by using [dotenv](https://www.npmjs.com/package/dotenv) or running `node --env-file=.env ...`.
 
-Refer to [Providing a Service Binding Locally](connecting-to-ai-core#providing-a-service-binding-locally) section for more information.
+Refer to [Providing a Service Binding Locally](connecting-to-ai-core.mdx#providing-a-service-binding-locally) section for more information.
