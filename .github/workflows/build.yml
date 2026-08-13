@@ -26,7 +26,7 @@ jobs:
           echo "[DEBUG] Following files have been changed: $changed_files"
           echo "changed-files=$changed_files" >> $GITHUB_OUTPUT
 
-          docs_js_changed=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '[.files.[] | select(.path | startswith("docs-js/"))] | length')
+          docs_js_changed=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '[.files.[] | select((.path | startswith("docs-js/")) or .path == "package.json")] | length')
           echo "docs-js-changed=$docs_js_changed" >> $GITHUB_OUTPUT
       - name: Vale Linter
         # vale fails if the PR is too large, e.g. when updating API docs
