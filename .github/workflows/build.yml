@@ -25,6 +25,9 @@ jobs:
 
           echo "[DEBUG] Following files have been changed: $changed_files"
           echo "changed-files=$changed_files" >> $GITHUB_OUTPUT
+
+          docs_js_changed=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '[.files.[] | select(.path | startswith("docs-js/"))] | length')
+          echo "docs-js-changed=$docs_js_changed" >> $GITHUB_OUTPUT
       - name: Vale Linter
         # vale fails if the PR is too large, e.g. when updating API docs
         if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.changed-files != '' }}
@@ -45,7 +48,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          node-version: 26
       - id: cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -55,6 +58,9 @@ jobs:
         run: npm ci
       - name: ESlint and Prettier
         run: npm run lint
+      - name: Check docs-js types
+        if: ${{ steps.changed-files.outputs.docs-js-changed != '0' }}
+        run: npm run check:docs-js-types
 
   build:
     runs-on: ubuntu-latest
@@ -67,7 +73,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          node-version: 26
       - id: cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -77,27 +83,3 @@ jobs:
         run: npm ci
       - name: Build docs
         run: npm run build
-
-  dependabot:
-    runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
-    needs: [build]
-    permissions:
-      pull-requests: write
-      contents: write
-    steps:
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
-        with:
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
-      - name: Approve a PR
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: gh pr review --approve "$PR_URL"
-      - name: Enable auto-merge for Dependabot PRs
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: gh pr merge --auto --squash "$PR_URL"

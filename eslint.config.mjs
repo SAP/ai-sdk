@@ -32,7 +32,7 @@ export default defineConfig([
         SharedArrayBuffer: 'readonly'
       },
 
-      ecmaVersion: 11,
+      ecmaVersion: 2022,
       sourceType: 'module',
 
       parserOptions: {
