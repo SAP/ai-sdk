@@ -95,6 +95,9 @@ We assume you have already set up the following to carry out the examples in thi
 
 Send text, receive audio back as raw PCM bytes (mono, 24 000 Hz, 16-bit little-endian).
 
+Default system prompt makes model voice (repeat) input. This behavior can be overwritten,
+providing a custom system prompt via RealtimeParamSystemPrompt on client creation.
+
 ```java
 AudioOutputChannel audioOutput = (pcmBytes, isLast) -> {
     // write pcmBytes to your audio sink; isLast signals end of utterance
@@ -106,7 +109,7 @@ try (TextInputChannel channel = OpenAiClient.realtimeClient().textToSpeech(audio
 } // connection closes automatically
 ```
 
-Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
+Please see the [Spring Boot sample application](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/realtime/SpeechToSpeechWebsocketHandler.java) for a complete example that bridges a browser WebSocket connection to the OpenAI Realtime API.
 
 ## Speech to Speech
 
