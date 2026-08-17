@@ -44,7 +44,8 @@ const orchestrationClient = new OrchestrationClient({
 });
 ```
 
-Here, the model name is specified along with a user message as the prompt.
+Here, only the model name is configured in the `promptTemplating` module.
+The user message is passed directly to the `chatCompletion()` method call.
 
 To send a chat completion request, use the `chatCompletion()` method.
 Use the following convenience methods for handling chat completion response:
