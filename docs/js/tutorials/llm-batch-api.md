@@ -32,7 +32,7 @@ In addition, you will need:
 Install the required dependencies:
 
 ```
-npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
+npm install @sap-ai-sdk/llm-batch @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
 ```
 
 ## Configure an Object Store Secret[​](#configure-an-object-store-secret "Direct link to Configure an Object Store Secret")

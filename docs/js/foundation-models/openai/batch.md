@@ -2,7 +2,7 @@
 
 caution
 
-The `@sap-ai-sdk/batch-api` package is experimental and may change at any time without prior notice.
+The `@sap-ai-sdk/llm-batch` package is experimental and may change at any time without prior notice.
 
 The Batch API lets you submit multiple LLM requests as a single asynchronous job, reducing cost and avoiding rate limits compared to making real-time requests.
 
@@ -11,7 +11,7 @@ The Batch API supports **Azure OpenAI models** only.
 ## Installation[​](#installation "Direct link to Installation")
 
 ```
-npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
+npm install @sap-ai-sdk/llm-batch @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
 ```
 
 ## Making Requests[​](#making-requests "Direct link to Making Requests")
