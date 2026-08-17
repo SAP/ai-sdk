@@ -42,7 +42,7 @@ To use the SAP Cloud SDK for AI in a JavaScript / TypeScript application, it is 
 
 Node.js Version Recommendations
 
-Node.js v22 is supported but **approaching end-of-life (EOL).** ➡️ We strongly recommend upgrading to **Node.js v24 (Active LTS)** for long-term support and security updates.
+Node.js v22 is supported but **approaching end-of-life (EOL).** ➡️ We strongly recommend **Node.js v24 (Active LTS)** for long-term support and security updates. Node.js v26 (Current) is also supported and tested.
 
 CommonJS users
 
