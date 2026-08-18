@@ -1,0 +1,27 @@
+ai\_core\_sdk package
+=====================
+
+.. automodule:: ai_core_sdk
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ai_core_sdk.models
+   ai_core_sdk.resource_clients
+   ai_core_sdk.tracking
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ai_core_sdk.ai_core_v2_client
+   ai_core_sdk.credentials
+   ai_core_sdk.exception

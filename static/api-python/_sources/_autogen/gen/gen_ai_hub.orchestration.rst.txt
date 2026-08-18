@@ -1,0 +1,26 @@
+gen\_ai\_hub.orchestration package
+==================================
+
+.. automodule:: gen_ai_hub.orchestration
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.orchestration.models
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.orchestration.exceptions
+   gen_ai_hub.orchestration.service
+   gen_ai_hub.orchestration.sse_client
+   gen_ai_hub.orchestration.utils

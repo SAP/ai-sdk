@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.models.output\_artifact module
+===================================================
+
+.. automodule:: ai_api_client_sdk.models.output_artifact
+   :members:
+   :show-inheritance:
+   :undoc-members:

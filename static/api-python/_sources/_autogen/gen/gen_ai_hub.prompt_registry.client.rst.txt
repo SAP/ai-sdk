@@ -1,0 +1,7 @@
+gen\_ai\_hub.prompt\_registry.client module
+===========================================
+
+.. automodule:: gen_ai_hub.prompt_registry.client
+   :members:
+   :show-inheritance:
+   :undoc-members:

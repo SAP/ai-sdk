@@ -1,0 +1,7 @@
+gen\_ai\_hub.prompt\_registry.models.orchestration\_config module
+=================================================================
+
+.. automodule:: gen_ai_hub.prompt_registry.models.orchestration_config
+   :members:
+   :show-inheritance:
+   :undoc-members:

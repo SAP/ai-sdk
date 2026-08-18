@@ -1,0 +1,7 @@
+gen\_ai\_hub.batch\_service.exceptions module
+=============================================
+
+.. automodule:: gen_ai_hub.batch_service.exceptions
+   :members:
+   :show-inheritance:
+   :undoc-members:

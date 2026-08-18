@@ -1,0 +1,17 @@
+gen\_ai\_hub.batch\_service.models package
+==========================================
+
+.. automodule:: gen_ai_hub.batch_service.models
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.batch_service.models.base
+   gen_ai_hub.batch_service.models.request
+   gen_ai_hub.batch_service.models.response

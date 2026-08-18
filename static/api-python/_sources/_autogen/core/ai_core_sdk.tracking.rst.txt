@@ -1,0 +1,15 @@
+ai\_core\_sdk.tracking package
+==============================
+
+.. automodule:: ai_core_sdk.tracking
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ai_core_sdk.tracking.tracking

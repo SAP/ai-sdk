@@ -1,0 +1,7 @@
+gen\_ai\_hub.orchestration\_v2.models.template module
+=====================================================
+
+.. automodule:: gen_ai_hub.orchestration_v2.models.template
+   :members:
+   :show-inheritance:
+   :undoc-members:

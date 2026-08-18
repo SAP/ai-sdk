@@ -1,0 +1,7 @@
+ai\_core\_sdk.ai\_core\_v2\_client module
+=========================================
+
+.. automodule:: ai_core_sdk.ai_core_v2_client
+   :members:
+   :show-inheritance:
+   :undoc-members:

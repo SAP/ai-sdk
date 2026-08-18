@@ -1,0 +1,22 @@
+ai\_core\_sdk.resource\_clients package
+=======================================
+
+.. automodule:: ai_core_sdk.resource_clients
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ai_core_sdk.resource_clients.applications_client
+   ai_core_sdk.resource_clients.docker_registry_secrets_client
+   ai_core_sdk.resource_clients.internal_rest_client
+   ai_core_sdk.resource_clients.kpi_client
+   ai_core_sdk.resource_clients.metrics_client
+   ai_core_sdk.resource_clients.object_store_secrets_client
+   ai_core_sdk.resource_clients.repositories_client
+   ai_core_sdk.resource_clients.secrets_client

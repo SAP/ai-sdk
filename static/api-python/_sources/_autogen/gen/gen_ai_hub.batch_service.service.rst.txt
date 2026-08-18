@@ -1,0 +1,7 @@
+gen\_ai\_hub.batch\_service.service module
+==========================================
+
+.. automodule:: gen_ai_hub.batch_service.service
+   :members:
+   :show-inheritance:
+   :undoc-members:

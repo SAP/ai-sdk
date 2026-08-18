@@ -1,0 +1,7 @@
+gen\_ai\_hub.proxy.langchain.google\_genai module
+=================================================
+
+.. automodule:: gen_ai_hub.proxy.langchain.google_genai
+   :members:
+   :show-inheritance:
+   :undoc-members:

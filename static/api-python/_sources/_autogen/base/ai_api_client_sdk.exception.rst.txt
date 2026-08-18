@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.exception module
+=====================================
+
+.. automodule:: ai_api_client_sdk.exception
+   :members:
+   :show-inheritance:
+   :undoc-members:

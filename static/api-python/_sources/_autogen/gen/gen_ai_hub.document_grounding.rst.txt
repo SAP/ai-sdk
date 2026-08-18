@@ -1,0 +1,24 @@
+gen\_ai\_hub.document\_grounding package
+========================================
+
+.. automodule:: gen_ai_hub.document_grounding
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.document_grounding.clients
+   gen_ai_hub.document_grounding.models
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.document_grounding.client

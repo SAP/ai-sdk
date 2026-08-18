@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.models.ai\_api\_capabilities\_logs module
+==============================================================
+
+.. automodule:: ai_api_client_sdk.models.ai_api_capabilities_logs
+   :members:
+   :show-inheritance:
+   :undoc-members:

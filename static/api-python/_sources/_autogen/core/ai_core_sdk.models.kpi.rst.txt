@@ -1,0 +1,7 @@
+ai\_core\_sdk.models.kpi module
+===============================
+
+.. automodule:: ai_core_sdk.models.kpi
+   :members:
+   :show-inheritance:
+   :undoc-members:

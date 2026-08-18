@@ -1,0 +1,7 @@
+gen\_ai\_hub.evaluations.client module
+======================================
+
+.. automodule:: gen_ai_hub.evaluations.client
+   :members:
+   :show-inheritance:
+   :undoc-members:

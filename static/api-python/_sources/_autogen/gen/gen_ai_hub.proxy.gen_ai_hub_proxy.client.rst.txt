@@ -1,0 +1,7 @@
+gen\_ai\_hub.proxy.gen\_ai\_hub\_proxy.client module
+====================================================
+
+.. automodule:: gen_ai_hub.proxy.gen_ai_hub_proxy.client
+   :members:
+   :show-inheritance:
+   :undoc-members:

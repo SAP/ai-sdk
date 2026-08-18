@@ -1,0 +1,7 @@
+ai\_core\_sdk.models.application\_source module
+===============================================
+
+.. automodule:: ai_core_sdk.models.application_source
+   :members:
+   :show-inheritance:
+   :undoc-members:

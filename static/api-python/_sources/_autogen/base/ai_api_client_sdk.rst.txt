@@ -1,0 +1,25 @@
+ai\_api\_client\_sdk package
+============================
+
+.. automodule:: ai_api_client_sdk
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ai_api_client_sdk.models
+   ai_api_client_sdk.resource_clients
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ai_api_client_sdk.ai_api_v2_client
+   ai_api_client_sdk.exception

@@ -1,0 +1,7 @@
+gen\_ai\_hub.evaluations.utils.metric\_client\_utils module
+===========================================================
+
+.. automodule:: gen_ai_hub.evaluations.utils.metric_client_utils
+   :members:
+   :show-inheritance:
+   :undoc-members:

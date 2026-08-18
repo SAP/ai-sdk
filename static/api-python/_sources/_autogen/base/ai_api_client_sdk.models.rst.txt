@@ -1,0 +1,82 @@
+ai\_api\_client\_sdk.models package
+===================================
+
+.. automodule:: ai_api_client_sdk.models
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ai_api_client_sdk.models.ai_api_capabilities
+   ai_api_client_sdk.models.ai_api_capabilities_bulk_updates
+   ai_api_client_sdk.models.ai_api_capabilities_logs
+   ai_api_client_sdk.models.ai_api_limits
+   ai_api_client_sdk.models.ai_api_limits_deployments
+   ai_api_client_sdk.models.ai_api_limits_enactments
+   ai_api_client_sdk.models.ai_api_limits_executions
+   ai_api_client_sdk.models.ai_api_meta
+   ai_api_client_sdk.models.api_version
+   ai_api_client_sdk.models.artifact
+   ai_api_client_sdk.models.artifact_create_response
+   ai_api_client_sdk.models.artifact_query_response
+   ai_api_client_sdk.models.base_models
+   ai_api_client_sdk.models.capabilities
+   ai_api_client_sdk.models.configuration
+   ai_api_client_sdk.models.configuration_create_response
+   ai_api_client_sdk.models.configuration_query_response
+   ai_api_client_sdk.models.dataset_capabilities
+   ai_api_client_sdk.models.dataset_limits
+   ai_api_client_sdk.models.deployment
+   ai_api_client_sdk.models.deployment_bulk_modify_response
+   ai_api_client_sdk.models.deployment_create_response
+   ai_api_client_sdk.models.deployment_get_status_response
+   ai_api_client_sdk.models.deployment_query_response
+   ai_api_client_sdk.models.enactment
+   ai_api_client_sdk.models.enactment_get_status_response
+   ai_api_client_sdk.models.executable
+   ai_api_client_sdk.models.executable_query_response
+   ai_api_client_sdk.models.execution
+   ai_api_client_sdk.models.execution_bulk_modify_response
+   ai_api_client_sdk.models.execution_create_response
+   ai_api_client_sdk.models.execution_get_status_response
+   ai_api_client_sdk.models.execution_query_response
+   ai_api_client_sdk.models.execution_schedule
+   ai_api_client_sdk.models.execution_schedule_create_response
+   ai_api_client_sdk.models.execution_schedule_query_response
+   ai_api_client_sdk.models.extensions
+   ai_api_client_sdk.models.extensions_analytics
+   ai_api_client_sdk.models.extensions_dataset
+   ai_api_client_sdk.models.extensions_resource_groups
+   ai_api_client_sdk.models.healthz_status
+   ai_api_client_sdk.models.input_artifact
+   ai_api_client_sdk.models.input_artifact_binding
+   ai_api_client_sdk.models.label
+   ai_api_client_sdk.models.log_response
+   ai_api_client_sdk.models.metric
+   ai_api_client_sdk.models.metric_custom_info
+   ai_api_client_sdk.models.metric_label
+   ai_api_client_sdk.models.metric_resource
+   ai_api_client_sdk.models.metric_tag
+   ai_api_client_sdk.models.metrics_query_response
+   ai_api_client_sdk.models.model
+   ai_api_client_sdk.models.model_base_data_allowed_scenarios
+   ai_api_client_sdk.models.model_query_response
+   ai_api_client_sdk.models.model_version
+   ai_api_client_sdk.models.output_artifact
+   ai_api_client_sdk.models.parameter
+   ai_api_client_sdk.models.parameter_binding
+   ai_api_client_sdk.models.resource_group
+   ai_api_client_sdk.models.resource_group_query_response
+   ai_api_client_sdk.models.resource_group_status
+   ai_api_client_sdk.models.scenario
+   ai_api_client_sdk.models.scenario_query_response
+   ai_api_client_sdk.models.status
+   ai_api_client_sdk.models.target_status
+   ai_api_client_sdk.models.version
+   ai_api_client_sdk.models.version_list
+   ai_api_client_sdk.models.version_query_response

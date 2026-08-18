@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.models.model\_base\_data\_allowed\_scenarios module
+========================================================================
+
+.. automodule:: ai_api_client_sdk.models.model_base_data_allowed_scenarios
+   :members:
+   :show-inheritance:
+   :undoc-members:

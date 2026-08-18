@@ -1,0 +1,7 @@
+gen\_ai\_hub.document\_grounding.clients.retrieval\_api\_client module
+======================================================================
+
+.. automodule:: gen_ai_hub.document_grounding.clients.retrieval_api_client
+   :members:
+   :show-inheritance:
+   :undoc-members:

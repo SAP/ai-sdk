@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.models.ai\_api\_capabilities\_bulk\_updates module
+=======================================================================
+
+.. automodule:: ai_api_client_sdk.models.ai_api_capabilities_bulk_updates
+   :members:
+   :show-inheritance:
+   :undoc-members:

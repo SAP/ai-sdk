@@ -1,0 +1,7 @@
+ai\_core\_sdk.tracking.tracking module
+======================================
+
+.. automodule:: ai_core_sdk.tracking.tracking
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,15 @@
+gen\_ai\_hub.proxy.native.google\_genai package
+===============================================
+
+.. automodule:: gen_ai_hub.proxy.native.google_genai
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.proxy.native.google_genai.clients

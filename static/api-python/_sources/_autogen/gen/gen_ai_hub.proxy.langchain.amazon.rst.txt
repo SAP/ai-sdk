@@ -1,0 +1,7 @@
+gen\_ai\_hub.proxy.langchain.amazon module
+==========================================
+
+.. automodule:: gen_ai_hub.proxy.langchain.amazon
+   :members:
+   :show-inheritance:
+   :undoc-members:

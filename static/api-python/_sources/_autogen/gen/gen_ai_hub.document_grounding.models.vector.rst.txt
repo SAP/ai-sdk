@@ -1,0 +1,7 @@
+gen\_ai\_hub.document\_grounding.models.vector module
+=====================================================
+
+.. automodule:: gen_ai_hub.document_grounding.models.vector
+   :members:
+   :show-inheritance:
+   :undoc-members:

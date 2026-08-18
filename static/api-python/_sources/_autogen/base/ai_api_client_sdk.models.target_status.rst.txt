@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.models.target\_status module
+=================================================
+
+.. automodule:: ai_api_client_sdk.models.target_status
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,7 @@
+gen\_ai\_hub.document\_grounding.models.pipeline module
+=======================================================
+
+.. automodule:: gen_ai_hub.document_grounding.models.pipeline
+   :members:
+   :show-inheritance:
+   :undoc-members:

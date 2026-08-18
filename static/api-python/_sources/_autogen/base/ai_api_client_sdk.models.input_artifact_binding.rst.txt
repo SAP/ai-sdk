@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.models.input\_artifact\_binding module
+===========================================================
+
+.. automodule:: ai_api_client_sdk.models.input_artifact_binding
+   :members:
+   :show-inheritance:
+   :undoc-members:

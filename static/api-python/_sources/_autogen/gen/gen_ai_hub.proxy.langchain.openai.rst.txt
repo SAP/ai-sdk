@@ -1,0 +1,7 @@
+gen\_ai\_hub.proxy.langchain.openai module
+==========================================
+
+.. automodule:: gen_ai_hub.proxy.langchain.openai
+   :members:
+   :show-inheritance:
+   :undoc-members:

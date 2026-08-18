@@ -1,0 +1,7 @@
+gen\_ai\_hub.document\_grounding.clients.pipeline\_api\_client module
+=====================================================================
+
+.. automodule:: gen_ai_hub.document_grounding.clients.pipeline_api_client
+   :members:
+   :show-inheritance:
+   :undoc-members:

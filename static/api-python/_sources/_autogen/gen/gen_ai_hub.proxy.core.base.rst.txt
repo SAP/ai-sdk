@@ -1,0 +1,7 @@
+gen\_ai\_hub.proxy.core.base module
+===================================
+
+.. automodule:: gen_ai_hub.proxy.core.base
+   :members:
+   :show-inheritance:
+   :undoc-members:

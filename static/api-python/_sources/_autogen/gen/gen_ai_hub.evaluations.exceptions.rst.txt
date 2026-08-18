@@ -1,0 +1,15 @@
+gen\_ai\_hub.evaluations.exceptions package
+===========================================
+
+.. automodule:: gen_ai_hub.evaluations.exceptions
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.evaluations.exceptions.error_codes

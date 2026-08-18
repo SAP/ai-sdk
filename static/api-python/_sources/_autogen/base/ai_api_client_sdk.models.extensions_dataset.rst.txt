@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.models.extensions\_dataset module
+======================================================
+
+.. automodule:: ai_api_client_sdk.models.extensions_dataset
+   :members:
+   :show-inheritance:
+   :undoc-members:

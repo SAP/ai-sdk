@@ -1,0 +1,7 @@
+ai\_core\_sdk.models.resource\_group module
+===========================================
+
+.. automodule:: ai_core_sdk.models.resource_group
+   :members:
+   :show-inheritance:
+   :undoc-members:

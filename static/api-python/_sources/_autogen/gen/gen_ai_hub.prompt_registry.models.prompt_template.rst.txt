@@ -1,0 +1,7 @@
+gen\_ai\_hub.prompt\_registry.models.prompt\_template module
+============================================================
+
+.. automodule:: gen_ai_hub.prompt_registry.models.prompt_template
+   :members:
+   :show-inheritance:
+   :undoc-members:

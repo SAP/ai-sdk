@@ -1,0 +1,27 @@
+gen\_ai\_hub.evaluations package
+================================
+
+.. automodule:: gen_ai_hub.evaluations
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.evaluations.exceptions
+   gen_ai_hub.evaluations.models
+   gen_ai_hub.evaluations.utils
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.evaluations.client
+   gen_ai_hub.evaluations.constants
+   gen_ai_hub.evaluations.credentials

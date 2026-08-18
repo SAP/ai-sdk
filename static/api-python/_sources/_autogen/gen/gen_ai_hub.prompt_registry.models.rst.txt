@@ -1,0 +1,16 @@
+gen\_ai\_hub.prompt\_registry.models package
+============================================
+
+.. automodule:: gen_ai_hub.prompt_registry.models
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.prompt_registry.models.orchestration_config
+   gen_ai_hub.prompt_registry.models.prompt_template

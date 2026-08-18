@@ -1,0 +1,7 @@
+gen\_ai\_hub.evaluations.models.artifact\_source module
+=======================================================
+
+.. automodule:: gen_ai_hub.evaluations.models.artifact_source
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,19 @@
+gen\_ai\_hub.proxy.langchain package
+====================================
+
+.. automodule:: gen_ai_hub.proxy.langchain
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gen_ai_hub.proxy.langchain.amazon
+   gen_ai_hub.proxy.langchain.base
+   gen_ai_hub.proxy.langchain.google_genai
+   gen_ai_hub.proxy.langchain.init_models
+   gen_ai_hub.proxy.langchain.openai

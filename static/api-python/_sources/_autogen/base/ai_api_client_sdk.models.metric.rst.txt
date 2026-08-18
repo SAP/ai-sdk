@@ -1,0 +1,7 @@
+ai\_api\_client\_sdk.models.metric module
+=========================================
+
+.. automodule:: ai_api_client_sdk.models.metric
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,7 @@
+gen\_ai\_hub.orchestration.models.multimodal\_items module
+==========================================================
+
+.. automodule:: gen_ai_hub.orchestration.models.multimodal_items
+   :members:
+   :show-inheritance:
+   :undoc-members:

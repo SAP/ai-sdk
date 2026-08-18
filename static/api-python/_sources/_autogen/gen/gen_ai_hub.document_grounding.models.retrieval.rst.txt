@@ -1,0 +1,7 @@
+gen\_ai\_hub.document\_grounding.models.retrieval module
+========================================================
+
+.. automodule:: gen_ai_hub.document_grounding.models.retrieval
+   :members:
+   :show-inheritance:
+   :undoc-members:
