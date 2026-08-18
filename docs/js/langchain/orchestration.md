@@ -380,7 +380,7 @@ note
 
 Prompt caching is supported by Anthropic Claude and Amazon Nova model families served through orchestration. Other models ignore the `cache_control` directive without error. For a full overview, refer to the [prompt caching documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching?locale=en-US).
 
-Prompt caching reduces latency and cost by reusing cached content at the model provider level. The SDK supports a per-call option to enable it.
+Prompt caching reduces latency and cost by reusing cached content at the model provider level. The SDK offers two approaches: a per-call option and an agent middleware.
 
 #### Per-Call Cache Control[​](#per-call-cache-control "Direct link to Per-Call Cache Control")
 
@@ -427,6 +427,60 @@ console.log(response.usage_metadata?.input_token_details);
 
 */
 ```
+
+#### Prompt Caching Middleware[​](#prompt-caching-middleware "Direct link to Prompt Caching Middleware")
+
+For agents, use `orchestrationPromptCachingMiddleware()` to manage cache breakpoints automatically across turns. Pass it to `createAgent()` via the `middleware` option.
+
+note
+
+The middleware is exported from a sub-path that requires the `langchain` package to be installed as a direct dependency. You can install it with `npm install langchain`.
+
+```
+import { createAgent } from 'langchain';
+
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+import { orchestrationPromptCachingMiddleware } from '@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware';
+
+
+
+const model = new OrchestrationClient({
+
+  promptTemplating: {
+
+    model: {
+
+      name: 'anthropic--claude-4.5-haiku'
+
+    }
+
+  }
+
+});
+
+
+
+const agent = createAgent({
+
+  model,
+
+  middleware: [orchestrationPromptCachingMiddleware({ ttl: '5m' })],
+
+  tools: []
+
+});
+
+
+
+const result = await agent.invoke({
+
+  messages: [{ role: 'user', content: 'What is the speed of light?' }]
+
+});
+```
+
+For configuration options such as `minMessagesToCache` and `unsupportedModelBehavior`, refer to the [LangChain `anthropicPromptCachingMiddleware()` middleware documentation](https://reference.langchain.com/javascript/langchain/browser/anthropicPromptCachingMiddleware).
 
 ### Structured Output[​](#structured-output "Direct link to Structured Output")
 
