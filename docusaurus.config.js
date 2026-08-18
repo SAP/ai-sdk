@@ -1,5 +1,7 @@
 import { themes } from 'prism-react-renderer';
 import webpack from 'webpack';
+import remarkEnforceMdxLinks from './plugins/remark-enforce-mdx-links.js';
+import remarkStripTwoslash from './scripts/remark-plugin-strip-twoslash.js';
 
 const { ProvidePlugin } = webpack;
 
@@ -10,6 +12,7 @@ export default {
   url: 'https://sap.github.io/',
   baseUrl: '/ai-sdk/',
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
   markdown: { hooks: { onBrokenMarkdownLinks: 'throw' } },
   favicon: 'img/AI-SDK-Logo.svg',
   organizationName: 'SAP',
@@ -46,12 +49,12 @@ export default {
         {
           label: 'Overview',
           type: 'doc',
-          docId: 'overview-cloud-sdk-for-ai',
+          docId: 'overview',
           position: 'left'
         },
         {
           label: '☕ Java',
-          to: 'docs/java/overview-cloud-sdk-for-ai-java',
+          to: 'docs/java/overview',
           position: 'left',
           docsPluginId: 'docs-java',
           activeBasePath: 'docs/java',
@@ -59,7 +62,7 @@ export default {
         },
         {
           label: '🚀 JavaScript',
-          to: 'docs/js/overview-cloud-sdk-for-ai-js',
+          to: 'docs/js/overview',
           position: 'left',
           docsPluginId: 'docs-js',
           activeBasePath: 'docs/js',
@@ -185,7 +188,8 @@ export default {
           sidebarPath: './sidebarsDocsCommon.js',
           editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
           routeBasePath: 'docs/overview',
-          path: 'docs'
+          path: 'docs',
+          remarkPlugins: [remarkEnforceMdxLinks]
         },
         theme: {
           customCss: './src/css/custom.css'
@@ -207,6 +211,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/java',
         sidebarPath: './sidebarsDocsJava.js',
+        remarkPlugins: [remarkEnforceMdxLinks],
         lastVersion: 'current',
         versions: {
           current: {
@@ -224,6 +229,7 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/js',
         sidebarPath: './sidebarsDocsJs.js',
+        remarkPlugins: [remarkEnforceMdxLinks, remarkStripTwoslash],
         lastVersion: 'current',
         versions: {
           current: {
@@ -247,6 +253,7 @@ export default {
         routeBasePath: 'docs/python',
         sidebarPath: './sidebarsDocsPython.js',
         exclude: ['gen/**'],
+        remarkPlugins: [remarkEnforceMdxLinks],
         lastVersion: 'current',
         versions: {
           current: {
@@ -347,6 +354,35 @@ export default {
           {
             from: '/docs/js/guides/connecting-to-ai-core',
             to: '/docs/js/connecting-to-ai-core'
+          },
+          // SEO slug renames
+          {
+            from: '/docs/overview/overview-cloud-sdk-for-ai',
+            to: '/docs/overview/overview'
+          },
+          {
+            from: '/docs/overview/cloud-sdk-feature-matrix',
+            to: '/docs/overview/feature-matrix'
+          },
+          {
+            from: '/docs/java/overview-cloud-sdk-for-ai-java',
+            to: '/docs/java/overview'
+          },
+          {
+            from: '/docs/js/overview-cloud-sdk-for-ai-js',
+            to: '/docs/js/overview'
+          },
+          {
+            from: '/docs/js/tutorials/getting-started-with-agents',
+            to: '/docs/js/tutorials/getting-started-agents'
+          },
+          {
+            from: '/docs/js/tutorials/using-llm-batch-api',
+            to: '/docs/js/tutorials/llm-batch-api'
+          },
+          {
+            from: '/docs/js/tutorials/using-scoped-prompt-registry-templates',
+            to: '/docs/js/tutorials/scoped-prompt-registry-templates'
           }
         ]
       }

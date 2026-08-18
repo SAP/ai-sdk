@@ -15,7 +15,7 @@ keywords:
 ---
 
 :::caution
-The `@sap-ai-sdk/batch-api` package is experimental and may change at any time without prior notice.
+The `@sap-ai-sdk/llm-batch` package is experimental and may change at any time without prior notice.
 :::
 
 The Batch API lets you submit multiple LLM requests as a single asynchronous job, reducing cost and avoiding rate limits compared to making real-time requests.
@@ -25,7 +25,7 @@ The Batch API supports **Azure OpenAI models** only.
 ## Installation
 
 ```bash
-npm install @sap-ai-sdk/batch-api @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
+npm install @sap-ai-sdk/llm-batch @sap-ai-sdk/ai-api @sap-ai-sdk/foundation-models
 ```
 
 ## Making Requests
@@ -36,7 +36,7 @@ A typical batch workflow consists of four steps: create a job, poll for completi
 
 Use `createBatchInput` from `@sap-ai-sdk/foundation-models` to generate the input Blob from typed chat completion requests and upload it to an object store [registered as a secret](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/register-your-object-store-secret) in SAP AI Core:
 
-```ts
+```ts twoslash
 import { createBatchInput } from '@sap-ai-sdk/foundation-models';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 
@@ -65,8 +65,8 @@ await FileApi.fileUpload(
 
 Then create the batch job referencing the input file and an output directory using the `ai://SECRET_NAME/` URI format:
 
-```ts
-import { BatchesApi } from '@sap-ai-sdk/batch-api';
+```ts twoslash
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
 
 const response = await BatchesApi.createBatch(
   {
@@ -86,7 +86,11 @@ console.log('Batch job created:', response.id);
 Batch jobs are processed asynchronously.
 Poll the status endpoint until a terminal state is reached:
 
-```ts
+```ts twoslash
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
+import type { BatchCreateResponse } from '@sap-ai-sdk/llm-batch';
+declare const response: BatchCreateResponse;
+// ---cut---
 const TERMINAL_STATUSES = ['COMPLETED', 'FAILED', 'CANCELLED'];
 
 function delay(ms: number) {
@@ -95,7 +99,7 @@ function delay(ms: number) {
 
 let status = '';
 while (!TERMINAL_STATUSES.includes(status)) {
-  const result = await BatchesApi.getBatchStatus(response.id, {
+  const result = await BatchesApi.getBatchStatus(response.id!, {
     'AI-Resource-Group': 'MY_RESOURCE_GROUP'
   }).execute();
 
@@ -142,7 +146,9 @@ Each line in the output JSONL corresponds to one input request, matched via `cus
 
 **List all batch jobs:**
 
-```ts
+```ts twoslash
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
+// ---cut---
 const { resources } = await BatchesApi.listBatches({
   'AI-Resource-Group': 'MY_RESOURCE_GROUP'
 }).execute();
@@ -152,7 +158,10 @@ console.log(`Total jobs: ${resources?.length}`);
 
 **Get job details:**
 
-```ts
+```ts twoslash
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
+declare const batchId: string;
+// ---cut---
 const details = await BatchesApi.getBatchById(batchId, {
   'AI-Resource-Group': 'MY_RESOURCE_GROUP'
 }).execute();
@@ -160,7 +169,10 @@ const details = await BatchesApi.getBatchById(batchId, {
 
 **Cancel a running job:**
 
-```ts
+```ts twoslash
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
+declare const batchId: string;
+// ---cut---
 await BatchesApi.cancelBatch(batchId, {
   'AI-Resource-Group': 'MY_RESOURCE_GROUP'
 }).execute();
@@ -168,7 +180,10 @@ await BatchesApi.cancelBatch(batchId, {
 
 **Delete a job:**
 
-```ts
+```ts twoslash
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
+declare const batchId: string;
+// ---cut---
 await BatchesApi.deleteBatch(batchId, {
   'AI-Resource-Group': 'MY_RESOURCE_GROUP'
 }).execute();
