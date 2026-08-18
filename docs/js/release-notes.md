@@ -1,8 +1,20 @@
 # Release Notes
 
-## 2.14.0 - August 06, 2026[​](#2140---august-06-2026 "Direct link to 2.14.0 - August 06, 2026")
+## 2.15.0 - August 18, 2026[​](#2150---august-18-2026 "Direct link to 2.15.0 - August 18, 2026")
+
+### Compatibility Notes[​](#compatibility-notes "Direct link to Compatibility Notes")
+
+* \[orchestration] Deprecate `OrchestrationConfigRef` — use `OrchestrationConfigRefById` or `OrchestrationConfigRefByName` instead. ([b61cb53](https://github.com/SAP/ai-sdk-js/commit/b61cb5315b7b9e725c611168342a37dd0e69bb4f))
 
 ### New Features[​](#new-features "Direct link to New Features")
+
+* \[core, openai] Add experimental OpenAI Realtime API (speech-to-speech) support for `gpt-realtime` via the `@sap-ai-sdk/openai/realtime` sub-path export. ([a5407c8](https://github.com/SAP/ai-sdk-js/commit/a5407c80e60c39c1dbbb24a265869d88be933b9e))
+* \[langchain] Add `orchestrationPromptCachingMiddleware()` middleware for the LangChain Orchestration client, exported from `@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware`. It enables automatic cache control for orchestration requests. The middleware requires the optional `langchain` peer dependency to be installed. ([070b309](https://github.com/SAP/ai-sdk-js/commit/070b3095f94d6a9a7a1622be4033e8382076eb4e))
+* \[orchestration] Split `OrchestrationConfigRef` into `OrchestrationConfigRefById` and `OrchestrationConfigRefByName`. ([b61cb53](https://github.com/SAP/ai-sdk-js/commit/b61cb5315b7b9e725c611168342a37dd0e69bb4f))
+
+## 2.14.0 - August 06, 2026[​](#2140---august-06-2026 "Direct link to 2.14.0 - August 06, 2026")
+
+### New Features[​](#new-features-1 "Direct link to New Features")
 
 * \[core, orchestration] Add `GcpVertexAiEmbeddingModel` type with `gemini-embedding` to `@sap-ai-sdk/core`. Add `GcpVertexAiEmbeddingModel` to the `EmbeddingModel` union in `@sap-ai-sdk/orchestration`. ([cca7edd](https://github.com/SAP/ai-sdk-js/commit/cca7edd3c41f8cd36f23f8702e36f76143d16bae))
 * \[orchestration] Add reasoning content support to the Orchestration client. `reasoning_content` fields were added on response, streaming delta, and assistant message types. The `getReasoningContent()` and `getDeltaReasoningContent()` convenience functions return the reasoning text from model responses. ([b986b70](https://github.com/SAP/ai-sdk-js/commit/b986b708075101fb721e53c5cbe31fa7915ae69b))
@@ -20,7 +32,7 @@
 
 ## 2.13.0 - July 14, 2026[​](#2130---july-14-2026 "Direct link to 2.13.0 - July 14, 2026")
 
-### New Features[​](#new-features-1 "Direct link to New Features")
+### New Features[​](#new-features-2 "Direct link to New Features")
 
 * \[core] Add `toReadableStream()` method to `SseStream`. The new method converts the asynchronous iterable stream to a pull-based `ReadableStream` of newline-delimited JSON, enabling composable transformations via the Web Streams API `pipeThrough()` pattern with native flow control. ([6542a2a](https://github.com/SAP/ai-sdk-js/commit/6542a2a3a6740277b61c820c8f70a37b71c4e75a))
 * \[langchain] Add `cache_control` call option to the LangChain orchestration client. When the `cache_control` option is set, a cache breakpoint is automatically applied to the request. ([fafd99e](https://github.com/SAP/ai-sdk-js/commit/fafd99e43f8bc1879a896862eccb93cf8827a77e))
@@ -35,7 +47,7 @@
 
 ## 2.12.0 - June 24, 2026[​](#2120---june-24-2026 "Direct link to 2.12.0 - June 24, 2026")
 
-### New Features[​](#new-features-2 "Direct link to New Features")
+### New Features[​](#new-features-3 "Direct link to New Features")
 
 * \[core] Add `AzureOpenAiResponsesModel` type for Azure OpenAI models that exclusively support the Responses API. ([0f10482](https://github.com/SAP/ai-sdk-js/commit/0f104825fb37f3518acb8cf4389b69e48e973182))
 * \[document-grounding, prompt-registry] Update document grounding specification. ([d984914](https://github.com/SAP/ai-sdk-js/commit/d984914f17767a458f1c2b4dae2aa6a8837dee62))
@@ -54,7 +66,7 @@
 
 ## 2.11.0 - May 26, 2026[​](#2110---may-26-2026 "Direct link to 2.11.0 - May 26, 2026")
 
-### New Features[​](#new-features-3 "Direct link to New Features")
+### New Features[​](#new-features-4 "Direct link to New Features")
 
 * \[langchain] Support orchestration prompt module fallbacks. (dc2f5b1)
 * \[orchestration] Update orchestration specification to v0.131.3 (f72bb58)
@@ -71,7 +83,7 @@
 
 ## 2.10.0 - April 19, 2026[​](#2100---april-19-2026 "Direct link to 2.10.0 - April 19, 2026")
 
-### Compatibility Notes[​](#compatibility-notes "Direct link to Compatibility Notes")
+### Compatibility Notes[​](#compatibility-notes-1 "Direct link to Compatibility Notes")
 
 * \[document-grounding] `DocumentKeyValueListPair`, `RetrievalDocumentKeyValueListPair`, `VectorDocumentKeyValueListPair`: the `matchMode` property type was narrowed from an open union (`'ANY' | 'ALL' | any`) to the strict `FilterMatchModeEnum` (`'ANY' | 'ALL'`). (029f091)
 * \[document-grounding] `CollectionPendingResponse`: fields `Location` and `status` were removed. A new `monitorURL` property was added instead. (029f091)
@@ -88,7 +100,7 @@
 * \[prompt-registry] The `include_spec` parameter is deprecated in favor of `includeSpec` and `resolve_template_ref` is deprecated in favor of `resolveTemplateRef`. (cc9e80c)
 * \[prompt-registry] `PromptTemplateSubstitutionRequest` now requires the `inputParams` property. (cc9e80c)
 
-### New Features[​](#new-features-4 "Direct link to New Features")
+### New Features[​](#new-features-5 "Direct link to New Features")
 
 * \[document-grounding] Update document grounding specification. (029f091)
 * \[foundation-models] Add `getRequestId()` method to `AzureOpenAiChatCompletionResponse`, `AzureOpenAiChatCompletionStreamResponse` and `AzureOpenAiEmbeddingResponse`. The new method retrieves the request ID from the `x-aicore-request-id` response header, useful for debugging and tracking requests. (a722171)
@@ -102,7 +114,7 @@
 
 ## 2.9.0 - March 20, 2026[​](#290---march-20-2026 "Direct link to 2.9.0 - March 20, 2026")
 
-### New Features[​](#new-features-5 "Direct link to New Features")
+### New Features[​](#new-features-6 "Direct link to New Features")
 
 * \[orchestration] Add `getCitations()` method to retrieve source citations from models like Perplexity Sonar. (8de0013)
 
@@ -114,7 +126,7 @@
 
 ## 2.8.0 - March 03, 2026[​](#280---march-03-2026 "Direct link to 2.8.0 - March 03, 2026")
 
-### New Features[​](#new-features-6 "Direct link to New Features")
+### New Features[​](#new-features-7 "Direct link to New Features")
 
 * \[orchestration] Support streaming with orchestration prompt module fallback. (3d12d4c)
 * \[orchestration] Support orchestration prompt module fallback for non-streaming requests When constructing an `OrchestrationClient` it is now possible to provide a list of module configurations to support module fallback. (5501e7c)
@@ -123,7 +135,7 @@
 
 ## 2.7.0 - February 16, 2026[​](#270---february-16-2026 "Direct link to 2.7.0 - February 16, 2026")
 
-### Compatibility Notes[​](#compatibility-notes-1 "Direct link to Compatibility Notes")
+### Compatibility Notes[​](#compatibility-notes-2 "Direct link to Compatibility Notes")
 
 * \[ai-api] Extract functionality around execution scheduling from the `ExecutionApi` to `ExecutionScheduleApi`. (8616d5e)
 * \[ai-api] Remove the `BckndEvent` type. (8616d5e)
@@ -131,7 +143,7 @@
 * \[core] Remove deprecated and retired models from model list. Remove retired model `anthropic--claude-3-sonnet` from model list, use suggested replacement `anthropic--claude-4.5-sonnet` instead. Remove retired model `anthropic--claude-3-opus` from model list. Remove deprecated model `gpt-4o-mini`, use suggested replacement `gpt-5-mini` instead. Remove deprecated models `anthropic--claude-3.5-sonnet` and `anthropic--claude-3.7-sonnet`. (b12626b)
 * \[orchestration] Support for constructing an `OrchestrationStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release. Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter to allow reading from raw HTTP response. (6b49479)
 
-### New Features[​](#new-features-7 "Direct link to New Features")
+### New Features[​](#new-features-8 "Direct link to New Features")
 
 * \[core] Advertise AbortSignal support for HTTP request cancellation. This change adds typings, documentation and examples for using AbortSignal with the HTTP client to enable request cancellation. (b11b00c)
 * \[langchain] Support the `withStructuredOutput()` method in the Orchestration LangChain client. (4fce347)
@@ -145,7 +157,7 @@
 
 ## 2.6.0 - February 04, 2026[​](#260---february-04-2026 "Direct link to 2.6.0 - February 04, 2026")
 
-### New Features[​](#new-features-8 "Direct link to New Features")
+### New Features[​](#new-features-9 "Direct link to New Features")
 
 * \[rpt] Release Beta version of a client for the SAP-RPT-1 model. (790ad05)
 
@@ -155,11 +167,11 @@
 
 ## 2.5.0 - January 13, 2026[​](#250---january-13-2026 "Direct link to 2.5.0 - January 13, 2026")
 
-### Compatibility Notes[​](#compatibility-notes-2 "Direct link to Compatibility Notes")
+### Compatibility Notes[​](#compatibility-notes-3 "Direct link to Compatibility Notes")
 
 * \[langchain] The `@langchain/core` package is now a peer dependency. You now have to install the `@langchain/core` package as a direct dependency of your project. (5b88f6f)
 
-### New Features[​](#new-features-9 "Direct link to New Features")
+### New Features[​](#new-features-10 "Direct link to New Features")
 
 * \[langchain] Support disabling streaming completely via the langchain option `disableStreaming`. (b91e0a7)
 * \[langchain] Support auto-streaming via the langchain option `streaming`. When enabled (e.g., transparently by LangGraph), responses are automatically streamed in `invoke()` calls. (b91e0a7)
@@ -175,11 +187,11 @@
 
 ## 2.4.0 - December 23, 2025[​](#240---december-23-2025 "Direct link to 2.4.0 - December 23, 2025")
 
-### Compatibility Notes[​](#compatibility-notes-3 "Direct link to Compatibility Notes")
+### Compatibility Notes[​](#compatibility-notes-4 "Direct link to Compatibility Notes")
 
 * \[prompt-registry] In the prompt-registry client schema, the `Template` type was renamed to `PromptTemplate`. (a3cbc6e)
 
-### New Features[​](#new-features-10 "Direct link to New Features")
+### New Features[​](#new-features-11 "Direct link to New Features")
 
 * \[orchestration] Added support for `applyTo` and `translateMessagesHistory` in order to enable selective input translation and automatic inference of target language for output translation parameters. (aa097da)
 * \[prompt-registry] Update prompt-registry specification adding support for resource group scoped prompt templates. (a3cbc6e)
@@ -190,18 +202,18 @@
 
 ## 2.3.0 - November 27, 2025[​](#230---november-27-2025 "Direct link to 2.3.0 - November 27, 2025")
 
-### Compatibility Notes[​](#compatibility-notes-4 "Direct link to Compatibility Notes")
+### Compatibility Notes[​](#compatibility-notes-5 "Direct link to Compatibility Notes")
 
 * \[langchain, orchestration, prompt-registry] `zod` was upgraded to v4 (7c9605d)
 
-### New Features[​](#new-features-11 "Direct link to New Features")
+### New Features[​](#new-features-12 "Direct link to New Features")
 
 * \[langchain] Bump langchain to v1 (7c9605d)
 * \[orchestration] Added support for `protected_material_code` property to `buildAzureContentSafetyFilter()` function for output filter configuration to allow detecting protected code content from known github repositories. (485e21b)
 
 ## 2.2.0 - November 17, 2025[​](#220---november-17-2025 "Direct link to 2.2.0 - November 17, 2025")
 
-### Compatibility Notes[​](#compatibility-notes-5 "Direct link to Compatibility Notes")
+### Compatibility Notes[​](#compatibility-notes-6 "Direct link to Compatibility Notes")
 
 * \[document-grounding] `MSSharePointConfigurationGetResponse` now requires the `sharePoint` property (e2c34f3)
 
@@ -225,7 +237,7 @@
 
 * \[langchain] Remove structured ouput handling for deprecated gpt-4 & gpt-3 models (6100bca)
 
-### New Features[​](#new-features-12 "Direct link to New Features")
+### New Features[​](#new-features-13 "Direct link to New Features")
 
 * \[ai-api] Update `ai-api` package with the new specification (2509b). (58464e9)
 * \[core, orchestration] Introduce orchestration embedding client for consuming embedding feature of the orchestration service. (347eac1)
@@ -251,7 +263,7 @@
 
 ## 2.0.0 - September 22, 2025[​](#200---september-22-2025 "Direct link to 2.0.0 - September 22, 2025")
 
-### Compatibility Notes[​](#compatibility-notes-6 "Direct link to Compatibility Notes")
+### Compatibility Notes[​](#compatibility-notes-7 "Direct link to Compatibility Notes")
 
 * \[foundation-models, orchestration] Change stream method parameter from `AbortController` to `AbortSignal`. The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter in both Azure OpenAI and Orchestration clients. (4c00c27)
 
@@ -309,7 +321,7 @@
   * Update Azure content filter property names to lowercase with underscores: `Hate` to `hate`, `SelfHarm` to `self_harm`, `Sexual` to `sexual`, and `Violence` to `violence`.
   * Remove deprecated `buildAzureContentFilter()` function and use `buildAzureContentSafetyFilter()` instead. (86e6370)
 
-### New Features[​](#new-features-13 "Direct link to New Features")
+### New Features[​](#new-features-14 "Direct link to New Features")
 
 * \[ai-api] Add `resolveDeploymentUrl()` function to resolve the deployment URL that matches the given criteria. (14745de)
 * \[foundation-models] Add `getTokenUsage()`, `getFinishReason()`, `getContent()`, `getToolCalls()`, `getRefusal()`, `getAssistantMessage()`, `findChoiceByIndex()` methods to Azure OpenAI chat completion response. (5c52cb6)
