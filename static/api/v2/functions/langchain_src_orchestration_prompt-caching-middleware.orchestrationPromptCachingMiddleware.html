@@ -1,0 +1,84 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>orchestrationPromptCachingMiddleware | SAP AI SDK for JavaScript - v2.15.0</title><meta name="description" content="Documentation for SAP AI SDK for JavaScript"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">SAP AI SDK for JavaScript - v2.15.0</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb" aria-label="Breadcrumb">
+<li><a href="../modules/langchain_src_orchestration_prompt-caching-middleware.html">langchain/src/orchestration/prompt-caching-middleware</a></li>
+<li><a href="" aria-current="page">orchestrationPromptCachingMiddleware</a></li></ul>
+<h1>Function orchestrationPromptCachingMiddleware</h1></div>
+<section class="tsd-panel">
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="orchestrationpromptcachingmiddleware"><span class="tsd-kind-call-signature">orchestrationPromptCachingMiddleware</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">middlewareOptions</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><br/>        <span class="tsd-signature-symbol">{</span><br/>            <span class="tsd-kind-property">enableCaching</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>            <span class="tsd-kind-property">minMessagesToCache</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>            <span class="tsd-kind-property">ttl</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">&quot;5m&quot;</span><br/>            <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;1h&quot;</span><span class="tsd-signature-symbol">;</span><br/>            <span class="tsd-kind-property">unsupportedModelBehavior</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">&quot;ignore&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;raise&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;warn&quot;</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AgentMiddleware</span><a href="#orchestrationpromptcachingmiddleware" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Creates a prompt caching middleware for the Orchestration <code>OrchestrationClient</code>
+by delegating to the upstream <code>anthropicPromptCachingMiddleware</code>.</p>
+<p>When the conversation reaches the configured message threshold the upstream
+middleware injects <code>cache_control</code> into <code>request.modelSettings</code>. The
+OrchestrationClient then applies a single cache breakpoint to the
+last cacheable text block of the last message before the request is sent.</p>
+<p>Prompt caching is supported by Anthropic Claude and Amazon Nova model
+families served through Orchestration; other models simply ignore the
+directive. See the
+<a href="https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching">SAP AI Core prompt caching docs</a>
+for the current matrix of supported models and breakpoint limits.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">middlewareOptions</span>: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><br/>    <span class="tsd-signature-symbol">{</span><br/>        <span class="tsd-kind-property">enableCaching</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">minMessagesToCache</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">ttl</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">&quot;5m&quot;</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;1h&quot;</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">unsupportedModelBehavior</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">&quot;ignore&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;raise&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;warn&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span></span>
+<div class="tsd-comment tsd-typography"><p>Configuration options forwarded verbatim to <code>anthropicPromptCachingMiddleware</code>. See PromptCachingMiddlewareConfig.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">AgentMiddleware</span></h4><p>A middleware instance that can be passed to <code>createAgent</code>.</p>
+
+<div class="tsd-comment tsd-typography">
+<div class="tsd-tag-remarks">
+<h4 class="tsd-anchor-link" id="remarks">Remarks<a href="#remarks" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>This dedicated subpath depends on the optional <code>langchain</code> peer dependency.
+Importing <code>@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware</code>
+fails during module resolution when <code>langchain</code> is not installed.</p>
+</div>
+<div class="tsd-tag-throws">
+<h4 class="tsd-anchor-link" id="throws">Throws<a href="#throws" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>If the upstream <code>langchain</code>
+middleware shape changes and <code>contextSchema</code> or <code>wrapModelCall</code> cannot be extracted.</p>
+</div>
+<div class="tsd-tag-throws">
+<h4 class="tsd-anchor-link" id="throws-1">Throws<a href="#throws-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>If <code>unsupportedModelBehavior</code>
+is set to <code>'raise'</code> and the middleware is used with a non-Orchestration model.</p>
+</div>
+<div class="tsd-tag-example">
+<h4 class="tsd-anchor-link" id="example">Example<a href="#example" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>Basic usage with default settings</p>
+<pre><code class="typescript"><span class="hl-9">import</span><span class="hl-2"> { </span><span class="hl-4">createAgent</span><span class="hl-2"> } </span><span class="hl-9">from</span><span class="hl-2"> </span><span class="hl-0">&#39;langchain&#39;</span><span class="hl-2">;</span><br/><span class="hl-9">import</span><span class="hl-2"> { </span><span class="hl-4">OrchestrationClient</span><span class="hl-2"> } </span><span class="hl-9">from</span><span class="hl-2"> </span><span class="hl-0">&#39;@sap-ai-sdk/langchain&#39;</span><span class="hl-2">;</span><br/><span class="hl-9">import</span><span class="hl-2"> { </span><span class="hl-4">orchestrationPromptCachingMiddleware</span><span class="hl-2"> } </span><span class="hl-9">from</span><span class="hl-2"> </span><span class="hl-0">&#39;@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware&#39;</span><span class="hl-2">;</span><br/><br/><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">agent</span><span class="hl-2"> = </span><span class="hl-8">createAgent</span><span class="hl-2">({</span><br/><span class="hl-2">  </span><span class="hl-4">model:</span><span class="hl-2"> </span><span class="hl-6">new</span><span class="hl-2"> </span><span class="hl-8">OrchestrationClient</span><span class="hl-2">({</span><br/><span class="hl-2">    </span><span class="hl-4">promptTemplating:</span><span class="hl-2"> { </span><span class="hl-4">model:</span><span class="hl-2"> { </span><span class="hl-4">name:</span><span class="hl-2"> </span><span class="hl-0">&#39;anthropic--claude-4.5-haiku&#39;</span><span class="hl-2"> } }</span><br/><span class="hl-2">  }),</span><br/><span class="hl-2">  </span><span class="hl-4">middleware:</span><span class="hl-2"> [</span><span class="hl-8">orchestrationPromptCachingMiddleware</span><span class="hl-2">()]</span><br/><span class="hl-2">});</span>
+</code><button type="button">Copy</button></pre>
+
+</div>
+<div class="tsd-tag-example">
+<h4 class="tsd-anchor-link" id="example-1">Example<a href="#example-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>Longer TTL with a higher message threshold</p>
+<pre><code class="typescript"><span class="hl-8">orchestrationPromptCachingMiddleware</span><span class="hl-2">({ </span><span class="hl-4">ttl:</span><span class="hl-2"> </span><span class="hl-0">&#39;1h&#39;</span><span class="hl-2">, </span><span class="hl-4">minMessagesToCache:</span><span class="hl-2"> </span><span class="hl-5">5</span><span class="hl-2"> });</span>
+</code><button type="button">Copy</button></pre>
+
+</div></div><aside class="tsd-sources">
+<ul>
+<li>Defined in packages/langchain/dist/orchestration/prompt-caching-middleware/prompt-caching-middleware.d.ts:51</li></ul></aside></div></li></ul></section></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../modules.html">SAP AI SDK for JavaScript - v2.15.0</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<div class="container"><p>Copyright Ⓒ 2026 SAP SE or an SAP affiliate company. All rights reserved.</p></div>
+<li>Loading...</li></ul></nav></div></div></div><footer></footer>
+<div class="overlay"></div></body></html>
