@@ -1,0 +1,179 @@
+# Realtime API
+
+caution
+
+The Realtime API client is experimental and may change at any time without prior notice.
+
+Only WebSocket connections are supported. Browser environments are not supported.
+
+`SapOpenAiRealtimeWs` connects to the OpenAI Realtime API over WebSocket, pre-configured for SAP AI Core. It resolves the deployment, opens the WebSocket connection, and sets the SAP-specific headers automatically. The client preserves the `on()` / `send()` / `close()` event API from the official [`openai`](https://www.npmjs.com/package/openai) package. For background on the WebSocket-based protocol, see the [OpenAI Realtime API with WebSocket](https://developers.openai.com/api/docs/guides/realtime-websocket) guide.
+
+## Installation[​](#installation "Direct link to Installation")
+
+```
+npm install @sap-ai-sdk/openai openai ws
+```
+
+The `openai` and `ws` packages are peer dependencies and must be installed separately.
+
+## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
+
+See the [prerequisites](/ai-sdk/docs/js/overview.md#prerequisites) section. A `gpt-realtime` model must be deployed in SAP AI Core before use.
+
+## Client Initialization[​](#client-initialization "Direct link to Client Initialization")
+
+Import `SapOpenAiRealtimeWs` from the `@sap-ai-sdk/openai/realtime` sub-path export and call `createClient()`. Pass a model name string or a deployment identifier object via the `deployment` option:
+
+```
+// By model name (shorthand)
+
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+
+
+
+// By model name and version
+
+const clientWithNameVersion = await SapOpenAiRealtimeWs.createClient({
+
+  deployment: { modelName: 'gpt-realtime', modelVersion: 'latest' }
+
+});
+
+
+
+// By deployment ID
+
+const clientWithDeploymentId = await SapOpenAiRealtimeWs.createClient({
+
+  deployment: { deploymentId: 'DEPLOYMENT_ID' }
+
+});
+```
+
+Use the `resourceGroup` property to target a specific resource group. The resource group defaults to `default`:
+
+```
+const client = await SapOpenAiRealtimeWs.createClient({
+
+  deployment: { modelName: 'gpt-realtime', resourceGroup: 'my-resource-group' }
+
+});
+```
+
+To use a custom SAP AI Core destination, pass the `destination` option:
+
+```
+const client = await SapOpenAiRealtimeWs.createClient({
+
+  deployment: { modelName: 'gpt-realtime' },
+
+  destination: { destinationName: 'DESTINATION_NAME' }
+
+});
+```
+
+## Sending and Receiving Events[​](#sending-and-receiving-events "Direct link to Sending and Receiving Events")
+
+After `createClient()` resolves, the WebSocket connection is open. Use `on()` to register event listeners and `send()` to dispatch client events.
+
+The following example configures a session, sends a text message, and streams the audio response. See the [handling audio with WebSockets](https://developers.openai.com/api/docs/guides/realtime-conversations#handling-audio-with-websockets) and [voice activity detection](https://developers.openai.com/api/docs/guides/realtime-vad) guides for details on audio formats and turn detection.
+
+```
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+
+
+
+client.on('session.created', () => {
+
+  client.send({
+
+    type: 'session.update',
+
+    session: {
+
+      type: 'realtime',
+
+      output_modalities: ['audio'],
+
+      audio: { output: { voice: 'alloy' } },
+
+      instructions: 'You are a helpful assistant.'
+
+    }
+
+  });
+
+});
+
+
+
+client.on('session.updated', () => {
+
+  client.send({
+
+    type: 'conversation.item.create',
+
+    item: {
+
+      type: 'message',
+
+      role: 'user',
+
+      content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
+
+    }
+
+  });
+
+  client.send({ type: 'response.create' });
+
+});
+
+
+
+// e.delta contains a base64-encoded PCM16 audio chunk (24 kHz, mono)
+
+client.on('response.output_audio.delta', e => {
+
+  const pcm = Buffer.from(e.delta, 'base64');
+
+  // write pcm to your audio sink
+
+});
+
+
+
+client.on('response.output_audio_transcript.delta', e =>
+
+  process.stdout.write(e.delta ?? '')
+
+);
+
+
+
+client.on('response.done', () => client.close());
+
+
+
+client.on('error', e => console.error(e.message));
+```
+
+note
+
+The `session.update` event must use the GA schema (`output_modalities`, nested `audio`), not the preview schema.
+
+## Closing the Connection[​](#closing-the-connection "Direct link to Closing the Connection")
+
+Call `close()` to end the WebSocket connection. The default close code is `1000` and the default reason is `'OK'`:
+
+```
+// Close with defaults
+
+client.close();
+
+
+
+// Close with a custom code and reason
+
+client.close({ code: 4000, reason: 'done' });
+```
