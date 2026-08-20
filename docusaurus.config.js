@@ -252,7 +252,6 @@ export default {
         editUrl: 'https://github.com/SAP/ai-sdk/edit/main',
         routeBasePath: 'docs/python',
         sidebarPath: './sidebarsDocsPython.js',
-        exclude: ['gen/**'],
         remarkPlugins: [remarkEnforceMdxLinks],
         lastVersion: 'current',
         versions: {

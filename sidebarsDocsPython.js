@@ -20,16 +20,9 @@ export default {
       ]
     },
     {
-      type: 'category',
-      label: 'API Reference',
-      collapsed: false,
-      items: [
-        {
-          type: 'link',
-          label: 'SAP Cloud SDK for AI (Python)',
-          href: 'pathname:///api-python/index.html'
-        }
-      ]
+      type: 'link',
+      label: 'SAP Cloud SDK for AI (Python)',
+      href: 'pathname:///api-python/index.html'
     }
   ]
 };
