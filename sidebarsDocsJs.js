@@ -27,7 +27,15 @@ export default {
         }
       ]
     },
-    'openai/openai',
+    {
+      type: 'category',
+      label: 'OpenAI',
+      link: {
+        type: 'doc',
+        id: 'openai/openai'
+      },
+      items: ['openai/realtime']
+    },
     {
       type: 'category',
       label: 'LangChain',

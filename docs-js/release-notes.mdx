@@ -13,6 +13,43 @@ keywords:
 <!-- vale off -->
 <!-- This line is used for our release notes automation -->
 
+## 2.15.0 - August 18, 2026
+
+### Compatibility Notes
+
+- [orchestration] Deprecate `OrchestrationConfigRef` — use `OrchestrationConfigRefById` or `OrchestrationConfigRefByName` instead. ([b61cb53](https://github.com/SAP/ai-sdk-js/commit/b61cb5315b7b9e725c611168342a37dd0e69bb4f))
+
+### New Features
+
+- [core, openai] Add experimental OpenAI Realtime API (speech-to-speech) support for `gpt-realtime` via the `@sap-ai-sdk/openai/realtime` sub-path export. ([a5407c8](https://github.com/SAP/ai-sdk-js/commit/a5407c80e60c39c1dbbb24a265869d88be933b9e))
+- [langchain] Add `orchestrationPromptCachingMiddleware()` middleware for the LangChain Orchestration client, exported from `@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware`.
+  It enables automatic cache control for orchestration requests.
+  The middleware requires the optional `langchain` peer dependency to be installed. ([070b309](https://github.com/SAP/ai-sdk-js/commit/070b3095f94d6a9a7a1622be4033e8382076eb4e))
+- [orchestration] Split `OrchestrationConfigRef` into `OrchestrationConfigRefById` and `OrchestrationConfigRefByName`. ([b61cb53](https://github.com/SAP/ai-sdk-js/commit/b61cb5315b7b9e725c611168342a37dd0e69bb4f))
+
+## 2.14.0 - August 06, 2026
+
+### New Features
+
+- [core, orchestration] Add `GcpVertexAiEmbeddingModel` type with `gemini-embedding` to `@sap-ai-sdk/core`.
+  Add `GcpVertexAiEmbeddingModel` to the `EmbeddingModel` union in `@sap-ai-sdk/orchestration`. ([cca7edd](https://github.com/SAP/ai-sdk-js/commit/cca7edd3c41f8cd36f23f8702e36f76143d16bae))
+- [orchestration] Add reasoning content support to the Orchestration client.
+  `reasoning_content` fields were added on response, streaming delta, and assistant message types.
+  The `getReasoningContent()` and `getDeltaReasoningContent()` convenience functions return the reasoning text from model responses. ([b986b70](https://github.com/SAP/ai-sdk-js/commit/b986b708075101fb721e53c5cbe31fa7915ae69b))
+- [orchestration] Added `overrideConfig` field to `OrchestrationConfigRef` to pass a `PartialOrchestrationConfig` that overrides parts of the stored orchestration configuration at request time.
+  Streaming via `.stream()` now automatically sets `stream.enabled = true` in the partial configuration override, so clients using a stored orchestration configuration reference no longer require streaming to be pre-configured in the stored configuration. ([b986b70](https://github.com/SAP/ai-sdk-js/commit/b986b708075101fb721e53c5cbe31fa7915ae69b))
+- [prompt-registry] prompt-registry: Update generated client to latest specification. ([a268597](https://github.com/SAP/ai-sdk-js/commit/a26859733486d5c3282322794cdd20e2cd6fd9c9))
+
+### Fixed Issues
+
+- [langchain] Skip tool and assistant messages when applying `cache_control`, using the last applicable message (system, user, or developer) instead.
+  Some models do not support `cache_control` on `tool` messages. ([4003a12](https://github.com/SAP/ai-sdk-js/commit/4003a1212bae77921ffe9450c3c886a7d17db77b))
+- [openai] Fix OpenAI client types to allow passing objects with model deployment details (model name + model version, deployment ID and/or resource group) instead of just model names. ([016edcd](https://github.com/SAP/ai-sdk-js/commit/016edcd2f50b32ab2c7a7c24f8ea92b82d90534c))
+
+### Improvements
+
+- [core] Add `anthropic--claude-4.5-opus`, `anthropic--claude-4.8-opus`, `gemini-3.5-flash`, `gemini-embedding` to the available model list. ([cca7edd](https://github.com/SAP/ai-sdk-js/commit/cca7edd3c41f8cd36f23f8702e36f76143d16bae))
+
 ## 2.13.0 - July 14, 2026
 
 ### New Features
