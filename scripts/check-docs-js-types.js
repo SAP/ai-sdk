@@ -10,8 +10,8 @@
  */
 import { createTwoslasher } from 'twoslash';
 import { readFile, glob } from 'node:fs/promises';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join, dirname, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

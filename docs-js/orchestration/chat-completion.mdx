@@ -44,7 +44,8 @@ const orchestrationClient = new OrchestrationClient({
 });
 ```
 
-Here, the model name is specified along with a user message as the prompt.
+Here, only the model name is configured in the `promptTemplating` module.
+The user message is passed directly to the `chatCompletion()` method call.
 
 To send a chat completion request, use the `chatCompletion()` method.
 Use the following convenience methods for handling chat completion response:
@@ -710,10 +711,10 @@ If you're upgrading from an earlier version, refer to the [Zod v4 migration guid
 
 You can also define JSON schema using [Zod](https://zod.dev/) schema as shown below:
 
-```ts
+```ts twoslash
 import * as z from 'zod';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
-import { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration';
+import type { ResponseFormatJsonSchema } from '@sap-ai-sdk/orchestration/internal.js';
 
 const countryCapitalSchema = z.strictObject({
   country_name: z.string(),
@@ -887,6 +888,69 @@ const response = await orchestrationClient.chatCompletion({
 
 const usage = response.getTokenUsage();
 console.log('Cache details', usage?.prompt_tokens_details ?? usage);
+```
+
+### Reasoning Content
+
+Some models can expose their intermediate reasoning steps in addition to the final answer.
+Enable reasoning by setting the harmonized `reasoning_effort` model parameter.
+Orchestration maps this single parameter to each provider's native reasoning configuration, so the same client code works across different models.
+
+:::note
+Anthropic Claude, GCP Gemini, and OpenAI reasoning models are among the models that expose reasoning content.
+Every reasoning model accepts the `reasoning_effort` values `minimal`, `low`, `medium`, `high`, and `none`, though each model maps them differently.
+You can also pass a model's native reasoning options directly.
+See the [SAP AI Core reasoning documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning?locale=en-US) for details.
+:::
+
+Use the `getReasoningContent()` method to retrieve the reasoning content from the response.
+It returns an array of reasoning text blocks, or `undefined` when the model did not produce any reasoning content.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gemini-3.5-flash',
+      params: { reasoning_effort: 'high' }
+    }
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  messages: [
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+  ]
+});
+
+const reasoning = response.getReasoningContent();
+reasoning?.forEach(block => console.log(`<reasoning>${block}</reasoning>`));
+console.log(response.getContent());
+```
+
+`getReasoningContent()` exposes only the human-readable reasoning text; any encrypted or redacted reasoning blocks the model returns are excluded.
+
+To preserve the reasoning context across turns, pass the result of `getAllMessages()` as `messagesHistory` in the next request.
+The reasoning blocks are included in the returned messages automatically, so you do not need to handle them manually.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gemini-3.5-flash', params: { reasoning_effort: 'high' } }
+  }
+});
+const response = await orchestrationClient.chatCompletion({
+  messages: [
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+  ]
+});
+// ---cut---
+const followUp = await orchestrationClient.chatCompletion({
+  messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+  messagesHistory: response.getAllMessages()
+});
 ```
 
 ### File Input
@@ -1412,6 +1476,42 @@ for await (const chunk of response.stream.toContentStream()) {
 }
 ```
 
+### Streaming Reasoning Content
+
+When streaming, reasoning content is delivered incrementally alongside the regular content.
+Use the `getDeltaReasoningContent()` method on each chunk to read the reasoning delta as it arrives.
+Use the `getReasoningContent()` method on the full response after the stream ends to read the accumulated reasoning content.
+
+Configure reasoning by setting the harmonized `reasoning_effort` model parameter, the same as for non-streaming requests.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gemini-3.5-flash',
+      params: { reasoning_effort: 'high' }
+    }
+  }
+});
+
+const response = await orchestrationClient.stream({
+  messages: [
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+  ]
+});
+
+for await (const chunk of response.stream) {
+  const reasoningDelta = chunk.getDeltaReasoningContent();
+  reasoningDelta?.forEach(block =>
+    console.log(`<delta-reasoning>${block}</delta-reasoning>`)
+  );
+}
+
+const finalReasoning = response.getReasoningContent();
+```
+
 ### Streaming with Tool Calls
 
 Use `getToolCalls()` method to get the tool calls at the end of a stream.
@@ -1636,7 +1736,7 @@ Reference an orchestration configuration by its unique identifier:
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
-  id: 'c1a4f2e2-BETA-4d2b-9f7a-1234567890ab'
+  id: 'MY_CONFIG_ID'
 });
 ```
 
@@ -1675,8 +1775,53 @@ console.log(response.getContent());
 Messages passed alongside a configuration reference are **automatically routed to `messages_history`** and cannot be merged into the remotely stored configuration's prompt template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows with configuration references.
 :::
 
+### Overriding the Stored Configuration
+
+You can reuse a stored orchestration configuration while adjusting parts of it for specific requests.
+Provide an `overrideConfig` on the configuration reference to override individual modules, such as switching the model, or to customize streaming behavior, without changing the stored configuration itself.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  id: 'MY_CONFIG_ID',
+  overrideConfig: {
+    modules: {
+      prompt_templating: {
+        model: {
+          name: 'gpt-5.4-nano',
+          version: '1',
+          params: {}
+        }
+      }
+    }
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  placeholderValues: { customerQuestion: 'How do I reset my password?' }
+});
+
+console.log(response.getContent());
+```
+
+To customize streaming behavior, provide the streaming settings in `overrideConfig.stream`.
+Streaming is enabled automatically when you call `stream()`, regardless of the stored configuration's streaming settings.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
+const orchestrationClient = new OrchestrationClient({
+  id: 'MY_CONFIG_ID',
+  overrideConfig: {
+    stream: { chunk_size: 100 }
+  }
+});
+```
+
 :::note
-When using an orchestration configuration reference, [streaming](#streaming) is only available if the stored configuration includes streaming settings.
+Request-level stream options passed to the `stream()` method are not supported with a configuration reference.
+Configure streaming settings through `overrideConfig` or in the stored orchestration configuration instead.
 :::
 
 For details on creating and managing orchestration configurations, refer to the [Orchestration Configuration](../ai-core/prompt-registry.mdx#orchestration-configuration) section in the prompt registry guide.
