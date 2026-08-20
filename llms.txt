@@ -20,7 +20,7 @@
 - [Java SDK Overview](/docs/java/overview.md): The SAP Cloud SDK for AI Java significantly simplifies extending and developing an application with SAP Business Technology Platform
 - [Release Notes](/docs/java/release-notes.md): Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations.
 - [release-notes-0-to-14](/docs/java/release-notes/release-notes-0-to-14.md): 1.14.0 - January 08, 2026
-- [release-notes-15-to-29](/docs/java/release-notes/release-notes-15-to-29.md): 1.22.0 - July 09, 2026
+- [release-notes-15-to-29](/docs/java/release-notes/release-notes-15-to-29.md): 1.23.0 - August 20, 2026
 - [OpenAI Integration](/docs/java/spring-ai/openai.md): How to use our Spring AI integration with our OpenAI client in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
 - [Orchestration Integration](/docs/java/spring-ai/orchestration.md): How to use our Spring AI integration with our Orchestration client in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
 - [Getting Started with Agentic Workflows](/docs/java/tutorials/agentic-workflows.md): A tutorial on how to build agentic workflows using the SAP AI SDK.

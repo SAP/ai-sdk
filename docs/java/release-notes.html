@@ -14,7 +14,7 @@
 
 
 <script>window.__COPY_PAGE_BUTTON_OPTIONS__={customStyles:{},generateMarkdownRoutes:!1,placement:"auto",mcpServer:null,id:"default"}</script><link rel="stylesheet" href="/ai-sdk/assets/css/styles.4b623b6d.css">
-<script src="/ai-sdk/assets/js/runtime~main.43ce96f9.js" defer="defer"></script>
+<script src="/ai-sdk/assets/js/runtime~main.1f75cace.js" defer="defer"></script>
 <script src="/ai-sdk/assets/js/main.bbd3dd8d.js" defer="defer"></script>
 </head>
 <body>
@@ -30,9 +30,48 @@ It will help you:</p>
 <li class="">Keep up with the latest changes in SAP ecosystem</li>
 <li class="">Protect yourself from bugs and breaking changes in the future</li>
 </ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1230---august-20-2026">1.23.0 - August 20, 2026<a href="#1230---august-20-2026" class="hash-link" aria-label="Direct link to 1.23.0 - August 20, 2026" title="Direct link to 1.23.0 - August 20, 2026" translate="no">​</a></h2>
+<p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.23.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes">🔧 Compatibility Notes<a href="#-compatibility-notes" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
+<ul>
+<li class="">[Orchestration] Removed <code>OrchestrationAiModel COHERE_RERANKER</code>. This model was supported neither by Orchestration nor by AI SDK.</li>
+<li class="">[Prompt Registry] Added optional arguments <code>$top</code> and <code>$skip</code> to the following methods:<!-- -->
+<ul>
+<li class=""><code>OrchestrationConfigsApi.listOrchestrationConfigHistory</code></li>
+<li class=""><code>OrchestrationConfigsApi.listOrchestrationConfigs</code></li>
+<li class=""><code>PromptTemplatesApi.listPromptTemplateHistory</code></li>
+<li class=""><code>PromptTemplatesApi.listPromptTemplates</code></li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality">✨ New Functionality<a href="#-new-functionality" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<ul>
+<li class="">[OpenAI] Support for OpenAI Realtime API with the new OpenAiRealtimeClient. The following cases are currently supported:<!-- -->
+<ul>
+<li class=""><code>textToSpeech</code></li>
+<li class=""><code>speechToSpeech</code></li>
+</ul>
+</li>
+<li class="">[OpenAI] You can now add multiple custom headers to an <code>OpenAiClient</code> at once via <code>.withHeaders()</code>.</li>
+<li class="">[OpenAI] Added <code>GPT_56_LUNA</code>, <code>GPT_56_SOL</code> and <code>GPT_56_TERRA</code> to model list in <code>OpenAiModel</code>.</li>
+<li class="">[Orchestration] Added <code>QWEN_3_7_MAX</code>, <code>QWEN_3_7_PLUS</code>, <code>ALIBABA_TEXT_EMBEDDING_4</code>, <code>GEMINI_3_1_PRO_PREVIEW_EA</code>, <code>MISTRAL_MEDIUM</code>, <code>GPT_56_LUNA</code>, <code>GPT_56_SOL</code> and <code>GPT_56_TERRA</code> to model list in <code>OrchestrationAiModel</code>.</li>
+<li class="">[Orchestration] Reasoning content is now supported for users through <code>OrchestrationChatResponse.getReasoningText()</code> and <code>OrchestrationChatCompletionDelta.getDeltaReasoningText()</code> to see the thinking processes when using the reasoning models.</li>
+<li class="">[Orchestration] Added support for prompt caching for new Claude models. The following messages are cacheable:<!-- -->
+<ul>
+<li class=""><code>SystemMessage</code>,</li>
+<li class=""><code>UserMessage</code>,</li>
+<li class=""><code>ToolMessage</code>.</li>
+<li class="">Refer to documentation for the models supporting caching.</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-fixed-issues">🐛 Fixed Issues<a href="#-fixed-issues" class="hash-link" aria-label="Direct link to 🐛 Fixed Issues" title="Direct link to 🐛 Fixed Issues" translate="no">​</a></h3>
+<ul>
+<li class="">[Orchestration] Some <code>OrchestrationClientException</code> were reported as <code>OrchestrationFilterException.Input</code>.</li>
+</ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1220---july-09-2026">1.22.0 - July 09, 2026<a href="#1220---july-09-2026" class="hash-link" aria-label="Direct link to 1.22.0 - July 09, 2026" title="Direct link to 1.22.0 - July 09, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.22.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality">✨ New Functionality<a href="#-new-functionality" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-1">✨ New Functionality<a href="#-new-functionality-1" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[OpenAI] Support for OpenAI Responses API with the new <code>AiCoreOpenAiClient</code>.
 The following endpoints are currently supported:<!-- -->
@@ -48,7 +87,7 @@ The following endpoints are currently supported:<!-- -->
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1210---july-02-2026">1.21.0 - July 02, 2026<a href="#1210---july-02-2026" class="hash-link" aria-label="Direct link to 1.21.0 - July 02, 2026" title="Direct link to 1.21.0 - July 02, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.21.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes">🔧 Compatibility Notes<a href="#-compatibility-notes" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-1">🔧 Compatibility Notes<a href="#-compatibility-notes-1" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
 <ul>
 <li class="">
 <p>[Prompt Registry] In <code>OrchestrationConfigPostRequest</code> and similar classes to create prompt registry requests, use the following replacements:</p>
@@ -58,7 +97,7 @@ The following endpoints are currently supported:<!-- -->
 <p>[Orchestration] Renamed <code>PromptRegistryOrchestrationConfig</code> to <code>OrchestrationConfig</code>.</p>
 </li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-1">✨ New Functionality<a href="#-new-functionality-1" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-2">✨ New Functionality<a href="#-new-functionality-2" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[Orchestration] Added <code>CLAUDE_4_8_OPUS</code> to the model list in <code>OrchestrationAiModel</code>.</li>
 <li class="">[Orchestration] Added <code>getReasoningContent()</code> to assistant messages.</li>
@@ -68,11 +107,11 @@ The following endpoints are currently supported:<!-- -->
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1200---june-16-2026">1.20.0 - June 16, 2026<a href="#1200---june-16-2026" class="hash-link" aria-label="Direct link to 1.20.0 - June 16, 2026" title="Direct link to 1.20.0 - June 16, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.20.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-1">🔧 Compatibility Notes<a href="#-compatibility-notes-1" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-2">🔧 Compatibility Notes<a href="#-compatibility-notes-2" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
 <ul>
 <li class="">Instead of <code>PromptTemplatingModuleConfig.create().prompt(prompt).model(model)</code> you have to use <code>PromptTemplatingModuleConfig.create().model(model).prompt(prompt)</code>.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-2">✨ New Functionality<a href="#-new-functionality-2" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-3">✨ New Functionality<a href="#-new-functionality-3" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[Batch] Added a new <code>BatchesApi</code> client to access the <a href="https://github.tools.sap/AI/llm-batch-service" target="_blank" rel="noopener noreferrer" class="">Batch Service API</a>.</li>
 <li class="">[Orchestration] Added <code>GEMINI_3_1_FLASH_LITE</code>, <code>GEMINI_3_5_FLASH</code>, <code>GPT_55</code>, <code>SONAR_DEEP_RESEARCH</code>, and <code>LLAMA_CINDERELLA_DN</code> to model list in <code>OrchestrationAiModel</code>.</li>
@@ -84,12 +123,12 @@ The following endpoints are currently supported:<!-- -->
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1190---may-08-2026">1.19.0 - May 08, 2026<a href="#1190---may-08-2026" class="hash-link" aria-label="Direct link to 1.19.0 - May 08, 2026" title="Direct link to 1.19.0 - May 08, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.19.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-2">🔧 Compatibility Notes<a href="#-compatibility-notes-2" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-3">🔧 Compatibility Notes<a href="#-compatibility-notes-3" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
 <ul>
 <li class="">[Document Grounding] <code>getAllPipelines()</code> has additional nullable parameter <code>metadataConfigId</code>.</li>
 <li class="">[Prompt Registry] The <code>importPromptTemplate</code> and <code>importOrchestrationConfig</code> accepts <code>File</code> instead of <code>byte[]</code> to propagate file name in <code>Content-Disposition</code> header.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-3">✨ New Functionality<a href="#-new-functionality-3" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-4">✨ New Functionality<a href="#-new-functionality-4" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[Orchestration] Added <code>MISTRAL_SMALL</code> and <code>CLAUDE_4_7_OPUS</code> to model list in <code>OrchestrationAiModel</code>.</li>
 </ul>
@@ -99,7 +138,7 @@ The following endpoints are currently supported:<!-- -->
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1180---april-16-2026">1.18.0 - April 16, 2026<a href="#1180---april-16-2026" class="hash-link" aria-label="Direct link to 1.18.0 - April 16, 2026" title="Direct link to 1.18.0 - April 16, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.18.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-3">🔧 Compatibility Notes<a href="#-compatibility-notes-3" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-4">🔧 Compatibility Notes<a href="#-compatibility-notes-4" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
 <ul>
 <li class="">Remove Spring dependency, by migrating generated API clients from <code>RestTemplate</code> (Spring) to <code>Apache</code>:</li>
 </ul>
@@ -111,7 +150,7 @@ The following endpoints are currently supported:<!-- -->
 <code>GoogleDrivePipelineCreateRequest</code> now requires <code>GoogleDriveConfigurationStruct</code> to be created</li>
 <li class="">Deprecated multiple Orchestration and OpenAI models: <code>MISTRAL_LARGE_INSTRUCT</code>, <code>MISTRAL_SMALL_INSTRUCT</code>, <code>OPENAI_O1</code>, and <code>OPENAI_O3_MINI</code>.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-4">✨ New Functionality<a href="#-new-functionality-4" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-5">✨ New Functionality<a href="#-new-functionality-5" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[Grounding] Added values <code>CREATING</code>, <code>CREATED</code>, <code>CREATION_FAILED</code>, <code>DELETION_INPROGRESS</code> and <code>DELETION_FAILED</code> for <code>PipelineExecutionStatus</code>.</li>
 <li class="">[Grounding] New error type <code>GenericError</code> added. <code>ValidationError</code> now includes additional fields <code>input</code> and <code>ctx</code> for better debugging and error handling.</li>
@@ -121,7 +160,7 @@ The following endpoints are currently supported:<!-- -->
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1170---march-27-2026">1.17.0 - March 27, 2026<a href="#1170---march-27-2026" class="hash-link" aria-label="Direct link to 1.17.0 - March 27, 2026" title="Direct link to 1.17.0 - March 27, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.17.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-4">🔧 Compatibility Notes<a href="#-compatibility-notes-4" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-compatibility-notes-5">🔧 Compatibility Notes<a href="#-compatibility-notes-5" class="hash-link" aria-label="Direct link to 🔧 Compatibility Notes" title="Direct link to 🔧 Compatibility Notes" translate="no">​</a></h3>
 <ul>
 <li class="">
 <p>Some changes to existing generated API in the <em>Prompt Registry</em> module.</p>
@@ -136,7 +175,7 @@ See full changelog for all details.</p>
 <div class="language-diff codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-diff codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">  var chunkMeta;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  var docMeta;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  var chunk =</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">-   TextOnlyBaseChunk.create().content(&quot;Luna is the Latin word for moon.&quot;).metadata(chunkMeta);</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">+   TextOnlyBaseChunkCreate.create().content(&quot;Luna is the Latin word for moon.&quot;).addMetadataItem(chunkMeta);</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- BaseDocument.create().chunks(chunk).metadata(docMeta);</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">+ BaseDocument.create().chunks(chunk).addMetadataItem(docMeta);</span><br></div></code></pre></div></div>
 </li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-5">✨ New Functionality<a href="#-new-functionality-5" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-6">✨ New Functionality<a href="#-new-functionality-6" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[Grounding] Added <code>GroundingClient.withHeader()</code>.</li>
 <li class="">[Orchestration] Added <code>GPT_52</code> model for <code>OrchestrationAiModel</code>.</li>
@@ -151,7 +190,7 @@ See full changelog for all details.</p>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1160---february-20-2026">1.16.0 - February 20, 2026<a href="#1160---february-20-2026" class="hash-link" aria-label="Direct link to 1.16.0 - February 20, 2026" title="Direct link to 1.16.0 - February 20, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.16.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-6">✨ New Functionality<a href="#-new-functionality-6" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-7">✨ New Functionality<a href="#-new-functionality-7" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[RPT] Introducing <code>RptClient</code> for Tabular AI backed by SAP RPT models <code>SAP_RPT_1_SMALL</code> and <code>SAP_RPT_1_LARGE</code>.<!-- -->
 <ul>
@@ -173,7 +212,7 @@ See full changelog for all details.</p>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1150---january-21-2026">1.15.0 - January 21, 2026<a href="#1150---january-21-2026" class="hash-link" aria-label="Direct link to 1.15.0 - January 21, 2026" title="Direct link to 1.15.0 - January 21, 2026" translate="no">​</a></h2>
 <p><a href="https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.15.0" target="_blank" rel="noopener noreferrer" class="">All Release Changes</a></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-7">✨ New Functionality<a href="#-new-functionality-7" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-new-functionality-8">✨ New Functionality<a href="#-new-functionality-8" class="hash-link" aria-label="Direct link to ✨ New Functionality" title="Direct link to ✨ New Functionality" translate="no">​</a></h3>
 <ul>
 <li class="">[Orchestration] Configs stored in prompt registry can now be used for <a class="" href="/ai-sdk/docs/java/orchestration/chat-completion">Orchestration calls via reference</a>.</li>
 <li class="">[Prompt Registry] Added support to <a class="" href="/ai-sdk/docs/java/ai-core/prompt-registry">manage Orchestration configs stored in Prompt Registry</a>.</li>
