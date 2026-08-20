@@ -407,7 +407,7 @@ const response = await orchestrationClient.chatCompletion({
 ```
 
 :::warning
-Template messages are **always prepended** to every request. Reusing the same client across multiple turns will include the template on every call. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for how to avoid duplication in multi-turn workflows.
+Template messages are **always prepended** to every request. Reusing the same client across multiple turns will include the template on every call. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for how to avoid duplication in multi-turn workflows with prompt templates.
 :::
 
 ```ts twoslash
@@ -455,7 +455,7 @@ const response = await orchestrationClient.chatCompletion({
 ```
 
 :::warning
-Messages passed alongside a `template_ref` are **automatically routed to `messages_history`** and cannot be merged into the remotely stored template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows.
+Messages passed alongside a `template_ref` are **automatically routed to `messages_history`** and cannot be merged into the remotely stored template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows with template references.
 :::
 
 A prompt template can be referenced either by ID, or by a combination of name, scenario and version.
@@ -1672,7 +1672,7 @@ console.log(response.getContent());
 ```
 
 :::warning
-Messages passed alongside a configuration reference are **automatically routed to `messages_history`** and cannot be merged into the remotely stored configuration's prompt template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows.
+Messages passed alongside a configuration reference are **automatically routed to `messages_history`** and cannot be merged into the remotely stored configuration's prompt template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows with configuration references.
 :::
 
 :::note

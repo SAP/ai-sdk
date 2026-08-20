@@ -152,7 +152,7 @@ const clientWithTemplate = new OrchestrationClient({
 const agent = createAgent({
   model: clientWithTemplate,
   tools: [],
-  checkpointSaver: new MemorySaver()
+  checkpointer: new MemorySaver()
 });
 
 const threadConfig = { configurable: { thread_id: 'conv-1' } };
