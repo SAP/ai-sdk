@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --fix --quiet && prettier . --config .prettierrc -w --log-level error",
     "style": "npm run lint && vale .",
     "check:docs-js-types": "node scripts/check-docs-js-types.js",
-    "update:ai-sdk-js": "npm install @sap-ai-sdk/ai-api@canary @sap-ai-sdk/core@canary @sap-ai-sdk/document-grounding@canary @sap-ai-sdk/foundation-models@canary @sap-ai-sdk/langchain@canary @sap-ai-sdk/llm-batch@canary @sap-ai-sdk/openai@canary @sap-ai-sdk/orchestration@canary @sap-ai-sdk/rpt@canary"
+    "update:ai-sdk-js": "npm install --min-release-age=0 @sap-ai-sdk/ai-api@canary @sap-ai-sdk/core@canary @sap-ai-sdk/document-grounding@canary @sap-ai-sdk/foundation-models@canary @sap-ai-sdk/langchain@canary @sap-ai-sdk/llm-batch@canary @sap-ai-sdk/openai@canary @sap-ai-sdk/orchestration@canary @sap-ai-sdk/rpt@canary"
   },
   "dependencies": {
     "@docusaurus/core": "^3.10.2",
@@ -40,7 +40,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.7",
+    "@langchain/core": "1.2.8",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/core": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
@@ -61,7 +61,7 @@
     "eslint-plugin-promise": "7.3.0",
     "eslint-plugin-react": "7.37.5",
     "globals": "17.11.0",
-    "langchain": "1.5.8",
+    "langchain": "1.5.9",
     "openai": "7.4.0",
     "prettier": "3.9.6",
     "prettier-plugin-java": "2.10.3",

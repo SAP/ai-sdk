@@ -13,6 +13,20 @@ keywords:
 <!-- vale off -->
 <!-- This line is used for our release notes automation -->
 
+## 2.15.0 - August 18, 2026
+
+### Compatibility Notes
+
+- [orchestration] Deprecate `OrchestrationConfigRef` — use `OrchestrationConfigRefById` or `OrchestrationConfigRefByName` instead. ([b61cb53](https://github.com/SAP/ai-sdk-js/commit/b61cb5315b7b9e725c611168342a37dd0e69bb4f))
+
+### New Features
+
+- [core, openai] Add experimental OpenAI Realtime API (speech-to-speech) support for `gpt-realtime` via the `@sap-ai-sdk/openai/realtime` sub-path export. ([a5407c8](https://github.com/SAP/ai-sdk-js/commit/a5407c80e60c39c1dbbb24a265869d88be933b9e))
+- [langchain] Add `orchestrationPromptCachingMiddleware()` middleware for the LangChain Orchestration client, exported from `@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware`.
+  It enables automatic cache control for orchestration requests.
+  The middleware requires the optional `langchain` peer dependency to be installed. ([070b309](https://github.com/SAP/ai-sdk-js/commit/070b3095f94d6a9a7a1622be4033e8382076eb4e))
+- [orchestration] Split `OrchestrationConfigRef` into `OrchestrationConfigRefById` and `OrchestrationConfigRefByName`. ([b61cb53](https://github.com/SAP/ai-sdk-js/commit/b61cb5315b7b9e725c611168342a37dd0e69bb4f))
+
 ## 2.14.0 - August 06, 2026
 
 ### New Features
