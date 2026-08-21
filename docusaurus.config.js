@@ -391,7 +391,10 @@ export default {
               rules: [
                 // Docusaurus generates files in .docusaurus/ with require() calls;
                 // treat them as non-strict so require is available in the bundle.
-                { test: /\.docusaurus\/.*\.js$/, type: 'javascript/auto' }
+                {
+                  test: /[/\\]\.docusaurus[/\\].*\.js$/,
+                  type: 'javascript/auto'
+                }
               ]
             }
           };
