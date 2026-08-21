@@ -18,6 +18,11 @@ export default {
         'examples/metering',
         'examples/ai-vs-ai'
       ]
+    },
+    {
+      type: 'link',
+      label: 'SAP Cloud SDK for AI (Python)',
+      href: 'pathname:///api-python/index.html'
     }
   ]
 };
