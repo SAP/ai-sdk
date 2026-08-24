@@ -1076,4 +1076,43 @@ String content = response.getContent();
 List<Citation> citations = response.getOriginalResponse().getFinalResult().getCitations();
 ```
 
-Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
+## Prompt caching[​](#prompt-caching "Direct link to Prompt caching")
+
+Use [**prompt caching**](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching) to reduce usage costs for repetitive prompts:
+
+```
+
+
+var systemMessage = Message.system("<Long frequently used prompt here>", new CacheControl("1h"));
+
+var userMessage = Message.user("<Variable user prompt>");
+
+
+
+var prompt = new OrchestrationPrompt(systemMessage, userMessage);
+
+
+
+var result =
+
+    new OrchestrationClient().chatCompletion(prompt, config);
+```
+
+In this example, the system message (prompt) will be cached so its intermediate model calculation results could be reused on subsequent requests across conversations.
+
+User messages and tool messages can also be cached.
+
+Caching is only supported for the following models currently:
+
+| Model name           | Max caching points per request | Min tokens per cache point | Supported TTLs | Default TTL |
+| -------------------- | ------------------------------ | -------------------------- | -------------- | ----------- |
+| CLAUDE\_4\_5\_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE\_4\_6\_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE\_4\_5\_SONNET | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE\_4\_6\_SONNET | 4                              | 1024                       | 5m or 1h       | 5m          |
+| CLAUDE\_4\_5\_HAIKU  | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE\_4\_OPUS      | 4                              | 4096                       | 5m             | 5m          |
+| CLAUDE\_4\_7\_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE\_4\_8\_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+
+Please find a [working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
