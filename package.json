@@ -40,7 +40,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.8",
+    "@langchain/core": "1.2.9",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/core": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
@@ -61,7 +61,7 @@
     "eslint-plugin-promise": "7.3.0",
     "eslint-plugin-react": "7.37.5",
     "globals": "17.11.0",
-    "langchain": "1.5.9",
+    "langchain": "1.5.10",
     "openai": "7.5.0",
     "prettier": "3.9.6",
     "prettier-plugin-java": "2.10.3",
