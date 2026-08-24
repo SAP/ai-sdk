@@ -11,6 +11,7 @@
 - [Connecting to AI Core](/docs/java/connecting-to-ai-core.md): How to connect to AI Core in BTP using a wide variety of credentials.
 - [Chat Completion](/docs/java/foundation-models/openai/chat-completion.md): How to use the SAP AI SDK for Java to perform chat completion tasks using OpenAI models deployed on SAP AI Core.
 - [Embedding](/docs/java/foundation-models/openai/embedding.md): How to use the SAP AI SDK for Java to perform embedding tasks using OpenAI models deployed on SAP AI Core.
+- [Realtime](/docs/java/foundation-models/openai/realtime.md): How to use the SAP AI SDK for Java to stream audio conversations and text-to-speech using the OpenAI Realtime API.
 - [Responses](/docs/java/foundation-models/openai/responses.md): How to use the SAP AI SDK for Java to perform responses tasks using OpenAI models deployed on SAP AI Core.
 - [Table Completion](/docs/java/foundation-models/sap-rpt/table-completion.md): How to use the SAP AI SDK for Java to perform table completion tasks using SAP RPT models deployed on SAP AI Core.
 - [Frequently Asked Questions](/docs/java/frequently-asked-questions.md): You asked! We answered! We collected here the most frequent question about SAP Cloud SDK for Java.
