@@ -513,6 +513,63 @@ config = config.withStreamConfig(
 );
 ```
 
+## Reasoning
+
+Reasoning-capable models can return their intermediate "thinking" alongside the final answer.
+Enable this by setting the reasoning effort on the model via `withReasoningEffort`, then read the reasoning text from the response with `getReasoningText`.
+
+```java
+var reasoningConfig =
+    config.withLlmConfig(
+        OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+var prompt =
+    new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+
+var response = client.chatCompletion(prompt, reasoningConfig);
+
+String answer = response.getContent();
+String reasoning = response.getReasoningText();
+```
+
+`ReasoningEffort` offers the harmonized levels `MINIMAL`, `LOW`, `MEDIUM`, `HIGH`, and `NONE`.
+Not all reasoning-capable models support the full range; where a model does not support a given effort, orchestration transparently maps it to the closest equivalent.
+
+### Streaming Reasoning
+
+When streaming, each delta carries its answer and reasoning fragments separately.
+Read them with `getDeltaContent` and `getDeltaReasoningText`.
+
+```java
+var request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+
+try (var stream = client.streamChatCompletionDeltas(request)) {
+    stream.forEach(
+        delta -> {
+            System.out.print(delta.getDeltaReasoningText()); // thinking, as it arrives
+            System.out.print(delta.getDeltaContent());          // answer, as it arrives
+        });
+}
+```
+
+Both methods return an empty string when the delta carries no fragment of that kind.
+
+### Multi-Turn Reasoning
+
+To keep reasoning enabled across turns, feed the previous response's `getAllMessages()` into the follow-up prompt as message history.
+
+```java
+var firstResponse = client.chatCompletion(new OrchestrationPrompt("What is 6 times 7?"), reasoningConfig);
+
+var followUp =
+    new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
+var followUpResponse = client.chatCompletion(followUp, reasoningConfig);
+
+String answer = followUpResponse.getContent();
+String reasoning = followUpResponse.getReasoningText();
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
 ## Using Images
 
 It's possible to add images, files, and multiple text inputs to a message.
