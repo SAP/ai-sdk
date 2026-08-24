@@ -76,13 +76,13 @@ In addition to the prerequisites above, we assume you have already set up the fo
         "resources": {
           "backendDetails": {
             "model": {
-              "name": "sap-rpt-1-small",
+              "name": "sap-rpt-1.5",
               "version": "latest"
             }
           },
           "backend_details": {
             "model": {
-              "name": "sap-rpt-1-small",
+              "name": "sap-rpt-1.5-large",
               "version": "latest"
             }
           }
@@ -95,7 +95,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
       "targetStatus": "RUNNING",
       "submissionTime": "2026-01-14T06:30:08Z",
       "startTime": "2026-01-14T06:31:44Z",
-      "configurationName": "sap-rpt-1-small",
+      "configurationName": "sap-rpt-1.5",
       "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/c4dfbfd3bet3d4f1"
     }
     ```
@@ -131,7 +131,7 @@ var request =
         .predictionConfig(PredictionConfig.create().targetColumns(targetColumns))
         .rows(rows);
 
-PredictResponsePayload response = RptClient.forModel(SAP_RPT_1_SMALL).tableCompletion(request);
+PredictResponsePayload response = RptClient.forModel(SAP_RPT_15).tableCompletion(request);
 
 ```
 
@@ -155,7 +155,24 @@ var targetColumns =
 var predictionConfig = PredictionConfig.create().targetColumns(targetColumns);
 
 PredictResponsePayload response =
-    RptClient.forModel(SAP_RPT_1_SMALL).tableCompletion(parquetFile, predictionConfig);
+    RptClient.forModel(SAP_RPT_15).tableCompletion(parquetFile, predictionConfig);
 ```
 
 Please find more examples in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/RptService.java).
+
+## Migration from RPT-1 version
+
+- Update maven sap-rpt dependency to ${ai-sdk.version} version
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>sap-rpt</artifactId>
+        <version>${ai-sdk.version}</version>
+    </dependency>
+</dependencies>
+```
+- review your usage of `PredictRequestPayload`, add either `rows` or `columns` if both are missing depending on your
+use case (one of them is now required)
+- in case you use custom destinations (e.g. `RptClient.forDestination` with a configured URL) check your
+configuration if you need to adjust it to account for the API base path change (from `/v1` prefix to `/`)
