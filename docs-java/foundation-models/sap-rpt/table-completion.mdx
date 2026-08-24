@@ -163,6 +163,7 @@ Please find more examples in [the sample application](https://github.com/SAP/ai-
 ## Migration from RPT-1 version
 
 - Update maven sap-rpt dependency to ${ai-sdk.version} version
+
 ```xml
 <dependencies>
     <dependency>
@@ -172,7 +173,8 @@ Please find more examples in [the sample application](https://github.com/SAP/ai-
     </dependency>
 </dependencies>
 ```
+
 - review your usage of `PredictRequestPayload`, add either `rows` or `columns` if both are missing depending on your
-use case (one of them is now required)
+  use case (one of them is now required)
 - in case you use custom destinations (e.g. `RptClient.forDestination` with a configured URL) check your
-configuration if you need to adjust it to account for the API base path change (from `/v1` prefix to `/`)
+  configuration if you need to adjust it to account for the API base path change (from `/v1` prefix to `/`)
