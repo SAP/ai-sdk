@@ -236,6 +236,55 @@ const response = await client.responses.parse({
 });
 ```
 
+#### Tool Calling
+
+Use function tools to let the model call your own functions.
+The model returns a `function_call` in `response.output`; execute the function and send the result back in a follow-up request.
+
+```ts twoslash
+import { SapOpenAi } from '@sap-ai-sdk/openai';
+const client = await SapOpenAi.createClient('gpt-5.4');
+// ---cut---
+const response = await client.responses.create({
+  input: 'What is the weather in Paris?',
+  tools: [
+    {
+      type: 'function',
+      name: 'get_weather',
+      description: 'Get the current weather for a city.',
+      parameters: {
+        type: 'object',
+        properties: {
+          city: { type: 'string', description: 'The city name.' }
+        },
+        required: ['city'],
+        additionalProperties: false
+      },
+      strict: true
+    }
+  ]
+});
+
+const toolCall = response.output.find(item => item.type === 'function_call');
+if (toolCall && toolCall.type === 'function_call') {
+  const args = JSON.parse(toolCall.arguments); // { city: 'Paris' }
+  // Call your actual function here.
+  const result = JSON.stringify({ temperature: '15°C', condition: 'Cloudy' });
+
+  const input: any[] = [
+    ...response.output,
+    {
+      type: 'function_call_output',
+      call_id: toolCall.call_id,
+      output: result
+    }
+  ];
+
+  const finalResponse = await client.responses.create({ input });
+  // finalResponse.output_text contains the final answer.
+}
+```
+
 ## Per-Request Model Override
 
 You can override the model or deployment configuration for individual requests by passing a `model` parameter.
