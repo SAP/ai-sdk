@@ -199,15 +199,16 @@ Use this when you need full control over the conversation history, for example t
 
 ```ts twoslash
 import { SapOpenAi } from '@sap-ai-sdk/openai';
+import type { ResponseInputItem } from 'openai';
 const client = await SapOpenAi.createClient('gpt-5.4');
 // ---cut---
-let context: any[] = [
+let context: ResponseInputItem[] = [
   { role: 'user', content: 'What is the capital of France?' }
 ];
 
 const first = await client.responses.create({ input: context });
 
-context = context.concat(first.output);
+context = context.concat(first.output as ResponseInputItem[]);
 context.push({
   role: 'user',
   content: 'What is the population of that city?'
@@ -243,6 +244,7 @@ The model returns a `function_call` in `response.output`; execute the function a
 
 ```ts twoslash
 import { SapOpenAi } from '@sap-ai-sdk/openai';
+import type { ResponseInputItem } from 'openai';
 const client = await SapOpenAi.createClient('gpt-5.4');
 // ---cut---
 const response = await client.responses.create({
@@ -271,8 +273,8 @@ if (toolCall && toolCall.type === 'function_call') {
   // Call your actual function here.
   const result = JSON.stringify({ temperature: '15°C', condition: 'Cloudy' });
 
-  const input: any[] = [
-    ...response.output,
+  const input: ResponseInputItem[] = [
+    ...(response.output as ResponseInputItem[]),
     {
       type: 'function_call_output',
       call_id: toolCall.call_id,
