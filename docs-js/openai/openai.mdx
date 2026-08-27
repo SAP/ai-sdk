@@ -202,7 +202,9 @@ import { SapOpenAi } from '@sap-ai-sdk/openai';
 import { toResponseInputItems } from 'openai/lib/responses/ResponseInputItems';
 const client = await SapOpenAi.createClient('gpt-5.4');
 // ---cut---
-let context = [{ role: 'user' as const, content: 'What is the capital of France?' }];
+let context = [
+  { role: 'user' as const, content: 'What is the capital of France?' }
+];
 
 const first = await client.responses.create({ input: context });
 
