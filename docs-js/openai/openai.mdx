@@ -244,7 +244,7 @@ The model returns a `function_call` in `response.output`; execute the function a
 
 ```ts twoslash
 import { SapOpenAi } from '@sap-ai-sdk/openai';
-import type { ResponseInputItem } from 'openai';
+import { toResponseInputItems } from 'openai/lib/responses/ResponseInputItems';
 const client = await SapOpenAi.createClient('gpt-5.4');
 // ---cut---
 const response = await client.responses.create({
@@ -273,14 +273,14 @@ if (toolCall && toolCall.type === 'function_call') {
   // Call your actual function here.
   const result = JSON.stringify({ temperature: '15°C', condition: 'Cloudy' });
 
-  const input: ResponseInputItem[] = [
-    ...(response.output as ResponseInputItem[]),
+  const input = toResponseInputItems([
+    ...response.output,
     {
       type: 'function_call_output',
       call_id: toolCall.call_id,
       output: result
     }
-  ];
+  ]);
 
   const finalResponse = await client.responses.create({ input });
   // finalResponse.output_text contains the final answer.
