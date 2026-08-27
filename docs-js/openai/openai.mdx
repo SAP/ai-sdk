@@ -276,7 +276,7 @@ if (toolCall && toolCall.type === 'function_call') {
   const input = [
     ...toResponseInputItems(response.output),
     {
-      type: 'function_call_output',
+      type: 'function_call_output' as const,
       call_id: toolCall.call_id,
       output: result
     }
