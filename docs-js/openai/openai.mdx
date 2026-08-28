@@ -200,9 +200,10 @@ Use this when you need full control over the conversation history, for example t
 ```ts twoslash
 import { SapOpenAi } from '@sap-ai-sdk/openai';
 import { toResponseInputItems } from 'openai/lib/responses/ResponseInputItems';
+import type { ResponseInputItem } from 'openai/resources/responses/responses';
 const client = await SapOpenAi.createClient('gpt-5.4');
 // ---cut---
-let context = [
+let context: ResponseInputItem[] = [
   { role: 'user' as const, content: 'What is the capital of France?' }
 ];
 
