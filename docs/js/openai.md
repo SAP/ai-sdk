@@ -150,6 +150,92 @@ const response = await client.responses.create({
 });
 ```
 
+#### Streaming[​](#streaming "Direct link to Streaming")
+
+Pass `stream: true` and iterate over the events with `for await`. The `delta` text is only available when `event.type === 'response.output_text.delta'`.
+
+```
+const stream = await client.responses.create({
+
+  instructions: 'You are a helpful assistant.',
+
+  input: 'Give me a short introduction of SAP Cloud SDK.',
+
+  stream: true
+
+});
+
+
+
+for await (const event of stream) {
+
+  if (event.type === 'response.output_text.delta') {
+
+    process.stdout.write(event.delta);
+
+  }
+
+}
+```
+
+#### Stateful Conversations[​](#stateful-conversations "Direct link to Stateful Conversations")
+
+Pass `previous_response_id` to let the server maintain the conversation history. Each turn only needs to send the new message. Use this when you want simple multi-turn conversations without managing history yourself. Note that responses are stored on the server.
+
+```
+const first = await client.responses.create({
+
+  instructions: 'You are a helpful assistant.',
+
+  input: 'What is the capital of France?'
+
+});
+
+
+
+const second = await client.responses.create({
+
+  previous_response_id: first.id,
+
+  input: 'What is the population of that city?'
+
+});
+```
+
+#### Multi-Turn Conversations[​](#multi-turn-conversations "Direct link to Multi-Turn Conversations")
+
+Manage the context yourself by appending the previous `response.output` to the next `input`. Use this when you need full control over the conversation history, for example to store it in your own database or modify messages between turns.
+
+```
+let context: ResponseInputItem[] = [
+
+  { role: 'user' as const, content: 'What is the capital of France?' }
+
+];
+
+
+
+const first = await client.responses.create({ input: context });
+
+
+
+context = [...context, ...toResponseInputItems(first.output)];
+
+context.push({
+
+  role: 'user' as const,
+
+  content: 'What is the population of that city?'
+
+});
+
+
+
+const second = await client.responses.create({ input: context });
+```
+
+#### Structured Output[​](#structured-output "Direct link to Structured Output")
+
 Use the `parse()` method for structured output with a Zod schema:
 
 ```
@@ -172,6 +258,88 @@ const response = await client.responses.parse({
   text: { format: zodTextFormat(CapitalResponse, 'capital_response') }
 
 });
+```
+
+#### Tool Calling[​](#tool-calling "Direct link to Tool Calling")
+
+Use function tools to let the model call your own functions. The model returns a `function_call` in `response.output`; execute the function and send the result back in a follow-up request.
+
+```
+const response = await client.responses.create({
+
+  input: 'What is the weather in Paris?',
+
+  tools: [
+
+    {
+
+      type: 'function',
+
+      name: 'get_weather',
+
+      description: 'Get the current weather for a city.',
+
+      parameters: {
+
+        type: 'object',
+
+        properties: {
+
+          city: { type: 'string', description: 'The city name.' }
+
+        },
+
+        required: ['city'],
+
+        additionalProperties: false
+
+      },
+
+      strict: true
+
+    }
+
+  ]
+
+});
+
+
+
+const toolCall = response.output.find(item => item.type === 'function_call');
+
+if (toolCall && toolCall.type === 'function_call') {
+
+  const args = JSON.parse(toolCall.arguments); // { city: 'Paris' }
+
+  // Call your actual function here.
+
+  const result = JSON.stringify({ temperature: '15°C', condition: 'Cloudy' });
+
+
+
+  const input = [
+
+    ...toResponseInputItems(response.output),
+
+    {
+
+      type: 'function_call_output' as const,
+
+      call_id: toolCall.call_id,
+
+      output: result
+
+    }
+
+  ];
+
+
+
+  const finalResponse = await client.responses.create({ input });
+
+  // finalResponse.output_text contains the final answer.
+
+}
 ```
 
 ## Per-Request Model Override[​](#per-request-model-override "Direct link to Per-Request Model Override")
