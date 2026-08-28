@@ -163,7 +163,7 @@ var targetColumns =
 
 var request =
 
-    PredictRequestPayload.create()
+    PredictRequestPayloadOneOf.create()
 
         .predictionConfig(PredictionConfig.create().targetColumns(targetColumns))
 
@@ -171,7 +171,7 @@ var request =
 
 
 
-PredictResponsePayload response = RptClient.forModel(SAP_RPT_1_SMALL).tableCompletion(request);
+PredictResponsePayload response = RptClient.forModel(SAP_RPT_1_5).tableCompletion(request);
 ```
 
 The request payload is always GZIP compressed before sending. Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/RptService.java) including `dataSchema` specification.
@@ -195,7 +195,7 @@ var targetColumns =
 
             .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
 
-            .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
+            .taskType(CLASSIFICATION));
 
 
 
@@ -205,7 +205,56 @@ var predictionConfig = PredictionConfig.create().targetColumns(targetColumns);
 
 PredictResponsePayload response =
 
-    RptClient.forModel(SAP_RPT_1_SMALL).tableCompletion(parquetFile, predictionConfig);
+    RptClient.forModel(SAP_RPT_1_5).tableCompletion(parquetFile, predictionConfig);
+```
+
+Please find more examples in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/RptService.java).
+
+## Explanations[​](#explanations "Direct link to Explanations")
+
+The tabular model can provide explanations:
+
+* Column scores per query row, higher means more weight was put on this column.
+* 2D array where each subarray contains indices of most relevant context rows for that query row. The first dimension indexes query rows, the second dimension indexes all rows as a sequential integer index.
+
+```
+var rows = ...;
+
+var targetColumns = ...;
+
+
+
+var predictionConfig =
+
+    PredictionConfig.create()
+
+        .targetColumns(targetColumns)
+
+        .explanations(ExplanationConfig.create().topColumnScores(3).topRelevantContextRows(3));
+
+
+
+var request = PredictRequestPayloadOneOf.create().predictionConfig(predictionConfig).rows(rows);
+
+
+
+PredictResponsePayload response = RptClient.forModel(SAP_RPT_1_5).tableCompletion(request);
+
+
+
+ExplanationResult explanation = response.getExplanations();
+
+
+
+List<Map<String, BigDecimal>> columnScores = explanations.getTopColumnScores();
+
+// [{"ORDERDATE": 0.339, "PRICE": 0.291, "PRODUCT": 0.37}]
+
+
+
+List<List<Integer>> relevantContextRows = explanations.getTopRelevantContextRows();
+
+// [[1, 2]]
 ```
 
 Please find more examples in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/RptService.java).
