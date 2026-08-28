@@ -137,19 +137,21 @@ class WeatherMethod {
 
   enum Unit {C,F}
 
-  record Request(String location, Unit unit) {}
-
   record Response(double temp, Unit unit) {}
 
 
 
   @Tool(description = "Get the weather in location")
 
-  Response getCurrentWeather(@ToolParam Request request) {
+  Response getCurrentWeather(
 
-    int temperature = request.location.hashCode() % 30;
+      @ToolParam(description = "the city") String location,
 
-    return new Response(temperature, request.unit);
+      @ToolParam(description = "the unit of temperature") Unit unit) {
+
+    int temperature = location.hashCode() % 30;
+
+    return new Response(temperature, unit);
 
   }
 

@@ -427,17 +427,15 @@ class WeatherMethod {
 
   enum Unit {C,F}
 
-  record Request(String location, Unit unit) {}
-
   record Response(double temp, Unit unit) {}
 
 
 
-  static Response getCurrentWeather(Request request) {
+  static Response getCurrentWeather(String location, Unit unit) {
 
-    int temperature = request.location.hashCode() % 30;
+    int temperature = location.hashCode() % 30;
 
-    return new Response(temperature, request.unit);
+    return new Response(temperature, unit);
 
   }
 
@@ -464,15 +462,21 @@ messages.add(OpenAiMessage.user("What's the weather in Berlin in Celsius"));
 
 
 
+record WeatherRequest(String location, WeatherMethod.Unit unit) {}
+
+
+
 // 1. Define the functions
 
 List<OpenAiTool> tools =
 
   List.of(
 
-    OpenAiTool.forFunction(WeatherMethod::getCurrentWeather)
+    OpenAiTool.forFunction(
 
-      .withArgument(WeatherMethod.Request.class)
+            (WeatherRequest r) -> WeatherMethod.getCurrentWeather(r.location(), r.unit()))
+
+      .withArgument(WeatherRequest.class)
 
       .withName("weather")
 
