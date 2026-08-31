@@ -21,7 +21,7 @@ export default {
     },
     {
       type: 'link',
-      label: 'SAP Cloud SDK for AI (Python)',
+      label: 'API Reference',
       href: 'pathname:///api-python/index.html'
     }
   ]
