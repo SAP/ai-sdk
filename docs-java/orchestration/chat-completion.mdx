@@ -513,6 +513,63 @@ config = config.withStreamConfig(
 );
 ```
 
+## Reasoning
+
+Reasoning-capable models can return their intermediate "thinking" alongside the final answer.
+Enable this by setting the reasoning effort on the model via `withReasoningEffort`, then read the reasoning text from the response with `getReasoningText`.
+
+```java
+var reasoningConfig =
+    config.withLlmConfig(
+        OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+var prompt =
+    new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+
+var response = client.chatCompletion(prompt, reasoningConfig);
+
+String answer = response.getContent();
+String reasoning = response.getReasoningText();
+```
+
+`ReasoningEffort` offers the harmonized levels `MINIMAL`, `LOW`, `MEDIUM`, `HIGH`, and `NONE`.
+Not all reasoning-capable models support the full range; where a model does not support a given effort, orchestration transparently maps it to the closest equivalent.
+
+### Streaming Reasoning
+
+When streaming, each delta carries its answer and reasoning fragments separately.
+Read them with `getDeltaContent` and `getDeltaReasoningText`.
+
+```java
+var request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+
+try (var stream = client.streamChatCompletionDeltas(request)) {
+    stream.forEach(
+        delta -> {
+            System.out.print(delta.getDeltaReasoningText()); // thinking, as it arrives
+            System.out.print(delta.getDeltaContent());          // answer, as it arrives
+        });
+}
+```
+
+Both methods return an empty string when the delta carries no fragment of that kind.
+
+### Multi-Turn Reasoning
+
+To keep reasoning enabled across turns, feed the previous response's `getAllMessages()` into the follow-up prompt as message history.
+
+```java
+var firstResponse = client.chatCompletion(new OrchestrationPrompt("What is 6 times 7?"), reasoningConfig);
+
+var followUp =
+    new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
+var followUpResponse = client.chatCompletion(followUp, reasoningConfig);
+
+String answer = followUpResponse.getContent();
+String reasoning = followUpResponse.getReasoningText();
+```
+
+Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
 ## Using Images
 
 It's possible to add images, files, and multiple text inputs to a message.
@@ -835,4 +892,36 @@ String content = response.getContent();
 List<Citation> citations = response.getOriginalResponse().getFinalResult().getCitations();
 ```
 
-Please find [a working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
+## Prompt caching
+
+Use [**prompt caching**](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching) to reduce usage costs for repetitive prompts:
+
+```java
+
+var systemMessage = Message.system("<Long frequently used prompt here>", new CacheControl("1h"));
+var userMessage = Message.user("<Variable user prompt>");
+
+var prompt = new OrchestrationPrompt(systemMessage, userMessage);
+
+var result =
+    new OrchestrationClient().chatCompletion(prompt, config);
+```
+
+In this example, the system message (prompt) will be cached so its intermediate model calculation results could be reused on subsequent requests across conversations.
+
+User messages and tool messages can also be cached.
+
+Caching is only supported for the following models currently:
+
+| Model name        | Max caching points per request | Min tokens per cache point | Supported TTLs | Default TTL |
+| ----------------- | ------------------------------ | -------------------------- | -------------- | ----------- |
+| CLAUDE_4_5_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_6_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_5_SONNET | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_6_SONNET | 4                              | 1024                       | 5m or 1h       | 5m          |
+| CLAUDE_4_5_HAIKU  | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_OPUS     | 4                              | 4096                       | 5m             | 5m          |
+| CLAUDE_4_7_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_8_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+
+Please find a [working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)

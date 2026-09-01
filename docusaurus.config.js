@@ -85,11 +85,6 @@ export default {
           type: 'docsVersionDropdown',
           position: 'right',
           docsPluginId: 'docs-java'
-        },
-        {
-          type: 'docsVersionDropdown',
-          position: 'right',
-          docsPluginId: 'docs-python'
         }
       ]
     },
@@ -274,7 +269,7 @@ export default {
         filename: 'sitemap-js.xml',
         changefreq: 'weekly',
         priority: 0.5,
-        ignorePatterns: ['**/docs/java/**']
+        ignorePatterns: ['**/docs/java/**', '**/docs/python/**']
       }
     ],
     [
@@ -284,7 +279,17 @@ export default {
         filename: 'sitemap-java.xml',
         changefreq: 'weekly',
         priority: 0.5,
-        ignorePatterns: ['**/docs/js/**']
+        ignorePatterns: ['**/docs/js/**', '**/docs/python/**']
+      }
+    ],
+    [
+      '@docusaurus/plugin-sitemap',
+      {
+        id: 'sitemap-python',
+        filename: 'sitemap-python.xml',
+        changefreq: 'weekly',
+        priority: 0.5,
+        ignorePatterns: ['**/docs/java/**', '**/docs/js/**']
       }
     ],
     [
@@ -391,10 +396,8 @@ export default {
               rules: [
                 // Docusaurus generates files in .docusaurus/ with require() calls;
                 // treat them as non-strict so require is available in the bundle.
-                {
-                  test: /[/\\]\.docusaurus[/\\].*\.js$/,
-                  type: 'javascript/auto'
-                }
+                // Use [/\\] to match both Unix and Windows path separators.
+                { test: /\.docusaurus[/\\].*\.js$/, type: 'javascript/auto' }
               ]
             }
           };

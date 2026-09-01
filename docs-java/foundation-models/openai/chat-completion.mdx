@@ -142,6 +142,15 @@ var client = new OpenAIClient();
 var result = client.withHeader("foo", "bar").chatCompletion("Hello World! Why is this phrase so famous?");
 ```
 
+Or, to add multiple headers at once, use `withHeaders`.
+
+```java
+var client = new OpenAIClient();
+var headers = Map.of("foo", "bar", "foot", "baz");
+
+var result = client.withHeaders(headers).chatCompletion("Hello World! Why is this phrase so famous?");
+```
+
 ## Message history
 
 **Since v1.4.0**
@@ -314,12 +323,11 @@ Below is a [sample tool named `WeatherMethod`](https://github.com/SAP/ai-sdk-jav
 ```java
 class WeatherMethod {
   enum Unit {C,F}
-  record Request(String location, Unit unit) {}
   record Response(double temp, Unit unit) {}
 
-  static Response getCurrentWeather(Request request) {
-    int temperature = request.location.hashCode() % 30;
-    return new Response(temperature, request.unit);
+  static Response getCurrentWeather(String location, Unit unit) {
+    int temperature = location.hashCode() % 30;
+    return new Response(temperature, unit);
   }
 }
 ```
@@ -342,11 +350,14 @@ var client = OpenAiClient.forModel(GPT_4O_MINI);
 var messages = new ArrayList<OpenAiMessage>();
 messages.add(OpenAiMessage.user("What's the weather in Berlin in Celsius"));
 
+record WeatherRequest(String location, WeatherMethod.Unit unit) {}
+
 // 1. Define the functions
 List<OpenAiTool> tools =
   List.of(
-    OpenAiTool.forFunction(WeatherMethod::getCurrentWeather)
-      .withArgument(WeatherMethod.Request.class)
+    OpenAiTool.forFunction(
+            (WeatherRequest r) -> WeatherMethod.getCurrentWeather(r.location(), r.unit()))
+      .withArgument(WeatherRequest.class)
       .withName("weather")
       .withDescription("Get the weather for the given location"));
 

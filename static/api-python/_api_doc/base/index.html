@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="./" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>SAP Cloud SDK for AI (Python) - base | SAP Cloud SDK for AI (Python) - base v3.4.1</title>
+<meta content="SAP Cloud SDK for AI (Python) - base | SAP Cloud SDK for AI (Python) - base v3.4.1" property="og:title"/>
+<meta content="SAP Cloud SDK for AI (Python) - base | SAP Cloud SDK for AI (Python) - base v3.4.1" name="twitter:title"/>
+<link href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom-override.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="search.html" rel="search" title="Search"/>
+<link href="genindex.html" rel="index" title="Index"/>
+<link href="_api_doc/ai_api_client_sdk.html" rel="next" title="ai_api_client_sdk package"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="#"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - base v3.4.1</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="#"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - base v3.4.1</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="_api_doc/ai_api_client_sdk.html">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html">ai_api_client_sdk.helpers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html">ai_api_client_sdk.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html">ai_api_client_sdk.resource_clients package</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<div id="content" role="main">
+<section id="sap-cloud-sdk-for-ai-python-base">
+<h1>SAP Cloud SDK for AI (Python) - base</h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html">ai_api_client_sdk.helpers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#module-ai_api_client_sdk.helpers.authenticator">ai_api_client_sdk.helpers.authenticator module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.authenticator.Authenticator"><code class="docutils literal notranslate"><span class="pre">Authenticator</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.authenticator.Authenticator.__init__"><code class="docutils literal notranslate"><span class="pre">Authenticator.__init__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.authenticator.Authenticator.get_token"><code class="docutils literal notranslate"><span class="pre">Authenticator.get_token()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#module-ai_api_client_sdk.helpers.constants">ai_api_client_sdk.helpers.constants module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.constants.Timeouts"><code class="docutils literal notranslate"><span class="pre">Timeouts</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.constants.Timeouts.CONNECT_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">Timeouts.CONNECT_TIMEOUT</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.constants.Timeouts.NUM_REQUEST_RETRIES"><code class="docutils literal notranslate"><span class="pre">Timeouts.NUM_REQUEST_RETRIES</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.constants.Timeouts.READ_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">Timeouts.READ_TIMEOUT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#module-ai_api_client_sdk.helpers.datetime_parser">ai_api_client_sdk.helpers.datetime_parser module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.datetime_parser.parse_datetime"><code class="docutils literal notranslate"><span class="pre">parse_datetime()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#module-ai_api_client_sdk.helpers.llm_helper">ai_api_client_sdk.helpers.llm_helper module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.llm_helper.check_if_llm_scenario"><code class="docutils literal notranslate"><span class="pre">check_if_llm_scenario()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.llm_helper.filter_for_llm_scenarios"><code class="docutils literal notranslate"><span class="pre">filter_for_llm_scenarios()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.llm_helper.get_attr"><code class="docutils literal notranslate"><span class="pre">get_attr()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.llm_helper.get_key"><code class="docutils literal notranslate"><span class="pre">get_key()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.llm_helper.get_labels"><code class="docutils literal notranslate"><span class="pre">get_labels()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.llm_helper.get_value"><code class="docutils literal notranslate"><span class="pre">get_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#module-ai_api_client_sdk.helpers.logging">ai_api_client_sdk.helpers.logging module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.logging.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.logging.get_logger_name"><code class="docutils literal notranslate"><span class="pre">get_logger_name()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.logging.set_log_level"><code class="docutils literal notranslate"><span class="pre">set_log_level()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#module-ai_api_client_sdk.helpers.rest_client">ai_api_client_sdk.helpers.rest_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.rest_client.RestClient"><code class="docutils literal notranslate"><span class="pre">RestClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.rest_client.RestClient.raise_ai_api_exception"><code class="docutils literal notranslate"><span class="pre">RestClient.raise_ai_api_exception()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.rest_client.RestClient.__init__"><code class="docutils literal notranslate"><span class="pre">RestClient.__init__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.rest_client.RestClient.delete"><code class="docutils literal notranslate"><span class="pre">RestClient.delete()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.rest_client.RestClient.get"><code class="docutils literal notranslate"><span class="pre">RestClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.rest_client.RestClient.patch"><code class="docutils literal notranslate"><span class="pre">RestClient.patch()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.rest_client.RestClient.post"><code class="docutils literal notranslate"><span class="pre">RestClient.post()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.helpers.html#ai_api_client_sdk.helpers.rest_client.RestClient.logger"><code class="docutils literal notranslate"><span class="pre">RestClient.logger</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html">ai_api_client_sdk.models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.ai_api_capabilities">ai_api_client_sdk.models.ai_api_capabilities module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities.AIAPICapabilities"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilities</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities.AIAPICapabilities.from_dict"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilities.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities.AIAPICapabilities.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilities.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.ai_api_capabilities_bulk_updates">ai_api_client_sdk.models.ai_api_capabilities_bulk_updates module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities_bulk_updates.AIAPICapabilitiesBulkUpdates"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilitiesBulkUpdates</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities_bulk_updates.AIAPICapabilitiesBulkUpdates.from_dict"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilitiesBulkUpdates.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities_bulk_updates.AIAPICapabilitiesBulkUpdates.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilitiesBulkUpdates.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.ai_api_capabilities_logs">ai_api_client_sdk.models.ai_api_capabilities_logs module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities_logs.AIAPICapabilitiesLogs"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilitiesLogs</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities_logs.AIAPICapabilitiesLogs.from_dict"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilitiesLogs.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_capabilities_logs.AIAPICapabilitiesLogs.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPICapabilitiesLogs.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.ai_api_limits">ai_api_client_sdk.models.ai_api_limits module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits.AIAPILimits"><code class="docutils literal notranslate"><span class="pre">AIAPILimits</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits.AIAPILimits.from_dict"><code class="docutils literal notranslate"><span class="pre">AIAPILimits.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits.AIAPILimits.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPILimits.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.ai_api_limits_deployments">ai_api_client_sdk.models.ai_api_limits_deployments module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits_deployments.AIAPILimitsDeployments"><code class="docutils literal notranslate"><span class="pre">AIAPILimitsDeployments</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits_deployments.AIAPILimitsDeployments.from_dict"><code class="docutils literal notranslate"><span class="pre">AIAPILimitsDeployments.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits_deployments.AIAPILimitsDeployments.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPILimitsDeployments.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.ai_api_limits_enactments">ai_api_client_sdk.models.ai_api_limits_enactments module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits_enactments.AIAPILimitsEnactments"><code class="docutils literal notranslate"><span class="pre">AIAPILimitsEnactments</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits_enactments.AIAPILimitsEnactments.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPILimitsEnactments.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.ai_api_limits_executions">ai_api_client_sdk.models.ai_api_limits_executions module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits_executions.AIAPILimitsExecutions"><code class="docutils literal notranslate"><span class="pre">AIAPILimitsExecutions</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits_executions.AIAPILimitsExecutions.from_dict"><code class="docutils literal notranslate"><span class="pre">AIAPILimitsExecutions.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_limits_executions.AIAPILimitsExecutions.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPILimitsExecutions.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.ai_api_meta">ai_api_client_sdk.models.ai_api_meta module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_meta.AIAPIMeta"><code class="docutils literal notranslate"><span class="pre">AIAPIMeta</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_meta.AIAPIMeta.from_dict"><code class="docutils literal notranslate"><span class="pre">AIAPIMeta.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.ai_api_meta.AIAPIMeta.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIMeta.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.api_version">ai_api_client_sdk.models.api_version module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.api_version.APIVersion"><code class="docutils literal notranslate"><span class="pre">APIVersion</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.api_version.APIVersion.from_dict"><code class="docutils literal notranslate"><span class="pre">APIVersion.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.api_version.APIVersion.__init__"><code class="docutils literal notranslate"><span class="pre">APIVersion.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.artifact">ai_api_client_sdk.models.artifact module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact.Artifact"><code class="docutils literal notranslate"><span class="pre">Artifact</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact.Artifact.Kind"><code class="docutils literal notranslate"><span class="pre">Artifact.Kind</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact.Artifact.Kind.DATASET"><code class="docutils literal notranslate"><span class="pre">Artifact.Kind.DATASET</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact.Artifact.Kind.MODEL"><code class="docutils literal notranslate"><span class="pre">Artifact.Kind.MODEL</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact.Artifact.Kind.OTHER"><code class="docutils literal notranslate"><span class="pre">Artifact.Kind.OTHER</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact.Artifact.Kind.RESULTSET"><code class="docutils literal notranslate"><span class="pre">Artifact.Kind.RESULTSET</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact.Artifact.from_dict"><code class="docutils literal notranslate"><span class="pre">Artifact.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact.Artifact.__init__"><code class="docutils literal notranslate"><span class="pre">Artifact.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.artifact_create_response">ai_api_client_sdk.models.artifact_create_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact_create_response.ArtifactCreateResponse"><code class="docutils literal notranslate"><span class="pre">ArtifactCreateResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact_create_response.ArtifactCreateResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ArtifactCreateResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact_create_response.ArtifactCreateResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ArtifactCreateResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.artifact_query_response">ai_api_client_sdk.models.artifact_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact_query_response.ArtifactQueryResponse"><code class="docutils literal notranslate"><span class="pre">ArtifactQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact_query_response.ArtifactQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ArtifactQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.artifact_query_response.ArtifactQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ArtifactQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.base_models">ai_api_client_sdk.models.base_models module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicErrorResponse"><code class="docutils literal notranslate"><span class="pre">BasicErrorResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicErrorResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">BasicErrorResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicErrorResponse.__init__"><code class="docutils literal notranslate"><span class="pre">BasicErrorResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicModifyRequest"><code class="docutils literal notranslate"><span class="pre">BasicModifyRequest</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicModifyRequest.__init__"><code class="docutils literal notranslate"><span class="pre">BasicModifyRequest.__init__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicModifyRequest.to_dict"><code class="docutils literal notranslate"><span class="pre">BasicModifyRequest.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicResponse"><code class="docutils literal notranslate"><span class="pre">BasicResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">BasicResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BasicResponse.__init__"><code class="docutils literal notranslate"><span class="pre">BasicResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BulkModifyErrorResponse"><code class="docutils literal notranslate"><span class="pre">BulkModifyErrorResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BulkModifyErrorResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">BulkModifyErrorResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.BulkModifyErrorResponse.__init__"><code class="docutils literal notranslate"><span class="pre">BulkModifyErrorResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.KeyValue"><code class="docutils literal notranslate"><span class="pre">KeyValue</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.KeyValue.__init__"><code class="docutils literal notranslate"><span class="pre">KeyValue.__init__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.KeyValue.to_dict"><code class="docutils literal notranslate"><span class="pre">KeyValue.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Name"><code class="docutils literal notranslate"><span class="pre">Name</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Name.__init__"><code class="docutils literal notranslate"><span class="pre">Name.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.NameValue"><code class="docutils literal notranslate"><span class="pre">NameValue</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.NameValue.__init__"><code class="docutils literal notranslate"><span class="pre">NameValue.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Operation"><code class="docutils literal notranslate"><span class="pre">Operation</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Operation.__new__"><code class="docutils literal notranslate"><span class="pre">Operation.__new__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Operation.CASCADE_UPDATE"><code class="docutils literal notranslate"><span class="pre">Operation.CASCADE_UPDATE</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Operation.CREATE"><code class="docutils literal notranslate"><span class="pre">Operation.CREATE</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Operation.DELETE"><code class="docutils literal notranslate"><span class="pre">Operation.DELETE</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Operation.UPDATE"><code class="docutils literal notranslate"><span class="pre">Operation.UPDATE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Order"><code class="docutils literal notranslate"><span class="pre">Order</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Order.ASC"><code class="docutils literal notranslate"><span class="pre">Order.ASC</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.Order.DESC"><code class="docutils literal notranslate"><span class="pre">Order.DESC</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.QueryResponse"><code class="docutils literal notranslate"><span class="pre">QueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.base_models.QueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">QueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.capabilities">ai_api_client_sdk.models.capabilities module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.capabilities.Capabilities"><code class="docutils literal notranslate"><span class="pre">Capabilities</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.capabilities.Capabilities.from_dict"><code class="docutils literal notranslate"><span class="pre">Capabilities.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.capabilities.Capabilities.__init__"><code class="docutils literal notranslate"><span class="pre">Capabilities.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.configuration">ai_api_client_sdk.models.configuration module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.configuration.Configuration"><code class="docutils literal notranslate"><span class="pre">Configuration</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.configuration.Configuration.from_dict"><code class="docutils literal notranslate"><span class="pre">Configuration.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.configuration.Configuration.__init__"><code class="docutils literal notranslate"><span class="pre">Configuration.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.configuration_create_response">ai_api_client_sdk.models.configuration_create_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.configuration_create_response.ConfigurationCreateResponse"><code class="docutils literal notranslate"><span class="pre">ConfigurationCreateResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.configuration_create_response.ConfigurationCreateResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ConfigurationCreateResponse.from_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.configuration_query_response">ai_api_client_sdk.models.configuration_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.configuration_query_response.ConfigurationQueryResponse"><code class="docutils literal notranslate"><span class="pre">ConfigurationQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.configuration_query_response.ConfigurationQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ConfigurationQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.configuration_query_response.ConfigurationQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ConfigurationQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.dataset_capabilities">ai_api_client_sdk.models.dataset_capabilities module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.dataset_capabilities.DatasetCapabilities"><code class="docutils literal notranslate"><span class="pre">DatasetCapabilities</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.dataset_capabilities.DatasetCapabilities.from_dict"><code class="docutils literal notranslate"><span class="pre">DatasetCapabilities.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.dataset_capabilities.DatasetCapabilities.__init__"><code class="docutils literal notranslate"><span class="pre">DatasetCapabilities.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.dataset_limits">ai_api_client_sdk.models.dataset_limits module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.dataset_limits.DatasetLimits"><code class="docutils literal notranslate"><span class="pre">DatasetLimits</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.dataset_limits.DatasetLimits.from_dict"><code class="docutils literal notranslate"><span class="pre">DatasetLimits.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.dataset_limits.DatasetLimits.__init__"><code class="docutils literal notranslate"><span class="pre">DatasetLimits.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.deployment">ai_api_client_sdk.models.deployment module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment.Deployment"><code class="docutils literal notranslate"><span class="pre">Deployment</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment.Deployment.from_dict"><code class="docutils literal notranslate"><span class="pre">Deployment.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment.Deployment.__init__"><code class="docutils literal notranslate"><span class="pre">Deployment.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.deployment_bulk_modify_response">ai_api_client_sdk.models.deployment_bulk_modify_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_bulk_modify_response.DeploymentBulkModifyResponse"><code class="docutils literal notranslate"><span class="pre">DeploymentBulkModifyResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_bulk_modify_response.DeploymentBulkModifyResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">DeploymentBulkModifyResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_bulk_modify_response.DeploymentBulkModifyResponse.__init__"><code class="docutils literal notranslate"><span class="pre">DeploymentBulkModifyResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.deployment_create_response">ai_api_client_sdk.models.deployment_create_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_create_response.DeploymentCreateResponse"><code class="docutils literal notranslate"><span class="pre">DeploymentCreateResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_create_response.DeploymentCreateResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">DeploymentCreateResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_create_response.DeploymentCreateResponse.__init__"><code class="docutils literal notranslate"><span class="pre">DeploymentCreateResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.deployment_get_status_response">ai_api_client_sdk.models.deployment_get_status_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_get_status_response.DeploymentGetStatusResponse"><code class="docutils literal notranslate"><span class="pre">DeploymentGetStatusResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_get_status_response.DeploymentGetStatusResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">DeploymentGetStatusResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_get_status_response.DeploymentGetStatusResponse.__init__"><code class="docutils literal notranslate"><span class="pre">DeploymentGetStatusResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.deployment_query_response">ai_api_client_sdk.models.deployment_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_query_response.DeploymentQueryResponse"><code class="docutils literal notranslate"><span class="pre">DeploymentQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_query_response.DeploymentQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">DeploymentQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.deployment_query_response.DeploymentQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">DeploymentQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.enactment">ai_api_client_sdk.models.enactment module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.enactment.Enactment"><code class="docutils literal notranslate"><span class="pre">Enactment</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.enactment.Enactment.__init__"><code class="docutils literal notranslate"><span class="pre">Enactment.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.enactment_get_status_response">ai_api_client_sdk.models.enactment_get_status_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.enactment_get_status_response.EnactmentGetStatusResponse"><code class="docutils literal notranslate"><span class="pre">EnactmentGetStatusResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.enactment_get_status_response.EnactmentGetStatusResponse.__init__"><code class="docutils literal notranslate"><span class="pre">EnactmentGetStatusResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.executable">ai_api_client_sdk.models.executable module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.executable.Executable"><code class="docutils literal notranslate"><span class="pre">Executable</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.executable.Executable.from_dict"><code class="docutils literal notranslate"><span class="pre">Executable.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.executable.Executable.__init__"><code class="docutils literal notranslate"><span class="pre">Executable.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.executable_query_response">ai_api_client_sdk.models.executable_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.executable_query_response.ExecutableQueryResponse"><code class="docutils literal notranslate"><span class="pre">ExecutableQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.executable_query_response.ExecutableQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ExecutableQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.executable_query_response.ExecutableQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ExecutableQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.execution">ai_api_client_sdk.models.execution module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution.Execution"><code class="docutils literal notranslate"><span class="pre">Execution</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution.Execution.from_dict"><code class="docutils literal notranslate"><span class="pre">Execution.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution.Execution.__init__"><code class="docutils literal notranslate"><span class="pre">Execution.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.execution_bulk_modify_response">ai_api_client_sdk.models.execution_bulk_modify_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_bulk_modify_response.ExecutionBulkModifyResponse"><code class="docutils literal notranslate"><span class="pre">ExecutionBulkModifyResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_bulk_modify_response.ExecutionBulkModifyResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ExecutionBulkModifyResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_bulk_modify_response.ExecutionBulkModifyResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ExecutionBulkModifyResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.execution_create_response">ai_api_client_sdk.models.execution_create_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_create_response.ExecutionCreateResponse"><code class="docutils literal notranslate"><span class="pre">ExecutionCreateResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_create_response.ExecutionCreateResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ExecutionCreateResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_create_response.ExecutionCreateResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ExecutionCreateResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.execution_get_status_response">ai_api_client_sdk.models.execution_get_status_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_get_status_response.ExecutionGetStatusResponse"><code class="docutils literal notranslate"><span class="pre">ExecutionGetStatusResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_get_status_response.ExecutionGetStatusResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ExecutionGetStatusResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_get_status_response.ExecutionGetStatusResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ExecutionGetStatusResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.execution_query_response">ai_api_client_sdk.models.execution_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_query_response.ExecutionQueryResponse"><code class="docutils literal notranslate"><span class="pre">ExecutionQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_query_response.ExecutionQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ExecutionQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_query_response.ExecutionQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ExecutionQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.execution_schedule">ai_api_client_sdk.models.execution_schedule module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_schedule.ExecutionSchedule"><code class="docutils literal notranslate"><span class="pre">ExecutionSchedule</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_schedule.ExecutionSchedule.from_dict"><code class="docutils literal notranslate"><span class="pre">ExecutionSchedule.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_schedule.ExecutionSchedule.__init__"><code class="docutils literal notranslate"><span class="pre">ExecutionSchedule.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.execution_schedule_create_response">ai_api_client_sdk.models.execution_schedule_create_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_schedule_create_response.ExecutionScheduleCreateResponse"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleCreateResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_schedule_create_response.ExecutionScheduleCreateResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleCreateResponse.from_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.execution_schedule_query_response">ai_api_client_sdk.models.execution_schedule_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_schedule_query_response.ExecutionScheduleQueryResponse"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_schedule_query_response.ExecutionScheduleQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.execution_schedule_query_response.ExecutionScheduleQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.extensions">ai_api_client_sdk.models.extensions module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions.Extensions"><code class="docutils literal notranslate"><span class="pre">Extensions</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions.Extensions.from_dict"><code class="docutils literal notranslate"><span class="pre">Extensions.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions.Extensions.__init__"><code class="docutils literal notranslate"><span class="pre">Extensions.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.extensions_analytics">ai_api_client_sdk.models.extensions_analytics module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_analytics.ExtensionsAnalytics"><code class="docutils literal notranslate"><span class="pre">ExtensionsAnalytics</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_analytics.ExtensionsAnalytics.from_dict"><code class="docutils literal notranslate"><span class="pre">ExtensionsAnalytics.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_analytics.ExtensionsAnalytics.__init__"><code class="docutils literal notranslate"><span class="pre">ExtensionsAnalytics.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.extensions_dataset">ai_api_client_sdk.models.extensions_dataset module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_dataset.ExtensionsDataset"><code class="docutils literal notranslate"><span class="pre">ExtensionsDataset</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_dataset.ExtensionsDataset.from_dict"><code class="docutils literal notranslate"><span class="pre">ExtensionsDataset.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_dataset.ExtensionsDataset.__init__"><code class="docutils literal notranslate"><span class="pre">ExtensionsDataset.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.extensions_resource_groups">ai_api_client_sdk.models.extensions_resource_groups module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_resource_groups.ExtensionsResourceGroups"><code class="docutils literal notranslate"><span class="pre">ExtensionsResourceGroups</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_resource_groups.ExtensionsResourceGroups.from_dict"><code class="docutils literal notranslate"><span class="pre">ExtensionsResourceGroups.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.extensions_resource_groups.ExtensionsResourceGroups.__init__"><code class="docutils literal notranslate"><span class="pre">ExtensionsResourceGroups.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.healthz_status">ai_api_client_sdk.models.healthz_status module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.healthz_status.HealthStatus"><code class="docutils literal notranslate"><span class="pre">HealthStatus</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.healthz_status.HealthStatus.NOT_READY"><code class="docutils literal notranslate"><span class="pre">HealthStatus.NOT_READY</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.healthz_status.HealthStatus.READY"><code class="docutils literal notranslate"><span class="pre">HealthStatus.READY</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.healthz_status.HealthzStatus"><code class="docutils literal notranslate"><span class="pre">HealthzStatus</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.healthz_status.HealthzStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">HealthzStatus.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.healthz_status.HealthzStatus.__init__"><code class="docutils literal notranslate"><span class="pre">HealthzStatus.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.input_artifact">ai_api_client_sdk.models.input_artifact module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.input_artifact.InputArtifact"><code class="docutils literal notranslate"><span class="pre">InputArtifact</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.input_artifact.InputArtifact.from_dict"><code class="docutils literal notranslate"><span class="pre">InputArtifact.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.input_artifact.InputArtifact.__init__"><code class="docutils literal notranslate"><span class="pre">InputArtifact.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.input_artifact_binding">ai_api_client_sdk.models.input_artifact_binding module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.input_artifact_binding.InputArtifactBinding"><code class="docutils literal notranslate"><span class="pre">InputArtifactBinding</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.input_artifact_binding.InputArtifactBinding.from_dict"><code class="docutils literal notranslate"><span class="pre">InputArtifactBinding.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.input_artifact_binding.InputArtifactBinding.__init__"><code class="docutils literal notranslate"><span class="pre">InputArtifactBinding.__init__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.input_artifact_binding.InputArtifactBinding.to_dict"><code class="docutils literal notranslate"><span class="pre">InputArtifactBinding.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.label">ai_api_client_sdk.models.label module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.label.Label"><code class="docutils literal notranslate"><span class="pre">Label</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.label.Label.from_dict"><code class="docutils literal notranslate"><span class="pre">Label.from_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.log_response">ai_api_client_sdk.models.log_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResponse"><code class="docutils literal notranslate"><span class="pre">LogResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">LogResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResponse.__init__"><code class="docutils literal notranslate"><span class="pre">LogResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResponseData"><code class="docutils literal notranslate"><span class="pre">LogResponseData</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResponseData.from_dict"><code class="docutils literal notranslate"><span class="pre">LogResponseData.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResponseData.__init__"><code class="docutils literal notranslate"><span class="pre">LogResponseData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResultItem"><code class="docutils literal notranslate"><span class="pre">LogResultItem</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResultItem.from_dict"><code class="docutils literal notranslate"><span class="pre">LogResultItem.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.log_response.LogResultItem.__init__"><code class="docutils literal notranslate"><span class="pre">LogResultItem.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.metric">ai_api_client_sdk.models.metric module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric.Metric"><code class="docutils literal notranslate"><span class="pre">Metric</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric.Metric.from_dict"><code class="docutils literal notranslate"><span class="pre">Metric.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric.Metric.__init__"><code class="docutils literal notranslate"><span class="pre">Metric.__init__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric.Metric.to_dict"><code class="docutils literal notranslate"><span class="pre">Metric.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.metric_custom_info">ai_api_client_sdk.models.metric_custom_info module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_custom_info.MetricCustomInfo"><code class="docutils literal notranslate"><span class="pre">MetricCustomInfo</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_custom_info.MetricCustomInfo.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricCustomInfo.from_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.metric_label">ai_api_client_sdk.models.metric_label module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_label.MetricLabel"><code class="docutils literal notranslate"><span class="pre">MetricLabel</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_label.MetricLabel.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricLabel.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_label.MetricLabel.to_dict"><code class="docutils literal notranslate"><span class="pre">MetricLabel.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.metric_resource">ai_api_client_sdk.models.metric_resource module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_resource.MetricResource"><code class="docutils literal notranslate"><span class="pre">MetricResource</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_resource.MetricResource.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricResource.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_resource.MetricResource.__init__"><code class="docutils literal notranslate"><span class="pre">MetricResource.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.metric_tag">ai_api_client_sdk.models.metric_tag module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_tag.MetricTag"><code class="docutils literal notranslate"><span class="pre">MetricTag</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metric_tag.MetricTag.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricTag.from_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.metrics_query_response">ai_api_client_sdk.models.metrics_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metrics_query_response.MetricsQueryResponse"><code class="docutils literal notranslate"><span class="pre">MetricsQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metrics_query_response.MetricsQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricsQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.metrics_query_response.MetricsQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">MetricsQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.model">ai_api_client_sdk.models.model module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model.Model.from_dict"><code class="docutils literal notranslate"><span class="pre">Model.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model.Model.__init__"><code class="docutils literal notranslate"><span class="pre">Model.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.model_base_data_allowed_scenarios">ai_api_client_sdk.models.model_base_data_allowed_scenarios module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_base_data_allowed_scenarios.ModelBaseDataAllowedScenarios"><code class="docutils literal notranslate"><span class="pre">ModelBaseDataAllowedScenarios</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_base_data_allowed_scenarios.ModelBaseDataAllowedScenarios.from_dict"><code class="docutils literal notranslate"><span class="pre">ModelBaseDataAllowedScenarios.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_base_data_allowed_scenarios.ModelBaseDataAllowedScenarios.__init__"><code class="docutils literal notranslate"><span class="pre">ModelBaseDataAllowedScenarios.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.model_query_response">ai_api_client_sdk.models.model_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_query_response.ModelQueryResponse"><code class="docutils literal notranslate"><span class="pre">ModelQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_query_response.ModelQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ModelQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_query_response.ModelQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ModelQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.model_version">ai_api_client_sdk.models.model_version module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_version.ModelVersion"><code class="docutils literal notranslate"><span class="pre">ModelVersion</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_version.ModelVersion.from_dict"><code class="docutils literal notranslate"><span class="pre">ModelVersion.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.model_version.ModelVersion.__init__"><code class="docutils literal notranslate"><span class="pre">ModelVersion.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.output_artifact">ai_api_client_sdk.models.output_artifact module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.output_artifact.OutputArtifact"><code class="docutils literal notranslate"><span class="pre">OutputArtifact</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.output_artifact.OutputArtifact.from_dict"><code class="docutils literal notranslate"><span class="pre">OutputArtifact.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.output_artifact.OutputArtifact.__init__"><code class="docutils literal notranslate"><span class="pre">OutputArtifact.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.parameter">ai_api_client_sdk.models.parameter module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.parameter.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.parameter.Parameter.Type"><code class="docutils literal notranslate"><span class="pre">Parameter.Type</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.parameter.Parameter.Type.STRING"><code class="docutils literal notranslate"><span class="pre">Parameter.Type.STRING</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.parameter.Parameter.from_dict"><code class="docutils literal notranslate"><span class="pre">Parameter.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.parameter.Parameter.__init__"><code class="docutils literal notranslate"><span class="pre">Parameter.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.parameter_binding">ai_api_client_sdk.models.parameter_binding module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.parameter_binding.ParameterBinding"><code class="docutils literal notranslate"><span class="pre">ParameterBinding</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.parameter_binding.ParameterBinding.from_dict"><code class="docutils literal notranslate"><span class="pre">ParameterBinding.from_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.resource_group">ai_api_client_sdk.models.resource_group module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group.ResourceGroup"><code class="docutils literal notranslate"><span class="pre">ResourceGroup</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group.ResourceGroup.from_dict"><code class="docutils literal notranslate"><span class="pre">ResourceGroup.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group.ResourceGroup.__init__"><code class="docutils literal notranslate"><span class="pre">ResourceGroup.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.resource_group_query_response">ai_api_client_sdk.models.resource_group_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group_query_response.ResourceGroupQueryResponse"><code class="docutils literal notranslate"><span class="pre">ResourceGroupQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group_query_response.ResourceGroupQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ResourceGroupQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group_query_response.ResourceGroupQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ResourceGroupQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.resource_group_status">ai_api_client_sdk.models.resource_group_status module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group_status.ResourceGroupStatus"><code class="docutils literal notranslate"><span class="pre">ResourceGroupStatus</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group_status.ResourceGroupStatus.ERROR"><code class="docutils literal notranslate"><span class="pre">ResourceGroupStatus.ERROR</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group_status.ResourceGroupStatus.PROVISIONED"><code class="docutils literal notranslate"><span class="pre">ResourceGroupStatus.PROVISIONED</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.resource_group_status.ResourceGroupStatus.PROVISIONING"><code class="docutils literal notranslate"><span class="pre">ResourceGroupStatus.PROVISIONING</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.scenario">ai_api_client_sdk.models.scenario module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.scenario.Scenario"><code class="docutils literal notranslate"><span class="pre">Scenario</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.scenario.Scenario.from_dict"><code class="docutils literal notranslate"><span class="pre">Scenario.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.scenario.Scenario.__init__"><code class="docutils literal notranslate"><span class="pre">Scenario.__init__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.scenario.Scenario.is_llm_scenario"><code class="docutils literal notranslate"><span class="pre">Scenario.is_llm_scenario()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.scenario_query_response">ai_api_client_sdk.models.scenario_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.scenario_query_response.ScenarioQueryResponse"><code class="docutils literal notranslate"><span class="pre">ScenarioQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.scenario_query_response.ScenarioQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ScenarioQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.scenario_query_response.ScenarioQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ScenarioQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.status">ai_api_client_sdk.models.status module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.ScheduleStatus"><code class="docutils literal notranslate"><span class="pre">ScheduleStatus</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.ScheduleStatus.ACTIVE"><code class="docutils literal notranslate"><span class="pre">ScheduleStatus.ACTIVE</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.ScheduleStatus.INACTIVE"><code class="docutils literal notranslate"><span class="pre">ScheduleStatus.INACTIVE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.Status"><code class="docutils literal notranslate"><span class="pre">Status</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.Status.COMPLETED"><code class="docutils literal notranslate"><span class="pre">Status.COMPLETED</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.Status.DEAD"><code class="docutils literal notranslate"><span class="pre">Status.DEAD</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.Status.PENDING"><code class="docutils literal notranslate"><span class="pre">Status.PENDING</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.Status.RUNNING"><code class="docutils literal notranslate"><span class="pre">Status.RUNNING</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.Status.STOPPED"><code class="docutils literal notranslate"><span class="pre">Status.STOPPED</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.Status.STOPPING"><code class="docutils literal notranslate"><span class="pre">Status.STOPPING</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.status.Status.UNKNOWN"><code class="docutils literal notranslate"><span class="pre">Status.UNKNOWN</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.target_status">ai_api_client_sdk.models.target_status module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.target_status.TargetStatus"><code class="docutils literal notranslate"><span class="pre">TargetStatus</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.target_status.TargetStatus.COMPLETED"><code class="docutils literal notranslate"><span class="pre">TargetStatus.COMPLETED</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.target_status.TargetStatus.DELETED"><code class="docutils literal notranslate"><span class="pre">TargetStatus.DELETED</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.target_status.TargetStatus.RUNNING"><code class="docutils literal notranslate"><span class="pre">TargetStatus.RUNNING</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.target_status.TargetStatus.STOPPED"><code class="docutils literal notranslate"><span class="pre">TargetStatus.STOPPED</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.version">ai_api_client_sdk.models.version module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version.Version"><code class="docutils literal notranslate"><span class="pre">Version</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version.Version.from_dict"><code class="docutils literal notranslate"><span class="pre">Version.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version.Version.__init__"><code class="docutils literal notranslate"><span class="pre">Version.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.version_list">ai_api_client_sdk.models.version_list module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version_list.VersionList"><code class="docutils literal notranslate"><span class="pre">VersionList</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version_list.VersionList.from_dict"><code class="docutils literal notranslate"><span class="pre">VersionList.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version_list.VersionList.__init__"><code class="docutils literal notranslate"><span class="pre">VersionList.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#module-ai_api_client_sdk.models.version_query_response">ai_api_client_sdk.models.version_query_response module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version_query_response.VersionQueryResponse"><code class="docutils literal notranslate"><span class="pre">VersionQueryResponse</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version_query_response.VersionQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">VersionQueryResponse.from_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.models.html#ai_api_client_sdk.models.version_query_response.VersionQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">VersionQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html">ai_api_client_sdk.resource_clients package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.artifact_client">ai_api_client_sdk.resource_clients.artifact_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.artifact_client.ArtifactClient"><code class="docutils literal notranslate"><span class="pre">ArtifactClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.artifact_client.ArtifactClient.count"><code class="docutils literal notranslate"><span class="pre">ArtifactClient.count()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.artifact_client.ArtifactClient.create"><code class="docutils literal notranslate"><span class="pre">ArtifactClient.create()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.artifact_client.ArtifactClient.get"><code class="docutils literal notranslate"><span class="pre">ArtifactClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.artifact_client.ArtifactClient.query"><code class="docutils literal notranslate"><span class="pre">ArtifactClient.query()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.base_client">ai_api_client_sdk.resource_clients.base_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient"><code class="docutils literal notranslate"><span class="pre">BaseClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.__init__"><code class="docutils literal notranslate"><span class="pre">BaseClient.__init__()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.bulk_modify"><code class="docutils literal notranslate"><span class="pre">BaseClient.bulk_modify()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.count"><code class="docutils literal notranslate"><span class="pre">BaseClient.count()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.create"><code class="docutils literal notranslate"><span class="pre">BaseClient.create()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.delete"><code class="docutils literal notranslate"><span class="pre">BaseClient.delete()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.get"><code class="docutils literal notranslate"><span class="pre">BaseClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.modify"><code class="docutils literal notranslate"><span class="pre">BaseClient.modify()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.query"><code class="docutils literal notranslate"><span class="pre">BaseClient.query()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.base_client.BaseClient.query_logs"><code class="docutils literal notranslate"><span class="pre">BaseClient.query_logs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.configuration_client">ai_api_client_sdk.resource_clients.configuration_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.configuration_client.ConfigurationClient"><code class="docutils literal notranslate"><span class="pre">ConfigurationClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.configuration_client.ConfigurationClient.count"><code class="docutils literal notranslate"><span class="pre">ConfigurationClient.count()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.configuration_client.ConfigurationClient.create"><code class="docutils literal notranslate"><span class="pre">ConfigurationClient.create()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.configuration_client.ConfigurationClient.get"><code class="docutils literal notranslate"><span class="pre">ConfigurationClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.configuration_client.ConfigurationClient.query"><code class="docutils literal notranslate"><span class="pre">ConfigurationClient.query()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.deployment_client">ai_api_client_sdk.resource_clients.deployment_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient"><code class="docutils literal notranslate"><span class="pre">DeploymentClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient.bulk_modify"><code class="docutils literal notranslate"><span class="pre">DeploymentClient.bulk_modify()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient.count"><code class="docutils literal notranslate"><span class="pre">DeploymentClient.count()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient.create"><code class="docutils literal notranslate"><span class="pre">DeploymentClient.create()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient.delete"><code class="docutils literal notranslate"><span class="pre">DeploymentClient.delete()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient.get"><code class="docutils literal notranslate"><span class="pre">DeploymentClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient.modify"><code class="docutils literal notranslate"><span class="pre">DeploymentClient.modify()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient.query"><code class="docutils literal notranslate"><span class="pre">DeploymentClient.query()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.deployment_client.DeploymentClient.query_logs"><code class="docutils literal notranslate"><span class="pre">DeploymentClient.query_logs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.executable_client">ai_api_client_sdk.resource_clients.executable_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.executable_client.ExecutableClient"><code class="docutils literal notranslate"><span class="pre">ExecutableClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.executable_client.ExecutableClient.get"><code class="docutils literal notranslate"><span class="pre">ExecutableClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.executable_client.ExecutableClient.query"><code class="docutils literal notranslate"><span class="pre">ExecutableClient.query()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.execution_client">ai_api_client_sdk.resource_clients.execution_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient"><code class="docutils literal notranslate"><span class="pre">ExecutionClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient.bulk_modify"><code class="docutils literal notranslate"><span class="pre">ExecutionClient.bulk_modify()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient.count"><code class="docutils literal notranslate"><span class="pre">ExecutionClient.count()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient.create"><code class="docutils literal notranslate"><span class="pre">ExecutionClient.create()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient.delete"><code class="docutils literal notranslate"><span class="pre">ExecutionClient.delete()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient.get"><code class="docutils literal notranslate"><span class="pre">ExecutionClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient.modify"><code class="docutils literal notranslate"><span class="pre">ExecutionClient.modify()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient.query"><code class="docutils literal notranslate"><span class="pre">ExecutionClient.query()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_client.ExecutionClient.query_logs"><code class="docutils literal notranslate"><span class="pre">ExecutionClient.query_logs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.execution_schedule_client">ai_api_client_sdk.resource_clients.execution_schedule_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_schedule_client.ExecutionScheduleClient"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_schedule_client.ExecutionScheduleClient.count"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleClient.count()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_schedule_client.ExecutionScheduleClient.create"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleClient.create()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_schedule_client.ExecutionScheduleClient.delete"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleClient.delete()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_schedule_client.ExecutionScheduleClient.get"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_schedule_client.ExecutionScheduleClient.modify"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleClient.modify()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.execution_schedule_client.ExecutionScheduleClient.query"><code class="docutils literal notranslate"><span class="pre">ExecutionScheduleClient.query()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.healthz_client">ai_api_client_sdk.resource_clients.healthz_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.healthz_client.HealthzClient"><code class="docutils literal notranslate"><span class="pre">HealthzClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.healthz_client.HealthzClient.get"><code class="docutils literal notranslate"><span class="pre">HealthzClient.get()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.meta_client">ai_api_client_sdk.resource_clients.meta_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.meta_client.MetaClient"><code class="docutils literal notranslate"><span class="pre">MetaClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.meta_client.MetaClient.get"><code class="docutils literal notranslate"><span class="pre">MetaClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.meta_client.MetaClient.get_versions"><code class="docutils literal notranslate"><span class="pre">MetaClient.get_versions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.metrics_client">ai_api_client_sdk.resource_clients.metrics_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.metrics_client.MetricsClient"><code class="docutils literal notranslate"><span class="pre">MetricsClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.metrics_client.MetricsClient.delete"><code class="docutils literal notranslate"><span class="pre">MetricsClient.delete()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.metrics_client.MetricsClient.query"><code class="docutils literal notranslate"><span class="pre">MetricsClient.query()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.model_client">ai_api_client_sdk.resource_clients.model_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.model_client.ModelClient"><code class="docutils literal notranslate"><span class="pre">ModelClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.model_client.ModelClient.query"><code class="docutils literal notranslate"><span class="pre">ModelClient.query()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.model_client.ModelClient.DEFAULT_SCENARIO_ID"><code class="docutils literal notranslate"><span class="pre">ModelClient.DEFAULT_SCENARIO_ID</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.resource_groups_client">ai_api_client_sdk.resource_clients.resource_groups_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.resource_groups_client.ResourceGroupsClient"><code class="docutils literal notranslate"><span class="pre">ResourceGroupsClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.resource_groups_client.ResourceGroupsClient.create"><code class="docutils literal notranslate"><span class="pre">ResourceGroupsClient.create()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.resource_groups_client.ResourceGroupsClient.delete"><code class="docutils literal notranslate"><span class="pre">ResourceGroupsClient.delete()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.resource_groups_client.ResourceGroupsClient.get"><code class="docutils literal notranslate"><span class="pre">ResourceGroupsClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.resource_groups_client.ResourceGroupsClient.modify"><code class="docutils literal notranslate"><span class="pre">ResourceGroupsClient.modify()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.resource_groups_client.ResourceGroupsClient.query"><code class="docutils literal notranslate"><span class="pre">ResourceGroupsClient.query()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#module-ai_api_client_sdk.resource_clients.scenario_client">ai_api_client_sdk.resource_clients.scenario_client module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.scenario_client.ScenarioClient"><code class="docutils literal notranslate"><span class="pre">ScenarioClient</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.scenario_client.ScenarioClient.get"><code class="docutils literal notranslate"><span class="pre">ScenarioClient.get()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.scenario_client.ScenarioClient.query"><code class="docutils literal notranslate"><span class="pre">ScenarioClient.query()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.scenario_client.ScenarioClient.query_llm_scenarios"><code class="docutils literal notranslate"><span class="pre">ScenarioClient.query_llm_scenarios()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="_api_doc/ai_api_client_sdk.resource_clients.html#ai_api_client_sdk.resource_clients.scenario_client.ScenarioClient.query_versions"><code class="docutils literal notranslate"><span class="pre">ScenarioClient.query_versions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#module-ai_api_client_sdk.ai_api_v2_client">ai_api_client_sdk.ai_api_v2_client module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.ai_api_v2_client.AIAPIV2Client"><code class="docutils literal notranslate"><span class="pre">AIAPIV2Client</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.ai_api_v2_client.AIAPIV2Client.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIV2Client.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#module-ai_api_client_sdk.exception">ai_api_client_sdk.exception module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorAuthorizationException"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorAuthorizationException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorAuthorizationException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorAuthorizationException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorException"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorForbiddenException"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorForbiddenException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorForbiddenException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorForbiddenException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorInvalidRequestException"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorInvalidRequestException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorInvalidRequestException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorInvalidRequestException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorMethodNotAllowedException"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorMethodNotAllowedException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorMethodNotAllowedException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorMethodNotAllowedException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorServerException"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorServerException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorServerException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorServerException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorTimeoutException"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorTimeoutException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthenticatorTimeoutException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthenticatorTimeoutException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthorizationException"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthorizationException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIAuthorizationException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIAuthorizationException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIClientSDKException"><code class="docutils literal notranslate"><span class="pre">AIAPIClientSDKException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIClientSDKException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIClientSDKException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIInvalidInputException"><code class="docutils literal notranslate"><span class="pre">AIAPIInvalidInputException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIInvalidInputException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIInvalidInputException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIInvalidRequestException"><code class="docutils literal notranslate"><span class="pre">AIAPIInvalidRequestException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIInvalidRequestException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIInvalidRequestException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPINotFoundException"><code class="docutils literal notranslate"><span class="pre">AIAPINotFoundException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPINotFoundException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPINotFoundException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIPreconditionFailedException"><code class="docutils literal notranslate"><span class="pre">AIAPIPreconditionFailedException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIPreconditionFailedException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIPreconditionFailedException.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIServerException"><code class="docutils literal notranslate"><span class="pre">AIAPIServerException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_api_doc/ai_api_client_sdk.html#ai_api_client_sdk.exception.AIAPIServerException.__init__"><code class="docutils literal notranslate"><span class="pre">AIAPIServerException.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</div></div>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../../_static/doctools.js?v=9bcbadda"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>
