@@ -47,7 +47,7 @@ The SDK logs an `info` message on the first call and a `warn` on subsequent call
 
 Use two clients: one with the template for the first node, one without for all subsequent nodes.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
 // First node: template is applied once for the opening turn.
@@ -86,7 +86,7 @@ The SDK logs a `warn` when messages are passed alongside a `template_ref`.
 
 Use the same two-client pattern: one client with `template_ref` for the first node, one without for subsequent nodes.
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
 // First node: fetches and applies the remote template once.
@@ -127,7 +127,7 @@ Call it once with the client that carries the template, then reuse the compiled 
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
 import { createAgent } from 'langchain';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { MemorySaver } from '@langchain/langgraph';
@@ -180,7 +180,7 @@ Use `StateGraph` when you need an explicit first-turn node that applies the temp
 
 <!-- vale off -->
 
-```ts
+```ts twoslash
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   StateGraph,
