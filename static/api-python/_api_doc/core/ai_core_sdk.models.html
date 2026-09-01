@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>ai_core_sdk.models package | SAP Cloud SDK for AI (Python) - core v3.3.1</title>
+<meta content="ai_core_sdk.models package | SAP Cloud SDK for AI (Python) - core v3.3.1" property="og:title"/>
+<meta content="ai_core_sdk.models package | SAP Cloud SDK for AI (Python) - core v3.3.1" name="twitter:title"/>
+<link href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom-override.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="ai_core_sdk.resource_clients.html" rel="next" title="ai_core_sdk.resource_clients package"/>
+<link href="ai_core_sdk.helpers.html" rel="prev" title="ai_core_sdk.helpers package"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="ai_core_sdk.html">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.helpers.html">ai_core_sdk.helpers package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ai_core_sdk.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.resource_clients.html">ai_core_sdk.resource_clients package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_core_sdk.tracking.html">ai_core_sdk.tracking package</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">SAP Cloud SDK for AI (Python) - core v3.3.1</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="ai_core_sdk.html">ai_core_sdk package</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">ai_core_sdk.models package</span>
+</nav>
+<div id="content" role="main">
+<section id="module-ai_core_sdk.models">
+<span id="ai-core-sdk-models-package"></span><h1>ai_core_sdk.models package</h1>
+<section id="submodules">
+<h2>Submodules</h2>
+</section>
+<section id="module-ai_core_sdk.models.application">
+<span id="ai-core-sdk-models-application-module"></span><h2>ai_core_sdk.models.application module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application.Application">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Application</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Application object defines the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) -- path within the repository</p></li>
+<li><p><strong>revision</strong> (<em>str</em>) -- revision</p></li>
+<li><p><strong>repository_url</strong> (<em>str</em>) -- URL of the repository</p></li>
+<li><p><strong>application_name</strong> (<em>str</em>) -- name of the application</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application.Application.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.application.Application" title="ai_core_sdk.models.application.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.application.Application</span></code></a> object, created from the values in
+the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>application_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.application.Application</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application.Application.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repository_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>)</p></li>
+<li><p><strong>revision</strong> (<em>str</em>)</p></li>
+<li><p><strong>repository_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>application_name</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.application_query_response">
+<span id="ai-core-sdk-models-application-query-response-module"></span><h2>ai_core_sdk.models.application_query_response module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_query_response.ApplicationQueryResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApplicationQueryResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QueryResponse</span></code></p>
+<p>The ApplicationQueryResponse object defines the response of the applications query request
+:param resources: List of the applications returned from the server
+:type resources: List[class:<cite>ai_core_sdk.models.application.Application</cite>]
+:param count: Total number of the queried applications
+:type count: int
+:param <cite>**kwargs</cite>: The keyword arguments are there in case there are additional attributes returned from server</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_query_response.ApplicationQueryResponse.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a
+<a class="reference internal" href="#ai_core_sdk.models.application_query_response.ApplicationQueryResponse" title="ai_core_sdk.models.application_query_response.ApplicationQueryResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.application_query_response.ApplicationQueryResponse</span></code></a>
+object, created from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.application_query_response.ApplicationQueryResponse</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_query_response.ApplicationQueryResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resources</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.models.application.Application" title="ai_core_sdk.models.application.Application"><em>Application</em></a><em>]</em>)</p></li>
+<li><p><strong>count</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.application_resource_sync_status">
+<span id="ai-core-sdk-models-application-resource-sync-status-module"></span><h2>ai_core_sdk.models.application_resource_sync_status module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApplicationResourceSyncStatus</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The ApplicationSyncResourcesStatus object defines the status of sync of application resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the application resource, defaults to None</p></li>
+<li><p><strong>kind</strong> (<em>str</em><em>, </em><em>optional</em>) -- kind of the application resource</p></li>
+<li><p><strong>status</strong> (<em>str</em><em>, </em><em>optional</em>) -- status of the sync of the application resource</p></li>
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) -- application resource message</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_res_sync_status_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus" title="ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus</span></code></a>
+object, created from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>app_res_sync_status_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>kind</strong> (<em>str</em>)</p></li>
+<li><p><strong>status</strong> (<em>str</em>)</p></li>
+<li><p><strong>message</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.application_source">
+<span id="ai-core-sdk-models-application-source-module"></span><h2>ai_core_sdk.models.application_source module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_source.ApplicationSource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApplicationSource</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The ApplicationSource object defines the application source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_url</strong> (<em>str</em><em>, </em><em>optional</em>) -- URL of the repository, defaults to None</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) -- path within the repository, defaults to None</p></li>
+<li><p><strong>revision</strong> (<em>str</em><em>, </em><em>optional</em>) -- revision number of the application, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_source.ApplicationSource.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application_source_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.application_source.ApplicationSource" title="ai_core_sdk.models.application_source.ApplicationSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.application_source.ApplicationSource</span></code></a> object, created from the values in
+the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>application_source_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.application_source.ApplicationSource</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_source.ApplicationSource.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>path</strong> (<em>str</em>)</p></li>
+<li><p><strong>revision</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.application_status">
+<span id="ai-core-sdk-models-application-status-module"></span><h2>ai_core_sdk.models.application_status module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_status.ApplicationStatus">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApplicationStatus</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Application object defines the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>health_status</strong> (<em>str</em><em>, </em><em>optional</em>) -- Application health status, defaults to None</p></li>
+<li><p><strong>sync_status</strong> (<em>str</em><em>, </em><em>optional</em>) -- Application sync status, defaults to None</p></li>
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) -- Application health status message, defaults to None</p></li>
+<li><p><strong>source</strong> (class:<cite>ai_core_sdk.models.application_status.ApplicationStatus</cite>, optional) -- Application source, defaults to None</p></li>
+<li><p><strong>sync_finished_at</strong> (<em>str</em><em>, </em><em>optional</em>) -- Application sync finish time, defaults to None</p></li>
+<li><p><strong>sync_started_at</strong> (<em>str</em><em>, </em><em>optional</em>) -- Application sync start time, defaults to None</p></li>
+<li><p><strong>reconciled_at</strong> (<em>str</em><em>, </em><em>optional</em>) -- Application reconciliation time, defaults to None</p></li>
+<li><p><strong>sync_resources_status</strong> (List[class:<cite>ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus</cite>], optional) -- Status of the synchronization of the application resources, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_status.ApplicationStatus.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application_status_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.application_status.ApplicationStatus" title="ai_core_sdk.models.application_status.ApplicationStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.application_status.ApplicationStatus</span></code></a> object, created from the values in
+the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>application_status_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.application_status.ApplicationStatus</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.application_status.ApplicationStatus.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">health_status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sync_status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sync_finished_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sync_started_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reconciled_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sync_resources_status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>health_status</strong> (<em>str</em>)</p></li>
+<li><p><strong>sync_status</strong> (<em>str</em>)</p></li>
+<li><p><strong>message</strong> (<em>str</em>)</p></li>
+<li><p><strong>source</strong> (<a class="reference internal" href="#ai_core_sdk.models.application_source.ApplicationSource" title="ai_core_sdk.models.application_source.ApplicationSource"><em>ApplicationSource</em></a>)</p></li>
+<li><p><strong>sync_finished_at</strong> (<em>str</em>)</p></li>
+<li><p><strong>sync_started_at</strong> (<em>str</em>)</p></li>
+<li><p><strong>reconciled_at</strong> (<em>str</em>)</p></li>
+<li><p><strong>sync_resources_status</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus" title="ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus"><em>ApplicationResourceSyncStatus</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.base_models">
+<span id="ai-core-sdk-models-base-models-module"></span><h2>ai_core_sdk.models.base_models module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.base_models.BasicNameResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BasicNameResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The BasicNameResponse object defines the response with name from the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> -- Name of the relevant resource</p></li>
+<li><p><strong>message</strong> (<em>str</em>) -- Response message from the server</p></li>
+<li><p><strong>**kwargs</strong> -- The keyword arguments are there in case there are additional attributes returned from server</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.base_models.BasicNameResponse.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bnr_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.base_models.BasicNameResponse" title="ai_core_sdk.models.base_models.BasicNameResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.base_models.BasicNameResponse</span></code></a> object, created from the values in the
+dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bnr_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.base_models.BasicNameResponse</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.base_models.BasicNameResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>message</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.base_models.Message">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Message</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Message object defines a message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) -- message</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.base_models.Message.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.base_models.Message" title="ai_core_sdk.models.base_models.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.base_models.Message</span></code></a> object, created from the values in the
+dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.base_models.Message</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.base_models.Message.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.docker_registry_secret">
+<span id="ai-core-sdk-models-docker-registry-secret-module"></span><h2>ai_core_sdk.models.docker_registry_secret module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DockerRegistrySecret</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Name</span></code></p>
+<p>The DockerRegistrySecret object defines the docker registry secret. Refer to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ai_api_client_sdk.models.base_models.Name</span></code>, for the object definition</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docker_registry_secret_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret" title="ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret</span></code></a> object, created
+from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>docker_registry_secret_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret</cite></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.docker_registry_secret_query_response">
+<span id="ai-core-sdk-models-docker-registry-secret-query-response-module"></span><h2>ai_core_sdk.models.docker_registry_secret_query_response module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DockerRegistrySecretQueryResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QueryResponse</span></code></p>
+<p>The DockerRegistrySecretQueryResponse object defines the response of the dockerRegistrySecrets query request
+:param resources: List of the docker registry secrets returned from the server
+:type resources: List[class:<cite>ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret</cite>]
+:param count: Total number of the queried docker registry secrets
+:type count: int
+:param <cite>**kwargs</cite>: The keyword arguments are there in case there are additional attributes returned from server</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a
+<a class="reference internal" href="#ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse" title="ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse</span></code></a>
+object, created from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resources</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret" title="ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret"><em>DockerRegistrySecret</em></a><em>]</em>)</p></li>
+<li><p><strong>count</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.kpi">
+<span id="ai-core-sdk-models-kpi-module"></span><h2>ai_core_sdk.models.kpi module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.kpi.Kpi">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Kpi</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Kpi object defines the Kpi data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.kpi.Kpi.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpi_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.kpi.Kpi" title="ai_core_sdk.models.kpi.Kpi"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.kpi.Kpi</span></code></a> object, created
+from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kpi_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.kpi.Kpi</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.kpi.Kpi.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>header</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>rows</strong> (<em>List</em><em>[</em><em>str</em><em> | </em><em>int</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.object_store_secret">
+<span id="ai-core-sdk-models-object-store-secret-module"></span><h2>ai_core_sdk.models.object_store_secret module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.object_store_secret.ObjectStoreSecret">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ObjectStoreSecret</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The ObjectStoreSecret object defines the object store secret response.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.object_store_secret.ObjectStoreSecret.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_store_secret_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.object_store_secret.ObjectStoreSecret" title="ai_core_sdk.models.object_store_secret.ObjectStoreSecret"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.object_store_secret.ObjectStoreSecret</span></code></a> object, created
+from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>object_store_secret_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.object_store_secret.ObjectStoreSecret</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.object_store_secret.ObjectStoreSecret.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>metadata</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.object_store_secret_query_response">
+<span id="ai-core-sdk-models-object-store-secret-query-response-module"></span><h2>ai_core_sdk.models.object_store_secret_query_response module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ObjectStoreSecretQueryResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QueryResponse</span></code></p>
+<p>The ObjectStoreSecretQueryResponse object defines the response of the object store secret query request
+:param resources: List of the object store secrets returned from the server
+:type resources: List[class:<cite>ai_core_sdk.models.object_store_secret.ObjectStoreSecret</cite>]
+:param count: Total number of the queried object store secrets
+:type count: int
+:param <cite>**kwargs</cite>: The keyword arguments are there in case there are additional attributes returned from server</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a
+<a class="reference internal" href="#ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse" title="ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse</span></code></a>
+object, created from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resources</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.models.object_store_secret.ObjectStoreSecret" title="ai_core_sdk.models.object_store_secret.ObjectStoreSecret"><em>ObjectStoreSecret</em></a><em>]</em>)</p></li>
+<li><p><strong>count</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.repository">
+<span id="ai-core-sdk-models-repository-module"></span><h2>ai_core_sdk.models.repository module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository.Repository">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Repository</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Repository object defines the repository</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- name of the repository</p></li>
+<li><p><strong>url</strong> (<em>str</em>) -- URL of the repository</p></li>
+<li><p><strong>status</strong> (class:<cite>ai_core_sdk.models.repository_status.RepositoryStatus</cite>, optional) -- status of the repository, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository.Repository.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repository_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.repository.Repository" title="ai_core_sdk.models.repository.Repository"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.repository.Repository</span></code></a> object, created
+from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repository_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.repository.Repository</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository.Repository.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>url</strong> (<em>str</em>)</p></li>
+<li><p><strong>status</strong> (<a class="reference internal" href="#ai_core_sdk.models.repository_status.RepositoryStatus" title="ai_core_sdk.models.repository_status.RepositoryStatus"><em>RepositoryStatus</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.repository_query_response">
+<span id="ai-core-sdk-models-repository-query-response-module"></span><h2>ai_core_sdk.models.repository_query_response module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository_query_response.RepositoryQueryResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RepositoryQueryResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QueryResponse</span></code></p>
+<p>The RepositoryQueryResponse object defines the response of the repository query request
+:param resources: List of the repositories returned from the server
+:type resources: List[class:<cite>ai_core_sdk.models.repository.Repository</cite>]
+:param count: Total number of the queried repositories
+:type count: int
+:param <cite>**kwargs</cite>: The keyword arguments are there in case there are additional attributes returned from server</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository_query_response.RepositoryQueryResponse.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_client_sdk.models.repository_query_response.RepositoryQueryResponse</span></code>
+object, created from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.repository_query_response.RepositoryQueryResponse</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository_query_response.RepositoryQueryResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resources</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.models.repository.Repository" title="ai_core_sdk.models.repository.Repository"><em>Repository</em></a><em>]</em>)</p></li>
+<li><p><strong>count</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.repository_status">
+<span id="ai-core-sdk-models-repository-status-module"></span><h2>ai_core_sdk.models.repository_status module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository_status.RepositoryStatus">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RepositoryStatus</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>RepositoryStatus is an Enum defining the valid values of the status of a repository</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository_status.RepositoryStatus.COMPLETED">
+<span class="sig-name descname"><span class="pre">COMPLETED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'COMPLETED'</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository_status.RepositoryStatus.ERROR">
+<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ERROR'</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.models.repository_status.RepositoryStatus.IN_PROGRESS">
+<span class="sig-name descname"><span class="pre">IN_PROGRESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'IN-PROGRESS'</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.resource_group">
+<span id="ai-core-sdk-models-resource-group-module"></span><h2>ai_core_sdk.models.resource_group module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group.ResourceGroup">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ResourceGroup</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ResourceGroup represents the resource group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource_group_id</strong> (<em>str</em>) -- The resource_group_id of this ResourceGroup.</p></li>
+<li><p><strong>tenant_id</strong> (<em>str</em>) -- The tenant_id of this ResourceGroup.</p></li>
+<li><p><strong>zone_id</strong> (<em>str</em>) -- The zone_id of this ResourceGroup.</p></li>
+<li><p><strong>labels</strong> (<em>ResourceGroupLabels</em>) -- The labels of this ResourceGroup.</p></li>
+<li><p><strong>status</strong> (<em>str</em>) -- The status of this ResourceGroup.</p></li>
+<li><p><strong>status_message</strong> (<em>str</em>) -- The status_message of this ResourceGroup.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group.ResourceGroup.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_group_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.resource_group.ResourceGroup" title="ai_core_sdk.models.resource_group.ResourceGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.resource_group.ResourceGroup</span></code></a> object, created
+from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource_group_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.resource_group.ResourceGroup</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group.ResourceGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_group_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tenant_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource_group_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>tenant_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>zone_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>labels</strong> (<em>List</em><em>[</em><em>Label</em><em>]</em>)</p></li>
+<li><p><strong>status</strong> (<a class="reference internal" href="#ai_core_sdk.models.resource_group_status.ResourceGroupStatus" title="ai_core_sdk.models.resource_group_status.ResourceGroupStatus"><em>ResourceGroupStatus</em></a>)</p></li>
+<li><p><strong>status_message</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.resource_group_query_response">
+<span id="ai-core-sdk-models-resource-group-query-response-module"></span><h2>ai_core_sdk.models.resource_group_query_response module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ResourceGroupQueryResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QueryResponse</span></code></p>
+<p>The ResourceGroupQueryResponse object defines the response of the resourceGroups query request
+:param resources: List of the resource groups returned from the server
+:type resources: List[class:<cite>ai_core_sdk.models.resource_group.ResourceGroup</cite>]
+:param count: Total number of the queried docker registry secrets
+:type count: int
+:param <cite>**kwargs</cite>: The keyword arguments are there in case there are additional attributes returned from server</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a
+<a class="reference internal" href="#ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse" title="ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse</span></code></a>
+object, created from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resources</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.models.resource_group.ResourceGroup" title="ai_core_sdk.models.resource_group.ResourceGroup"><em>ResourceGroup</em></a><em>]</em>)</p></li>
+<li><p><strong>count</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.resource_group_status">
+<span id="ai-core-sdk-models-resource-group-status-module"></span><h2>ai_core_sdk.models.resource_group_status module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group_status.ResourceGroupStatus">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ResourceGroupStatus</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>ResourceGroupStatus is an Enum defining the valid values of the status of a resource group</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group_status.ResourceGroupStatus.ERROR">
+<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ERROR'</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group_status.ResourceGroupStatus.PROVISIONED">
+<span class="sig-name descname"><span class="pre">PROVISIONED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PROVISIONED'</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_core_sdk.models.resource_group_status.ResourceGroupStatus.PROVISIONING">
+<span class="sig-name descname"><span class="pre">PROVISIONING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PROVISIONING'</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.secret">
+<span id="ai-core-sdk-models-secret-module"></span><h2>ai_core_sdk.models.secret module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.secret.Secret">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Secret</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Secret object defines the secret response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- Secret name</p></li>
+<li><p><strong>data</strong> (<em>dict</em><em>, </em><em>optional</em>) -- Secret data dictionary, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.secret.Secret.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a <a class="reference internal" href="#ai_core_sdk.models.secret.Secret" title="ai_core_sdk.models.secret.Secret"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.secret.Secret</span></code></a> object, created
+from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>secret_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.secret.Secret</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.secret.Secret.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>data</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_core_sdk.models.secret_query_response">
+<span id="ai-core-sdk-models-secret-query-response-module"></span><h2>ai_core_sdk.models.secret_query_response module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_core_sdk.models.secret_query_response.SecretQueryResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SecretQueryResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QueryResponse</span></code></p>
+<p>The SecretQueryResponse object defines the response of the secret query request
+:param resources: List of the secrets returned from the server
+:type resources: List[class:<cite>ai_core_sdk.models.secret.Secret</cite>]
+:param count: Total number of the queried secrets
+:type count: int
+:param <cite>**kwargs</cite>: The keyword arguments are there in case there are additional attributes returned from server</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.secret_query_response.SecretQueryResponse.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a
+<a class="reference internal" href="#ai_core_sdk.models.secret_query_response.SecretQueryResponse" title="ai_core_sdk.models.secret_query_response.SecretQueryResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ai_core_sdk.models.secret_query_response.SecretQueryResponse</span></code></a>
+object, created from the values in the dict provided as parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- Dict which includes the necessary values to create the object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object, created from the values provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_core_sdk.models.secret_query_response.SecretQueryResponse</cite></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_core_sdk.models.secret_query_response.SecretQueryResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resources</strong> (<em>List</em><em>[</em><a class="reference internal" href="#ai_core_sdk.models.secret.Secret" title="ai_core_sdk.models.secret.Secret"><em>Secret</em></a><em>]</em>)</p></li>
+<li><p><strong>count</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#submodules'" class="reference internal" href="#submodules">Submodules</a></li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.application'" class="reference internal" href="#module-ai_core_sdk.models.application">ai_core_sdk.models.application module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application.Application'" class="reference internal" href="#ai_core_sdk.models.application.Application"><code class="docutils literal notranslate"><span class="pre">Application</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application.Application.from_dict'" class="reference internal" href="#ai_core_sdk.models.application.Application.from_dict"><code class="docutils literal notranslate"><span class="pre">Application.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application.Application.__init__'" class="reference internal" href="#ai_core_sdk.models.application.Application.__init__"><code class="docutils literal notranslate"><span class="pre">Application.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.application_query_response'" class="reference internal" href="#module-ai_core_sdk.models.application_query_response">ai_core_sdk.models.application_query_response module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_query_response.ApplicationQueryResponse'" class="reference internal" href="#ai_core_sdk.models.application_query_response.ApplicationQueryResponse"><code class="docutils literal notranslate"><span class="pre">ApplicationQueryResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_query_response.ApplicationQueryResponse.from_dict'" class="reference internal" href="#ai_core_sdk.models.application_query_response.ApplicationQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ApplicationQueryResponse.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_query_response.ApplicationQueryResponse.__init__'" class="reference internal" href="#ai_core_sdk.models.application_query_response.ApplicationQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ApplicationQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.application_resource_sync_status'" class="reference internal" href="#module-ai_core_sdk.models.application_resource_sync_status">ai_core_sdk.models.application_resource_sync_status module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus'" class="reference internal" href="#ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus"><code class="docutils literal notranslate"><span class="pre">ApplicationResourceSyncStatus</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus.from_dict'" class="reference internal" href="#ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">ApplicationResourceSyncStatus.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus.__init__'" class="reference internal" href="#ai_core_sdk.models.application_resource_sync_status.ApplicationResourceSyncStatus.__init__"><code class="docutils literal notranslate"><span class="pre">ApplicationResourceSyncStatus.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.application_source'" class="reference internal" href="#module-ai_core_sdk.models.application_source">ai_core_sdk.models.application_source module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_source.ApplicationSource'" class="reference internal" href="#ai_core_sdk.models.application_source.ApplicationSource"><code class="docutils literal notranslate"><span class="pre">ApplicationSource</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_source.ApplicationSource.from_dict'" class="reference internal" href="#ai_core_sdk.models.application_source.ApplicationSource.from_dict"><code class="docutils literal notranslate"><span class="pre">ApplicationSource.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_source.ApplicationSource.__init__'" class="reference internal" href="#ai_core_sdk.models.application_source.ApplicationSource.__init__"><code class="docutils literal notranslate"><span class="pre">ApplicationSource.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.application_status'" class="reference internal" href="#module-ai_core_sdk.models.application_status">ai_core_sdk.models.application_status module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_status.ApplicationStatus'" class="reference internal" href="#ai_core_sdk.models.application_status.ApplicationStatus"><code class="docutils literal notranslate"><span class="pre">ApplicationStatus</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_status.ApplicationStatus.from_dict'" class="reference internal" href="#ai_core_sdk.models.application_status.ApplicationStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">ApplicationStatus.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.application_status.ApplicationStatus.__init__'" class="reference internal" href="#ai_core_sdk.models.application_status.ApplicationStatus.__init__"><code class="docutils literal notranslate"><span class="pre">ApplicationStatus.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.base_models'" class="reference internal" href="#module-ai_core_sdk.models.base_models">ai_core_sdk.models.base_models module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.base_models.BasicNameResponse'" class="reference internal" href="#ai_core_sdk.models.base_models.BasicNameResponse"><code class="docutils literal notranslate"><span class="pre">BasicNameResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.base_models.BasicNameResponse.from_dict'" class="reference internal" href="#ai_core_sdk.models.base_models.BasicNameResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">BasicNameResponse.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.base_models.BasicNameResponse.__init__'" class="reference internal" href="#ai_core_sdk.models.base_models.BasicNameResponse.__init__"><code class="docutils literal notranslate"><span class="pre">BasicNameResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.base_models.Message'" class="reference internal" href="#ai_core_sdk.models.base_models.Message"><code class="docutils literal notranslate"><span class="pre">Message</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.base_models.Message.from_dict'" class="reference internal" href="#ai_core_sdk.models.base_models.Message.from_dict"><code class="docutils literal notranslate"><span class="pre">Message.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.base_models.Message.__init__'" class="reference internal" href="#ai_core_sdk.models.base_models.Message.__init__"><code class="docutils literal notranslate"><span class="pre">Message.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.docker_registry_secret'" class="reference internal" href="#module-ai_core_sdk.models.docker_registry_secret">ai_core_sdk.models.docker_registry_secret module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret'" class="reference internal" href="#ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret"><code class="docutils literal notranslate"><span class="pre">DockerRegistrySecret</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret.from_dict'" class="reference internal" href="#ai_core_sdk.models.docker_registry_secret.DockerRegistrySecret.from_dict"><code class="docutils literal notranslate"><span class="pre">DockerRegistrySecret.from_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.docker_registry_secret_query_response'" class="reference internal" href="#module-ai_core_sdk.models.docker_registry_secret_query_response">ai_core_sdk.models.docker_registry_secret_query_response module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse'" class="reference internal" href="#ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse"><code class="docutils literal notranslate"><span class="pre">DockerRegistrySecretQueryResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse.from_dict'" class="reference internal" href="#ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">DockerRegistrySecretQueryResponse.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse.__init__'" class="reference internal" href="#ai_core_sdk.models.docker_registry_secret_query_response.DockerRegistrySecretQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">DockerRegistrySecretQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.kpi'" class="reference internal" href="#module-ai_core_sdk.models.kpi">ai_core_sdk.models.kpi module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.kpi.Kpi'" class="reference internal" href="#ai_core_sdk.models.kpi.Kpi"><code class="docutils literal notranslate"><span class="pre">Kpi</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.kpi.Kpi.from_dict'" class="reference internal" href="#ai_core_sdk.models.kpi.Kpi.from_dict"><code class="docutils literal notranslate"><span class="pre">Kpi.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.kpi.Kpi.__init__'" class="reference internal" href="#ai_core_sdk.models.kpi.Kpi.__init__"><code class="docutils literal notranslate"><span class="pre">Kpi.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.object_store_secret'" class="reference internal" href="#module-ai_core_sdk.models.object_store_secret">ai_core_sdk.models.object_store_secret module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.object_store_secret.ObjectStoreSecret'" class="reference internal" href="#ai_core_sdk.models.object_store_secret.ObjectStoreSecret"><code class="docutils literal notranslate"><span class="pre">ObjectStoreSecret</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.object_store_secret.ObjectStoreSecret.from_dict'" class="reference internal" href="#ai_core_sdk.models.object_store_secret.ObjectStoreSecret.from_dict"><code class="docutils literal notranslate"><span class="pre">ObjectStoreSecret.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.object_store_secret.ObjectStoreSecret.__init__'" class="reference internal" href="#ai_core_sdk.models.object_store_secret.ObjectStoreSecret.__init__"><code class="docutils literal notranslate"><span class="pre">ObjectStoreSecret.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.object_store_secret_query_response'" class="reference internal" href="#module-ai_core_sdk.models.object_store_secret_query_response">ai_core_sdk.models.object_store_secret_query_response module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse'" class="reference internal" href="#ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse"><code class="docutils literal notranslate"><span class="pre">ObjectStoreSecretQueryResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse.from_dict'" class="reference internal" href="#ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ObjectStoreSecretQueryResponse.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse.__init__'" class="reference internal" href="#ai_core_sdk.models.object_store_secret_query_response.ObjectStoreSecretQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ObjectStoreSecretQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.repository'" class="reference internal" href="#module-ai_core_sdk.models.repository">ai_core_sdk.models.repository module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository.Repository'" class="reference internal" href="#ai_core_sdk.models.repository.Repository"><code class="docutils literal notranslate"><span class="pre">Repository</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository.Repository.from_dict'" class="reference internal" href="#ai_core_sdk.models.repository.Repository.from_dict"><code class="docutils literal notranslate"><span class="pre">Repository.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository.Repository.__init__'" class="reference internal" href="#ai_core_sdk.models.repository.Repository.__init__"><code class="docutils literal notranslate"><span class="pre">Repository.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.repository_query_response'" class="reference internal" href="#module-ai_core_sdk.models.repository_query_response">ai_core_sdk.models.repository_query_response module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository_query_response.RepositoryQueryResponse'" class="reference internal" href="#ai_core_sdk.models.repository_query_response.RepositoryQueryResponse"><code class="docutils literal notranslate"><span class="pre">RepositoryQueryResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository_query_response.RepositoryQueryResponse.from_dict'" class="reference internal" href="#ai_core_sdk.models.repository_query_response.RepositoryQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">RepositoryQueryResponse.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository_query_response.RepositoryQueryResponse.__init__'" class="reference internal" href="#ai_core_sdk.models.repository_query_response.RepositoryQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">RepositoryQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.repository_status'" class="reference internal" href="#module-ai_core_sdk.models.repository_status">ai_core_sdk.models.repository_status module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository_status.RepositoryStatus'" class="reference internal" href="#ai_core_sdk.models.repository_status.RepositoryStatus"><code class="docutils literal notranslate"><span class="pre">RepositoryStatus</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository_status.RepositoryStatus.COMPLETED'" class="reference internal" href="#ai_core_sdk.models.repository_status.RepositoryStatus.COMPLETED"><code class="docutils literal notranslate"><span class="pre">RepositoryStatus.COMPLETED</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository_status.RepositoryStatus.ERROR'" class="reference internal" href="#ai_core_sdk.models.repository_status.RepositoryStatus.ERROR"><code class="docutils literal notranslate"><span class="pre">RepositoryStatus.ERROR</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.repository_status.RepositoryStatus.IN_PROGRESS'" class="reference internal" href="#ai_core_sdk.models.repository_status.RepositoryStatus.IN_PROGRESS"><code class="docutils literal notranslate"><span class="pre">RepositoryStatus.IN_PROGRESS</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.resource_group'" class="reference internal" href="#module-ai_core_sdk.models.resource_group">ai_core_sdk.models.resource_group module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group.ResourceGroup'" class="reference internal" href="#ai_core_sdk.models.resource_group.ResourceGroup"><code class="docutils literal notranslate"><span class="pre">ResourceGroup</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group.ResourceGroup.from_dict'" class="reference internal" href="#ai_core_sdk.models.resource_group.ResourceGroup.from_dict"><code class="docutils literal notranslate"><span class="pre">ResourceGroup.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group.ResourceGroup.__init__'" class="reference internal" href="#ai_core_sdk.models.resource_group.ResourceGroup.__init__"><code class="docutils literal notranslate"><span class="pre">ResourceGroup.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.resource_group_query_response'" class="reference internal" href="#module-ai_core_sdk.models.resource_group_query_response">ai_core_sdk.models.resource_group_query_response module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse'" class="reference internal" href="#ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse"><code class="docutils literal notranslate"><span class="pre">ResourceGroupQueryResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse.from_dict'" class="reference internal" href="#ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">ResourceGroupQueryResponse.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse.__init__'" class="reference internal" href="#ai_core_sdk.models.resource_group_query_response.ResourceGroupQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">ResourceGroupQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.resource_group_status'" class="reference internal" href="#module-ai_core_sdk.models.resource_group_status">ai_core_sdk.models.resource_group_status module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group_status.ResourceGroupStatus'" class="reference internal" href="#ai_core_sdk.models.resource_group_status.ResourceGroupStatus"><code class="docutils literal notranslate"><span class="pre">ResourceGroupStatus</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group_status.ResourceGroupStatus.ERROR'" class="reference internal" href="#ai_core_sdk.models.resource_group_status.ResourceGroupStatus.ERROR"><code class="docutils literal notranslate"><span class="pre">ResourceGroupStatus.ERROR</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group_status.ResourceGroupStatus.PROVISIONED'" class="reference internal" href="#ai_core_sdk.models.resource_group_status.ResourceGroupStatus.PROVISIONED"><code class="docutils literal notranslate"><span class="pre">ResourceGroupStatus.PROVISIONED</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.resource_group_status.ResourceGroupStatus.PROVISIONING'" class="reference internal" href="#ai_core_sdk.models.resource_group_status.ResourceGroupStatus.PROVISIONING"><code class="docutils literal notranslate"><span class="pre">ResourceGroupStatus.PROVISIONING</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.secret'" class="reference internal" href="#module-ai_core_sdk.models.secret">ai_core_sdk.models.secret module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.secret.Secret'" class="reference internal" href="#ai_core_sdk.models.secret.Secret"><code class="docutils literal notranslate"><span class="pre">Secret</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.secret.Secret.from_dict'" class="reference internal" href="#ai_core_sdk.models.secret.Secret.from_dict"><code class="docutils literal notranslate"><span class="pre">Secret.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.secret.Secret.__init__'" class="reference internal" href="#ai_core_sdk.models.secret.Secret.__init__"><code class="docutils literal notranslate"><span class="pre">Secret.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_core_sdk.models.secret_query_response'" class="reference internal" href="#module-ai_core_sdk.models.secret_query_response">ai_core_sdk.models.secret_query_response module</a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.secret_query_response.SecretQueryResponse'" class="reference internal" href="#ai_core_sdk.models.secret_query_response.SecretQueryResponse"><code class="docutils literal notranslate"><span class="pre">SecretQueryResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.secret_query_response.SecretQueryResponse.from_dict'" class="reference internal" href="#ai_core_sdk.models.secret_query_response.SecretQueryResponse.from_dict"><code class="docutils literal notranslate"><span class="pre">SecretQueryResponse.from_dict()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_core_sdk.models.secret_query_response.SecretQueryResponse.__init__'" class="reference internal" href="#ai_core_sdk.models.secret_query_response.SecretQueryResponse.__init__"><code class="docutils literal notranslate"><span class="pre">SecretQueryResponse.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../../_static/doctools.js?v=9bcbadda"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>

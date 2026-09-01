@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>ai_api_client_sdk.helpers package | SAP Cloud SDK for AI (Python) - base v3.4.1</title>
+<meta content="ai_api_client_sdk.helpers package | SAP Cloud SDK for AI (Python) - base v3.4.1" property="og:title"/>
+<meta content="ai_api_client_sdk.helpers package | SAP Cloud SDK for AI (Python) - base v3.4.1" name="twitter:title"/>
+<link href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom-override.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="ai_api_client_sdk.models.html" rel="next" title="ai_api_client_sdk.models package"/>
+<link href="ai_api_client_sdk.html" rel="prev" title="ai_api_client_sdk package"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - base v3.4.1</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - base v3.4.1</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="ai_api_client_sdk.html">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ai_api_client_sdk.helpers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_api_client_sdk.models.html">ai_api_client_sdk.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ai_api_client_sdk.resource_clients.html">ai_api_client_sdk.resource_clients package</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">SAP Cloud SDK for AI (Python) - base v3.4.1</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="ai_api_client_sdk.html">ai_api_client_sdk package</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">ai_api_client_sdk.helpers package</span>
+</nav>
+<div id="content" role="main">
+<section id="module-ai_api_client_sdk.helpers">
+<span id="ai-api-client-sdk-helpers-package"></span><h1>ai_api_client_sdk.helpers package</h1>
+<section id="submodules">
+<h2>Submodules</h2>
+</section>
+<section id="module-ai_api_client_sdk.helpers.authenticator">
+<span id="ai-api-client-sdk-helpers-authenticator-module"></span><h2>ai_api_client_sdk.helpers.authenticator module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.authenticator.Authenticator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Authenticator</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Authenticator class is implemented to retrieve and cache the authorization token from the xsuaa server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>auth_url</strong> (<em>str</em>) -- URL of the authorization endpoint. Should be the full URL (including /oauth/token)</p></li>
+<li><p><strong>client_id</strong> (<em>str</em>) -- client id to be used for authorization</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em><em>, </em><em>optional</em>) -- client secret to be used for authorization, either client_secret or
+(cert_file_path and key_file_path) need to be provided, defaults to None</p></li>
+<li><p><strong>cert_str</strong> (<em>str</em><em>, </em><em>optional</em>) -- certificate file content, needs to be provided alongside the key_str parameter, defaults to None</p></li>
+<li><p><strong>key_str</strong> (<em>str</em><em>, </em><em>optional</em>) -- key file content, needs to be provided alongside the cert_str parameter, defaults to None</p></li>
+<li><p><strong>cert_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) -- path to the certificate file, needs to be provided alongside the key_file_path parameter,
+defaults to None</p></li>
+<li><p><strong>key_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) -- path to the key file, needs to be provided alongside the cert_file_path parameter,
+defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.authenticator.Authenticator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>auth_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em>)</p></li>
+<li><p><strong>cert_str</strong> (<em>str</em>)</p></li>
+<li><p><strong>key_str</strong> (<em>str</em>)</p></li>
+<li><p><strong>cert_file_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>key_file_path</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.authenticator.Authenticator.get_token">
+<span class="sig-name descname"><span class="pre">get_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Retrieves the token from the xsuaa server or from cache when expiration date not reached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIAuthenticatorException</cite> if an unexpected exception occurs while
+trying to retrieve the token</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Bearer token</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_api_client_sdk.helpers.constants">
+<span id="ai-api-client-sdk-helpers-constants-module"></span><h2>ai_api_client_sdk.helpers.constants module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.constants.Timeouts">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Timeouts</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.constants.Timeouts.CONNECT_TIMEOUT">
+<span class="sig-name descname"><span class="pre">CONNECT_TIMEOUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">60</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.constants.Timeouts.NUM_REQUEST_RETRIES">
+<span class="sig-name descname"><span class="pre">NUM_REQUEST_RETRIES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.constants.Timeouts.READ_TIMEOUT">
+<span class="sig-name descname"><span class="pre">READ_TIMEOUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">60</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+</section>
+<section id="module-ai_api_client_sdk.helpers.datetime_parser">
+<span id="ai-api-client-sdk-helpers-datetime-parser-module"></span><h2>ai_api_client_sdk.helpers.datetime_parser module</h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.datetime_parser.parse_datetime">
+<span class="sig-name descname"><span class="pre">parse_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime_str</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datetime_str</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>datetime</em></p>
+</dd>
+</dl>
+</dd></dl>
+</section>
+<section id="module-ai_api_client_sdk.helpers.llm_helper">
+<span id="ai-api-client-sdk-helpers-llm-helper-module"></span><h2>ai_api_client_sdk.helpers.llm_helper module</h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.llm_helper.check_if_llm_scenario">
+<span class="sig-name descname"><span class="pre">check_if_llm_scenario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.llm_helper.filter_for_llm_scenarios">
+<span class="sig-name descname"><span class="pre">filter_for_llm_scenarios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_dict</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.llm_helper.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.llm_helper.get_key">
+<span class="sig-name descname"><span class="pre">get_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'key'</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.llm_helper.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'labels'</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.llm_helper.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'value'</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+</section>
+<section id="module-ai_api_client_sdk.helpers.logging">
+<span id="ai-api-client-sdk-helpers-logging-module"></span><h2>ai_api_client_sdk.helpers.logging module</h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.logging.get_logger">
+<span class="sig-name descname"><span class="pre">get_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.logging.get_logger_name">
+<span class="sig-name descname"><span class="pre">get_logger_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.logging.set_log_level">
+<span class="sig-name descname"><span class="pre">set_log_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>logger</strong> (<em>Logger</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+</section>
+<section id="module-ai_api_client_sdk.helpers.rest_client">
+<span id="ai-api-client-sdk-helpers-rest-client-module"></span><h2>ai_api_client_sdk.helpers.rest_client module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.rest_client.RestClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RestClient</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>RestClient is the class implemented for sending the requests to the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<em>str</em>) -- Base URL of the server. Should include the base path as well. (i.e., "&lt;base_url&gt;/scenarios" should
+work)</p></li>
+<li><p><strong>get_token</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>str</em><em>]</em>) -- the function which returns the Bearer token, when called</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- The default resource group which will be used while sending the requests to the server,
+defaults to None</p></li>
+<li><p><strong>client_type</strong> (<em>str</em>) -- Used for Metering to distinguish eg AI Launchpad python SDKs etc,
+defaults to None</p></li>
+<li><p><strong>read_timeout</strong> (<em>int</em>) -- Read timeout for requests in seconds, defaults to 60s</p></li>
+<li><p><strong>connect_timeout</strong> (<em>int</em>) -- Connect timeout for requests in seconds, defaults to 60s</p></li>
+<li><p><strong>num_request_retries</strong> (<em>int</em>) -- Number of retries for failing requests with http status code 429, 500, 502, 503 or 504,
+defaults to 60s</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.rest_client.RestClient.raise_ai_api_exception">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">raise_ai_api_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_json</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.rest_client.RestClient.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_request_retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<em>str</em>)</p></li>
+<li><p><strong>get_token</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>)</p></li>
+<li><p><strong>client_type</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.rest_client.RestClient.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Sends a DELETE request to the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) -- path of the endpoint the request should be sent to</p></li>
+<li><p><strong>params</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- parameters of the request, defaults to None</p></li>
+<li><p><strong>headers</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- headers of the request, defaults to None</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- Resource Group which the request should be sent on behalf. Either this, or the
+resource_group property of this class should be set.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) -- additional keyword arguments to be passed to the request e.g. files, stream, etc.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIAuthorizationException</cite> if a 401 response is received from the
+server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPINotFoundException</cite> if a 404 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIPreconditionFailedException</cite> if a 412 response is received from
+the server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The JSON response from the server (The keys decamelized)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.rest_client.RestClient.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_bytes_content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Sends a GET request to the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) -- path of the endpoint the request should be sent to</p></li>
+<li><p><strong>params</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- parameters of the request, defaults to None</p></li>
+<li><p><strong>headers</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- headers of the request, defaults to None</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- Resource Group which the request should be sent on behalf. Either this, or the
+resource_group property of this class should be set.</p></li>
+<li><p><strong>return_bytes_content</strong> (<em>bool</em>) -- expected response.content is bytes</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) -- additional keyword arguments to be passed to the request e.g. files, stream, etc.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIAuthorizationException</cite> if a 401 response is received from the
+server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPINotFoundException</cite> if a 404 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIPreconditionFailedException</cite> if a 412 response is received from
+the server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The JSON response from the server (The keys decamelized)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[dict, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.rest_client.RestClient.patch">
+<span class="sig-name descname"><span class="pre">patch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Sends a PATCH request to the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) -- path of the endpoint the request should be sent to</p></li>
+<li><p><strong>body</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>str</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>]</em><em>]</em>) -- body of the request</p></li>
+<li><p><strong>headers</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- headers of the request, defaults to None</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- Resource Group which the request should be sent on behalf. Either this, or the
+resource_group property of this class should be set.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) -- additional keyword arguments to be passed to the request e.g. files, stream, etc.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIAuthorizationException</cite> if a 401 response is received from the
+server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPINotFoundException</cite> if a 404 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIPreconditionFailedException</cite> if a 412 response is received from
+the server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The JSON response from the server (The keys decamelized)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.rest_client.RestClient.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Sends a POST request to the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) -- path of the endpoint the request should be sent to</p></li>
+<li><p><strong>body</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- body of the request, defaults to None</p></li>
+<li><p><strong>headers</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- headers of the request, defaults to None</p></li>
+<li><p><strong>resource_group</strong> (<em>str</em>) -- Resource Group which the request should be sent on behalf. Either this, or the
+resource_group property of this class should be set.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) -- additional keyword arguments to be passed to the request e.g. files, stream, etc.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIInvalidRequestException</cite> if a 400 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIAuthorizationException</cite> if a 401 response is received from the
+server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPINotFoundException</cite> if a 404 response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class:<cite>ai_api_client_sdk.exception.AIAPIPreconditionFailedException</cite> if a 412 response is received from
+the server</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>class:<cite>ai_api_client_sdk.exception.AIAPIServerException</cite> if a non-2XX response is received from the
+server</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The JSON response from the server (The keys decamelized)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ai_api_client_sdk.helpers.rest_client.RestClient.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">ai-api-client-sdk</span> <span class="pre">(WARNING)&gt;</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#submodules'" class="reference internal" href="#submodules">Submodules</a></li>
+<li><a :data-current="activeSection === '#module-ai_api_client_sdk.helpers.authenticator'" class="reference internal" href="#module-ai_api_client_sdk.helpers.authenticator">ai_api_client_sdk.helpers.authenticator module</a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.authenticator.Authenticator'" class="reference internal" href="#ai_api_client_sdk.helpers.authenticator.Authenticator"><code class="docutils literal notranslate"><span class="pre">Authenticator</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.authenticator.Authenticator.__init__'" class="reference internal" href="#ai_api_client_sdk.helpers.authenticator.Authenticator.__init__"><code class="docutils literal notranslate"><span class="pre">Authenticator.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.authenticator.Authenticator.get_token'" class="reference internal" href="#ai_api_client_sdk.helpers.authenticator.Authenticator.get_token"><code class="docutils literal notranslate"><span class="pre">Authenticator.get_token()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_api_client_sdk.helpers.constants'" class="reference internal" href="#module-ai_api_client_sdk.helpers.constants">ai_api_client_sdk.helpers.constants module</a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.constants.Timeouts'" class="reference internal" href="#ai_api_client_sdk.helpers.constants.Timeouts"><code class="docutils literal notranslate"><span class="pre">Timeouts</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.constants.Timeouts.CONNECT_TIMEOUT'" class="reference internal" href="#ai_api_client_sdk.helpers.constants.Timeouts.CONNECT_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">Timeouts.CONNECT_TIMEOUT</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.constants.Timeouts.NUM_REQUEST_RETRIES'" class="reference internal" href="#ai_api_client_sdk.helpers.constants.Timeouts.NUM_REQUEST_RETRIES"><code class="docutils literal notranslate"><span class="pre">Timeouts.NUM_REQUEST_RETRIES</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.constants.Timeouts.READ_TIMEOUT'" class="reference internal" href="#ai_api_client_sdk.helpers.constants.Timeouts.READ_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">Timeouts.READ_TIMEOUT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_api_client_sdk.helpers.datetime_parser'" class="reference internal" href="#module-ai_api_client_sdk.helpers.datetime_parser">ai_api_client_sdk.helpers.datetime_parser module</a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.datetime_parser.parse_datetime'" class="reference internal" href="#ai_api_client_sdk.helpers.datetime_parser.parse_datetime"><code class="docutils literal notranslate"><span class="pre">parse_datetime()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_api_client_sdk.helpers.llm_helper'" class="reference internal" href="#module-ai_api_client_sdk.helpers.llm_helper">ai_api_client_sdk.helpers.llm_helper module</a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.llm_helper.check_if_llm_scenario'" class="reference internal" href="#ai_api_client_sdk.helpers.llm_helper.check_if_llm_scenario"><code class="docutils literal notranslate"><span class="pre">check_if_llm_scenario()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.llm_helper.filter_for_llm_scenarios'" class="reference internal" href="#ai_api_client_sdk.helpers.llm_helper.filter_for_llm_scenarios"><code class="docutils literal notranslate"><span class="pre">filter_for_llm_scenarios()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.llm_helper.get_attr'" class="reference internal" href="#ai_api_client_sdk.helpers.llm_helper.get_attr"><code class="docutils literal notranslate"><span class="pre">get_attr()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.llm_helper.get_key'" class="reference internal" href="#ai_api_client_sdk.helpers.llm_helper.get_key"><code class="docutils literal notranslate"><span class="pre">get_key()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.llm_helper.get_labels'" class="reference internal" href="#ai_api_client_sdk.helpers.llm_helper.get_labels"><code class="docutils literal notranslate"><span class="pre">get_labels()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.llm_helper.get_value'" class="reference internal" href="#ai_api_client_sdk.helpers.llm_helper.get_value"><code class="docutils literal notranslate"><span class="pre">get_value()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_api_client_sdk.helpers.logging'" class="reference internal" href="#module-ai_api_client_sdk.helpers.logging">ai_api_client_sdk.helpers.logging module</a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.logging.get_logger'" class="reference internal" href="#ai_api_client_sdk.helpers.logging.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.logging.get_logger_name'" class="reference internal" href="#ai_api_client_sdk.helpers.logging.get_logger_name"><code class="docutils literal notranslate"><span class="pre">get_logger_name()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.logging.set_log_level'" class="reference internal" href="#ai_api_client_sdk.helpers.logging.set_log_level"><code class="docutils literal notranslate"><span class="pre">set_log_level()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#module-ai_api_client_sdk.helpers.rest_client'" class="reference internal" href="#module-ai_api_client_sdk.helpers.rest_client">ai_api_client_sdk.helpers.rest_client module</a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.rest_client.RestClient'" class="reference internal" href="#ai_api_client_sdk.helpers.rest_client.RestClient"><code class="docutils literal notranslate"><span class="pre">RestClient</span></code></a><ul>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.rest_client.RestClient.raise_ai_api_exception'" class="reference internal" href="#ai_api_client_sdk.helpers.rest_client.RestClient.raise_ai_api_exception"><code class="docutils literal notranslate"><span class="pre">RestClient.raise_ai_api_exception()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.rest_client.RestClient.__init__'" class="reference internal" href="#ai_api_client_sdk.helpers.rest_client.RestClient.__init__"><code class="docutils literal notranslate"><span class="pre">RestClient.__init__()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.rest_client.RestClient.delete'" class="reference internal" href="#ai_api_client_sdk.helpers.rest_client.RestClient.delete"><code class="docutils literal notranslate"><span class="pre">RestClient.delete()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.rest_client.RestClient.get'" class="reference internal" href="#ai_api_client_sdk.helpers.rest_client.RestClient.get"><code class="docutils literal notranslate"><span class="pre">RestClient.get()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.rest_client.RestClient.patch'" class="reference internal" href="#ai_api_client_sdk.helpers.rest_client.RestClient.patch"><code class="docutils literal notranslate"><span class="pre">RestClient.patch()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.rest_client.RestClient.post'" class="reference internal" href="#ai_api_client_sdk.helpers.rest_client.RestClient.post"><code class="docutils literal notranslate"><span class="pre">RestClient.post()</span></code></a></li>
+<li><a :data-current="activeSection === '#ai_api_client_sdk.helpers.rest_client.RestClient.logger'" class="reference internal" href="#ai_api_client_sdk.helpers.rest_client.RestClient.logger"><code class="docutils literal notranslate"><span class="pre">RestClient.logger</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../../_static/doctools.js?v=9bcbadda"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>

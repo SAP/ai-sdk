@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>gen_ai_hub.prompt_registry package | SAP Cloud SDK for AI (Python) - generative v7.2.0</title>
+<meta content="gen_ai_hub.prompt_registry package | SAP Cloud SDK for AI (Python) - generative v7.2.0" property="og:title"/>
+<meta content="gen_ai_hub.prompt_registry package | SAP Cloud SDK for AI (Python) - generative v7.2.0" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom-override.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/custom.css?v=5e23243f" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-myst-nb.css?v=7c7ea10c" rel="stylesheet" type="text/css"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="gen_ai_hub.prompt_registry.models.html" rel="next" title="gen_ai_hub.prompt_registry.models package"/>
+<link href="gen_ai_hub.orchestration_v2.models.html" rel="prev" title="gen_ai_hub.orchestration_v2.models package"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../_reference/README_sphynx.html">Introduction</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/gen_ai_hub.html">Native Client Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/gen_ai_hub.html#langchain-integration">Langchain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/gen_ai_hub.html#sap-rpt-1-models">SAP RPT-1 Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/prompt-registry.html">Prompt Registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/orchestration-service.html">Orchestration Service [Deprecated]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/orchestration-service2.html">Orchestration Service V2 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/document-grounding.html">Document Grounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/async-examples.html">Async examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_reference/evaluations.html">Generative AI Custom Evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../_reference/RELEASE_NOTES.html">Release Notes</a></li>
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.html">API Reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.batch_service.html">gen_ai_hub.batch_service package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.batch_service.models.html">gen_ai_hub.batch_service.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.document_grounding.html">gen_ai_hub.document_grounding package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.document_grounding.clients.html">gen_ai_hub.document_grounding.clients package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.document_grounding.models.html">gen_ai_hub.document_grounding.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.evaluations.html">gen_ai_hub.evaluations package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.evaluations.exceptions.html">gen_ai_hub.evaluations.exceptions package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.evaluations.helpers.html">gen_ai_hub.evaluations.helpers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.evaluations.models.html">gen_ai_hub.evaluations.models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.evaluations.utils.html">gen_ai_hub.evaluations.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.orchestration.html">gen_ai_hub.orchestration package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration.models.html">gen_ai_hub.orchestration.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.orchestration_v2.html">gen_ai_hub.orchestration_v2 package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="current reference internal expandable" href="#">gen_ai_hub.prompt_registry package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html">gen_ai_hub.prompt_registry.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.proxy.html">gen_ai_hub.proxy package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.core.html">gen_ai_hub.proxy.core package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.gen_ai_hub_proxy.html">gen_ai_hub.proxy.gen_ai_hub_proxy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.langchain.html">gen_ai_hub.proxy.langchain package</a></li>
+<li class="toctree-l3" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="gen_ai_hub.proxy.native.html">gen_ai_hub.proxy.native package<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.amazon.html">gen_ai_hub.proxy.native.amazon package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.google_genai.html">gen_ai_hub.proxy.native.google_genai package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.openai.html">gen_ai_hub.proxy.native.openai package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html">gen_ai_hub.proxy.native.sap package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">SAP Cloud SDK for AI (Python) - generative v7.2.0</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="gen_ai_hub.html">gen_ai_hub package</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">gen_ai_hub.prompt_registry package</span>
+</nav>
+<div id="content" role="main">
+<section id="module-gen_ai_hub.prompt_registry">
+<span id="gen-ai-hub-prompt-registry-package"></span><h1>gen_ai_hub.prompt_registry package</h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrchestrationConfigClient</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromptRegistryClient</span></code></p>
+<p>Client for interacting with the Prompt Registry Orchestration Config API.</p>
+<p><a class="reference external" href="https://api.sap.com/api/PROMPT_REGISTRY_API/overview">https://api.sap.com/api/PROMPT_REGISTRY_API/overview</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigClient.create_orchestration_config">
+<span class="sig-name descname"><span class="pre">create_orchestration_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Create an orchestration config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the orchestration config.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the orchestration config.</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the orchestration config.</p></li>
+<li><p><strong>spec</strong> (<em>Union</em><em>[</em><em>dict</em><em>, </em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.config.OrchestrationConfig" title="gen_ai_hub.orchestration.models.config.OrchestrationConfig"><em>OrchestrationConfig</em></a><em>]</em>) -- the specification of the orchestration config.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigPostResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse">OrchestrationConfigPostResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigClient.delete_orchestration_config_by_id">
+<span class="sig-name descname"><span class="pre">delete_orchestration_config_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Delete a specific version of the orchestration config by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_id</strong> (<em>str</em>) -- The ID of the orchestration config.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigDeleteResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse">OrchestrationConfigDeleteResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigClient.export_orchestration_config">
+<span class="sig-name descname"><span class="pre">export_orchestration_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Export a design orchestration config  in a declarative compatible yaml file.
+Supports only single file export.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_id</strong> (<em>str</em>) -- The id of the orchestration config to export.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes: The content of the exported file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_config_by_id">
+<span class="sig-name descname"><span class="pre">get_orchestration_config_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_template_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve a specific version of the orchestration config by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_id</strong> (<em>str</em>) -- The ID of the orchestration config to retrieve.</p></li>
+<li><p><strong>resolve_template_ref</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigGetResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse">OrchestrationConfigGetResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_config_history">
+<span class="sig-name descname"><span class="pre">get_orchestration_config_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_template_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve the history of edits to the orchestration config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- The scenario name of the orchestration config.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- The name of the orchestration config.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- The version ID of the orchestration config.</p></li>
+<li><p><strong>include_spec</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+<li><p><strong>resolve_template_ref</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigListResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse">OrchestrationConfigListResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_configs">
+<span class="sig-name descname"><span class="pre">get_orchestration_configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_template_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve the latest version of every orchestration config based on the filters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the orchestration config.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the orchestration config.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the orchestration config.</p></li>
+<li><p><strong>retrieve</strong> (<em>str</em><em>, </em><em>optional</em>) -- both(default), imperative, declarative</p></li>
+<li><p><strong>include_spec</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+<li><p><strong>resolve_template_ref</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigListResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse">OrchestrationConfigListResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigClient.import_orchestration_config">
+<span class="sig-name descname"><span class="pre">import_orchestration_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Import a runtime/declarative orchestration config into the design time environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>bytes</em>) -- binary file content</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A OrchestrationConfigPostResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse">OrchestrationConfigPostResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrchestrationConfigDeleteResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Response to a delete orchestration config request.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message: Response message.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse.message">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrchestrationConfigGetResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Response to a get orchestration config request.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>id: UUID of the config.
+name: Config name.
+version: Config version.
+scenario: Scenario name.
+creation_timestamp: When the config was created.
+managed_by: Who manages the config.
+is_version_head: Whether this is the head version.
+spec: The orchestration config specification (optional).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.model_dump">
+<span class="sig-name descname"><span class="pre">model_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Dumps the model to a dictionary with default settings.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.creation_timestamp">
+<span class="sig-name descname"><span class="pre">creation_timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.is_version_head">
+<span class="sig-name descname"><span class="pre">is_version_head</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.managed_by">
+<span class="sig-name descname"><span class="pre">managed_by</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.resource_group_id">
+<span class="sig-name descname"><span class="pre">resource_group_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.scenario">
+<span class="sig-name descname"><span class="pre">scenario</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.spec">
+<span class="sig-name descname"><span class="pre">spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.config.OrchestrationConfig" title="gen_ai_hub.orchestration_v2.models.config.OrchestrationConfig"><span class="pre">OrchestrationConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrchestrationConfigListResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Response to list orchestration configs request.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>count: Number of configs returned.
+resources: List of OrchestrationConfigGetResponse objects.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.model_dump">
+<span class="sig-name descname"><span class="pre">model_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Dumps the model to a dictionary with default settings.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.count">
+<span class="sig-name descname"><span class="pre">count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.resources">
+<span class="sig-name descname"><span class="pre">resources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html#gen_ai_hub.prompt_registry.models.orchestration_config.OrchestrationConfigGetResponse" title="gen_ai_hub.prompt_registry.models.orchestration_config.OrchestrationConfigGetResponse"><span class="pre">OrchestrationConfigGetResponse</span></a><span class="p"><span class="pre">]</span></span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrchestrationConfigPostRequest</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Request to create an orchestration config.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name: The name of the orchestration config.
+version: The version of the orchestration config.
+scenario: The scenario of the orchestration config.
+spec: The orchestration config specification.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.model_dump">
+<span class="sig-name descname"><span class="pre">model_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Dumps the model to a dictionary with default settings.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.scenario">
+<span class="sig-name descname"><span class="pre">scenario</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.spec">
+<span class="sig-name descname"><span class="pre">spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.config.OrchestrationConfig" title="gen_ai_hub.orchestration_v2.models.config.OrchestrationConfig"><span class="pre">OrchestrationConfig</span></a></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrchestrationConfigPostResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Response to the orchestration config post request.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message: Response message.
+id: UUID of the created/updated config.
+scenario: The scenario name.
+name: The config name.
+version: The config version.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.message">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.scenario">
+<span class="sig-name descname"><span class="pre">scenario</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplate">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplate</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a prompt template.</p>
+<dl>
+<dt>Args:</dt><dd><p>role: The role of the prompt template.</p>
+<p>content: The content of the prompt template.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplate.content_validation">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">content_validation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Validates and maps the content field to the appropriate types.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplate.content">
+<span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.multimodal_items.TextPart" title="gen_ai_hub.orchestration_v2.models.multimodal_items.TextPart"><span class="pre">TextPart</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.multimodal_items.ImagePart" title="gen_ai_hub.orchestration_v2.models.multimodal_items.ImagePart"><span class="pre">ImagePart</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.multimodal_items.ImageItem" title="gen_ai_hub.orchestration_v2.models.multimodal_items.ImageItem"><span class="pre">ImageItem</span></a><span class="p"><span class="pre">]</span></span></em></dt>
+<dd><p>The content of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplate.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplate.role">
+<span class="sig-name descname"><span class="pre">role</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The role of the prompt template.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplateClient</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromptRegistryClient</span></code></p>
+<p>Client for interacting with the Prompt Registry Prompt Template API.</p>
+<p><a class="reference external" href="https://api.sap.com/api/PROMPT_REGISTRY_API/overview">https://api.sap.com/api/PROMPT_REGISTRY_API/overview</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.create_prompt_template">
+<span class="sig-name descname"><span class="pre">create_prompt_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_template_spec</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Create or update a prompt template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the prompt template.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the prompt template.</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the prompt template.</p></li>
+<li><p><strong>prompt_template_spec</strong> (<a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec" title="gen_ai_hub.prompt_registry.PromptTemplateSpec"><em>PromptTemplateSpec</em></a>) -- the specification of the prompt template.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplatePostResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse" title="gen_ai_hub.prompt_registry.PromptTemplatePostResponse">PromptTemplatePostResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.delete_prompt_template_by_id">
+<span class="sig-name descname"><span class="pre">delete_prompt_template_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Delete a specific version of the prompt template by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>template_id</strong> (<em>str</em>) -- The ID of the prompt template to delete.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateDeleteResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse" title="gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse">PromptTemplateDeleteResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.export_prompt_template">
+<span class="sig-name descname"><span class="pre">export_prompt_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Export a design time template in a declarative compatible yaml file. Supports only single file export.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>template_id</strong> (<em>str</em>) -- The id of the prompt template to export.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes: The content of the exported file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.fill_prompt_template">
+<span class="sig-name descname"><span class="pre">fill_prompt_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Replace the placeholders of the prompt template referenced via scenario-name-version 
+with user provided values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the prompt template.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the prompt template.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the prompt template.</p></li>
+<li><p><strong>input_params</strong> (<em>dict</em>) -- User provided values to replace the placeholders of the prompt template.</p></li>
+<li><p><strong>metadata</strong> (<em>bool</em><em>, </em><em>optional</em>) -- False(default), True return resource object with all details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateSubstitutionResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse" title="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse">PromptTemplateSubstitutionResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.fill_prompt_template_by_id">
+<span class="sig-name descname"><span class="pre">fill_prompt_template_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Replace the placeholders of the prompt template referenced via template_id with user provided values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_id</strong> (<em>str</em>) -- The ID of the prompt template.</p></li>
+<li><p><strong>input_params</strong> (<em>dict</em>) -- User provided values to replace the placeholders of the prompt template.</p></li>
+<li><p><strong>metadata</strong> (<em>bool</em><em>, </em><em>optional</em>) -- False(default), True return resource object with all details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateSubstitutionResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse" title="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse">PromptTemplateSubstitutionResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_template_by_id">
+<span class="sig-name descname"><span class="pre">get_prompt_template_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve a specific version of the prompt template by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>template_id</strong> (<em>str</em>) -- The ID of the prompt template to retrieve.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateGetResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse" title="gen_ai_hub.prompt_registry.PromptTemplateGetResponse">PromptTemplateGetResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_template_history">
+<span class="sig-name descname"><span class="pre">get_prompt_template_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve the history of edits to the prompt template. Only for imperative managed prompt templates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- The scenario name of the prompt template.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- The name of the prompt template.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- The version ID of the prompt template.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateListResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateListResponse" title="gen_ai_hub.prompt_registry.PromptTemplateListResponse">PromptTemplateListResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_templates">
+<span class="sig-name descname"><span class="pre">get_prompt_templates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve the latest version of every prompt template based on the filters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the prompt template.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the prompt template.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the prompt template.</p></li>
+<li><p><strong>retrieve</strong> (<em>str</em><em>, </em><em>optional</em>) -- both(default), imperative, declarative</p></li>
+<li><p><strong>include_spec</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateListResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateListResponse" title="gen_ai_hub.prompt_registry.PromptTemplateListResponse">PromptTemplateListResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateClient.import_prompt_template">
+<span class="sig-name descname"><span class="pre">import_prompt_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Import a runtime/declarative prompt template into the design time environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>bytes</em>) -- binary file content</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplatePostResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse" title="gen_ai_hub.prompt_registry.PromptTemplatePostResponse">PromptTemplatePostResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplateDeleteResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a response to a request to delete a prompt template.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message: The message of the response.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse.message">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The message of the response.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplateGetResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a response to a request to get a prompt template.</p>
+<dl>
+<dt>Args:</dt><dd><p>id: The ID of the prompt template.</p>
+<p>name: The name of the prompt template.</p>
+<p>version: The version of the prompt template.</p>
+<p>scenario: The scenario of the prompt template.</p>
+<p>creation_timestamp: The creation timestamp of the prompt template.</p>
+<p>managed_by: The manager of the prompt template.</p>
+<p>is_version_head: Whether the version is the head version.</p>
+<p>spec: The specification of the prompt template.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.creation_timestamp">
+<span class="sig-name descname"><span class="pre">creation_timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>The creation timestamp of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The ID of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.is_version_head">
+<span class="sig-name descname"><span class="pre">is_version_head</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>Whether the version is the head version.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.managed_by">
+<span class="sig-name descname"><span class="pre">managed_by</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>The manager of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The name of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.scenario">
+<span class="sig-name descname"><span class="pre">scenario</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The scenario of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.spec">
+<span class="sig-name descname"><span class="pre">spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html#gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplateSpec" title="gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplateSpec"><span class="pre">PromptTemplateSpec</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>The specification of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateGetResponse.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The version of the prompt template.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateListResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplateListResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a response to a request to list prompt templates.</p>
+<dl>
+<dt>Args:</dt><dd><p>count: The number of prompt templates.</p>
+<p>resources: The list of PromptGetResponse objects.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateListResponse.count">
+<span class="sig-name descname"><span class="pre">count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em></dt>
+<dd><p>The number of prompt templates.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateListResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateListResponse.resources">
+<span class="sig-name descname"><span class="pre">resources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html#gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplateGetResponse" title="gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplateGetResponse"><span class="pre">PromptTemplateGetResponse</span></a><span class="p"><span class="pre">]</span></span></em></dt>
+<dd><p>The list of PromptGetResponse objects.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostRequest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplatePostRequest</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a request to create a prompt template.</p>
+<dl>
+<dt>Args:</dt><dd><p>name: The name of the prompt template.</p>
+<p>version: The version of the prompt template.</p>
+<p>scenario: The scenario of the prompt template.</p>
+<p>spec: The specification of the prompt template.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostRequest.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostRequest.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The name of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostRequest.scenario">
+<span class="sig-name descname"><span class="pre">scenario</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The scenario of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostRequest.spec">
+<span class="sig-name descname"><span class="pre">spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html#gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplateSpec" title="gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplateSpec"><span class="pre">PromptTemplateSpec</span></a></em></dt>
+<dd><p>The specification of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostRequest.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The version of the prompt template.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplatePostResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a response to a request to create a prompt template.</p>
+<dl>
+<dt>Args:</dt><dd><p>message: The message of the response.</p>
+<p>id: The ID of the prompt template.</p>
+<p>scenario: The scenario of the prompt template.</p>
+<p>name: The name of the prompt template.</p>
+<p>version: The version of the prompt template.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostResponse.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The ID of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostResponse.message">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The message of the response.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostResponse.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The name of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostResponse.scenario">
+<span class="sig-name descname"><span class="pre">scenario</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The scenario of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplatePostResponse.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<dd><p>The version of the prompt template.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSpec">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplateSpec</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a prompt template specification.</p>
+<dl>
+<dt>Args:</dt><dd><p>Args:
+template: A list of prompt messages that form the template.</p>
+<p>defaults: A dict of default values for template variables.</p>
+<p>tools: A list of tool definitions.</p>
+<p>response_format: A response format that the model output should adhere to.</p>
+<p>additional_fields: Additional fields for the prompt template.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSpec.additional_fields">
+<span class="sig-name descname"><span class="pre">additional_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSpec.defaults">
+<span class="sig-name descname"><span class="pre">defaults</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSpec.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSpec.response_format">
+<span class="sig-name descname"><span class="pre">response_format</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.response_format.ResponseFormatText" title="gen_ai_hub.orchestration_v2.models.response_format.ResponseFormatText"><span class="pre">ResponseFormatText</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.response_format.ResponseFormatJsonObject" title="gen_ai_hub.orchestration_v2.models.response_format.ResponseFormatJsonObject"><span class="pre">ResponseFormatJsonObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.response_format.ResponseFormatJsonSchema" title="gen_ai_hub.orchestration_v2.models.response_format.ResponseFormatJsonSchema"><span class="pre">ResponseFormatJsonSchema</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSpec.template">
+<span class="sig-name descname"><span class="pre">template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html#gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplate" title="gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplate"><span class="pre">PromptTemplate</span></a><span class="p"><span class="pre">]</span></span></em></dt>
+<dd></dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSpec.tools">
+<span class="sig-name descname"><span class="pre">tools</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.tools.FunctionTool" title="gen_ai_hub.orchestration_v2.models.tools.FunctionTool"><span class="pre">FunctionTool</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplateSubstitutionRequest</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a request to substitute a prompt template.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>input_params: User provided values to replace the placeholders of the prompt template.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest.input_params">
+<span class="sig-name descname"><span class="pre">input_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>User provided values to replace the placeholders of the prompt template.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'validate_by_alias':</span> <span class="pre">True,</span> <span class="pre">'validate_by_name':</span> <span class="pre">True}</span></em></dt>
+<dd><p>Pydantic configuration to allow population by field name.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplateSubstitutionResponse</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Represents a response to a request to substitute a prompt template.</p>
+<dl>
+<dt>Args:</dt><dd><p>parsed_prompt: The parsed prompt.</p>
+<p>resource: List of TemplateGetResponse objects.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.parsed_prompt">
+<span class="sig-name descname"><span class="pre">parsed_prompt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html#gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplate" title="gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplate"><span class="pre">PromptTemplate</span></a><span class="p"><span class="pre">]</span></span></em></dt>
+<dd><p>The parsed prompt.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.resource">
+<span class="sig-name descname"><span class="pre">resource</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html#gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplateGetResponse" title="gen_ai_hub.prompt_registry.models.prompt_template.PromptTemplateGetResponse"><span class="pre">PromptTemplateGetResponse</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>List of TemplateGetResponse objects.</p>
+</dd></dl>
+</dd></dl>
+<section id="subpackages">
+<h2>Subpackages</h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gen_ai_hub.prompt_registry.models.html">gen_ai_hub.prompt_registry.models package</a></li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules</h2>
+</section>
+<section id="module-gen_ai_hub.prompt_registry.client">
+<span id="gen-ai-hub-prompt-registry-client-module"></span><h2>gen_ai_hub.prompt_registry.client module</h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.OrchestrationConfigClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrchestrationConfigClient</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromptRegistryClient</span></code></p>
+<p>Client for interacting with the Prompt Registry Orchestration Config API.</p>
+<p><a class="reference external" href="https://api.sap.com/api/PROMPT_REGISTRY_API/overview">https://api.sap.com/api/PROMPT_REGISTRY_API/overview</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.create_orchestration_config">
+<span class="sig-name descname"><span class="pre">create_orchestration_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Create an orchestration config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the orchestration config.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the orchestration config.</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the orchestration config.</p></li>
+<li><p><strong>spec</strong> (<em>Union</em><em>[</em><em>dict</em><em>, </em><a class="reference internal" href="gen_ai_hub.orchestration.models.html#gen_ai_hub.orchestration.models.config.OrchestrationConfig" title="gen_ai_hub.orchestration.models.config.OrchestrationConfig"><em>OrchestrationConfig</em></a><em>]</em>) -- the specification of the orchestration config.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigPostResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse">OrchestrationConfigPostResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.delete_orchestration_config_by_id">
+<span class="sig-name descname"><span class="pre">delete_orchestration_config_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Delete a specific version of the orchestration config by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_id</strong> (<em>str</em>) -- The ID of the orchestration config.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigDeleteResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse">OrchestrationConfigDeleteResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.export_orchestration_config">
+<span class="sig-name descname"><span class="pre">export_orchestration_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Export a design orchestration config  in a declarative compatible yaml file.
+Supports only single file export.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_id</strong> (<em>str</em>) -- The id of the orchestration config to export.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes: The content of the exported file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_config_by_id">
+<span class="sig-name descname"><span class="pre">get_orchestration_config_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_template_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve a specific version of the orchestration config by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_id</strong> (<em>str</em>) -- The ID of the orchestration config to retrieve.</p></li>
+<li><p><strong>resolve_template_ref</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigGetResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse">OrchestrationConfigGetResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_config_history">
+<span class="sig-name descname"><span class="pre">get_orchestration_config_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_template_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve the history of edits to the orchestration config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- The scenario name of the orchestration config.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- The name of the orchestration config.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- The version ID of the orchestration config.</p></li>
+<li><p><strong>include_spec</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+<li><p><strong>resolve_template_ref</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigListResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse">OrchestrationConfigListResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_configs">
+<span class="sig-name descname"><span class="pre">get_orchestration_configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_template_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve the latest version of every orchestration config based on the filters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the orchestration config.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the orchestration config.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the orchestration config.</p></li>
+<li><p><strong>retrieve</strong> (<em>str</em><em>, </em><em>optional</em>) -- both(default), imperative, declarative</p></li>
+<li><p><strong>include_spec</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+<li><p><strong>resolve_template_ref</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OrchestrationConfigListResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigListResponse">OrchestrationConfigListResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.import_orchestration_config">
+<span class="sig-name descname"><span class="pre">import_orchestration_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Import a runtime/declarative orchestration config into the design time environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>bytes</em>) -- binary file content</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A OrchestrationConfigPostResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse" title="gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse">OrchestrationConfigPostResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PromptTemplateClient</span></span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromptRegistryClient</span></code></p>
+<p>Client for interacting with the Prompt Registry Prompt Template API.</p>
+<p><a class="reference external" href="https://api.sap.com/api/PROMPT_REGISTRY_API/overview">https://api.sap.com/api/PROMPT_REGISTRY_API/overview</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.create_prompt_template">
+<span class="sig-name descname"><span class="pre">create_prompt_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_template_spec</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Create or update a prompt template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the prompt template.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the prompt template.</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the prompt template.</p></li>
+<li><p><strong>prompt_template_spec</strong> (<a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec" title="gen_ai_hub.prompt_registry.PromptTemplateSpec"><em>PromptTemplateSpec</em></a>) -- the specification of the prompt template.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplatePostResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse" title="gen_ai_hub.prompt_registry.PromptTemplatePostResponse">PromptTemplatePostResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.delete_prompt_template_by_id">
+<span class="sig-name descname"><span class="pre">delete_prompt_template_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Delete a specific version of the prompt template by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>template_id</strong> (<em>str</em>) -- The ID of the prompt template to delete.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateDeleteResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse" title="gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse">PromptTemplateDeleteResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.export_prompt_template">
+<span class="sig-name descname"><span class="pre">export_prompt_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Export a design time template in a declarative compatible yaml file. Supports only single file export.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>template_id</strong> (<em>str</em>) -- The id of the prompt template to export.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes: The content of the exported file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.fill_prompt_template">
+<span class="sig-name descname"><span class="pre">fill_prompt_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Replace the placeholders of the prompt template referenced via scenario-name-version 
+with user provided values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the prompt template.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the prompt template.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the prompt template.</p></li>
+<li><p><strong>input_params</strong> (<em>dict</em>) -- User provided values to replace the placeholders of the prompt template.</p></li>
+<li><p><strong>metadata</strong> (<em>bool</em><em>, </em><em>optional</em>) -- False(default), True return resource object with all details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateSubstitutionResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse" title="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse">PromptTemplateSubstitutionResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.fill_prompt_template_by_id">
+<span class="sig-name descname"><span class="pre">fill_prompt_template_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Replace the placeholders of the prompt template referenced via template_id with user provided values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_id</strong> (<em>str</em>) -- The ID of the prompt template.</p></li>
+<li><p><strong>input_params</strong> (<em>dict</em>) -- User provided values to replace the placeholders of the prompt template.</p></li>
+<li><p><strong>metadata</strong> (<em>bool</em><em>, </em><em>optional</em>) -- False(default), True return resource object with all details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateSubstitutionResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse" title="gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse">PromptTemplateSubstitutionResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_template_by_id">
+<span class="sig-name descname"><span class="pre">get_prompt_template_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve a specific version of the prompt template by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>template_id</strong> (<em>str</em>) -- The ID of the prompt template to retrieve.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateGetResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse" title="gen_ai_hub.prompt_registry.PromptTemplateGetResponse">PromptTemplateGetResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_template_history">
+<span class="sig-name descname"><span class="pre">get_prompt_template_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve the history of edits to the prompt template. Only for imperative managed prompt templates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- The scenario name of the prompt template.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- The name of the prompt template.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- The version ID of the prompt template.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateListResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateListResponse" title="gen_ai_hub.prompt_registry.PromptTemplateListResponse">PromptTemplateListResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_templates">
+<span class="sig-name descname"><span class="pre">get_prompt_templates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Retrieve the latest version of every prompt template based on the filters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>str</em>) -- the scenario name of the prompt template.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- the name of the prompt template.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) -- the version of the prompt template.</p></li>
+<li><p><strong>retrieve</strong> (<em>str</em><em>, </em><em>optional</em>) -- both(default), imperative, declarative</p></li>
+<li><p><strong>include_spec</strong> (<em>bool</em><em>, </em><em>optional</em>) -- false(default), true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplateListResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateListResponse" title="gen_ai_hub.prompt_registry.PromptTemplateListResponse">PromptTemplateListResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.prompt_registry.client.PromptTemplateClient.import_prompt_template">
+<span class="sig-name descname"><span class="pre">import_prompt_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Import a runtime/declarative prompt template into the design time environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>bytes</em>) -- binary file content</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PromptTemplatePostResponse object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse" title="gen_ai_hub.prompt_registry.PromptTemplatePostResponse">PromptTemplatePostResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigClient'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigClient"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigClient.create_orchestration_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigClient.create_orchestration_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.create_orchestration_config()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigClient.delete_orchestration_config_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigClient.delete_orchestration_config_by_id"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.delete_orchestration_config_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigClient.export_orchestration_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigClient.export_orchestration_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.export_orchestration_config()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_config_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_config_by_id"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.get_orchestration_config_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_config_history'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_config_history"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.get_orchestration_config_history()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_configs'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigClient.get_orchestration_configs"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.get_orchestration_configs()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigClient.import_orchestration_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigClient.import_orchestration_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.import_orchestration_config()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigDeleteResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse.message'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse.message"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigDeleteResponse.message</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigDeleteResponse.model_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigDeleteResponse.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.model_dump'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.model_dump"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.model_dump()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.creation_timestamp'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.creation_timestamp"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.creation_timestamp</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.id'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.id"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.id</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.is_version_head'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.is_version_head"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.is_version_head</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.managed_by'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.managed_by"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.managed_by</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.model_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.name'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.name"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.name</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.resource_group_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.resource_group_id"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.resource_group_id</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.scenario'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.scenario"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.scenario</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.spec'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.spec"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.spec</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.version'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigGetResponse.version"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigGetResponse.version</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigListResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.model_dump'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.model_dump"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigListResponse.model_dump()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.count'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.count"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigListResponse.count</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.model_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigListResponse.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.resources'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigListResponse.resources"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigListResponse.resources</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostRequest</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.model_dump'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.model_dump"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostRequest.model_dump()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.model_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostRequest.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.name'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.name"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostRequest.name</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.scenario'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.scenario"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostRequest.scenario</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.spec'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.spec"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostRequest.spec</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.version'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostRequest.version"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostRequest.version</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.id'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.id"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostResponse.id</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.message'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.message"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostResponse.message</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.model_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostResponse.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.name'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.name"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostResponse.name</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.scenario'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.scenario"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostResponse.scenario</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.version'" class="reference internal" href="#gen_ai_hub.prompt_registry.OrchestrationConfigPostResponse.version"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigPostResponse.version</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplate'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplate"><code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplate.content_validation'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplate.content_validation"><code class="docutils literal notranslate"><span class="pre">PromptTemplate.content_validation()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplate.content'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplate.content"><code class="docutils literal notranslate"><span class="pre">PromptTemplate.content</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplate.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplate.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplate.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplate.role'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplate.role"><code class="docutils literal notranslate"><span class="pre">PromptTemplate.role</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.create_prompt_template'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.create_prompt_template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.create_prompt_template()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.delete_prompt_template_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.delete_prompt_template_by_id"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.delete_prompt_template_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.export_prompt_template'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.export_prompt_template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.export_prompt_template()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.fill_prompt_template'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.fill_prompt_template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.fill_prompt_template()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.fill_prompt_template_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.fill_prompt_template_by_id"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.fill_prompt_template_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_template_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_template_by_id"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.get_prompt_template_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_template_history'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_template_history"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.get_prompt_template_history()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_templates'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.get_prompt_templates"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.get_prompt_templates()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateClient.import_prompt_template'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateClient.import_prompt_template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.import_prompt_template()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse"><code class="docutils literal notranslate"><span class="pre">PromptTemplateDeleteResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse.message'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse.message"><code class="docutils literal notranslate"><span class="pre">PromptTemplateDeleteResponse.message</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateDeleteResponse.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplateDeleteResponse.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.creation_timestamp'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.creation_timestamp"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.creation_timestamp</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.id'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.id"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.id</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.is_version_head'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.is_version_head"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.is_version_head</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.managed_by'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.managed_by"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.managed_by</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.name'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.name"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.name</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.scenario'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.scenario"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.scenario</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.spec'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.spec"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.spec</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.version'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateGetResponse.version"><code class="docutils literal notranslate"><span class="pre">PromptTemplateGetResponse.version</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateListResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateListResponse"><code class="docutils literal notranslate"><span class="pre">PromptTemplateListResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateListResponse.count'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateListResponse.count"><code class="docutils literal notranslate"><span class="pre">PromptTemplateListResponse.count</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateListResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateListResponse.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplateListResponse.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateListResponse.resources'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateListResponse.resources"><code class="docutils literal notranslate"><span class="pre">PromptTemplateListResponse.resources</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostRequest'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostRequest"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostRequest</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostRequest.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.name'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.name"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostRequest.name</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.scenario'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.scenario"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostRequest.scenario</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.spec'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.spec"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostRequest.spec</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.version'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostRequest.version"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostRequest.version</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.id'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.id"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostResponse.id</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.message'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.message"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostResponse.message</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostResponse.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.name'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.name"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostResponse.name</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.scenario'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.scenario"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostResponse.scenario</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.version'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplatePostResponse.version"><code class="docutils literal notranslate"><span class="pre">PromptTemplatePostResponse.version</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSpec'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSpec</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSpec.additional_fields'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec.additional_fields"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSpec.additional_fields</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSpec.defaults'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec.defaults"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSpec.defaults</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSpec.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSpec.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSpec.response_format'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec.response_format"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSpec.response_format</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSpec.template'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec.template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSpec.template</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSpec.tools'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSpec.tools"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSpec.tools</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSubstitutionRequest</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest.input_params'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest.input_params"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSubstitutionRequest.input_params</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionRequest.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSubstitutionRequest.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSubstitutionResponse</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.model_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSubstitutionResponse.model_config</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.parsed_prompt'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.parsed_prompt"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSubstitutionResponse.parsed_prompt</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.resource'" class="reference internal" href="#gen_ai_hub.prompt_registry.PromptTemplateSubstitutionResponse.resource"><code class="docutils literal notranslate"><span class="pre">PromptTemplateSubstitutionResponse.resource</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#subpackages'" class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a :data-current="activeSection === '#submodules'" class="reference internal" href="#submodules">Submodules</a></li>
+<li><a :data-current="activeSection === '#module-gen_ai_hub.prompt_registry.client'" class="reference internal" href="#module-gen_ai_hub.prompt_registry.client">gen_ai_hub.prompt_registry.client module</a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.create_orchestration_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.create_orchestration_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.create_orchestration_config()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.delete_orchestration_config_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.delete_orchestration_config_by_id"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.delete_orchestration_config_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.export_orchestration_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.export_orchestration_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.export_orchestration_config()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_config_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_config_by_id"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.get_orchestration_config_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_config_history'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_config_history"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.get_orchestration_config_history()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_configs'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.get_orchestration_configs"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.get_orchestration_configs()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.import_orchestration_config'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.OrchestrationConfigClient.import_orchestration_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfigClient.import_orchestration_config()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient</span></code></a><ul>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.create_prompt_template'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.create_prompt_template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.create_prompt_template()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.delete_prompt_template_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.delete_prompt_template_by_id"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.delete_prompt_template_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.export_prompt_template'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.export_prompt_template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.export_prompt_template()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.fill_prompt_template'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.fill_prompt_template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.fill_prompt_template()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.fill_prompt_template_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.fill_prompt_template_by_id"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.fill_prompt_template_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_template_by_id'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_template_by_id"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.get_prompt_template_by_id()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_template_history'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_template_history"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.get_prompt_template_history()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_templates'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.get_prompt_templates"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.get_prompt_templates()</span></code></a></li>
+<li><a :data-current="activeSection === '#gen_ai_hub.prompt_registry.client.PromptTemplateClient.import_prompt_template'" class="reference internal" href="#gen_ai_hub.prompt_registry.client.PromptTemplateClient.import_prompt_template"><code class="docutils literal notranslate"><span class="pre">PromptTemplateClient.import_prompt_template()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, SAP SE Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 8.2.3</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=0c4f2add"></script>
+<script src="../../_static/doctools.js?v=9bcbadda"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>
