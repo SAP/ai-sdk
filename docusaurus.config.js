@@ -13,14 +13,15 @@ export default {
   baseUrl: '/ai-sdk/',
   onBrokenLinks: 'throw',
   onBrokenAnchors: 'throw',
-  markdown: { hooks: { onBrokenMarkdownLinks: 'throw' } },
+  markdown: { mermaid: true, hooks: { onBrokenMarkdownLinks: 'throw' } },
   favicon: 'img/AI-SDK-Logo.svg',
   organizationName: 'SAP',
   projectName: 'ai-sdk',
   trailingSlash: false,
   themes: [
     '@saucelabs/theme-github-codeblock',
-    'docusaurus-plugin-copy-page-button'
+    'docusaurus-plugin-copy-page-button',
+    '@docusaurus/theme-mermaid'
   ],
   themeConfig: {
     colorMode: {
