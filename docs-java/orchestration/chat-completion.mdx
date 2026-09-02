@@ -484,8 +484,8 @@ It's possible to pass a stream of chat completion delta elements, e.g. from the 
 This is a blocking example for streaming and printing directly to the console:
 
 ```java
-val msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
-val prompt = new OrchestrationPrompt(msg);
+var msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+var prompt = new OrchestrationPrompt(msg);
 
 // try-with-resources on stream ensures the connection will be closed
 try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
@@ -884,8 +884,8 @@ The Orchestration service can return citations in the response when the LLM prov
 such as with Perplexity's Sonar model.
 
 ```java
-val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
-val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+var prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
+var sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
 return client.chatCompletion(prompt, sonarConfig);
 
 String content = response.getContent();

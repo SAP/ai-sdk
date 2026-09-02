@@ -1,0 +1,238 @@
+---
+id: tabular-orchestration
+title: Tabular Orchestration
+hide_title: false
+hide_table_of_contents: false
+description: How to use the SAP AI SDK for Java to perform tabular predictions
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - rpt
+---
+
+## Introduction
+
+This guide demonstrates how to use the SAP AI SDK for Java to predict targets in structured data using the Tabular Orchestration service on SAP AI Core.
+
+:::warning
+All classes under any of the `...generated` package are generated from an OpenAPI specification.
+This means that these model and API classes are not guaranteed to be stable and may change with future releases.
+They are safe to use, but may require updates even in minor releases.
+:::
+
+## Prerequisites
+
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](../../overview.mdx#general-requirements).
+Additionally, include the necessary Maven dependency in your project.
+
+### Maven Dependencies
+
+Add the following dependency to your `pom.xml` file:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>tabular-orchestration</artifactId>
+        <version>${ai-sdk.version}</version>
+    </dependency>
+</dependencies>
+```
+
+See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml)
+
+## Usage
+
+:::warning
+The Tabular Orchestration module is currently in Beta.
+The API may change in future minor releases.
+:::
+
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
+
+<!-- prettier-ignore-start-->
+
+- **A Deployed Tabular Orchestration in SAP AI Core**
+
+  - Refer
+    to [How to deploy a service to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
+    for setup instructions.
+  - <details>
+    <summary>Example deployed service from the AI Core <code>/deployments</code> endpoint</summary>
+
+    ```json
+    {
+      "id": "abcdefgh",
+      "createdAt": "2026-08-20T11:29:48Z",
+      "modifiedAt": "2026-08-20T11:29:48Z",
+      "status": "RUNNING",
+      "details": {
+        "scaling": {
+          "backendDetails": {},
+          "backend_details": {}
+        },
+        "resources": {
+          "backendDetails": {},
+          "backend_details": {}
+        }
+      },
+      "scenarioId": "tabular-orchestration",
+      "configurationId": "cabc-123-456-789-def",
+      "latestRunningConfigurationId": "cabc-123-456-789-def",
+      "lastOperation": "CREATE",
+      "targetStatus": "RUNNING",
+      "submissionTime": "2026-08-20T11:30:16Z",
+      "startTime": "2026-08-20T11:31:33Z",
+      "configurationName": "tabular-orchestration",
+      "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/abc123"
+    }
+    ```
+    </details>
+
+<!-- prettier-ignore-end-->
+
+## Orchestration
+
+Before you can make a prediction, you need to setup tabular data contexts:
+- Register data destinations (object stores and data sharing platforms)
+- Create tabular artifacts from various file formats (CSV, Parquet, Delta)
+- And, configure scenarios for context selection.
+
+You will need this function to instantiate tabular orchestration clients:
+
+```java
+private static HttpDestination buildDestination() {
+  final HttpDestination base = new AiCoreService().getBaseDestination();
+  final URI rootUri = base.getUri().resolve("/v2/tcr/");
+  return DefaultHttpDestination.fromDestination(base).uri(rootUri).build();
+}
+```
+
+### Data Destination
+
+Manage data destinations (S3, Azure, GCP, HDL) for unified data source integration.
+
+```java
+DataDestinationsApi dataDestinationClient =
+      new DataDestinationsApi(buildDestination());
+
+var request =
+    HDLDataDestinationCreateRequest.create()
+        .type(HDL)
+        .config(HDLConnectionConfig.create().host("hostname"))
+        .description("HDL data destination for AI Core SDK");
+AsyncCreateDataDestinationResponse response = dataDestinationClient.createUpdateDataDestination(
+    "default", "hdl-destination", request);
+```
+
+Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/TabularService.java).
+
+### Artifact
+
+Manage tabular artifacts for structured files from data-destinations.
+
+```java
+TabularArtifactsApi tabularArtifactsClient =
+      new TabularArtifactsApi(buildDestination());
+
+var productEntityElements =
+    Map.of(
+        "PRODUCT", Map.of("type", "cds.String"),
+        "PRICE", Map.of("type", "cds.Double"),
+        "PRODUCTION_DATE", Map.of("type", "cds.String"),
+        "__row_idx__", Map.of("type", "cds.String"),
+        "SALESGROUP", Map.of("type", "cds.String"));
+var definitions =
+    Map.of(
+        "definitions",
+        Map.of("ProductEntity", Map.of("kind", "entity", "elements", productEntityElements)));
+var request =
+    CreateTARequest.create()
+        .dataDestinationName("hdl-destination")
+        .type(PARQUET)
+        .path("/data/file.parquet")
+        .csnMetadata(
+            CreateTARequestCsnMetadata.create()
+                .definition(
+                    DocumentDefinition.create()
+                        .definitionType(DOCUMENT)
+                        .document(definitions))
+                .entityName("ProductEntity")
+                .selectedColumns(productEntityElements.keySet()));
+
+ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response response =
+    tabularArtifactsClient.createTabularArtifact("default", "tabular-artifact", request);
+```
+
+Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/TabularService.java).
+
+## Scenario
+
+Manage scenario configurations for context selection.
+
+```java
+ScenarioConfigurationManagerApi scenariosClient =
+    new ScenarioConfigurationManagerApi(buildDestination());
+
+var request =
+    CreateScenarioConfiguration.create()
+        .tabularArtifacts(TabularArtifactConfig.create().name("tabular-artifact"))
+        .description("Sample scenario configuration for product prediction");
+
+ScenarioConfigurationNameObject response =
+    scenariosClient.createScenarioConfiguration("default", "tabular-scenario", request);
+```
+
+Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/TabularService.java).
+
+## Prediction
+
+Predict missing targets in tabular data using a deployed Tabular Foundation Model.
+
+```java
+PredictApi predictClient =
+      new PredictApi(
+          new AiCoreService().getInferenceDestination().forScenario("tabular-orchestration"))
+
+var request =
+    PredictRequest.create()
+        .modelName(TFMEnum._1_5)
+        .scenarioConfigName("tabular-scenario")
+        .predictionConfig(
+            PredictionConfig.create()
+                .targetColumns(
+                    TargetColumn.create().name("salesgroup").taskType(CLASSIFICATION)))
+        .contextSelectionConfig(
+            ContextSelectionConfig.create()
+                .numRows(3)
+                .strategy(RANDOM)
+                .strategyConfigs(
+                    StrategyConfigs.create().indexColumn("id").deterministic(true)))
+        .rows(
+            List.of(
+                Map.of(
+                    "product", "Desktop Computer",
+                    "price", 921.5,
+                    "date", "2024-12-02",
+                    "id", "42",
+                    "salesgroup", "[PREDICT]"),
+                Map.of(
+                    "product", "Macbook",
+                    "price", 1220.99,
+                    "date", "2026-01-31",
+                    "id", "99",
+                    "salesgroup", "[PREDICT]"),
+                Map.of(
+                    "product", "Office Desk",
+                    "price", 750.5,
+                    "date", "2024-12-05",
+                    "id", "689",
+                    "salesgroup", "[PREDICT]")))
+        .modelConfig(Map.of());
+PredictResponse response = predictClient.predictV1PredictPost(request);
+List<Map<String, Object>> predictions = response.getPredictions();
+```
+
+Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/TabularService.java).

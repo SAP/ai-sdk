@@ -24,8 +24,11 @@ export default {
         },
         {
           type: 'category',
-          label: 'SAP RPT',
-          items: ['foundation-models/sap-rpt/table-completion']
+          label: 'Tabular Prediction',
+          items: [
+            'foundation-models/tabular-prediction/sap-rpt',
+            'foundation-models/tabular-prediction/tabular-orchestration'
+          ]
         }
       ]
     },
