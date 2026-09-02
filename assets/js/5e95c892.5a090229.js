@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunksap_ai_sdk_documentation||=[]).push([[9647],{7121(e,s,a){a.r(s),a.d(s,{default:()=>i});a(6540);var r=a(4164),t=a(7559),u=a(5500),c=a(2831),n=a(2725),d=a(4848);function i(e){return(0,d.jsx)(u.e3,{className:(0,r.A)(t.G.wrapper.docsPages),children:(0,d.jsx)(n.A,{children:(0,c.v)(e.route.routes)})})}}}]);

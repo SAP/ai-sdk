@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunksap_ai_sdk_documentation||=[]).push([[4323],{8560(a){a.exports=JSON.parse('{"metadata":{"permalink":"/ai-sdk/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":0,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
