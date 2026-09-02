@@ -87,7 +87,7 @@ const client = await SapOpenAiRealtimeWs.createClient({
 ## Event Flow
 
 After `createClient()` resolves, the session lifecycle follows a fixed sequence driven by events you send and receive.
-Configure the session inside `session.created`, send input inside `session.updated`, and collect the response as it streams.
+The diagram below shows the basic text-to-audio path: configure the session, send input, and collect the response as it streams.
 
 ```mermaid
 sequenceDiagram
@@ -96,29 +96,17 @@ sequenceDiagram
 
     App->>API: createClient() — resolve deployment, open WebSocket, set SAP headers
     API-->>App: session.created
-    App->>API: session.update (audio.output.voice, audio.input.turn_detection, instructions, tools)
+    App->>API: session.update (output_modalities, voice, instructions)
     API-->>App: session.updated
-
-    alt text input
-        App->>API: conversation.item.create (input_text)
-    else audio input
-        App->>API: input_audio_buffer.append (×N), then input_audio_buffer.commit
-    end
+    App->>API: conversation.item.create (input_text)
     App->>API: response.create
-
-    alt audio output
-        API-->>App: response.output_audio.delta + response.output_audio_transcript.delta (×N)
-    else text output
-        API-->>App: response.output_text.delta (×N)
-    else tool call
-        API-->>App: response.function_call_arguments.done
-        API-->>App: response.done (tool-call turn)
-        App->>API: conversation.item.create (function_call_output), then response.create
-        API-->>App: response.output_text.delta (×N)
-    end
+    API-->>App: response.output_audio.delta (×N)
+    API-->>App: response.output_audio_transcript.delta (×N)
     API-->>App: response.done
     App->>API: close()
 ```
+
+Other flows build on this sequence: audio input streams `input_audio_buffer.append` events instead of a text item, and [tool calls](#tool-calls) add a second `response.create` round-trip.
 
 ## Text to Audio
 
@@ -132,44 +120,46 @@ Send a text message and receive the spoken response as a stream of raw PCM audio
 import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 // ---cut---
 const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
-const audioChunks: Buffer[] = [];
-let transcript = '';
 
-client.on('session.created', () => {
-  client.send({
-    type: 'session.update',
-    session: {
-      type: 'realtime',
-      output_modalities: ['audio'],
-      audio: { output: { voice: 'alloy' } },
-      instructions: 'You are a helpful assistant.'
-    }
-  });
-});
+// Await each lifecycle event instead of nesting every step inside a handler.
+const { promise: sessionCreated, resolve: resolveCreated } =
+  Promise.withResolvers<void>();
+const { promise: sessionUpdated, resolve: resolveUpdated } =
+  Promise.withResolvers<void>();
+client.on('session.created', () => resolveCreated());
+client.on('session.updated', () => resolveUpdated());
 
-client.on('session.updated', () => {
-  client.send({
-    type: 'conversation.item.create',
-    item: {
-      type: 'message',
-      role: 'user',
-      content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
-    }
-  });
-  client.send({ type: 'response.create' });
-});
-
-// Each delta contains a base64-encoded PCM16 chunk: mono, 24 kHz, signed 16-bit little-endian.
+// Each delta is a base64-encoded PCM16 chunk: mono, 24 kHz, signed 16-bit little-endian.
 client.on('response.output_audio.delta', e => {
-  if (e.delta) audioChunks.push(Buffer.from(e.delta, 'base64'));
+  console.log('audio delta', e.delta); // handle each chunk (decode, play, buffer, ...)
 });
-
 client.on('response.output_audio_transcript.delta', e => {
-  transcript += e.delta ?? '';
+  console.log('transcript delta', e.delta);
 });
-
 client.on('response.done', () => client.close());
 client.on('error', e => console.error(e.message));
+
+await sessionCreated;
+client.send({
+  type: 'session.update',
+  session: {
+    type: 'realtime',
+    output_modalities: ['audio'],
+    audio: { output: { voice: 'marin' } },
+    instructions: 'You are a helpful assistant.'
+  }
+});
+
+await sessionUpdated;
+client.send({
+  type: 'conversation.item.create',
+  item: {
+    type: 'message',
+    role: 'user',
+    content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
+  }
+});
+client.send({ type: 'response.create' });
 ```
 
 ## Text to Text
@@ -181,100 +171,103 @@ No audio is generated, so no voice configuration is needed.
 import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 // ---cut---
 const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
-let text = '';
 
-client.on('session.created', () => {
-  client.send({
-    type: 'session.update',
-    session: {
-      type: 'realtime',
-      output_modalities: ['text'],
-      instructions: 'You are a helpful assistant.'
-    }
-  });
-});
-
-client.on('session.updated', () => {
-  client.send({
-    type: 'conversation.item.create',
-    item: {
-      type: 'message',
-      role: 'user',
-      content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
-    }
-  });
-  client.send({ type: 'response.create' });
-});
+const { promise: sessionCreated, resolve: resolveCreated } =
+  Promise.withResolvers<void>();
+const { promise: sessionUpdated, resolve: resolveUpdated } =
+  Promise.withResolvers<void>();
+client.on('session.created', () => resolveCreated());
+client.on('session.updated', () => resolveUpdated());
 
 client.on('response.output_text.delta', e => {
-  text += e.delta ?? '';
+  console.log('text delta', e.delta);
 });
-
 client.on('response.done', () => client.close());
 client.on('error', e => console.error(e.message));
+
+await sessionCreated;
+client.send({
+  type: 'session.update',
+  session: {
+    type: 'realtime',
+    output_modalities: ['text'],
+    instructions: 'You are a helpful assistant.'
+  }
+});
+
+await sessionUpdated;
+client.send({
+  type: 'conversation.item.create',
+  item: {
+    type: 'message',
+    role: 'user',
+    content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
+  }
+});
+client.send({ type: 'response.create' });
 ```
 
 ## Audio to Audio
 
 Stream raw PCM audio to the model and receive the spoken response.
-Use this pattern when server-side voice activity detection (VAD) is disabled and you commit the buffer manually.
+Server-side voice activity detection (VAD) is enabled by default; this example disables it with `turn_detection: null` and commits the buffer manually.
+See [Turn Detection](#turn-detection) for when to keep VAD enabled instead.
 
 :::note
-The minimum committed audio length is 100 ms.
-At 24 kHz 16-bit mono, 100 ms equals 4 800 bytes.
-Commits shorter than this are rejected by the API.
+The committed audio buffer must meet a minimum length, and silent chunks may not count toward it.
+Refer to the [OpenAI Realtime documentation](https://platform.openai.com/docs/api-reference/realtime_client_events/input_audio_buffer/commit) for the current limits, as they may change.
 :::
 
 ```ts twoslash
 import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
-declare const inputPcm: Buffer; // raw PCM: mono, 24 kHz, signed 16-bit little-endian
+import type { Readable } from 'node:stream';
+declare const audioSource: Readable; // raw PCM: mono, 24 kHz, signed 16-bit little-endian
 // ---cut---
 const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
-client.on('session.created', () => {
-  client.send({
-    type: 'session.update',
-    session: {
-      type: 'realtime',
-      output_modalities: ['audio'],
-      audio: {
-        input: {
-          format: { type: 'audio/pcm', rate: 24000 },
-          turn_detection: null // disable server VAD; commit the buffer manually below
-        },
-        output: { voice: 'alloy' }
+const { promise: sessionCreated, resolve: resolveCreated } =
+  Promise.withResolvers<void>();
+const { promise: sessionUpdated, resolve: resolveUpdated } =
+  Promise.withResolvers<void>();
+client.on('session.created', () => resolveCreated());
+client.on('session.updated', () => resolveUpdated());
+
+client.on('response.output_audio.delta', e => {
+  console.log('audio delta', e.delta); // handle each chunk (decode, play, buffer, ...)
+});
+client.on('response.done', () => client.close());
+client.on('error', e => console.error(e.message));
+
+await sessionCreated;
+client.send({
+  type: 'session.update',
+  session: {
+    type: 'realtime',
+    output_modalities: ['audio'],
+    audio: {
+      input: {
+        format: { type: 'audio/pcm', rate: 24000 },
+        turn_detection: null // disable server VAD; commit the buffer manually
       },
-      instructions: 'You are a helpful assistant.'
-    }
-  });
+      output: { voice: 'marin' }
+    },
+    instructions: 'You are a helpful assistant.'
+  }
 });
 
-client.on('session.updated', () => {
-  // Stream in 100 ms chunks (4 800 bytes each); the API rejects shorter commits.
-  const chunkSize = 4800;
-  for (let i = 0; i < inputPcm.length; i += chunkSize) {
-    client.send({
-      type: 'input_audio_buffer.append',
-      audio: inputPcm.subarray(i, i + chunkSize).toString('base64')
-    });
-  }
+await sessionUpdated;
+// Append audio as it arrives; you choose how much audio each event carries.
+audioSource.on('data', chunk => {
+  client.send({
+    type: 'input_audio_buffer.append',
+    audio: chunk.toString('base64')
+  });
+});
+audioSource.on('end', () => {
   client.send({ type: 'input_audio_buffer.commit' });
   client.send({ type: 'response.create' });
 });
-
-client.on('response.output_audio.delta', e => {
-  if (e.delta) {
-    const pcm = Buffer.from(e.delta, 'base64');
-    // write pcm to your audio sink
-  }
-});
-
-client.on('response.done', () => client.close());
-client.on('error', e => console.error(e.message));
 ```
-
-For continuous microphone streaming with automatic turn detection, omit `turn_detection: null` in the session configuration.
-Server-side VAD then detects speech boundaries and commits turns automatically.
 
 ## Tool Calls
 
@@ -288,7 +281,6 @@ import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 // ---cut---
 const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 let responseDoneCount = 0;
-let finalText = '';
 
 client.on('session.created', () => {
   client.send({
@@ -345,7 +337,7 @@ client.on('response.function_call_arguments.done', e => {
 });
 
 client.on('response.output_text.delta', e => {
-  finalText += e.delta ?? '';
+  console.log('text delta', e.delta);
 });
 
 client.on('response.done', () => {
@@ -354,7 +346,6 @@ client.on('response.done', () => {
   // Second response.done: the final text answer is complete.
   if (responseDoneCount === 2) {
     client.close();
-    console.log(finalText);
   }
 });
 
@@ -369,7 +360,6 @@ The following examples show individual options; combine them freely in a single 
 ### Voice
 
 Set the output voice by passing a voice name in `audio.output.voice`.
-Supported built-in voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and `cedar`.
 OpenAI recommends `marin` and `cedar` for the best quality.
 
 ```ts twoslash
@@ -382,7 +372,7 @@ client.on('session.created', () => {
     session: {
       type: 'realtime',
       output_modalities: ['audio'],
-      audio: { output: { voice: 'shimmer' } }
+      audio: { output: { voice: 'marin' } }
     }
   });
 });
@@ -390,9 +380,9 @@ client.on('session.created', () => {
 
 ### Turn Detection
 
-Server-side VAD is enabled by default.
-It detects when you stop speaking and commits the audio buffer automatically.
-To disable it and commit manually, set `turn_detection: null`:
+Turn detection controls how the model decides a user turn is complete.
+Server-side VAD is enabled by default: it detects when the user stops speaking and commits the audio buffer automatically, which suits continuous microphone streaming.
+To take over turn boundaries yourself, set `turn_detection: null` and commit manually (see [Audio to Audio](#audio-to-audio)):
 
 ```ts twoslash
 import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
@@ -411,7 +401,7 @@ client.on('session.created', () => {
 });
 ```
 
-When server VAD is enabled, listen for `input_audio_buffer.speech_started` to detect when the user begins speaking and interrupt ongoing playback if needed.
+With server VAD enabled, listen for `input_audio_buffer.speech_started` to detect when the user begins speaking, for example to interrupt ongoing playback.
 
 ### System Instructions
 
