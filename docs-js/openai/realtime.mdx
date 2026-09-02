@@ -25,8 +25,7 @@ Browser environments are not supported.
 
 `SapOpenAiRealtimeWs` connects to the OpenAI Realtime API over WebSocket, pre-configured for SAP AI Core.
 It resolves the deployment, opens the WebSocket connection, and sets the SAP-specific headers automatically.
-The client preserves the `on()` / `send()` / `close()` event API from the official [`openai`](https://www.npmjs.com/package/openai) package.
-For background on the WebSocket-based protocol, see the [OpenAI Realtime API with WebSocket](https://developers.openai.com/api/docs/guides/realtime-websocket) guide.
+The client exposes the `on()` / `send()` / `close()` event API directly, giving you full access to the [OpenAI Realtime WebSocket protocol](https://platform.openai.com/docs/guides/realtime-websocket).
 
 ## Installation
 
@@ -41,10 +40,10 @@ The `openai` and `ws` packages are peer dependencies and must be installed separ
 See the [prerequisites](../overview.mdx#prerequisites) section.
 A `gpt-realtime` model must be deployed in SAP AI Core before use.
 
-## Client Initialization
+## Opening a Connection
 
 Import `SapOpenAiRealtimeWs` from the `@sap-ai-sdk/openai/realtime` sub-path export and call `createClient()`.
-Pass a model name string or a deployment identifier object via the `deployment` option:
+The returned promise resolves once the WebSocket connection is open.
 
 ```ts twoslash
 import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
@@ -85,27 +84,229 @@ const client = await SapOpenAiRealtimeWs.createClient({
 });
 ```
 
-## Sending and Receiving Events
+## Event Flow
 
-After `createClient()` resolves, the WebSocket connection is open.
-Use `on()` to register event listeners and `send()` to dispatch client events.
+After `createClient()` resolves, the session lifecycle follows a fixed sequence driven by events you send and receive.
+The diagram below shows the basic text-to-audio path: configure the session, send input, and collect the response as it streams.
 
-The following example configures a session, sends a text message, and streams the audio response.
-See the [handling audio with WebSockets](https://developers.openai.com/api/docs/guides/realtime-conversations#handling-audio-with-websockets) and [voice activity detection](https://developers.openai.com/api/docs/guides/realtime-vad) guides for details on audio formats and turn detection.
+```mermaid
+sequenceDiagram
+    participant App as Your Application
+    participant API as SAP AI Core / OpenAI Realtime
+
+    App->>API: createClient() — resolve deployment, open WebSocket, set SAP headers
+    API-->>App: session.created
+    App->>API: session.update (output_modalities, voice, instructions)
+    API-->>App: session.updated
+    App->>API: conversation.item.create (input_text)
+    App->>API: response.create
+    API-->>App: response.output_audio.delta (×N)
+    API-->>App: response.output_audio_transcript.delta (×N)
+    API-->>App: response.done
+    App->>API: close()
+```
+
+Other flows build on this sequence: audio input streams `input_audio_buffer.append` events instead of a text item, and [tool calls](#tool-calls) add a second `response.create` round-trip.
+
+## Text to Audio
+
+Send a text message and receive the spoken response as a stream of raw PCM audio chunks.
+
+:::note
+`session.update` must use the GA schema (`output_modalities`, nested `audio`), not the preview schema.
+:::
 
 ```ts twoslash
 import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 // ---cut---
 const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
+// Await each lifecycle event instead of nesting every step inside a handler.
+const { promise: sessionCreated, resolve: resolveCreated } =
+  Promise.withResolvers<void>();
+const { promise: sessionUpdated, resolve: resolveUpdated } =
+  Promise.withResolvers<void>();
+client.on('session.created', () => resolveCreated());
+client.on('session.updated', () => resolveUpdated());
+
+// Each delta is a base64-encoded PCM16 chunk: mono, 24 kHz, signed 16-bit little-endian.
+client.on('response.output_audio.delta', e => {
+  console.log('audio delta', e.delta); // handle each chunk (decode, play, buffer, ...)
+});
+client.on('response.output_audio_transcript.delta', e => {
+  console.log('transcript delta', e.delta);
+});
+client.on('response.done', () => client.close());
+client.on('error', e => console.error(e.message));
+
+await sessionCreated;
+client.send({
+  type: 'session.update',
+  session: {
+    type: 'realtime',
+    output_modalities: ['audio'],
+    audio: { output: { voice: 'marin' } },
+    instructions: 'You are a helpful assistant.'
+  }
+});
+
+await sessionUpdated;
+client.send({
+  type: 'conversation.item.create',
+  item: {
+    type: 'message',
+    role: 'user',
+    content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
+  }
+});
+client.send({ type: 'response.create' });
+```
+
+## Text to Text
+
+For a text-only conversation, set `output_modalities: ['text']` and collect the reply from `response.output_text.delta`.
+No audio is generated, so no voice configuration is needed.
+
+```ts twoslash
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+// ---cut---
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+
+const { promise: sessionCreated, resolve: resolveCreated } =
+  Promise.withResolvers<void>();
+const { promise: sessionUpdated, resolve: resolveUpdated } =
+  Promise.withResolvers<void>();
+client.on('session.created', () => resolveCreated());
+client.on('session.updated', () => resolveUpdated());
+
+client.on('response.output_text.delta', e => {
+  console.log('text delta', e.delta);
+});
+client.on('response.done', () => client.close());
+client.on('error', e => console.error(e.message));
+
+await sessionCreated;
+client.send({
+  type: 'session.update',
+  session: {
+    type: 'realtime',
+    output_modalities: ['text'],
+    instructions: 'You are a helpful assistant.'
+  }
+});
+
+await sessionUpdated;
+client.send({
+  type: 'conversation.item.create',
+  item: {
+    type: 'message',
+    role: 'user',
+    content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
+  }
+});
+client.send({ type: 'response.create' });
+```
+
+## Audio to Audio
+
+Stream raw PCM audio to the model and receive the spoken response.
+Server-side voice activity detection (VAD) is enabled by default; this example disables it with `turn_detection: null` and commits the buffer manually.
+See [Turn Detection](#turn-detection) for when to keep VAD enabled instead.
+
+:::note
+The committed audio buffer must meet a minimum length, and silent chunks may not count toward it.
+Refer to the [OpenAI Realtime documentation](https://platform.openai.com/docs/api-reference/realtime_client_events/input_audio_buffer/commit) for the current limits, as they may change.
+:::
+
+```ts twoslash
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+import type { Readable } from 'node:stream';
+declare const audioSource: Readable; // raw PCM: mono, 24 kHz, signed 16-bit little-endian
+// ---cut---
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+
+const { promise: sessionCreated, resolve: resolveCreated } =
+  Promise.withResolvers<void>();
+const { promise: sessionUpdated, resolve: resolveUpdated } =
+  Promise.withResolvers<void>();
+client.on('session.created', () => resolveCreated());
+client.on('session.updated', () => resolveUpdated());
+
+client.on('response.output_audio.delta', e => {
+  console.log('audio delta', e.delta); // handle each chunk (decode, play, buffer, ...)
+});
+client.on('response.done', () => client.close());
+client.on('error', e => console.error(e.message));
+
+await sessionCreated;
+client.send({
+  type: 'session.update',
+  session: {
+    type: 'realtime',
+    output_modalities: ['audio'],
+    audio: {
+      input: {
+        format: { type: 'audio/pcm', rate: 24000 },
+        turn_detection: null // disable server VAD; commit the buffer manually
+      },
+      output: { voice: 'marin' }
+    },
+    instructions: 'You are a helpful assistant.'
+  }
+});
+
+await sessionUpdated;
+// Append audio as it arrives; you choose how much audio each event carries.
+audioSource.on('data', chunk => {
+  client.send({
+    type: 'input_audio_buffer.append',
+    audio: chunk.toString('base64')
+  });
+});
+audioSource.on('end', () => {
+  client.send({ type: 'input_audio_buffer.commit' });
+  client.send({ type: 'response.create' });
+});
+```
+
+## Tool Calls
+
+Register function tools in `session.update`.
+The model emits `response.function_call_arguments.done` when it has assembled a complete call.
+Return the result via `function_call_output` and send a second `response.create` to get the final answer.
+Two `response.done` events fire: one for the tool-call response, one for the final text response.
+
+```ts twoslash
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+// ---cut---
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+let responseDoneCount = 0;
+
 client.on('session.created', () => {
   client.send({
     type: 'session.update',
     session: {
       type: 'realtime',
-      output_modalities: ['audio'],
-      audio: { output: { voice: 'alloy' } },
-      instructions: 'You are a helpful assistant.'
+      output_modalities: ['text'],
+      tools: [
+        {
+          type: 'function',
+          name: 'get_weather',
+          description: 'Get the current weather for a given location.',
+          parameters: {
+            type: 'object',
+            properties: {
+              location: {
+                type: 'string',
+                description: 'The city and country, e.g. "Paris, France".'
+              }
+            },
+            required: ['location']
+          }
+        }
+      ],
+      instructions:
+        'Use get_weather to answer weather questions, then summarize the result in one sentence.'
     }
   });
 });
@@ -116,30 +317,110 @@ client.on('session.updated', () => {
     item: {
       type: 'message',
       role: 'user',
-      content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
+      content: [{ type: 'input_text', text: "What's the weather in Paris?" }]
     }
   });
   client.send({ type: 'response.create' });
 });
 
-// e.delta contains a base64-encoded PCM16 audio chunk (24 kHz, mono)
-client.on('response.output_audio.delta', e => {
-  const pcm = Buffer.from(e.delta, 'base64');
-  // write pcm to your audio sink
+// The model streams arguments; once complete, return the result and request the final answer.
+client.on('response.function_call_arguments.done', e => {
+  client.send({
+    type: 'conversation.item.create',
+    item: {
+      type: 'function_call_output',
+      call_id: e.call_id,
+      output: JSON.stringify({ weather: 'Sunny, 21°C' })
+    }
+  });
+  client.send({ type: 'response.create' });
 });
 
-client.on('response.output_audio_transcript.delta', e =>
-  process.stdout.write(e.delta ?? '')
-);
+client.on('response.output_text.delta', e => {
+  console.log('text delta', e.delta);
+});
 
-client.on('response.done', () => client.close());
+client.on('response.done', () => {
+  responseDoneCount++;
+  // First response.done: the tool-call turn finished; wait for the second.
+  // Second response.done: the final text answer is complete.
+  if (responseDoneCount === 2) {
+    client.close();
+  }
+});
 
 client.on('error', e => console.error(e.message));
 ```
 
-:::note
-The `session.update` event must use the GA schema (`output_modalities`, nested `audio`), not the preview schema.
-:::
+## Configuring the Session
+
+All session options are sent via `session.update` inside the `session.created` handler.
+The following examples show individual options; combine them freely in a single `session.update` call.
+
+### Voice
+
+Set the output voice by passing a voice name in `audio.output.voice`.
+OpenAI recommends `marin` and `cedar` for the best quality.
+
+```ts twoslash
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+// ---cut---
+client.on('session.created', () => {
+  client.send({
+    type: 'session.update',
+    session: {
+      type: 'realtime',
+      output_modalities: ['audio'],
+      audio: { output: { voice: 'marin' } }
+    }
+  });
+});
+```
+
+### Turn Detection
+
+Turn detection controls how the model decides a user turn is complete.
+Server-side VAD is enabled by default: it detects when the user stops speaking and commits the audio buffer automatically, which suits continuous microphone streaming.
+To take over turn boundaries yourself, set `turn_detection: null` and commit manually (see [Audio to Audio](#audio-to-audio)):
+
+```ts twoslash
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+// ---cut---
+client.on('session.created', () => {
+  client.send({
+    type: 'session.update',
+    session: {
+      type: 'realtime',
+      audio: {
+        input: { turn_detection: null } // disable server VAD
+      }
+    }
+  });
+});
+```
+
+With server VAD enabled, listen for `input_audio_buffer.speech_started` to detect when the user begins speaking, for example to interrupt ongoing playback.
+
+### System Instructions
+
+Pass a system prompt in the `instructions` field:
+
+```ts twoslash
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+// ---cut---
+client.on('session.created', () => {
+  client.send({
+    type: 'session.update',
+    session: {
+      type: 'realtime',
+      instructions: 'You are a concise assistant. Keep answers to one sentence.'
+    }
+  });
+});
+```
 
 ## Closing the Connection
 
