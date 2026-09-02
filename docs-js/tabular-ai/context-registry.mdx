@@ -129,10 +129,9 @@ A background task handles the actual removal.
 ```ts
 import { DataDestinationsApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
-await DataDestinationsApi.deleteDataDestinationByName(
-  'my-hdl-destination',
-  { 'AI-Resource-Group': 'default' }
-).execute();
+await DataDestinationsApi.deleteDataDestinationByName('my-hdl-destination', {
+  'AI-Resource-Group': 'default'
+}).execute();
 ```
 
 ### Tabular Artifacts
@@ -184,10 +183,9 @@ import type { TabularArtifactDataPreview } from '@sap-ai-sdk/context-registry';
 import { TabularArtifactsApi } from '@sap-ai-sdk/context-registry';
 
 const preview: TabularArtifactDataPreview =
-  await TabularArtifactsApi.getTabularArtifactData(
-    'my-tabular-artifact',
-    { 'AI-Resource-Group': 'default' }
-  ).execute();
+  await TabularArtifactsApi.getTabularArtifactData('my-tabular-artifact', {
+    'AI-Resource-Group': 'default'
+  }).execute();
 ```
 
 ### Scenario Configurations
@@ -268,16 +266,17 @@ import type { TabularArtifactDetails } from '@sap-ai-sdk/context-registry';
 // ---cut---
 async function pollUntilActive(name: string): Promise<TabularArtifactDetails> {
   for (let attempt = 0; attempt < 60; attempt++) {
-    const artifact = await TabularArtifactsApi.getTabularArtifactByName(
-      name,
-      { 'AI-Resource-Group': 'default' }
-    ).execute();
+    const artifact = await TabularArtifactsApi.getTabularArtifactByName(name, {
+      'AI-Resource-Group': 'default'
+    }).execute();
 
     if (artifact.status === 'ACTIVE') {
       return artifact;
     }
     if (artifact.status === 'ERROR') {
-      throw new Error(artifact.errorMessage ?? 'Tabular artifact creation failed');
+      throw new Error(
+        artifact.errorMessage ?? 'Tabular artifact creation failed'
+      );
     }
 
     await new Promise(resolve => setTimeout(resolve, 2000));
