@@ -355,6 +355,10 @@ export default {
             from: '/docs/js/guides/connecting-to-ai-core',
             to: '/docs/js/connecting-to-ai-core'
           },
+          {
+            from: '/docs/js/rpt',
+            to: '/docs/js/tabular-ai/rpt'
+          },
           // SEO slug renames
           {
             from: '/docs/overview/overview-cloud-sdk-for-ai',
