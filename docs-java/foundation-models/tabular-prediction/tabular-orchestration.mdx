@@ -93,8 +93,6 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
 <!-- prettier-ignore-end-->
 
-## Orchestration
-
 Before you can make a prediction, you need to setup tabular data contexts:
 - Register data destinations (object stores and data sharing platforms)
 - Create tabular artifacts from various file formats (CSV, Parquet, Delta)
@@ -110,7 +108,7 @@ private static HttpDestination buildDestination() {
 }
 ```
 
-### Data Destination
+## Data Destination
 
 Manage data destinations (S3, Azure, GCP, HDL) for unified data source integration.
 
@@ -129,7 +127,7 @@ AsyncCreateDataDestinationResponse response = dataDestinationClient.createUpdate
 
 Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/TabularService.java).
 
-### Artifact
+## Artifact
 
 Manage tabular artifacts for structured files from data-destinations.
 
