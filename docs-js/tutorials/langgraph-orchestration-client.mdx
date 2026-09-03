@@ -117,13 +117,14 @@ This section shows how to wire the clients into a complete multi-turn LangGraph 
 
 Two common entry points exist in LangChain:
 
-- **`createAgent()`** — the simplest option for a single-model, single-system-prompt agent.
-- **`StateGraph`** — gives you full control over nodes, edges, and routing when you need more than one step.
+- **`createAgent()`** — two agents sharing a `MemorySaver`
+- **`StateGraph`** — full control over nodes, edges, and routing.
 
-### Option 1 — `createAgent()`
+### Option 1 — `createAgent()` with two agents
 
-`createAgent()` builds a prebuilt `agent → tools → agent` loop for you.
-Call it once with the client that carries the template, then reuse the compiled graph for every follow-up turn.
+Create two agents backed by the same `MemorySaver` instance: one with the template for the first turn, one without for all follow-up turns.
+`MemorySaver` keys state by `thread_id` only, so both agents read and write to the same conversation history.
+The template is part of the HTTP request config sent to the orchestration service — it is not stored in the checkpoint — so `followUpAgent` never re-applies it.
 
 <!-- vale off -->
 
@@ -132,7 +133,6 @@ import { createAgent } from 'langchain';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { MemorySaver } from '@langchain/langgraph';
 
-// Client with the system-prompt template — used as the agent model.
 const clientWithTemplate = new OrchestrationClient({
   promptTemplating: {
     model: { name: 'gpt-5' },
@@ -148,24 +148,36 @@ const clientWithTemplate = new OrchestrationClient({
   }
 });
 
-// createAgent() compiles the graph internally; MemorySaver threads context across turns.
-const agent = createAgent({
+const clientWithoutTemplate = new OrchestrationClient({
+  promptTemplating: { model: { name: 'gpt-5' } }
+});
+
+// Shared checkpointer — both agents read and write the same thread history.
+const memory = new MemorySaver();
+
+const firstAgent = createAgent({
   model: clientWithTemplate,
   tools: [],
-  checkpointer: new MemorySaver()
+  checkpointer: memory
+});
+
+const followUpAgent = createAgent({
+  model: clientWithoutTemplate,
+  tools: [],
+  checkpointer: memory
 });
 
 const threadConfig = { configurable: { thread_id: 'conv-1' } };
 
-// First turn — the template is applied once.
-const first = await agent.invoke(
+// First turn — template is applied once.
+const first = await firstAgent.invoke(
   { messages: [{ role: 'user', content: 'Plan a day trip to Paris.' }] },
   threadConfig
 );
 console.log(first.messages.at(-1)?.content);
 
-// Follow-up turns reuse the same compiled graph; the template is NOT re-applied.
-const followUp = await agent.invoke(
+// Follow-up turn — history is loaded from the shared MemorySaver; template is not re-applied.
+const followUp = await followUpAgent.invoke(
   { messages: [{ role: 'user', content: 'Add more outdoor activities.' }] },
   threadConfig
 );
