@@ -94,8 +94,8 @@ In addition to the prerequisites above, we assume you have already set up the fo
 <!-- prettier-ignore-end-->
 
 Before you can make a prediction, you need to setup tabular data contexts:
-- Register data destinations (object stores and data sharing platforms)
-- Create tabular artifacts from various file formats (CSV, Parquet, Delta)
+- Register data destinations (object stores and data sharing platforms).
+- Create tabular artifacts from various file formats (CSV, Parquet, Delta).
 - And, configure scenarios for context selection.
 
 You will need this function to instantiate tabular orchestration clients:
@@ -110,7 +110,7 @@ private static HttpDestination buildDestination() {
 
 ## Data Destination
 
-Manage data destinations (S3, Azure, GCP, HDL) for unified data source integration.
+Manage data destinations (S3 Bucket, Google Cloud Storage, Hana Data lake) for unified data source integration.
 
 ```java
 DataDestinationsApi dataDestinationClient =
@@ -129,7 +129,7 @@ Please find more to the example in [the sample application](https://github.com/S
 
 ## Artifact
 
-Manage tabular artifacts for structured files from data-destinations.
+Manage tabular artifacts for structured files from data destinations.
 
 ```java
 TabularArtifactsApi tabularArtifactsClient =
