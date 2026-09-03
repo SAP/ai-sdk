@@ -264,6 +264,8 @@ The following example polls until a Tabular Artifact is ready:
 import { TabularArtifactsApi } from '@sap-ai-sdk/context-registry';
 import type { TabularArtifactDetails } from '@sap-ai-sdk/context-registry';
 // ---cut---
+import { setTimeout } from 'node:timers/promises';
+
 async function pollUntilActive(name: string): Promise<TabularArtifactDetails> {
   for (let attempt = 0; attempt < 60; attempt++) {
     const artifact = await TabularArtifactsApi.getTabularArtifactByName(name, {
@@ -279,7 +281,7 @@ async function pollUntilActive(name: string): Promise<TabularArtifactDetails> {
       );
     }
 
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await setTimeout(2000);
   }
   throw new Error('Timed out waiting for tabular artifact to become active');
 }
