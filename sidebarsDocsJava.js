@@ -24,11 +24,8 @@ export default {
         },
         {
           type: 'category',
-          label: 'Tabular Prediction',
-          items: [
-            'foundation-models/tabular-prediction/sap-rpt',
-            'foundation-models/tabular-prediction/tabular-orchestration'
-          ]
+          label: 'SAP RPT',
+          items: ['foundation-models/sap-rpt/table-completion']
         }
       ]
     },
@@ -44,7 +41,8 @@ export default {
         'ai-core/ai-core-deployment',
         'ai-core/document-grounding',
         'ai-core/prompt-registry',
-        'ai-core/batch'
+        'ai-core/batch',
+        'ai-core/tabular-orchestration'
       ]
     },
     {

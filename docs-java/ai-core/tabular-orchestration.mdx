@@ -24,7 +24,7 @@ They are safe to use, but may require updates even in minor releases.
 
 ## Prerequisites
 
-Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](../../overview.mdx#general-requirements).
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](../overview.mdx#general-requirements).
 Additionally, include the necessary Maven dependency in your project.
 
 ### Maven Dependencies
@@ -98,32 +98,31 @@ Before you can make a prediction, you need to setup tabular data contexts:
 - Create tabular artifacts from various file formats (CSV, Parquet, Delta).
 - And, configure scenarios for context selection.
 
-You will need this function to instantiate tabular orchestration clients:
-
-```java
-private static HttpDestination buildDestination() {
-  final HttpDestination base = new AiCoreService().getBaseDestination();
-  final URI rootUri = base.getUri().resolve("/v2/tcr/");
-  return DefaultHttpDestination.fromDestination(base).uri(rootUri).build();
-}
-```
-
 ## Data Destination
 
 Manage data destinations (S3 Bucket, Google Cloud Storage, Hana Data lake) for unified data source integration.
 
 ```java
-DataDestinationsApi dataDestinationClient =
-      new DataDestinationsApi(buildDestination());
+DataDestinationsApi dataDestinationClient = new TabularClient().dataDestinations();
 
 var request =
     HDLDataDestinationCreateRequest.create()
         .type(HDL)
-        .config(HDLConnectionConfig.create().host("hostname"))
-        .description("HDL data destination for AI Core SDK");
+        .config(
+            HDLConnectionConfig.create()
+                .host("123-456-789-abc-def123.files.hdl.prod-eu12.hanacloud.ondemand.com"))
+        .description("HDL data destination");
 AsyncCreateDataDestinationResponse response = dataDestinationClient.createUpdateDataDestination(
     "default", "hdl-destination", request);
 ```
+
+Other destination types are available by changing the request object:
+
+| Destination Type       | Request Object                     |
+| ----------------------- | ----------------------------------- |
+| Hana Data lake          | `HDLDataDestinationCreateRequest`  |
+| S3 Bucket               | `S3DataDestinationCreateRequest`   |
+| Google Cloud Storage    | `GCSDataDestinationCreateRequest`  |
 
 Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/TabularService.java).
 
@@ -132,16 +131,15 @@ Please find more to the example in [the sample application](https://github.com/S
 Manage tabular artifacts for structured files from data destinations.
 
 ```java
-TabularArtifactsApi tabularArtifactsClient =
-      new TabularArtifactsApi(buildDestination());
+TabularArtifactsApi tabularArtifactsClient = new TabularClient().tabularArtifacts();
 
 var productEntityElements =
     Map.of(
-        "PRODUCT", Map.of("type", "cds.String"),
-        "PRICE", Map.of("type", "cds.Double"),
-        "PRODUCTION_DATE", Map.of("type", "cds.String"),
-        "__row_idx__", Map.of("type", "cds.String"),
-        "SALESGROUP", Map.of("type", "cds.String"));
+        "product", Map.of("type", "cds.String"),
+        "price", Map.of("type", "cds.Double"),
+        "date", Map.of("type", "cds.String"),
+        "id", Map.of("type", "cds.String"),
+        "salesgroup", Map.of("type", "cds.String"));
 var definitions =
     Map.of(
         "definitions",
@@ -171,8 +169,7 @@ Please find more to the example in [the sample application](https://github.com/S
 Manage scenario configurations for context selection.
 
 ```java
-ScenarioConfigurationManagerApi scenariosClient =
-    new ScenarioConfigurationManagerApi(buildDestination());
+ScenarioConfigurationManagerApi scenariosClient = new TabularClient().scenarioConfiguration();
 
 var request =
     CreateScenarioConfiguration.create()
@@ -190,9 +187,7 @@ Please find more to the example in [the sample application](https://github.com/S
 Predict missing targets in tabular data using a deployed Tabular Foundation Model.
 
 ```java
-PredictApi predictClient =
-      new PredictApi(
-          new AiCoreService().getInferenceDestination().forScenario("tabular-orchestration"))
+PredictApi predictClient = new TabularClient().predict();
 
 var request =
     PredictRequest.create()
@@ -229,7 +224,7 @@ var request =
                     "id", "689",
                     "salesgroup", "[PREDICT]")))
         .modelConfig(Map.of());
-PredictResponse response = predictClient.predictV1PredictPost(request);
+PredictResponse response = predictClient.predict(request);
 List<Map<String, Object>> predictions = response.getPredictions();
 ```
 
