@@ -94,6 +94,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
 <!-- prettier-ignore-end-->
 
 Before you can make a prediction, you need to setup tabular data contexts:
+
 - Register data destinations (object stores and data sharing platforms).
 - Create tabular artifacts from various file formats (CSV, Parquet, Delta).
 - And, configure scenarios for context selection.
@@ -118,11 +119,11 @@ AsyncCreateDataDestinationResponse response = dataDestinationClient.createUpdate
 
 Other destination types are available by changing the request object:
 
-| Destination Type       | Request Object                     |
-| ----------------------- | ----------------------------------- |
-| Hana Data lake          | `HDLDataDestinationCreateRequest`  |
-| S3 Bucket               | `S3DataDestinationCreateRequest`   |
-| Google Cloud Storage    | `GCSDataDestinationCreateRequest`  |
+| Destination Type     | Request Object                    |
+| -------------------- | --------------------------------- |
+| Hana Data lake       | `HDLDataDestinationCreateRequest` |
+| S3 Bucket            | `S3DataDestinationCreateRequest`  |
+| Google Cloud Storage | `GCSDataDestinationCreateRequest` |
 
 Please find more to the example in [the sample application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/TabularService.java).
 
