@@ -407,9 +407,8 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-:::info
-The `promptTemplating.prompt.template` messages defined in the client configuration are static - they are always included in every `chatCompletion()` request.
-For more dynamic prompts, i.e., you want to vary the full message list per request without re-initializing the client, use the `messages` property instead.
+:::warning
+Template messages are **always prepended** to every request. Reusing the same client across multiple turns will include the template on every call. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for how to avoid duplication in multi-turn workflows with prompt templates.
 :::
 
 ```ts twoslash
@@ -456,9 +455,8 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-:::info Messages with Prompt Template References
-When using the `template_ref` property, messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored prompt template.
-The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
+:::warning
+Messages passed alongside a `template_ref` are **automatically routed to `messages_history`** and cannot be merged into the remotely stored template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows with template references.
 :::
 
 A prompt template can be referenced either by ID, or by a combination of name, scenario and version.
@@ -1773,9 +1771,8 @@ const response = await orchestrationClient.chatCompletion({
 console.log(response.getContent());
 ```
 
-:::info Messages with Orchestration Configuration References
-When initializing the client with an orchestration configuration reference, any messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored configuration's prompt template.
-The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
+:::warning
+Messages passed alongside a configuration reference are **automatically routed to `messages_history`** and cannot be merged into the remotely stored configuration's prompt template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows with configuration references.
 :::
 
 ### Overriding the Stored Configuration
