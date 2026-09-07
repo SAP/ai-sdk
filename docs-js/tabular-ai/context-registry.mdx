@@ -26,6 +26,7 @@ We strongly recommend using the tilde (`~`) version range instead of the caret (
 
 The `@sap-ai-sdk/context-registry` package provides a client for the SAP Context Registry service.
 Before you can request predictions from the Tabular Orchestration service, you need to configure three resources in the Context Registry.
+For an overview of the design-time setup process, see the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/design-time-setup?locale=en-US).
 
 ```mermaid
 flowchart LR
@@ -55,6 +56,7 @@ You can find additional sample code [here](https://github.com/SAP/ai-sdk-js/blob
 
 ### Data Destinations
 
+For service-level details, see the [Data Destination documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/data-destination?locale=en-US).
 Create and delete operations are asynchronous.
 The API returns `202 Accepted` with a `Location` header pointing to the new resource.
 Poll the `getDataDestinationByName()` method and check `status` until it reaches `ACTIVE`.
@@ -136,6 +138,7 @@ await DataDestinationsApi.deleteDataDestinationByName('my-hdl-destination', {
 
 ### Tabular Artifacts
 
+For service-level details, see the [Tabular Artifact documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/tabular-artifact?locale=en-US).
 A Tabular Artifact references a file within a Data Destination and carries the schema metadata the prediction service needs.
 Creation is asynchronous; poll the `getTabularArtifactByName()` method until `status` is `ACTIVE`.
 
@@ -190,6 +193,7 @@ const preview: TabularArtifactDataPreview =
 
 ### Scenario Configurations
 
+For service-level details, see the [Scenario Configuration documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/scenario-configuration?locale=en-US).
 A Scenario Configuration groups one or more Tabular Artifacts under a single name.
 Pass that name to the Tabular Orchestration service when requesting a prediction.
 
