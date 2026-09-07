@@ -72,7 +72,11 @@ const response = await client.invoke(history, {
 });
 ```
 
-### Module Fallback[​](#module-fallback "Direct link to Module Fallback")
+## Template and Prompt Registry Behavior[​](#template-and-prompt-registry-behavior "Direct link to Template and Prompt Registry Behavior")
+
+When using `template`, its messages are **always prepended** to every `invoke()` or `stream()` call — reusing the same client across multiple turns causes the template to appear on every request. When using `template_ref`, any messages passed are **automatically routed to `messages_history`** and cannot be merged into the remotely stored template. In both cases, you can use the **two-client pattern** from the [LangGraph tutorial](/ai-sdk/docs/js/tutorials/langgraph-template-orchestration-client.md) to avoid related issues while taking advantage of the prompt registry: one client with the template for the first turn, a second without it for follow-up turns.
+
+## Module Fallback[​](#module-fallback "Direct link to Module Fallback")
 
 The [`OrchestrationClient`](/ai-sdk/api/v2/classes/langchain_src.OrchestrationClient.html) supports module fallback, which allows you to provide multiple orchestration configurations that are tried in sequence until one succeeds. Pass a non-empty array of [`LangChainOrchestrationModuleConfig`](/ai-sdk/api/v2/types/langchain_src.LangChainOrchestrationModuleConfig.html) objects when initializing the client, using the [`LangChainOrchestrationModuleConfigList`](/ai-sdk/api/v2/types/langchain_src.LangChainOrchestrationModuleConfigList.html) type.
 

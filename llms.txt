@@ -65,6 +65,7 @@
 - [Release Policy](/docs/js/release-policy.md): Release policy of SAP Cloud SDK for AI, including versioning strategy, major release schedule, and maintenance information.
 - [SAP RPT-1 (Beta)](/docs/js/rpt.md): How to use SAP Cloud SDK for AI to interact with the SAP RPT-1 model for Tabular AI on SAP AI Core.
 - [Getting Started with Agents using LangChain](/docs/js/tutorials/getting-started-agents.md): Building a Travel Itinerary Assistant with LangGraph and LangChain Client
+- [Using Orchestration Templates in LangGraph Agents](/docs/js/tutorials/langgraph-template-orchestration-client.md): How to use template and template_ref with the Orchestration client in LangGraph workflows, using the two-client pattern to avoid message duplication.
 - [Processing Batch LLM Requests with the Batch API](/docs/js/tutorials/llm-batch-api.md): Learn how to submit and manage asynchronous LLM batch jobs using the SAP AI SDK for JavaScript.
 - [Using Scoped Prompt Registry Templates](/docs/js/tutorials/scoped-prompt-registry-templates.md): Learn how to create orchestration deployments and use scoped prompt registry templates with custom headers for resource group isolation.
 - [Upgrade Guide](/docs/js/upgrade-guide.md): Guide for upgrading from SAP Cloud SDK for AI
