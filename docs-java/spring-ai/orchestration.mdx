@@ -179,9 +179,10 @@ Then pass your tool to the model as follows.
 ```java
 ChatModel client = new OrchestrationChatModel();
 OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
-
-opts.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config)
+    .mutate()
+    .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
+    .build();
 
 Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", opts);
 
@@ -308,9 +309,9 @@ Add the Spring MCP auto configuration dependency:
 ```xml
 <dependency>
     <groupId>org.springframework.ai</groupId>
-    <artifactId>spring-ai-autoconfigure-mcp-client</artifactId>
+    <artifactId>spring-ai-autoconfigure-mcp-client-common</artifactId>
+    <version>2.0.1</version>
     <scope>runtime</scope>
-    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -354,11 +355,15 @@ ToolCallbackProvider toolCallbackProvider;
 These tools can now be used in requests to the Orchestration service [like any other tool](#tool-calling):
 
 ```java
-OrchestrationChatOptions opts;
-opts.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config)
+    .mutate()
+    .toolCallbacks(toolCallbackProvider.getToolCallbacks())
+    .build();
 
-// optionally, enable automated tool execution
-opts.setInternalToolExecutionEnabled(true);
+Prompt prompt = new Prompt("Your prompt here", opts);
+
+// Use ChatClient to enable automatic tool execution
+ChatClient.builder(client).build().prompt(prompt).call().chatResponse();
 ```
 
 For more information also refer to the [sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).

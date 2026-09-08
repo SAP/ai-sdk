@@ -134,9 +134,10 @@ Then pass your tool to the model as follows.
 ```java
 OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
 ChatModel client = new OpenAiChatModel(openAiClient);
-var options = new DefaultToolCallingChatOptions();
-
-options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+var options = new DefaultToolCallingChatOptions()
+    .mutate()
+    .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
+    .build();
 
 Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
