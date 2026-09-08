@@ -127,3 +127,34 @@ This destination can be used later when initializing a client or calling the `ex
 
 You can register a destination for AI Core programmatically.
 For more details, refer to the [Register Destination](https://sap.github.io/cloud-sdk/docs/js/features/connectivity/destinations#register-destination) section of the SAP Cloud SDK documentation.
+
+## Configuring the HTTP Timeout
+
+When connecting through a service binding or the `AICORE_SERVICE_KEY` environment variable, the SDK sets a default HTTP socket timeout of **12 minutes** (`720000` ms) for AI Core requests.
+This overrides the SAP Cloud SDK default of 5 seconds, which is too short for long-running chat and streaming completions.
+Keep-alive is disabled on these requests to avoid reusing stale connections that a load balancer may have closed during the longer timeout window.
+
+You can override these defaults in two ways:
+
+- **Per request** — pass a custom [`https.Agent`](https://nodejs.org/api/https.html#class-httpsagent) through the `httpsAgent` property of the request configuration:
+
+  ```ts twoslash
+  import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: { model: { name: 'gpt-5' } }
+  });
+  const request = { messages: [{ role: 'user' as const, content: '' }] };
+  // ---cut---
+  import { Agent } from 'node:https';
+
+  const response = await orchestrationClient.chatCompletion(request, {
+    httpsAgent: new Agent({ timeout: 300000, keepAlive: false })
+  });
+  ```
+
+- **Per destination** — when [creating a custom destination](#creating-a-custom-destination), set `agentOptions` on it to control the timeout and keep-alive.
+
+:::note
+The 12-minute default applies only to the SDK-managed service binding destination.
+A destination you provide yourself is used as-is, so set its `agentOptions` explicitly if you need a specific timeout.
+:::
