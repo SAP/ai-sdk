@@ -130,7 +130,7 @@ For more details, refer to the [Register Destination](https://sap.github.io/clou
 
 ## Configuring the HTTP Timeout
 
-When connecting through a service binding or the `AICORE_SERVICE_KEY` environment variable, the SDK sets a default HTTP socket timeout of **12 minutes** (`720000` ms) for AI Core requests.
+When connecting through a service binding or the `AICORE_SERVICE_KEY` environment variable, the SDK sets a default HTTP socket timeout of **1201 seconds** (`1201000` ms) for AI Core requests.
 This overrides the SAP Cloud SDK default of 5 seconds, which is too short for long-running chat and streaming completions.
 Keep-alive is disabled on these requests to avoid reusing stale connections that a load balancer may have closed during the longer timeout window.
 
@@ -155,6 +155,6 @@ You can override these defaults in two ways:
 - **Per destination** — when [creating a custom destination](#creating-a-custom-destination), set `agentOptions` on it to control the timeout and keep-alive.
 
 :::note
-The 12-minute default applies only to the SDK-managed service binding destination.
+The 1201-second default applies only to the SDK-managed service binding destination.
 A destination you provide yourself is used as-is, so set its `agentOptions` explicitly if you need a specific timeout.
 :::
