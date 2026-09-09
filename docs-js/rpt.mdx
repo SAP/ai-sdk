@@ -118,12 +118,12 @@ const prediction = await client.predictWithSchema(
 The data schema is a list of column definitions, each containing a `name` and a `dtype` property.
 Supported `dtype` values, grouped by category:
 
-| Category | Types |
-|---|---|
-| Text | `string`, `largestring`, `uuid` |
-| Numeric | `numeric`, `integer`, `int16`, `int32`, `int64`, `uint8`, `decimal`, `double` |
-| Boolean | `boolean` |
-| Date and time | `date`, `time`, `datetime`, `timestamp` |
+| Category      | Types                                                                         |
+| ------------- | ----------------------------------------------------------------------------- |
+| Text          | `string`, `largestring`, `uuid`                                               |
+| Numeric       | `numeric`, `integer`, `int16`, `int32`, `int64`, `uint8`, `decimal`, `double` |
+| Boolean       | `boolean`                                                                     |
+| Date and time | `date`, `time`, `datetime`, `timestamp`                                       |
 
 The prediction data contains the following properties:
 
@@ -253,10 +253,10 @@ The RPT client supports advanced features for specialized use cases.
 
 The `context_mode` field on `prediction_config` controls how the model uses the provided context rows.
 
-| Value | Description |
-|---|---|
-| `'default'` | Standard prediction mode (default). |
-| `'deep'` | Higher accuracy for datasets with more than 8,000 context rows. Higher cost. Only supported on `sap-rpt-1.6-large`. |
+| Value       | Description                                                                                                         |
+| ----------- | ------------------------------------------------------------------------------------------------------------------- |
+| `'default'` | Standard prediction mode (default).                                                                                 |
+| `'deep'`    | Higher accuracy for datasets with more than 8,000 context rows. Higher cost. Only supported on `sap-rpt-1.6-large`. |
 
 ```ts twoslash
 import { RptClient } from '@sap-ai-sdk/rpt';
