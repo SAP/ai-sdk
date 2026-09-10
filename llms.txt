@@ -4,6 +4,28 @@
 ## ai-sdk
 
 - [Search the documentation](/search.md)
+- [AI Core Deployment](/docs/java/next/ai-core/ai-core-deployment.md): How to create and manage deployments in SAP AI Core
+- [Batch](/docs/java/next/ai-core/batch.md): How to manage LLM batch jobs using the SAP AI SDK for Java.
+- [Document Grounding](/docs/java/next/ai-core/document-grounding.md): How to manage data in SAP Document Grounding using the SAP AI SDK for Java.
+- [Prompt Registry](/docs/java/next/ai-core/prompt-registry.md): How to manage the life cycle of your prompts in Prompt Registry using the SAP AI SDK for Java.
+- [Connecting to AI Core](/docs/java/next/connecting-to-ai-core.md): How to connect to AI Core in BTP using a wide variety of credentials.
+- [Chat Completion](/docs/java/next/foundation-models/openai/chat-completion.md): How to use the SAP AI SDK for Java to perform chat completion tasks using OpenAI models deployed on SAP AI Core.
+- [Embedding](/docs/java/next/foundation-models/openai/embedding.md): How to use the SAP AI SDK for Java to perform embedding tasks using OpenAI models deployed on SAP AI Core.
+- [Realtime](/docs/java/next/foundation-models/openai/realtime.md): How to use the SAP AI SDK for Java to stream audio conversations and text-to-speech using the OpenAI Realtime API.
+- [Responses](/docs/java/next/foundation-models/openai/responses.md): How to use the SAP AI SDK for Java to perform responses tasks using OpenAI models deployed on SAP AI Core.
+- [Table Completion](/docs/java/next/foundation-models/sap-rpt/table-completion.md): How to use the SAP AI SDK for Java to perform table completion tasks using SAP RPT models deployed on SAP AI Core.
+- [Frequently Asked Questions](/docs/java/next/frequently-asked-questions.md): You asked! We answered! We collected here the most frequent question about SAP Cloud SDK for Java.
+- [Getting Started](/docs/java/next/getting-started.md): Get up to speed with SAP Cloud SDK for Java in no time
+- [Migration Guide to v2](/docs/java/next/migration-guide.md): Update your application to use version 2 of the SAP Cloud SDK for AI
+- [Chat Completion](/docs/java/next/orchestration/chat-completion.md): How to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
+- [Embedding](/docs/java/next/orchestration/embedding.md): How to use the SAP AI SDK for Java to perform embedding tasks using Orchestration models deployed on SAP AI Core.
+- [Java SDK Overview](/docs/java/next/overview.md): The SAP Cloud SDK for AI Java significantly simplifies extending and developing an application with SAP Business Technology Platform
+- [Release Notes](/docs/java/next/release-notes.md): Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations.
+- [release-notes-0-to-14](/docs/java/next/release-notes/release-notes-0-to-14.md): 1.14.0 - January 08, 2026
+- [release-notes-15-to-29](/docs/java/next/release-notes/release-notes-15-to-29.md): 1.25.0 - September 04, 2026
+- [OpenAI Integration](/docs/java/next/spring-ai/openai.md): How to use our Spring AI integration with our OpenAI client in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
+- [Orchestration Integration](/docs/java/next/spring-ai/orchestration.md): How to use our Spring AI integration with our Orchestration client in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
+- [Getting Started with Agentic Workflows](/docs/java/next/tutorials/agentic-workflows.md): A tutorial on how to build agentic workflows using the SAP AI SDK.
 - [AI Core Deployment](/docs/java/ai-core/ai-core-deployment.md): How to create and manage deployments in SAP AI Core
 - [Batch](/docs/java/ai-core/batch.md): How to manage LLM batch jobs using the SAP AI SDK for Java.
 - [Document Grounding](/docs/java/ai-core/document-grounding.md): How to manage data in SAP Document Grounding using the SAP AI SDK for Java.

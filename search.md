@@ -10,7 +10,7 @@ Search
 
 Type your search here
 
-v2 (current)
+docs-java: v2 (current)docs-js: v2 (current)
 
 Powered by[](https://www.algolia.com/)
 
