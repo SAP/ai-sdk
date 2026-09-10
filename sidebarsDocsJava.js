@@ -57,6 +57,7 @@ export default {
       ]
     },
     'release-notes',
+    'migration-guide',
     'frequently-asked-questions',
     {
       type: 'link',
