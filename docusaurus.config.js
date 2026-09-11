@@ -75,7 +75,7 @@ export default {
           position: 'left',
           docsPluginId: 'docs-python',
           activeBasePath: 'docs/python',
-          className: 'navbar-item-invisible'
+          sdkSwitch: true
         },
         {
           type: 'docsVersionDropdown',
