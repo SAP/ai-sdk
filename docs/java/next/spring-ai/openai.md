@@ -72,7 +72,7 @@ First, add the Spring AI dependency to your `pom.xml`:
 
 Spring AI Version
 
-As of version `1.10.0` the minimum required version for Spring AI is `1.0.0`. Please refer to the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for details on how to upgrade from a previous milestone version.
+As of version `1.25.0` the minimum required version for Spring AI is `2.0.1`. Please refer to the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-2-0-1) for details on how to upgrade from a previous milestone version.
 
 ## Embedding[​](#embedding "Direct link to Embedding")
 
@@ -172,11 +172,13 @@ OpenAiClient openAiClient = OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI);
 
 ChatModel client = new OpenAiChatModel(openAiClient);
 
-var options = new DefaultToolCallingChatOptions();
+var options = new DefaultToolCallingChatOptions()
 
+    .mutate()
 
+    .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
 
-options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+    .build();
 
 
 
