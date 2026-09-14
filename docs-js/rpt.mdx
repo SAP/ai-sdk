@@ -260,8 +260,8 @@ The `context_mode` field on `prediction_config` controls how the model uses the 
 
 ```ts twoslash
 import { RptClient } from '@sap-ai-sdk/rpt';
-const client = new RptClient('sap-rpt-1.6-large');
 // ---cut---
+const client = new RptClient('sap-rpt-1.6-large');
 const prediction = await client.predictWithSchema(
   [
     { name: 'PRODUCT', dtype: 'string' },
