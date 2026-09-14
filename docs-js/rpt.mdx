@@ -301,6 +301,7 @@ const prediction = await client.predictWithSchema(
 
 ### Explainability
 
+This feature is available with RPT 1.5 or higher.
 To understand which columns and context rows influenced a prediction, set `explanations` on `prediction_config`.
 The response includes an `explanations` field with per-query-row scores and indices.
 
