@@ -41,7 +41,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.10",
+    "@langchain/core": "1.2.11",
     "@sap-ai-sdk/ai-api": "2.15.1-20260912011712.0",
     "@sap-ai-sdk/core": "2.15.1-20260913012457.0",
     "@sap-ai-sdk/document-grounding": "2.15.1-20260913012457.0",
