@@ -59,7 +59,7 @@ const FeatureList = [
   },
   {
     title: <>SAP Cloud SDK for AI (Python)</>,
-    link: 'https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/index.html',
+    link: 'docs/python/overview',
     Svg: () => <span style={{ fontSize: '200px' }}>🐍</span>,
     badge: (
       <>
@@ -80,9 +80,7 @@ const FeatureList = [
     ),
     description: (
       <div data-nosnippet>
-        <a href="https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/index.html">
-          Get Started
-        </a>
+        <a href="docs/python/overview">Get Started</a>
       </div>
     )
   }
