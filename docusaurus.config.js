@@ -75,7 +75,7 @@ export default {
           position: 'left',
           docsPluginId: 'docs-python',
           activeBasePath: 'docs/python',
-          className: 'navbar-item-invisible'
+          sdkSwitch: true
         },
         {
           type: 'docsVersionDropdown',
@@ -213,10 +213,16 @@ export default {
         routeBasePath: 'docs/java',
         sidebarPath: './sidebarsDocsJava.js',
         remarkPlugins: [remarkEnforceMdxLinks],
-        lastVersion: 'current',
+        lastVersion: 'v1',
         versions: {
           current: {
+            label: 'v2',
+            banner: 'unreleased',
+            badge: false
+          },
+          v1: {
             label: 'v1',
+            banner: 'none',
             badge: false
           }
         }
