@@ -54,7 +54,11 @@ export default {
         'ai-core/prompt-registry'
       ]
     },
-    'rpt',
+    {
+      type: 'category',
+      label: 'Tabular AI',
+      items: ['tabular-ai/rpt', 'tabular-ai/context-registry']
+    },
     {
       type: 'category',
       label: 'Tutorials',
