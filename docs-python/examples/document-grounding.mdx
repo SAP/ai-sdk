@@ -5,7 +5,7 @@ hide_title: false
 hide_table_of_contents: false
 ---
 
-The Document Grounding module implements Retrieval Augmented Generation (RAG). It uses the SAP HANA Vector Engine to retrieve relevant document context and generate more accurate responses.
+The Document Grounding module implements Retrieval Augmented Generation (RAG). It is a module in the [Orchestration Service](https://help.sap.com/doc/generative-ai-hub-sdk/CLOUD/en-US/_reference/orchestration-service.html). It uses the SAP HANA Vector Engine to retrieve relevant document context (the "context") and generate more accurate responses.
 
 ## Prerequisites
 
@@ -17,6 +17,8 @@ A vector knowledge base is [required](https://help.sap.com/docs/sap-ai-core/sap-
 Another option is to use the `help.sap.com` elastic search endpoint.
 
 ### Create a Vector Knowledge Base (S3 Example)
+
+In this example, an S3 data storage created by the user already has a set of documents uploaded to it. Check that [Document Grounding is enabled](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-ai-data-management?q=document%20grounding) and that a [generic secret for the S3 bucket is created in AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/generic-secrets-for-grounding?q=document%20grounding), which allows retrieving the documents in the S3 bucket. The Pipelines API can be run via this SDK:
 
 ```python
 from gen_ai_hub.proxy import get_proxy_client
@@ -33,6 +35,8 @@ print(pipelines_api_client.get_pipeline_status(response.pipelineId))
 ```
 
 ## Configuration
+
+Provide the Orchestration Service URL and create a client for the Orchestration Service.
 
 ```python
 from gen_ai_hub.orchestration.service import OrchestrationService
@@ -84,6 +88,8 @@ print(response.orchestration_result.choices[0].message.content)
 
 ### Grounding via Custom Data Repository
 
+Assume the documentation for a custom product extension is vectorized and stored in the Vector knowledge base created earlier from the S3 bucket.
+
 ```python
 filters = [DocumentGroundingFilter(
     id="<*** product extension docs id ***>",
@@ -112,6 +118,8 @@ print(response.module_results.grounding.data['grounding_result'])
 ```
 
 ### Data Masking of Retrieved Context
+
+The retrieved context can be masked in the same way as in the Orchestration Service, to avoid passing sensitive information to the LLM.
 
 ```python
 from gen_ai_hub.orchestration.models.sap_data_privacy_integration import (

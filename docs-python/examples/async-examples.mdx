@@ -7,6 +7,8 @@ hide_table_of_contents: false
 
 ## Async Amazon Native
 
+This notebook demonstrates how to use async-based calls for Amazon AI models.
+
 ### Invoke Model
 
 ```python
@@ -128,6 +130,8 @@ async with Client(proxy_client=proxy_client).aio as aclient:
 
 ### Async Chat (Amazon Bedrock)
 
+This demonstrates how to use the `chat_model.ainvoke` method for the Claude model.
+
 ```python
 from langchain_core.messages import HumanMessage, AIMessage
 from gen_ai_hub.proxy.langchain import ChatBedrock
@@ -142,6 +146,8 @@ await async_amazon_chat_model()
 ```
 
 ### Async Streaming (Amazon Bedrock)
+
+This notebook demonstrates how to use the `chat_model.astream` method for the Claude model.
 
 ```python
 from langchain_core.messages import AIMessageChunk
@@ -161,6 +167,8 @@ await async_chat_streaming()
 
 ### Async Chat (Amazon Bedrock Converse)
 
+This demonstrates how to use the `ChatBedrockConverse` model's `ainvoke` method.
+
 ```python
 from gen_ai_hub.proxy.langchain import ChatBedrockConverse
 
@@ -175,6 +183,8 @@ await chat_converse_model_example("anthropic--claude-3-haiku")
 
 ### Async Gemini
 
+This demonstrates how to use the `ainvoke` method of the Gemini model asynchronously.
+
 ```python
 from gen_ai_hub.proxy.langchain import init_llm
 
@@ -187,6 +197,8 @@ await gemini_ainvoke_example()
 ```
 
 ### Async Gemini Streaming
+
+This notebook demonstrates how to use the `astream` method of the Gemini chat model asynchronously.
 
 ```python
 from gen_ai_hub.proxy.langchain import ChatGoogleGenerativeAI

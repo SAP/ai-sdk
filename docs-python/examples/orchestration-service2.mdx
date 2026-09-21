@@ -5,16 +5,20 @@ hide_title: false
 hide_table_of_contents: false
 ---
 
-This page demonstrates how to use the SDK with the Orchestration Service V2, enabling AI-driven workflows with modules such as templating, LLMs, data masking, and content filtering.
+This page demonstrates how to use the SDK with the Orchestration Service V2, enabling AI-driven workflows with modules such as templating, LLMs, data masking, and content filtering. By leveraging these modules, you can build complex, automated workflows that enhance the capabilities of your AI solutions. For more details on configuring and using these modules, please refer to the [Orchestration Service Documentation](https://help.sap.com/docs/ai-launchpad/sap-ai-launchpad/orchestration).
 
 ## Prerequisite
 
 Before you begin, set up a virtual deployment of the Orchestration Service. See the [setup guide](https://help.sap.com/docs/ai-launchpad/sap-ai-launchpad/create-deployment-for-orchestration).
 
+## Authentication
+By default, the OrchestrationService initializes a GenAIHubProxyClient, which automatically configures credentials using configuration files or environment variables, as outlined in the Introduction section.
+If you prefer to set credentials manually, you can provide a custom instance using the proxy_client parameter.
+
 ## Basic Orchestration Pipeline
 
 ### Step 1: Define the Template
-
+The Template class is used to define structured message templates for generating dynamic interactions with language models. In this example, the template is designed for a translation assistant, allowing users to specify a language and text for translation.
 ```python
 from gen_ai_hub.orchestration_v2 import Template, SystemMessage, UserMessage
 
@@ -26,8 +30,12 @@ template = Template(
     defaults={"to_lang": "German"}
 )
 ```
-
+This template can be used to create translation requests where the language and text to be translated are specified dynamically. The placeholders in the UserMessage will be replaced with the actual values provided at runtime, and the default value for the language is set to German.
 ### Step 2: Define the LLM
+
+The `LLM` class is used to configure and initialize a language model for generating text based on specific parameters. In this example, we'll use the `gpt-4o` model to perform the translation task.
+
+**Note:** The Orchestration Service automatically manages the virtual deployment of the language model, so no additional setup is needed on your end.
 
 ```python
 from gen_ai_hub.orchestration_v2 import LLMModelDetails
@@ -35,7 +43,11 @@ from gen_ai_hub.orchestration_v2 import LLMModelDetails
 llm = LLMModelDetails(name="gpt-5-nano", params={"max_completion_tokens": 512})
 ```
 
+Initializes the language model to use the `gpt-5-nano` model. It will generate responses up to 512 tokens in length.
+
 ### Step 3: Create the Configuration
+
+The `OrchestrationConfig` class defines a configuration for integrating various modules, such as templates and language models, into a cohesive orchestration setup. It specifies how these components interact and are configured to achieve the desired operational scenario.
 
 ```python
 from gen_ai_hub.orchestration_v2 import PromptTemplatingModuleConfig, ModuleConfig, OrchestrationConfig
@@ -47,15 +59,24 @@ config = OrchestrationConfig(modules=module_config)
 
 ### Step 4: Run the Request
 
+The `OrchestrationService` class is used to interact with a orchestration service instance by providing configuration details to initiate and manage its operations.
+
 ```python
 from gen_ai_hub.orchestration_v2 import OrchestrationService
 
 orchestration_service = OrchestrationService(config=config)
+```
+
+Call the `run` method with the required `placeholder values`. The service will process the input according to the configuration and return the result.
+
+```python
 result = orchestration_service.run(placeholder_values={"user_query": "The Orchestration Service is working!"})
 print(result.final_result.choices[0].message.content)
 ```
 
 #### Referencing Templates from the Prompt Registry
+
+In Step 3 you can also use a prompt template reference, which allows you to reuse existing templates stored in the Prompt Registry.
 
 ```python
 from gen_ai_hub.orchestration_v2 import TemplateRefByID, TemplateRefByScenarioNameVersion
@@ -65,6 +86,12 @@ template_by_names = TemplateRefByScenarioNameVersion(scenario="translation", nam
 ```
 
 #### Response Format Options
+
+The `response_format` parameter allows the model output to be formatted in several predefined ways, as follows:
+
+1. **text**: This is the simplest form where the model's output is generated as plain text. It is suitable for applications that require raw text processing.
+2. **json_object**: Under this setting, the model's output is structured as a JSON object. This is useful for applications that handle data in JSON format, enabling easy integration with web applications and APIs.
+3. **json_schema**: This setting allows the model's output to adhere to a defined JSON schema. This is particularly useful for applications that require strict data validation, ensuring the output matches a predefined schema.
 
 **Text:**
 
@@ -76,6 +103,9 @@ template = Template(
     response_format=ResponseFormatText(),
     defaults={"user_query": "Who was the first person on the moon?"}
 )
+
+# Response:
+# The first man on the moon was Neil Armstrong.
 ```
 
 **JSON Object:**
@@ -91,7 +121,14 @@ template = Template(
     response_format=ResponseFormatJsonObject(),
     defaults={"user_query": "Who was the first person on the moon?"}
 )
+
+# Response:
+# {
+#     "First_man_on_the_moon": "Neil Armstrong"
+# }
 ```
+
+**Important:** When using `response_format` as json_object, ensure that messages contain the word 'json' in some form.
 
 **JSON Schema:**
 
@@ -112,11 +149,61 @@ template = Template(
     ),
     defaults={"user_query": "Who was the first person on the moon?"}
 )
+
+# Response:
+# {
+#     "firstName": "Neil",
+#     "lastName": "Armstrong"
+# }
 ```
+
+## Understanding Deployment Resolution
+
+The `OrchestrationService` class provides multiple ways to specify and target orchestration deployments when sending requests. Below are the available options:
+
+### Default Behavior
+
+If no parameters are provided, the `OrchestrationService` automatically searches for a `RUNNING` deployment. If multiple running deployments exist, the service selects the most recently created one.
+
+### Direct Deployment Specification
+
+You can explicitly define the target deployment using the following options:
+
+1. **API URL** (`api_url`):
+    - Specify the exact URL assigned to the deployment during its creation.
+    - Refer to the Prerequisites section for more details on obtaining the deployment URL.
+2. **Deployment ID** (`deployment_id`):
+    - Use the unique identifier assigned to the deployment instead of the URL.
+
+### Config-Based Specification
+
+If you want to target deployments based on their configuration source, use one of the following options:
+
+1. **Configuration ID** (`config_id`):
+    - The `OrchestrationService` searches for a `RUNNING` deployment created using the provided configuration ID.
+2. **Configuration Name** (`config_name`):
+    - The service looks for a `RUNNING` deployment that matches the specified configuration name.
+
+If multiple deployments match the given configuration criteria, the most recently created one will be selected automatically.
 
 ## Optional Modules
 
 ### Data Masking
+
+The `Data Masking` module `anonymizes` or `pseudonymizes` personally identifiable information (PII) before it is processed by the LLM module. Currently, `SAPDataPrivacyIntegration` is the only available masking provider.
+
+#### Masking Types
+
+- **Anonymization**: All identifying information is replaced with placeholders (e.g., MASKED_ENTITY), and the original data cannot be recovered, ensuring that no trace of the original information is retained.
+- **Pseudonymization**: Data is substituted with unique placeholders (e.g., MASKED_ENTITY_ID), allowing the original information to be restored if needed.
+
+In both cases, the masking module identifies sensitive data and replaces it with appropriate placeholders before further processing.
+
+#### Configuration Options
+
+- **entities**: Specify which types of entities to mask (e.g., EMAIL, PHONE, PERSON).
+- **allowlist**: Provide specific terms or patterns that should be excluded from masking, even if they match entity types.
+- **mask_grounding_input**: When enabled, ensures that masking is also applied to the context provided to the grounding module.
 
 ```python
 from gen_ai_hub.orchestration_v2.utils import load_text_file
@@ -157,6 +244,8 @@ print(result.final_result.choices[0].message.content)
 
 ### Content Filtering
 
+The `Content Filtering` module can be configured to filter both the `input` to the LLM module (input filter) and the `output` generated by the LLM (output filter). The module uses predefined classification services to detect inappropriate or unwanted content. Azure Content Filter sensitivity is controlled by customizable `thresholds`, assuring the content aligns with the desired standards before processing or generating as output. Llama Guard 3 Filter, equipped with 14 categories, runs on a binary mechanism, accepting only true or false. Setting a category to true enables filtering for it. It's possible to execute both filters in a single request, optimizing efficiency.
+
 ```python
 from gen_ai_hub.orchestration_v2 import (
     AzureContentSafetyInput, AzureContentSafetyOutput, AzureThreshold,
@@ -190,6 +279,12 @@ except OrchestrationError as er:
 
 ## Streaming
 
+When you initiate an orchestration request, the full response is typically processed and delivered in one go. For longer responses, this can lead to delays in receiving the complete output. To mitigate this, you have the option to stream the results as they are being generated. This helps in rapidly processing or displaying initial portions of the results without waiting for the entire computation to finish.
+
+To activate streaming, use the `stream` method of the `OrchestrationService` with the `stream` option in `OrchestrationConfig`. This method returns an object that streams chunks of the response as they become available. You can then extract relevant information from the `delta` field.
+
+Here's how you can set up a simple configuration to stream orchestration results:
+
 ```python
 from gen_ai_hub.orchestration_v2 import GlobalStreamOptions
 
@@ -201,7 +296,9 @@ for part in result:
     print(part.final_result.choices[0].delta.content)
 ```
 
-With `chunk_size`:
+**Note:** As shown above, streaming responses contain a delta field instead of a message field.
+
+You can customize the global stream behavior by setting options like `chunk_size` which controls the amount of data processed in each chunk:
 
 ```python
 config = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True, chunk_size=25))
@@ -212,11 +309,19 @@ for part in result:
     print(part.final_result.choices[0].delta.content)
 ```
 
-## Tool Calling
+Modules that influence or process streaming results, such as `OutputFiltering`, might need specific stream options. The `overlap` option allows you to include extra context during the filtering process.
+
+## Tool Calling (Function Calling)
+
+The Orchestration Service supports **tool calling**, which allows large language models (LLMs) to request the execution of external operations such as Python functions, API calls, or other tools as part of their workflow. This feature enables you to build advanced AI solutions that can perform calculations, access data, or interact with external systems in response to user input.
 
 ### Defining Tools
 
-Using the Python decorator:
+You can define tools in several ways, depending on your requirements and the level of control you need.
+
+#### Using the Python Decorator
+
+The simplest way to define a tool is to decorate a Python function with `@function_tool()`. The function's signature and docstring are used to describe the tool to the LLM.
 
 ```python
 from gen_ai_hub.orchestration_v2 import function_tool
@@ -234,7 +339,9 @@ def add(a: int, b: int) -> int:
 tools = [multiply, add]
 ```
 
-Using `FunctionTool`:
+#### Using the `FunctionTool` Class
+
+For more control, you can use the `FunctionTool` class directly. This is useful if you want to customize the schema, enable strict argument checking, or wrap an existing function.
 
 ```python
 from gen_ai_hub.orchestration_v2 import FunctionTool, FunctionObject
@@ -258,13 +365,57 @@ weather_tool_func = FunctionObject(
 weather_tool = FunctionTool(function=weather_tool_func)
 ```
 
-From function:
+You can also create a `FunctionTool` from a function using the `from_function` static method:
 
 ```python
 weather_tool = FunctionTool.from_function(get_weather, strict=True)
 ```
 
+#### Using a JSON Schema Dictionary
+
+You can define a tool directly as a JSON schema dictionary. This is useful if you want to specify the tool interface without implementing the function in Python, or if you want to integrate with external systems.
+
+```python
+tools = [{
+    "type": "function",
+    "function": {
+        "name": "get_weather",
+        "description": "Get current temperature for a given location.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "description": "City and country e.g. Bogotá, Colombia"
+                }
+            },
+            "required": [
+                "location"
+            ],
+            "additionalProperties": False
+        },
+        "strict": True
+    }
+}]
+```
+
+You can then attach any of these tool definitions to your template:
+
+```python
+from gen_ai_hub.orchestration_v2 import Template, SystemMessage, UserMessage
+
+template = Template(
+    template=[
+        SystemMessage(content="You are a weather assistant."),
+        UserMessage(content="What is the temperature in {{?location}}?"),
+    ],
+    tools=tools,
+)
+```
+
 ### Synchronous Tool Call Workflow
+
+When the LLM decides to call a tool, the orchestration response will include a `tool_calls` field. You are responsible for executing the tool(s), adding the results to the conversation history, and running the orchestration again to get the final answer.
 
 ```python
 from typing import List
@@ -293,7 +444,59 @@ response2 = service.run(config=config, placeholder_values=template_values, histo
 print(response2.final_result.choices[0].message.content)
 ```
 
+### Streaming Tool Calls
+
+When using streaming, tool calls may be split across multiple chunks. The `delta.tool_calls` field in each chunk contains partial or complete tool call information. You may need to buffer and concatenate arguments if they arrive in pieces.
+
+```python
+config = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True))
+service = OrchestrationService()
+stream = service.stream(config=config, placeholder_values=template_values)
+
+final_tool_calls = {}
+
+for chunk in stream:
+    for tool_call in chunk.final_result.choices[0].delta.tool_calls or []:
+        index = tool_call.index
+        if index not in final_tool_calls:
+            final_tool_calls[index] = tool_call
+        else:
+            # Concatenate arguments if split across chunks
+            final_tool_calls[index].function.arguments += tool_call.function.arguments
+
+# Now final_tool_calls contains all tool calls with complete arguments
+```
+
+**⚠️ Note on Agentic Loop Support:**
+
+> The current SDK **does not provide built-in abstractions or convenience methods for managing the agentic loop** (the process of automatically handling tool call detection, execution, and iterative orchestration until a final answer is produced).
+>
+> As a user, you are responsible for:
+> - Detecting tool calls in the LLM response
+> - Executing the corresponding Python functions
+> - Appending tool results to the conversation history (as `ToolMessage`)
+> - Re-invoking the orchestration service as needed
+>
+> This approach gives you maximum flexibility, but you must implement the orchestration loop logic yourself.
+
 ## Using Images as Input
+
+The Orchestration Service supports multimodal prompts, enabling you to include images alongside text in your messages. This powerful feature unlocks a variety of applications, such as visual question answering (VQA), image captioning, object recognition, and generating text creatively based on visual input.
+
+This guide details how to prepare image inputs, integrate them into your prompts, and execute the orchestration to get insightful responses.
+
+### 1. Preparing Image Inputs
+
+To use an image, you first need to represent it as an `ImageItem` object. The `ImageItem` class provides two convenient ways to do this.
+
+#### a) From a URL or Data URL
+
+This method is ideal for images hosted online or when you have the image data encoded as a Data URL (base64 encoded).
+
+- **Standard URL:** Provide a direct web link to the image file.
+- **Data URL:** Provide the image data directly embedded in the URL string.
+
+**Note:** For web URLs, ensure the image is publicly accessible, as the service will need to fetch it.
 
 ```python
 from gen_ai_hub.orchestration_v2 import ImageItem
@@ -305,13 +508,23 @@ image_from_web = ImageItem(url="https://picsum.photos/id/1/200/300")
 image_from_data_url = ImageItem(
     url="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAE0lEQVR4nGP8z4APMOGVZRip0gBBLAETee26JgAAAABJRU5ErkJggg=="
 )
+```
 
+#### b) From a Local File
+
+If your image resides on your local filesystem, you can load it directly using the `ImageItem.from_file()` class method. The `from_file` method handles opening, reading, and base64 encoding the image data for you, packaging it into an `ImageItem`.
+
+```python
 # From local file
 try:
     image_from_local_file = ImageItem.from_file("path/to/your/local/image.jpeg")
 except FileNotFoundError:
     print("Error: The specified image file was not found.")
 ```
+
+### 2. Adding Images to a Prompt
+
+Once you have your `ImageItem` object(s), you can combine them with text to create a multimodal prompt. This is done by passing a list containing `ImageItem` instances and text strings to the `content` parameter of a `UserMessage`.
 
 ```python
 from gen_ai_hub.orchestration_v2 import UserMessage
@@ -342,7 +555,17 @@ print(result.final_result.choices[0].message.content)
 
 ## Embeddings
 
+The Orchestration Service provides an embeddings endpoint for generating vector representations of text. Embeddings capture the semantic meaning of text, enabling powerful applications like semantic search, document clustering, and retrieval-augmented generation (RAG).
+
+**Key Use Cases:**
+- **Semantic Search**: Find documents based on meaning, not just keywords
+- **RAG (Retrieval-Augmented Generation)**: Retrieve relevant context for LLM prompts
+- **Document Clustering**: Group similar documents together
+- **Similarity Comparison**: Measure how semantically similar two texts are
+
 ### Basic Usage
+
+Generate an embedding for a single text string with minimal configuration.
 
 ```python
 from gen_ai_hub.orchestration_v2 import (
@@ -361,7 +584,15 @@ embedding = response.final_result.data[0].embedding
 print(f"Embedding dimensions: {len(embedding)}")
 ```
 
-### Customizing Parameters
+### Customizing Embedding Parameters
+
+You can customize the embedding output with parameters like `dimensions`, `encoding_format`, and `normalize`.
+
+| Parameter | Description | Values |
+|-----------|-------------|--------|
+| `dimensions` | Number of dimensions in the output | e.g. 256, 512, 1536, 3072 |
+| `encoding_format` | Output format | `FLOAT`, `BASE64`, `BINARY` |
+| `normalize` | Normalize the vector | `True`, `False` |
 
 ```python
 from gen_ai_hub.orchestration_v2 import EmbeddingsModelParams, EmbeddingsEncodingFormat
@@ -382,6 +613,8 @@ print(f"Embedding dimensions: {len(response.final_result.data[0].embedding)}")
 
 ### Batch Embeddings
 
+Generate embeddings for multiple texts in a single request for better efficiency.
+
 ```python
 documents = [
     "Artificial intelligence is transforming industries worldwide.",
@@ -393,7 +626,125 @@ response = service.embed(config=embeddings_config, input=EmbeddingsInput(text=do
 print(f"Generated {len(response.final_result.data)} embeddings")
 ```
 
+### Input Type Hints (Asymmetric Search)
+
+Some embedding models support asymmetric search, where queries and documents are embedded differently for better retrieval. Use the `type` parameter to hint the purpose of your text.
+
+| Type | Use Case |
+|------|----------|
+| `TEXT` | General purpose (default) |
+| `DOCUMENT` | Content to be indexed and searched |
+| `QUERY` | Search queries to find relevant documents |
+
+```python
+from gen_ai_hub.orchestration_v2 import EmbeddingsInputType
+
+# Embed a document for storage in a vector database
+doc_response = service.embed(
+    config=embeddings_config,
+    input=EmbeddingsInput(
+        text="SAP is a German multinational software company that develops enterprise software.",
+        type=EmbeddingsInputType.DOCUMENT
+    )
+)
+
+# Embed a query for searching
+query_response = service.embed(
+    config=embeddings_config,
+    input=EmbeddingsInput(
+        text="What is SAP?",
+        type=EmbeddingsInputType.QUERY
+    )
+)
+```
+
+### Embeddings with Data Masking
+
+When embedding sensitive data, use the data masking module to anonymize PII before generating embeddings. This ensures sensitive information is not exposed to the embedding model.
+
+```python
+from gen_ai_hub.orchestration_v2 import (MaskingModuleConfig, MaskingMethod, MaskingProviderConfig, DPIStandardEntity,
+                                         ProfileEntity)
+
+embeddings_config_with_masking = EmbeddingsOrchestrationConfig(
+    modules=EmbeddingsModuleConfigs(
+        embeddings=EmbeddingsModelConfig(
+            model=EmbeddingsModelDetails(name="text-embedding-3-large")
+        ),
+        masking=MaskingModuleConfig(
+            masking_providers=[
+                MaskingProviderConfig(
+                    method=MaskingMethod.ANONYMIZATION,
+                    entities=[
+                        DPIStandardEntity(type=ProfileEntity.PERSON),
+                        DPIStandardEntity(type=ProfileEntity.EMAIL),
+                        DPIStandardEntity(type=ProfileEntity.PHONE),
+                    ]
+                )
+            ]
+        )
+    )
+)
+
+response = service.embed(
+    config=embeddings_config_with_masking,
+    input=EmbeddingsInput(
+        text="Contact John Smith at john.smith@example.com or call 555-123-4567."
+    )
+)
+
+print(f"Embedding generated with PII masked")
+print(f"Intermediate results: {response.intermediate_results}")
+print(f"Dimensions: {len(response.final_result.data[0].embedding)}")
+```
+
+#### Masking with Custom Entities and Allowlist
+
+Use regular expressions to mask custom patterns and allowlists to exclude specific terms from masking.
+
+```python
+from gen_ai_hub.orchestration_v2 import DPICustomEntity, DPIMethodConstant
+
+embeddings_config_advanced_masking = EmbeddingsOrchestrationConfig(
+    modules=EmbeddingsModuleConfigs(
+        embeddings=EmbeddingsModelConfig(
+            model=EmbeddingsModelDetails(name="text-embedding-3-large")
+        ),
+        masking=MaskingModuleConfig(
+            masking_providers=[
+                MaskingProviderConfig(
+                    method=MaskingMethod.ANONYMIZATION,
+                    entities=[
+                        DPIStandardEntity(type=ProfileEntity.PERSON),
+                        DPIStandardEntity(type=ProfileEntity.ORG),
+                        # Custom pattern for internal IDs like "89-SAP-550"
+                        DPICustomEntity(
+                            regex=r"\b[0-9]{2}-SAP-[0-9]{3}\b",
+                            replacement_strategy=DPIMethodConstant(
+                                method="constant",
+                                value="REDACTED_ID"
+                            )
+                        ),
+                    ],
+                    # These terms will NOT be masked
+                    allowlist=["SAP", "Microsoft"]
+                )
+            ]
+        )
+    )
+)
+
+response = service.embed(
+    config=embeddings_config_advanced_masking,
+    input=EmbeddingsInput(
+        text="Employee John Doe (ID: 89-SAP-550) works at SAP with Microsoft partners."
+    )
+)
+```
+
 ### Async Embeddings
+
+For non-blocking operations, use the async `aembed` method.
 
 ```python
 async def embed_async():
@@ -408,6 +759,8 @@ await embed_async()
 ## Advanced Examples
 
 ### Translation Service
+
+This example extends the initial walkthrough of a basic orchestration pipeline by abstracting the translation task into its own reusable `TranslationService` class. Once the configuration is established, it can be easily adapted and reused for different translation scenarios.
 
 ```python
 from gen_ai_hub.orchestration_v2 import (
@@ -443,6 +796,12 @@ print(translator.translate(text="Hello, world!", to_lang="Spanish"))
 ```
 
 ### Chatbot with Memory
+
+This example demonstrates how to integrate the `OrchestrationService` with a chatbot to handle conversational flow.
+
+When making requests to the orchestration service, you can specify a list of messages as `history` that will be prepended to the templated content and processed by the templating module. These messages are plain, non-templated messages, as they typically represent past conversation outputs — such as in this chatbot scenario.
+
+It's important to note that managing conversation history / state is handled locally in the `ChatBot` class, not by the orchestration service itself.
 
 ```python
 from typing import List
@@ -487,6 +846,14 @@ bot.reset()
 ```
 
 ### Sentiment Analysis with Few-Shot Learning
+
+This example demonstrates the different message `roles` in the templating module through a few-shot learning use case with the `FewShotLearner` class.
+
+- **Message Types:** Different message types (`SystemMessage`, `UserMessage`, `AssistantMessage`) structure the interaction and guide the model's behavior.
+- **Templating:** The template includes these examples, ending with a `placeholder` (`{{?user_input}}`) for dynamic user input.
+- **Few-Shot Examples:** Pairs of UserMessage and AssistantMessage show how the model should respond to similar queries.
+
+The `FewShotLearner` class manages the dynamic creation of the template and ensures the correct message roles are used for each user input.
 
 ```python
 from typing import List, Tuple
@@ -537,6 +904,10 @@ print(sentiment_analyzer.predict("The movie was a complete waste of time!"))
 ```
 
 ## Async Support
+
+The `OrchestrationService` also supports asynchronous calls. Use:
+- `arun` from the async version of `run`
+- `astream` from the async version of `stream`
 
 ```python
 from gen_ai_hub.orchestration_v2 import (
