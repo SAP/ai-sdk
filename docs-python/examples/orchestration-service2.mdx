@@ -12,13 +12,16 @@ This page demonstrates how to use the SDK with the Orchestration Service V2, ena
 Before you begin, set up a virtual deployment of the Orchestration Service. See the [setup guide](https://help.sap.com/docs/ai-launchpad/sap-ai-launchpad/create-deployment-for-orchestration).
 
 ## Authentication
+
 By default, the OrchestrationService initializes a GenAIHubProxyClient, which automatically configures credentials using configuration files or environment variables, as outlined in the Introduction section.
 If you prefer to set credentials manually, you can provide a custom instance using the proxy_client parameter.
 
 ## Basic Orchestration Pipeline
 
 ### Step 1: Define the Template
+
 The Template class is used to define structured message templates for generating dynamic interactions with language models. In this example, the template is designed for a translation assistant, allowing users to specify a language and text for translation.
+
 ```python
 from gen_ai_hub.orchestration_v2 import Template, SystemMessage, UserMessage
 
@@ -30,7 +33,9 @@ template = Template(
     defaults={"to_lang": "German"}
 )
 ```
+
 This template can be used to create translation requests where the language and text to be translated are specified dynamically. The placeholders in the UserMessage will be replaced with the actual values provided at runtime, and the default value for the language is set to German.
+
 ### Step 2: Define the LLM
 
 The `LLM` class is used to configure and initialize a language model for generating text based on specific parameters. In this example, we'll use the `gpt-5-nano` model to perform the translation task.
@@ -170,19 +175,19 @@ If no parameters are provided, the `OrchestrationService` automatically searches
 You can explicitly define the target deployment using the following options:
 
 1. **API URL** (`api_url`):
-    - Specify the exact URL assigned to the deployment during its creation.
-    - Refer to the Prerequisites section for more details on obtaining the deployment URL.
+   - Specify the exact URL assigned to the deployment during its creation.
+   - Refer to the Prerequisites section for more details on obtaining the deployment URL.
 2. **Deployment ID** (`deployment_id`):
-    - Use the unique identifier assigned to the deployment instead of the URL.
+   - Use the unique identifier assigned to the deployment instead of the URL.
 
 ### Config-Based Specification
 
 If you want to target deployments based on their configuration source, use one of the following options:
 
 1. **Configuration ID** (`config_id`):
-    - The `OrchestrationService` searches for a `RUNNING` deployment created using the provided configuration ID.
+   - The `OrchestrationService` searches for a `RUNNING` deployment created using the provided configuration ID.
 2. **Configuration Name** (`config_name`):
-    - The service looks for a `RUNNING` deployment that matches the specified configuration name.
+   - The service looks for a `RUNNING` deployment that matches the specified configuration name.
 
 If multiple deployments match the given configuration criteria, the most recently created one will be selected automatically.
 
@@ -310,6 +315,39 @@ for part in result:
 ```
 
 Modules that influence or process streaming results, such as `OutputFiltering`, might need specific stream options. The `overlap` option allows you to include extra context during the filtering process.
+
+```python
+from gen_ai_hub.orchestration_v2 import FilteringStreamOptions
+content_filter_config = FilteringModuleConfig(
+    output=OutputFiltering(
+        filters=[AzureContentSafetyOutputFilterConfig(config=AzureContentSafetyOutput(hate=0))],
+        stream_options=FilteringStreamOptions(overlap=20))
+)
+
+template = Template(
+    template=[
+        SystemMessage(content="You are a helpful AI assistant."),
+        UserMessage(content="{{?text}}"),
+    ]
+    )
+
+llm=LLMModelDetails(name="gpt-4o")
+
+prompt_template = PromptTemplatingModuleConfig(prompt=template,
+                                               model=llm)
+
+module_config = ModuleConfig(prompt_templating=prompt_template, filtering=content_filter_config)
+
+config = OrchestrationConfig(modules=module_config,
+                             stream=GlobalStreamOptions(enabled=True))
+
+client = OrchestrationService(config=config)
+
+response = client.stream(placeholder_values={"text": "Which color is the sky? Answer in one sentence."})
+
+for chunk in response:
+    print(chunk.final_result.choices[0].delta.content, end='')
+```
 
 ## Tool Calling (Function Calling)
 
@@ -472,6 +510,7 @@ for chunk in stream:
 > The current SDK **does not provide built-in abstractions or convenience methods for managing the agentic loop** (the process of automatically handling tool call detection, execution, and iterative orchestration until a final answer is produced).
 >
 > As a user, you are responsible for:
+>
 > - Detecting tool calls in the LLM response
 > - Executing the corresponding Python functions
 > - Appending tool results to the conversation history (as `ToolMessage`)
@@ -529,8 +568,23 @@ Once you have your `ImageItem` object(s), you can combine them with text to crea
 ```python
 from gen_ai_hub.orchestration_v2 import UserMessage
 
+llm=LLMModelDetails(name="gpt-4o")
+
+# Simple visual question answering
 content_vqa = [image_from_web, "What objects are prominent in this image?"]
+
+# Create a UserMessage with the mixed content
 user_message = UserMessage(content=content_vqa)
+
+# Create a Template containing the UserMessage
+prompt_template = PromptTemplatingModuleConfig(prompt=template,model=llm)
+
+module_config = ModuleConfig(prompt_templating=prompt_template)
+
+config = OrchestrationConfig(modules=module_config)
+service = OrchestrationService(config=config)
+response = service.run()
+print(response.final_result.choices[0].message.content)
 ```
 
 ## Translation
@@ -558,6 +612,7 @@ print(result.final_result.choices[0].message.content)
 The Orchestration Service provides an embeddings endpoint for generating vector representations of text. Embeddings capture the semantic meaning of text, enabling powerful applications like semantic search, document clustering, and retrieval-augmented generation (RAG).
 
 **Key Use Cases:**
+
 - **Semantic Search**: Find documents based on meaning, not just keywords
 - **RAG (Retrieval-Augmented Generation)**: Retrieve relevant context for LLM prompts
 - **Document Clustering**: Group similar documents together
@@ -582,17 +637,18 @@ embeddings_config = EmbeddingsOrchestrationConfig(
 response = service.embed(config=embeddings_config, input=EmbeddingsInput(text="Hello World!"))
 embedding = response.final_result.data[0].embedding
 print(f"Embedding dimensions: {len(embedding)}")
+print(f"First 5 values: {embedding[:5]}")
 ```
 
 ### Customizing Embedding Parameters
 
 You can customize the embedding output with parameters like `dimensions`, `encoding_format`, and `normalize`.
 
-| Parameter | Description | Values |
-|-----------|-------------|--------|
-| `dimensions` | Number of dimensions in the output | e.g. 256, 512, 1536, 3072 |
-| `encoding_format` | Output format | `FLOAT`, `BASE64`, `BINARY` |
-| `normalize` | Normalize the vector | `True`, `False` |
+| Parameter         | Description                        | Values                      |
+| ----------------- | ---------------------------------- | --------------------------- |
+| `dimensions`      | Number of dimensions in the output | e.g. 256, 512, 1536, 3072   |
+| `encoding_format` | Output format                      | `FLOAT`, `BASE64`, `BINARY` |
+| `normalize`       | Normalize the vector               | `True`, `False`             |
 
 ```python
 from gen_ai_hub.orchestration_v2 import EmbeddingsModelParams, EmbeddingsEncodingFormat
@@ -624,17 +680,19 @@ documents = [
 ]
 response = service.embed(config=embeddings_config, input=EmbeddingsInput(text=documents))
 print(f"Generated {len(response.final_result.data)} embeddings")
+for result in response.final_result.data:
+    print(f"  Index {result.index}: {len(result.embedding)} dimensions")
 ```
 
 ### Input Type Hints (Asymmetric Search)
 
 Some embedding models support asymmetric search, where queries and documents are embedded differently for better retrieval. Use the `type` parameter to hint the purpose of your text.
 
-| Type | Use Case |
-|------|----------|
-| `TEXT` | General purpose (default) |
-| `DOCUMENT` | Content to be indexed and searched |
-| `QUERY` | Search queries to find relevant documents |
+| Type       | Use Case                                  |
+| ---------- | ----------------------------------------- |
+| `TEXT`     | General purpose (default)                 |
+| `DOCUMENT` | Content to be indexed and searched        |
+| `QUERY`    | Search queries to find relevant documents |
 
 ```python
 from gen_ai_hub.orchestration_v2 import EmbeddingsInputType
@@ -842,6 +900,7 @@ class ChatBot:
 bot = ChatBot(orchestration_service=OrchestrationService())
 print(bot.chat("Hello, how are you?"))
 print(bot.chat("What's the weather like today?"))
+print(bot.chat("Can you remember what I first asked you?"))
 bot.reset()
 ```
 
@@ -901,11 +960,14 @@ sentiment_analyzer = FewShotLearner(
     examples=sentiment_examples,
 )
 print(sentiment_analyzer.predict("The movie was a complete waste of time!"))
+print(sentiment_analyzer.predict("The traffic was fortunately unusually light today."))
+print(sentiment_analyzer.predict("I'm not sure how I feel about the recent events."))
 ```
 
 ## Async Support
 
 The `OrchestrationService` also supports asynchronous calls. Use:
+
 - `arun` from the async version of `run`
 - `astream` from the async version of `stream`
 

@@ -173,12 +173,38 @@ print(run1_data)
 
 ```python
 data = evaluation_runs[0].results().completions()
-print(data.head())
+
+def wrap_column(df, col, col_px=200):
+    df = df.drop(columns=["created_at", "updated_at"])
+    return (
+        df.style.set_table_styles([
+            {"selector": "table", "props": "table-layout: fixed; width: 100%;"},
+            {
+                "selector": f"td.col{df.columns.get_loc(col)}",
+                "props": f"max-width: {col_px}px; white-space: pre-wrap; word-break: break-word;",
+            },
+        ], overwrite=False)
+    )
+
+wrap_column(data.head(), "completion_result", col_px=700)
 ```
 
 ### Metric Evaluation
 
 ```python
 data = evaluation_runs[0].results().metrics()
-print(data.head())
+
+def wrap_column(df, col, col_px=200):
+    df = df.drop(columns=["created_at", "updated_at"])
+    return (
+        df.style.set_table_styles([
+            {"selector": "table", "props": "table-layout: fixed; width: 100%;"},
+            {
+                "selector": f"td.col{df.columns.get_loc(col)}",
+                "props": f"max-width: {col_px}px; white-space: pre-wrap; word-break: break-word;",
+            },
+        ], overwrite=False)
+    )
+
+wrap_column(data.head(), "metric_result", col_px=700)
 ```

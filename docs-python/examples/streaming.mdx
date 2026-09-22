@@ -129,6 +129,7 @@ def stream_bedrock(prompt, model_name='amazon--nova-pro'):
     })
     response = bedrock.invoke_model_with_response_stream(body=body)
     stream = response.get("body")
+    chunk_count = 0
     answer = ""
     if stream:
         for event in stream:
@@ -137,8 +138,12 @@ def stream_bedrock(prompt, model_name='amazon--nova-pro'):
                 chunk_json = json.loads(chunk.get("bytes").decode())
                 content_block_delta = chunk_json.get("contentBlockDelta")
                 if content_block_delta:
+                    chunk_count += 1
                     answer += content_block_delta.get("delta").get("text")
+        print(f"Total chunks: {chunk_count}")
         print("Final answer:", answer)
+    else:
+        print("No response stream received.")
 
 stream_bedrock("Why is the sky blue?")
 ```

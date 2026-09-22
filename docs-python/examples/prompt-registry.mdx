@@ -12,8 +12,10 @@ See [SAP Help](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/p
 In this page, we walk through the design-time process of creating prompt and config templates using the SDK (this is also known as imperative Prompt Template creation). You can create and modify the Prompt Template and Orchestration Config Template — each is versioned automatically, and the versions can be retrieved by an id.
 
 ## Prerequisite
+
 Provide the credentials to authenticate the client and establish a connection with the Prompt Registry API.
 See options for providing credentials [here](../overview.mdx#configuration-files).
+
 ## Prompt Template Management
 
 ### Initialize Client
@@ -36,6 +38,7 @@ from gen_ai_hub.prompt_registry import PromptTemplateSpec, PromptTemplate
 prompt_template_spec = PromptTemplateSpec(
     template=[PromptTemplate(role='system', content='You are a helpful assistant.')]
 )
+# PromptTemplateSpec can also include response_format, tools, defaults, and additional_fields.
 
 template_id = prompt_registry_client.create_prompt_template(
     scenario='MyScenario',
@@ -151,6 +154,15 @@ By scenario, name, and version:
 response = prompt_registry_client.get_orchestration_configs(
     scenario='MyScenario', name='prompt_template_name', version='1.0.0'
 )
+print(response.resources)
+```
+
+### Orchestration Config History
+
+Retrieve the history of Orchestration Config by scenario, name and version.
+
+```python
+response = prompt_registry_client.get_orchestration_configs(scenario='MyScenario', name='prompt_template_name', version='1.0.0')
 print(response.resources)
 ```
 

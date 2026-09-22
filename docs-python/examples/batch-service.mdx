@@ -12,6 +12,7 @@ Batch consumption only supports native LLM calls. Orchestration requests are not
 :::
 
 **Key capabilities:**
+
 - Process hundreds or thousands of LLM requests in a single submission
 - Reduced cost compared to synchronous inference calls
 - Automatic retry handling for transient provider errors
@@ -45,13 +46,13 @@ batch_service = BatchService()
 
 Submit the batch job by calling `batch_service.create()`. Provide:
 
-| Parameter | Description |
-|-----------|-------------|
-| `type` | Batch processing type. Only `"llm-native"` is supported. |
-| `input_uri` | `ai://` URI of the input `.jsonl` file. |
-| `output_uri` | `ai://` URI of the output directory. Must end with `/`. |
-| `provider` | LLM provider (e.g. `"azure-openai"`). |
-| `model` | Model name — must match the value used in the input file. |
+| Parameter    | Description                                               |
+| ------------ | --------------------------------------------------------- |
+| `type`       | Batch processing type. Only `"llm-native"` is supported.  |
+| `input_uri`  | `ai://` URI of the input `.jsonl` file.                   |
+| `output_uri` | `ai://` URI of the output directory. Must end with `/`.   |
+| `provider`   | LLM provider (e.g. `"azure-openai"`).                     |
+| `model`      | Model name — must match the value used in the input file. |
 
 The service schedules the job and returns a unique batch ID.
 
@@ -72,6 +73,7 @@ create_response = batch_service.create(
 BATCH_ID = create_response.id
 print(f"Batch ID: {BATCH_ID}")
 print(f"Status:   {create_response.status}")
+print(f"Message:  {create_response.message}")
 ```
 
 ## Check Batch Status
@@ -87,12 +89,14 @@ POLLING_INTERVAL = 30
 while True:
     status_response = batch_service.get_status(BATCH_ID)
     current = status_response.current_status
-    print(f"[{time.strftime('%H:%M:%S')}] Status: {current}")
+    print(f"[{time.strftime('%H:%M:%S')}] Status: {current}  ->  target: {status_response.target_status}")
     if current in TERMINAL_STATUSES:
         break
     time.sleep(POLLING_INTERVAL)
 
 print(f"Final status: {current}")
+if status_response.message:
+    print(f"Message: {status_response.message}")
 ```
 
 ## List and Get Batch Jobs
@@ -108,9 +112,17 @@ for job in list_response.resources or []:
 
 # Get full details
 detail = batch_service.get(BATCH_ID)
+print(f"ID:         {detail.id}")
+print(f"Type:       {detail.type}")
+print(f"Provider:   {detail.provider}")
+print(f"Created at: {detail.created_at}")
 print(f"Input URI:  {detail.input.uri}")
 print(f"Output URI: {detail.output.uri}")
+print(f"Model:      {detail.spec.get('model') if detail.spec else None}")
 print(f"Status:     {detail.status.current_status}")
+print(f"Updated at: {detail.status.updated_at}")
+if detail.status.message:
+    print(f"Message:    {detail.status.message}")
 ```
 
 ## Cancel a Batch Job

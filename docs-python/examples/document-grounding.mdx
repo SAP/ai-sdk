@@ -20,6 +20,8 @@ Another option is to use the `help.sap.com` elastic search endpoint.
 
 In this example, an S3 data storage created by the user already has a set of documents uploaded to it. Check that [Document Grounding is enabled](https://help.sap.com/docs/sap-ai-core/generative-ai/grounding-035c455a5a424697b60f4a24b6d791fe?q=document+grounding), which allows retrieving the documents in the S3 bucket. The Pipelines API can be run via this SDK:
 
+Make sure a Generic Secret for the S3 bucket has been created in AI Core so the documents can be retrieved from the bucket.
+
 ```python
 from gen_ai_hub.proxy import get_proxy_client
 from gen_ai_hub.document_grounding import PipelineAPIClient, S3PipelineCreateRequest, CommonConfiguration
