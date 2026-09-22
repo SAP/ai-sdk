@@ -37,7 +37,7 @@ See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sd
 You can create a reusable prompt for a specific use case, including placeholders that are filled later.
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -81,7 +81,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 ### Resource Group Scope Approach[​](#resource-group-scope-approach "Direct link to Resource Group Scope Approach")
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -179,7 +179,7 @@ You can retrieve a prompt template by ID, or by the combination of name, scenari
 Prompt templates can also be retrieved and consumed in orchestration. For more information, see [Templating](/ai-sdk/docs/java/next/orchestration/chat-completion.md#templating).
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -193,7 +193,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 You can list the history of edits to prompt templates, for imperatively managed prompt templates only.
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -209,7 +209,7 @@ You can fill a prompt template by ID, or by the combination of name, scenario, a
 ### Tenant Scope Approach[​](#tenant-scope-approach-1 "Direct link to Tenant Scope Approach")
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -233,7 +233,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 ### Resource Group Scope Approach[​](#resource-group-scope-approach-2 "Direct link to Resource Group Scope Approach")
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -265,7 +265,7 @@ You can import a declarative prompt template as a single file export in yaml for
 ### Tenant Scope Approach[​](#tenant-scope-approach-2 "Direct link to Tenant Scope Approach")
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -279,7 +279,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 ### Resource Group Scope Approach[​](#resource-group-scope-approach-3 "Direct link to Resource Group Scope Approach")
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -309,7 +309,7 @@ Currently not working
 Delete a specific version of the prompt template, for imperatively managed prompt templates only.
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -321,7 +321,7 @@ Refer to the [PromptRegistryController.java](https://github.com/SAP/ai-sdk-java/
 ### Resource Group Scope Approach[​](#resource-group-scope-approach-4 "Direct link to Resource Group Scope Approach")
 
 ```
-PromptClient client = new PromptClient();
+var client = new PromptRegistryClient().prompt();
 
 
 
@@ -367,9 +367,9 @@ var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 
 
-var promptResponse =
+var promptClient = new PromptRegistryClient().prompt();
 
-    new PromptClient()
+var promptResponse = promptClient
 
         .parsePromptTemplateById(
 
@@ -415,7 +415,7 @@ For more details about orchestration configuration management, refer to the [SAP
 You can create a new Orchestration configuration in Prompt Registry as follows.
 
 ```
-import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
 
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 
@@ -439,7 +439,7 @@ import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 
 
 
-var orchConfigClient = new OrchestrationConfigClient();
+var orchConfigClient = new PromptRegistryClient().orchestrationConfig();
 
 // build PromptRegistryOrchestrationConfig
 
@@ -491,7 +491,7 @@ OrchestrationConfigPostResponse response = orchConfigClient.createUpdateOrchestr
 You can list the saved Orchestration configurations as follows.
 
 ```
-var orchConfigClient = new OrchestrationConfigClient();
+var orchConfigClient = new PromptRegistryClient().orchestrationConfig();
 
 OrchestrationConfigListResponse response = orchConfigClient.listOrchestrationConfigs();
 ```
