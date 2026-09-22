@@ -27,6 +27,11 @@ client = EvaluationClient(
     orchestration_url=os.getenv("ORCHESTRATION_URL")
 )
 
+print(client.base_url)
+print(client.ai_core_client.object_store_secrets.query(
+    top=10, resource_group=os.getenv("AICORE_RESOURCE_GROUP")
+))
+
 # Alternative initialization from environment
 # client = EvaluationClient.from_env()
 ```
@@ -143,6 +148,10 @@ for current_run in evaluation_runs:
 for current_run in evaluation_runs:
     print("Waiting for run:", current_run.id)
     current_run.wait_for_completion(timeout=3600)
+
+current_run_0 = evaluation_runs[0]
+current_run_1 = evaluation_runs[1]
+current_run_2 = evaluation_runs[2]
 ```
 
 ## Debugging
@@ -166,6 +175,7 @@ print("Logs:", json.dumps(debug_logs, indent=4, default=str))
 ```python
 run1_data = evaluation_runs[0].results()
 run2_data = evaluation_runs[1].results().aggregations()
+run3_data = evaluation_runs[2].results().aggregations()
 print(run1_data)
 ```
 

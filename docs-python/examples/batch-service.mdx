@@ -131,6 +131,7 @@ You can cancel a batch job that is in a non-terminal state (e.g. `PENDING` or `I
 
 ```python
 cancel_response = batch_service.cancel(BATCH_ID)
+print(f"ID:      {cancel_response.id}")
 print(f"Message: {cancel_response.message}")
 
 while True:
@@ -152,6 +153,7 @@ if status_response.current_status not in {"COMPLETED", "FAILED", "CANCELLED"}:
 else:
     delete_response = batch_service.delete(BATCH_ID)
     print(f"Deleted batch job: {delete_response.id}")
+    print(f"Message: {delete_response.message}")
 ```
 
 ## Retrieving Results

@@ -76,6 +76,7 @@ async def async_amazon_titan_embedding(model_name):
     body = json.dumps({"inputText": "Please recommend books with a theme similar to the movie 'Inception'."})
     response = await bedrock.invoke_model(body=body)
     response_body = json.loads(await response.get("body").read())
+    print("Response Metadata:", response["ResponseMetadata"])
     print("Embedding:", response_body["embedding"])
     await bedrock.close()
 
