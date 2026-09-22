@@ -87,8 +87,7 @@ To use the Orchestration service, initialize an orchestration client with an LLM
 ```java
 var client = new OrchestrationClient();
 
-var config = new OrchestrationModuleConfig()
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 ```
 
 Please also refer to [our sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for this and all following code examples.
@@ -138,13 +137,11 @@ You can switch from one LLM to another like in the example below.
 ```java
 // Original config for using GPT 4o
 /*
-var config = new OrchestrationModuleConfig()
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 */
 
 // Switch to Claude 3.5 Sonnet
-var config = new OrchestrationModuleConfig()
-        .withLlmConfig(OrchestrationAiModel.CLAUDE_3_5_SONNET);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.CLAUDE_3_5_SONNET);
 ```
 
 :::tip Available LLMs on SAP Generative AI Hub
@@ -654,8 +651,7 @@ Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, 
 This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
 
 ```java
-var config = new OrchestrationModuleConfig()
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 var configWithJsonResponse =
         config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
 
@@ -686,8 +682,7 @@ var schema =
     ResponseJsonSchema.fromType(TestClass.class)
             .withDescription("Output schema for the example class TestClass.")
             .withStrict(true);
-var config = new OrchestrationModuleConfig()
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 var configWithResponseSchema =
         config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
@@ -716,8 +711,7 @@ var schemaMap =
         entry("additionalProperties", false)));
 
 var schemaFromMap = ResponseJsonSchema.fromMap(schemaMap, "Translator-Schema");
-var config = new OrchestrationModuleConfig()
-    .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 var configWithResponseSchema =
         config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schemaFromMap));
 ```
@@ -861,11 +855,10 @@ To use this feature, you can simply provide multiple `OrchestrationModuleConfig`
 ```java
 var prompt = new OrchestrationPrompt("your prompt");
 
-var workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-var secondWorkingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+var workingConfig = new OrchestrationModuleConfig(GPT_4O_MINI);
+var secondWorkingConfig = new OrchestrationModuleConfig(GPT_4O);
 var brokenConfig =
-    new OrchestrationModuleConfig()
-        .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
 
 var fallbackConfigs = new OrchestrationModuleConfig[] {workingConfig, secondWorkingConfig};
 
@@ -885,7 +878,7 @@ such as with Perplexity's Sonar model.
 
 ```java
 val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
-val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+val sonarConfig = new OrchestrationModuleConfig(SONAR);
 return client.chatCompletion(prompt, sonarConfig);
 
 String content = response.getContent();

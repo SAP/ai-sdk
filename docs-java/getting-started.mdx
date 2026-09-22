@@ -48,8 +48,7 @@ var client = new OrchestrationClient();
 Next, we'll specify the model we want to use:
 
 ```java
-var config = new OrchestrationModuleConfig()
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 ```
 
 Now we can create our first prompt:
