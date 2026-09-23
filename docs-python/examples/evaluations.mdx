@@ -148,10 +148,6 @@ for current_run in evaluation_runs:
 for current_run in evaluation_runs:
     print("Waiting for run:", current_run.id)
     current_run.wait_for_completion(timeout=3600)
-
-current_run_0 = evaluation_runs[0]
-current_run_1 = evaluation_runs[1]
-current_run_2 = evaluation_runs[2]
 ```
 
 ## Debugging
