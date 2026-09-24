@@ -41,7 +41,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.11",
+    "@langchain/core": "1.2.12",
     "@sap-ai-sdk/ai-api": "2.15.1-20260912011712.0",
     "@sap-ai-sdk/core": "2.15.1-20260913012457.0",
     "@sap-ai-sdk/document-grounding": "2.15.1-20260913012457.0",
@@ -63,7 +63,7 @@
     "eslint-plugin-react": "7.37.5",
     "globals": "17.12.0",
     "langchain": "1.5.11",
-    "openai": "7.19.0",
+    "openai": "7.20.0",
     "prettier": "3.9.8",
     "prettier-plugin-java": "2.10.4",
     "process": "0.11.10",
