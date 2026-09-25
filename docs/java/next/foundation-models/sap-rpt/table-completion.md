@@ -36,10 +36,6 @@ See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sd
 
 ## Usage[​](#usage "Direct link to Usage")
 
-warning
-
-SAP RPT module is currently in Beta. The API may change in future minor releases.
-
 In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
 
 * **A Deployed RPT Model in SAP AI Core**

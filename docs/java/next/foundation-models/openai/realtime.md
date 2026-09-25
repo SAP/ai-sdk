@@ -4,10 +4,6 @@
 
 This guide demonstrates how to use the SAP AI SDK for Java to interact with the OpenAI Realtime API deployed on SAP AI Core. The Realtime API enables low-latency, full-duplex audio conversations with a model.
 
-warning
-
-The Realtime API client is in **Beta** and subject to breaking changes in any release.
-
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
 Before using the AI Core module, ensure that you have met all the general requirements outlined in the [General Requirements](/ai-sdk/docs/java/next/overview.md#general-requirements). Additionally, include the necessary Maven dependency in your project.
