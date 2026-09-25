@@ -7,7 +7,7 @@
 - [RPT] SAP-RPT was updated to the newer 1.6.0 API
 - [Orchestration] Spring AI support was upgraded to version `2.0.1`
 - [Prompt Registry] `OrchestrationConfigClient` and `PromptClient` were reworked into unified `PromptRegistryClient`,
-   see migration guide below for additional information
+  see migration guide below for additional information
 - [Orchestration] `OrchestrationClient.executeRequestFromJsonModuleConfig` method was removed from SDK without a replacement
 - [OpenAi] `OpenAi.withApiVersion` was removed from public API and deprecated
 - [Orchestration] Internal AI SDK methods `createInputFilterConfig` and `createOutputFilterConfig` were removed
@@ -63,6 +63,7 @@
 `OrchestrationConfigClient` and `PromptClient` were replaced with unified `PromptRegistryClient`,
 
 OrchestrationConfigClient:
+
 ```diff
 -var orchestrationConfigsClient = new OrchestrationConfigClient();
 -var configs = orchestrationConfigsClient.listOrchestrationConfigs();
@@ -72,6 +73,7 @@ OrchestrationConfigClient:
 ```
 
 PromptRegistryClient:
+
 ```diff
 -var promptClient = new PromptClient();
 -var templates = promptClient.listPromptTemplates();
@@ -115,7 +117,7 @@ Use the builder to set per-request options such as tool callbacks:
 
 **Dependency updates**
 
-***New required minimum versions***
+**_New required minimum versions_**
 
 `com.github.victools:jsonschema-generator 5.0.0`
 
@@ -125,8 +127,7 @@ Use the builder to set per-request options such as tool callbacks:
 
 `com.networknt:json-schema-validator 3.0.1`
 
-
-*Optional*: If your project uses Spring AI MCP autoconfiguration (i.e. you had `spring-ai-autoconfigure-mcp-client` in your `pom.xml` to register MCP clients from `application.yml`), that artifact was split in Spring AI 2.0.1 — replace it:
+_Optional_: If your project uses Spring AI MCP autoconfiguration (i.e. you had `spring-ai-autoconfigure-mcp-client` in your `pom.xml` to register MCP clients from `application.yml`), that artifact was split in Spring AI 2.0.1 — replace it:
 
 ```xml
 <!-- Remove -->
