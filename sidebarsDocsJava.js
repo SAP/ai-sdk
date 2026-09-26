@@ -41,7 +41,8 @@ export default {
         'ai-core/ai-core-deployment',
         'ai-core/document-grounding',
         'ai-core/prompt-registry',
-        'ai-core/batch'
+        'ai-core/batch',
+        'ai-core/tabular-orchestration'
       ]
     },
     {
