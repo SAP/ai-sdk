@@ -63,7 +63,7 @@ The Orchestration client is integrated in Spring AI classes:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt = new Prompt("What is the capital of France?", opts);
@@ -78,7 +78,7 @@ Configure Orchestration modules within Spring AI:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 var masking =
     DpiMasking.anonymization()
@@ -102,7 +102,7 @@ Apply [input filtering](https://help.sap.com/docs/sap-ai-core/sap-ai-core-servic
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 var filterConfig = new AzureContentFilter()
         .hate(AzureFilterThreshold.ALLOW_SAFE)
@@ -128,7 +128,7 @@ to the frontend in real-time.
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt =
@@ -178,7 +178,7 @@ Then pass your tool to the model as follows.
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config)
     .mutate()
     .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
@@ -197,7 +197,7 @@ Create a Spring AI `ChatClient` from our `OrchestrationChatModel` and add a chat
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 var repository = new InMemoryChatMemoryRepository();
@@ -235,7 +235,7 @@ public record Translation(
 // ⚠️ @JsonProperty(required = true) is necessary for the schema generation
 
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 var cl = ChatClient.builder(client).build();
 var opts = new OrchestrationChatOptions(config);
@@ -376,7 +376,7 @@ To add custom headers to single or groups of your LLM calls, you can use the `.w
 var clientWithHeader = new OrchestrationClient().withHeader("foo", "bar");
 ChatModel client = new OrchestrationChatModel(clientWithHeader);
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt = new Prompt("What is the capital of France?", opts);
