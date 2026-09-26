@@ -589,9 +589,10 @@ the default profile is used.
 A specific path to a config, that should be used, can be set via the environment variable AICORE_CONFIG.
 The hierarchy of precedence is:
 1. keyword argument
-2. environment variable
-3. configuration file
-4. value from VCAP_SERVICES environment variable, if exists</p>
+2. value from AICORE_SERVICE_KEY environment variable, if exists
+3. environment variable
+4. configuration file
+5. value from VCAP_SERVICES environment variable, if exists</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>profile_name</strong> (<em>optional</em><em>, </em><em>str</em>) – name of the profile to use, defaults to None. If None is passed, the profile is read from
