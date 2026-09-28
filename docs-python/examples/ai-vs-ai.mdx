@@ -13,8 +13,7 @@ from random import sample
 from time import sleep
 
 from langchain_classic.prompts.chat import ChatPromptTemplate, MessagesPlaceholder
-from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
-from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
 from langchain_core.messages import HumanMessage
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
@@ -44,13 +43,13 @@ available_models = [
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     if session_id not in store:
-        store[session_id] = ChatMessageHistory()
+        store[session_id] = InMemoryChatMessageHistory()
     return store[session_id]
 
 
 def create_session_history() -> str:
     session_id = str(uuid.uuid4())
-    store[session_id] = ChatMessageHistory()
+    store[session_id] = InMemoryChatMessageHistory()
     return session_id
 
 

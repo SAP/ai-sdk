@@ -85,7 +85,7 @@ Retrieve the history of Prompt Templates by scenario, name, and version.
 response = prompt_registry_client.get_prompt_template_history(
     scenario='MyScenario', name='prompt_template_name', version='1.0.0'
 )
-print(response.json())
+print(response.model_dump_json())
 ```
 
 ### Fill a Prompt Template

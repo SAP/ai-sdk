@@ -129,12 +129,12 @@ from gen_ai_hub.proxy import get_proxy_client
 proxy_client = get_proxy_client('gen-ai-hub')
 client = Client(proxy_client=proxy_client)
 
-response = client.models.generate_content(model="gemini-2.5-flash",
+response = client.models.generate_content(model="gemini-3.5-flash",
     contents="How many paws are there for a dog?"
 )
 print(response)
 
-response = client.models.generate_content(model="gemini-2.0-flash",
+response = client.models.generate_content(model="gemini-3.0-flash",
                                           contents="Explain the theory of relativity in simple terms.")
 print(response)
 ```
@@ -148,7 +148,7 @@ from gen_ai_hub.proxy import get_proxy_client
 proxy_client = get_proxy_client('gen-ai-hub')
 client = Client(proxy_client=proxy_client)
 
-response_stream = client.models.generate_content_stream(model="gemini-2.5-flash",
+response_stream = client.models.generate_content_stream(model="gemini-3.5-flash",
     contents="Explain singularity in short terms.")
 
 for chunk in response_stream:
@@ -174,7 +174,7 @@ proxy_client = get_proxy_client('gen-ai-hub')
 client = Client(proxy_client=proxy_client)
 
 response = client.models.generate_content(
-    model='gemini-2.5-flash',
+    model='gemini-3.5-flash',
     contents='What is the weather like in Boston?',
     config=types.GenerateContentConfig(tools=[get_current_weather]),
 )
@@ -182,29 +182,6 @@ print(response)
 ```
 
 ### Amazon
-
-Invoke Model:
-
-```python
-import json
-from gen_ai_hub.proxy.native.amazon import Session
-
-bedrock = Session().client(model_name="amazon--nova-premier")
-body = json.dumps(
-    {
-        "inputText": "Explain black holes in astrophysics to 8th graders.",
-        "textGenerationConfig": {
-            "maxTokenCount": 3072,
-            "stopSequences": [],
-            "temperature": 0.7,
-            "topP": 0.9,
-        },
-    }
-)
-response = bedrock.invoke_model(body=body)
-response_body = json.loads(response.get("body").read())
-print(response_body)
-```
 
 Converse:
 
@@ -260,7 +237,7 @@ print(response.data)
 import json
 from gen_ai_hub.proxy.native.amazon import Session
 
-bedrock = Session().client(model_name="amazon--nova-premier")
+bedrock = Session().client(model_name="amazon--titan-embed-text")
 body = json.dumps({"inputText": "Please recommend books with a theme similar to the movie 'Inception'."})
 response = bedrock.invoke_model(body=body)
 response_body = json.loads(response.get("body").read())
