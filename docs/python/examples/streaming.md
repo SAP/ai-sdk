@@ -65,6 +65,12 @@ messages = [{"role": "user", "content": "Tell me about John Doe, aged 30."}]
 
 def stream_openai_structured_outputs(messages, response_object, model_name):
 
+    # For more information, see:
+
+    # https://www.github.com/openai/openai-python#with_streaming_response
+
+    # https://platform.openai.com/docs/guides/structured-outputs#streaming
+
     with chat.completions.with_streaming_response.parse(
 
         model=model_name,
@@ -213,6 +219,8 @@ def stream_bedrock(prompt, model_name='amazon--nova-pro'):
 
     stream = response.get("body")
 
+    chunk_count = 0
+
     answer = ""
 
     if stream:
@@ -229,9 +237,17 @@ def stream_bedrock(prompt, model_name='amazon--nova-pro'):
 
                 if content_block_delta:
 
+                    chunk_count += 1
+
                     answer += content_block_delta.get("delta").get("text")
 
+        print(f"Total chunks: {chunk_count}")
+
         print("Final answer:", answer)
+
+    else:
+
+        print("No response stream received.")
 
 
 

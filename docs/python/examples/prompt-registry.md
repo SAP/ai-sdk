@@ -4,6 +4,12 @@ The Prompt Registry API allows you to create, manage, and retrieve prompt and or
 
 See [SAP Help](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry?locale=en-US) for the difference between **imperative** and **declarative** prompt templates.
 
+In this page, we walk through the design-time process of creating prompt and config templates using the SDK (this is also known as imperative Prompt Template creation). You can create and modify the Prompt Template and Orchestration Config Template — each is versioned automatically, and the versions can be retrieved by an id.
+
+## Prerequisite[​](#prerequisite "Direct link to Prerequisite")
+
+Provide the credentials to authenticate the client and establish a connection with the Prompt Registry API. See options for providing credentials [here](/ai-sdk/docs/python/overview.md#configuration-files).
+
 ## Prompt Template Management[​](#prompt-template-management "Direct link to Prompt Template Management")
 
 ### Initialize Client[​](#initialize-client "Direct link to Initialize Client")
@@ -22,6 +28,8 @@ prompt_registry_client = PromptTemplateClient(proxy_client=proxy_client)
 
 ### Create a Prompt Template[​](#create-a-prompt-template "Direct link to Create a Prompt Template")
 
+Define the Prompt Template configuration and post it to the Prompt Registry.
+
 ```
 from gen_ai_hub.prompt_registry import PromptTemplateSpec, PromptTemplate
 
@@ -32,6 +40,8 @@ prompt_template_spec = PromptTemplateSpec(
     template=[PromptTemplate(role='system', content='You are a helpful assistant.')]
 
 )
+
+# PromptTemplateSpec can also include response_format, tools, defaults, and additional_fields.
 
 
 
@@ -54,6 +64,8 @@ print(f"Created Prompt Template with ID: {template_id}")
 
 ### Retrieve a Prompt Template[​](#retrieve-a-prompt-template "Direct link to Retrieve a Prompt Template")
 
+Retrieve the Prompt Template by ID.
+
 ```
 response = prompt_registry_client.get_prompt_template_by_id(template_id)
 
@@ -61,6 +73,8 @@ print(response.spec.template)
 ```
 
 ### Modify a Prompt Template[​](#modify-a-prompt-template "Direct link to Modify a Prompt Template")
+
+We will add an input variable to the existing Prompt Template.
 
 ```
 prompt_template_spec = PromptTemplateSpec(
@@ -88,6 +102,8 @@ print(response.message)
 
 ### Prompt Template History[​](#prompt-template-history "Direct link to Prompt Template History")
 
+Retrieve the history of Prompt Templates by scenario, name, and version.
+
 ```
 response = prompt_registry_client.get_prompt_template_history(
 
@@ -99,6 +115,8 @@ print(response.json())
 ```
 
 ### Fill a Prompt Template[​](#fill-a-prompt-template "Direct link to Fill a Prompt Template")
+
+Fill the variables in the Prompt Template.
 
 ```
 response = prompt_registry_client.fill_prompt_template_by_id(
@@ -127,6 +145,8 @@ prompt_registry_client = OrchestrationConfigClient(proxy_client=proxy_client)
 ```
 
 ### Create an Orchestration Config[​](#create-an-orchestration-config "Direct link to Create an Orchestration Config")
+
+Define the Orchestration Config configuration and post it to the Prompt Registry.
 
 ```
 from gen_ai_hub.orchestration_v2 import (
@@ -174,6 +194,8 @@ print(f"Created Orchestration Config Template with ID: {template_id}")
 
 ### Retrieve an Orchestration Config[​](#retrieve-an-orchestration-config "Direct link to Retrieve an Orchestration Config")
 
+Retrieve the Orchestration Config by ID.
+
 ```
 response = prompt_registry_client.get_orchestration_config_by_id(template_id)
 
@@ -192,7 +214,19 @@ response = prompt_registry_client.get_orchestration_configs(
 print(response.resources)
 ```
 
+### Orchestration Config History[​](#orchestration-config-history "Direct link to Orchestration Config History")
+
+Retrieve the history of Orchestration Config by scenario, name and version.
+
+```
+response = prompt_registry_client.get_orchestration_configs(scenario='MyScenario', name='prompt_template_name', version='1.0.0')
+
+print(response.resources)
+```
+
 ### Export an Orchestration Config[​](#export-an-orchestration-config "Direct link to Export an Orchestration Config")
+
+Export a design orchestration config to a declarative-compatible YAML file.
 
 ```
 response = prompt_registry_client.export_orchestration_config(config_id=template_id)

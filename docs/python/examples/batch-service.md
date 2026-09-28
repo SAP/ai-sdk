@@ -6,15 +6,26 @@ note
 
 Batch consumption only supports native LLM calls. Orchestration requests are not supported. Available in EU and US regions, except `prod-euonly` and sovereign cloud deployments.
 
+**Key capabilities:**
+
+* Process hundreds or thousands of LLM requests in a single submission
+* Reduced cost compared to synchronous inference calls
+* Automatic retry handling for transient provider errors
+* No rate-limit management required on the client side
+
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
 Complete the setup steps in the [SAP Help Portal — Batch Consumption](https://help.sap.com/docs/sap-ai-core/generative-ai/batch-consumption):
 
-1. Register an object store secret (Amazon S3, Azure Blob Storage, GCS, Alibaba OSS, or SAP HANA Cloud Data Lake).
-2. Prepare your input `.jsonl` file and upload it to your object store.
-3. Note the `ai://` URI of the input file and the output directory.
+1. Ensure you have a valid SAP AI Core service instance with access to the generative AI hub.
+2. Register an object store secret (Amazon S3, Azure Blob Storage, GCS, Alibaba OSS, or SAP HANA Cloud Data Lake).
+3. Prepare your input `.jsonl` file and upload it to your object store.
+
+Once the input file is uploaded, note down its `ai://` URI of the input file and the output directory.
 
 ## Initialize[​](#initialize "Direct link to Initialize")
+
+The `BatchService` initialises a `GenAIHubProxyClient` automatically, which reads credentials from configuration files or environment variables. You can also pass a custom `proxy_client` instance.
 
 ```
 from gen_ai_hub.batch_service import BatchService
@@ -33,6 +44,18 @@ batch_service = BatchService()
 ```
 
 ## Create a Batch Job[​](#create-a-batch-job "Direct link to Create a Batch Job")
+
+Submit the batch job by calling `batch_service.create()`. Provide:
+
+| Parameter    | Description                                               |
+| ------------ | --------------------------------------------------------- |
+| `type`       | Batch processing type. Only `"llm-native"` is supported.  |
+| `input_uri`  | `ai://` URI of the input `.jsonl` file.                   |
+| `output_uri` | `ai://` URI of the output directory. Must end with `/`.   |
+| `provider`   | LLM provider (e.g. `"azure-openai"`).                     |
+| `model`      | Model name — must match the value used in the input file. |
+
+The service schedules the job and returns a unique batch ID.
 
 ```
 INPUT_URI = "ai://<object_store_secret_name>/<path>/input.jsonl"
@@ -66,9 +89,13 @@ BATCH_ID = create_response.id
 print(f"Batch ID: {BATCH_ID}")
 
 print(f"Status:   {create_response.status}")
+
+print(f"Message:  {create_response.message}")
 ```
 
 ## Check Batch Status[​](#check-batch-status "Direct link to Check Batch Status")
+
+Batches are processed asynchronously. Poll the status endpoint until the job reaches a terminal state (`COMPLETED`, `FAILED`, or `CANCELLED`).
 
 ```
 import time
@@ -87,7 +114,7 @@ while True:
 
     current = status_response.current_status
 
-    print(f"[{time.strftime('%H:%M:%S')}] Status: {current}")
+    print(f"[{time.strftime('%H:%M:%S')}] Status: {current}  ->  target: {status_response.target_status}")
 
     if current in TERMINAL_STATUSES:
 
@@ -98,9 +125,15 @@ while True:
 
 
 print(f"Final status: {current}")
+
+if status_response.message:
+
+    print(f"Message: {status_response.message}")
 ```
 
 ## List and Get Batch Jobs[​](#list-and-get-batch-jobs "Direct link to List and Get Batch Jobs")
+
+Retrieve a summary of all batch jobs for the current resource group, or the complete details of a specific batch job (input/output URIs, provider, model, and current status).
 
 ```
 # List all batch jobs
@@ -119,17 +152,37 @@ for job in list_response.resources or []:
 
 detail = batch_service.get(BATCH_ID)
 
+print(f"ID:         {detail.id}")
+
+print(f"Type:       {detail.type}")
+
+print(f"Provider:   {detail.provider}")
+
+print(f"Created at: {detail.created_at}")
+
 print(f"Input URI:  {detail.input.uri}")
 
 print(f"Output URI: {detail.output.uri}")
 
+print(f"Model:      {detail.spec.get('model') if detail.spec else None}")
+
 print(f"Status:     {detail.status.current_status}")
+
+print(f"Updated at: {detail.status.updated_at}")
+
+if detail.status.message:
+
+    print(f"Message:    {detail.status.message}")
 ```
 
 ## Cancel a Batch Job[​](#cancel-a-batch-job "Direct link to Cancel a Batch Job")
 
+You can cancel a batch job that is in a non-terminal state (e.g. `PENDING` or `IN_PROGRESS`). Cancellation is asynchronous — the job transitions to `CANCELLING` and then `CANCELLED` after any in-flight provider requests have been terminated. Use `get_status()` to track the cancellation progress.
+
 ```
 cancel_response = batch_service.cancel(BATCH_ID)
+
+print(f"ID:      {cancel_response.id}")
 
 print(f"Message: {cancel_response.message}")
 
@@ -150,7 +203,7 @@ while True:
 
 ## Delete a Batch Job[​](#delete-a-batch-job "Direct link to Delete a Batch Job")
 
-Only jobs in `COMPLETED`, `FAILED`, or `CANCELLED` state can be deleted.
+Deleting a job removes its metadata from the service. Output files in the object store are not affected. Only jobs in `COMPLETED`, `FAILED`, or `CANCELLED` state can be deleted.
 
 ```
 status_response = batch_service.get_status(BATCH_ID)
@@ -164,9 +217,17 @@ else:
     delete_response = batch_service.delete(BATCH_ID)
 
     print(f"Deleted batch job: {delete_response.id}")
+
+    print(f"Message: {delete_response.message}")
 ```
 
+## Retrieving Results[​](#retrieving-results "Direct link to Retrieving Results")
+
+Once the job status is `COMPLETED`, the results are available in your object store under the output URI specified at creation, in a subdirectory named after the batch ID. Successful responses are written to `output.jsonl` and any failed individual requests to `error.jsonl`, each line matched to its input by `custom_id`.
+
 ## Async Support[​](#async-support "Direct link to Async Support")
+
+All `BatchService` methods have async counterparts: `acreate`, `alist`, `aget`, `aget_status`, `acancel`, `adelete`. The example below runs the full workflow asynchronously.
 
 ```
 import asyncio

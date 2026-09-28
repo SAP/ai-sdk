@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-docs-python docs-version-current docs-doc-page docs-doc-id-release-notes" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.2">
+<title data-rh="true">Release Notes | SAP Cloud SDK for AI</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://sap.github.io/ai-sdk/docs/python/release-notes"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-docs-python-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-docs-python-current"><meta data-rh="true" property="og:title" content="Release Notes | SAP Cloud SDK for AI"><meta data-rh="true" name="description" content="gen-v7.4.1 (2026-09-23)"><meta data-rh="true" property="og:description" content="gen-v7.4.1 (2026-09-23)"><link data-rh="true" rel="icon" href="/ai-sdk/img/AI-SDK-Logo.svg"><link data-rh="true" rel="canonical" href="https://sap.github.io/ai-sdk/docs/python/release-notes"><link data-rh="true" rel="alternate" href="https://sap.github.io/ai-sdk/docs/python/release-notes" hreflang="en"><link data-rh="true" rel="alternate" href="https://sap.github.io/ai-sdk/docs/python/release-notes" hreflang="x-default"><link data-rh="true" rel="preconnect" href="https://E4A268JVO0-dsn.algolia.net" crossorigin="anonymous"><link rel="search" type="application/opensearchdescription+xml" title="SAP Cloud SDK for AI" href="/ai-sdk/opensearch.xml">
+
+
+
+
+
+
+
+
+
+
+<script>window.__COPY_PAGE_BUTTON_OPTIONS__={customStyles:{},generateMarkdownRoutes:!1,placement:"auto",mcpServer:null,id:"default"}</script><link rel="stylesheet" href="/ai-sdk/assets/css/styles.8eba2fc5.css">
+<script src="/ai-sdk/assets/js/runtime~main.0aeacd1e.js" defer="defer"></script>
+<script src="/ai-sdk/assets/js/main.6049df19.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme",window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),document.documentElement.setAttribute("data-theme-choice","system"),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/ai-sdk/img/AI-SDK-Logo.svg"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-sdk/"><div class="navbar__logo"><img src="/ai-sdk/img/AI-SDK-Logo.svg" alt="SAP Cloud SDK for AI" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/ai-sdk/img/AI-SDK-Logo.svg" alt="SAP Cloud SDK for AI" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">SAP Cloud SDK for AI</b></a><a class="navbar__item navbar__link" href="/ai-sdk/docs/overview/overview">Overview</a><a class="navbar__item navbar__link" docspluginid="docs-java" href="/ai-sdk/docs/java/overview">☕ Java</a><a class="navbar__item navbar__link" docspluginid="docs-js" href="/ai-sdk/docs/js/overview">🚀 JavaScript</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" docspluginid="docs-python" href="/ai-sdk/docs/python/overview">🐍 Python</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbarSearchContainer_Bca1"><button type="button" class="DocSearch DocSearch-Button" aria-label="Search (Meta+k)" aria-keyshortcuts="Meta+k"><span class="DocSearch-Button-Container"><svg width="20" height="20" class="DocSearch-Search-Icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8" stroke="currentColor" fill="none" stroke-width="1.4"></circle><path d="m21 21-4.3-4.3" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="DocSearch-Button-Placeholder">Search</span></span><span class="DocSearch-Button-Keys"></span></button></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><main class="docMainContainer_TBSr docMainContainerEnhanced_lQrH"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Release Notes</h1></header>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="gen-v741-2026-09-23">gen-v7.4.1 (2026-09-23)<a href="#gen-v741-2026-09-23" class="hash-link" aria-label="Direct link to gen-v7.4.1 (2026-09-23)" title="Direct link to gen-v7.4.1 (2026-09-23)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added Support for cache_control in Orchestration Service V2</li>
+<li class="">Added support for reasoning_content in Orchestration Service V2</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes">Bugfixes<a href="#bugfixes" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Removed langchain-community from dependencies</li>
+<li class="">Upgraded google-genai</li>
+<li class="">Decreased response validation strictness in order to tolerate extra fields</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="gen-v740-2026-09-14">gen-v7.4.0 (2026-09-14)<a href="#gen-v740-2026-09-14" class="hash-link" aria-label="Direct link to gen-v7.4.0 (2026-09-14)" title="Direct link to gen-v7.4.0 (2026-09-14)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-1">Features<a href="#features-1" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for AI Core service key</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="gen-v730-2026-09-08">gen-v7.3.0 (2026-09-08)<a href="#gen-v730-2026-09-08" class="hash-link" aria-label="Direct link to gen-v7.3.0 (2026-09-08)" title="Direct link to gen-v7.3.0 (2026-09-08)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-2">Features<a href="#features-2" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added Support for $top and $skip parameters for fetching prompt templates from Prompt Registry</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-1">Bugfixes<a href="#bugfixes-1" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Fixed error handling in Evaluations Client</li>
+<li class="">Upgraded langchain</li>
+<li class="">Upgraded langchain-google-genai</li>
+<li class="">Upgraded langchain-openai</li>
+<li class="">Upgraded langchain-aws</li>
+<li class="">Upgraded google-genai</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="720">7.2.0<a href="#720" class="hash-link" aria-label="Direct link to 7.2.0" title="Direct link to 7.2.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-3">Features<a href="#features-3" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added Support for LLM Batch Service, see <a class="" href="/ai-sdk/docs/python/examples/batch-service">Batch Service</a></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-2">Bugfixes<a href="#bugfixes-2" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Upgraded langchain</li>
+<li class="">Upgraded langchain-aws</li>
+<li class="">Upgraded langchain-google-genai</li>
+<li class="">Upgraded langchain-openai</li>
+<li class="">Upgraded google-genai to v2</li>
+<li class="">Fixed OrchestrationV2 response handling</li>
+<li class="">Removed hard-coded model lists. New versions of existing models will be automatically supported.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6100">6.10.0<a href="#6100" class="hash-link" aria-label="Direct link to 6.10.0" title="Direct link to 6.10.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-4">Features<a href="#features-4" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added model_version as model identifier</li>
+<li class="">Updated Prompt Registry Client to align with API changes</li>
+<li class="">Added support for OpenAI Responses API, see <a class="" href="/ai-sdk/docs/python/examples/gen-ai-hub#responses-api">Responses API</a></li>
+<li class="">Enabled flat import for Model/Client classes</li>
+<li class="">Added support for newly added models to the AI Core, see <a class="" href="/ai-sdk/docs/python/overview#supported-models">Supported Models</a></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-3">Bugfixes<a href="#bugfixes-3" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Upgraded google-genai</li>
+<li class="">Upgraded langchain</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="670">6.7.0<a href="#670" class="hash-link" aria-label="Direct link to 6.7.0" title="Direct link to 6.7.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-5">Features<a href="#features-5" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for Orchestration Config API of Prompt Registry, see <a class="" href="/ai-sdk/docs/python/examples/prompt-registry#orchestration-config-management">Orchestration Config Management</a></li>
+<li class="">Added retry logic for token retrieval</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-4">Bugfixes<a href="#bugfixes-4" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Upgraded langchain-aws</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="660">6.6.0<a href="#660" class="hash-link" aria-label="Direct link to 6.6.0" title="Direct link to 6.6.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-5">Bugfixes<a href="#bugfixes-5" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Replaced the lingua-language-detector library, which was causing version conflict issues.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="650">6.5.0<a href="#650" class="hash-link" aria-label="Direct link to 6.5.0" title="Direct link to 6.5.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-6">Features<a href="#features-6" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Enabled providing additional headers for Grounding Clients (Pipeline API Client, Retrieval API Client &amp; Vector API Client)</li>
+<li class="">Added support for Orchestration V2 API /embeddings endpoint, see <a class="" href="/ai-sdk/docs/python/examples/orchestration-service2#embeddings">Embeddings</a></li>
+<li class="">Added Evaluations Client, see <a class="" href="/ai-sdk/docs/python/examples/evaluations">Evaluations</a></li>
+<li class="">Added support for RPT-1 models, see <a class="" href="/ai-sdk/docs/python/examples/gen-ai-hub">SAP RPT-1 Models</a>.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-6">Bugfixes<a href="#bugfixes-6" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Fixed the issue regarding the handling of large streaming responses in AsyncSSEClient</li>
+<li class="">Upgraded langchain version</li>
+<li class="">Adjusted to the changes in Orchestration V2 API</li>
+<li class="">Removed aiboto3 dependency in favor of aibotocore</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="612">6.1.2<a href="#612" class="hash-link" aria-label="Direct link to 6.1.2" title="Direct link to 6.1.2" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes">Breaking Changes<a href="#breaking-changes" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes" translate="no">​</a></h3>
+<ul>
+<li class="">Switch to <a href="https://docs.langchain.com/oss/python/langchain/overview" target="_blank" rel="noopener noreferrer" class="">langchain 1.x</a> This also results in upgrading of dependent langchain libraries. You need to ensure your code works with the upgraded dependencies. Langchain 0.3.x is no longer supported in the SDK. Please refer to Package dependencies for details on the dependencies.</li>
+<li class="">Switch from langchain-google-vertexai to langchain-google-genai and google-cloud-aiplatform to google-genai due to <a href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/deprecations/genai-vertexai-sdk" target="_blank" rel="noopener noreferrer" class="">deprecation of these libraries</a></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-7">Features<a href="#features-7" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for additional embedding models: Amazon Titan Embedding, Llama 3.2 Embedding, Google Gemini Embedding</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5110">5.11.0<a href="#5110" class="hash-link" aria-label="Direct link to 5.11.0" title="Direct link to 5.11.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-8">Features<a href="#features-8" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for orchestration V2 API. For details, see <a class="" href="/ai-sdk/docs/python/examples/orchestration-service2">Orchestration Service V2 API</a>.</li>
+<li class="">Added API reference documentation</li>
+<li class="">Added support for new models: Claude 4.5 Sonnet, Claude 4.5 Haiku, Cohere Command-a-reasoning, Cohere reranker, Gemini 2.5 Flash Lite, Perplexity Sonar, Perplexity Sonar-Pro, Mistral Medium</li>
+<li class="">Removed decomissioned models: IBM granite 13b, Meta Llama 3.1, Claude 3 Opus</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5100">5.10.0<a href="#5100" class="hash-link" aria-label="Direct link to 5.10.0" title="Direct link to 5.10.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-9">Features<a href="#features-9" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added retry logic for orchestration service with exponential backoff. Use method &quot;run_with_retries&quot; instead of &quot;run&quot; for your orchestration service instance.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="590">5.9.0<a href="#590" class="hash-link" aria-label="Direct link to 5.9.0" title="Direct link to 5.9.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-7">Bugfixes<a href="#bugfixes-7" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Upgraded boto3 and langchain-aws dependencies and relaxed the dependecy to pydantic libary, see Package dependencies for details.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="580">5.8.0<a href="#580" class="hash-link" aria-label="Direct link to 5.8.0" title="Direct link to 5.8.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-10">Features<a href="#features-10" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added additional apis for document grounding: vector api and retrieval api support and additional methods for pipelines api.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="575">5.7.5<a href="#575" class="hash-link" aria-label="Direct link to 5.7.5" title="Direct link to 5.7.5" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-11">Features<a href="#features-11" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for new models: Amazon Nova Premier, Claude 4 Opus, Gemini 2.5-flash, Gemini 2.5-pro, GPT-5, GPT-5-mini, GPT-5-nano, Mistral Small Instruct. See <a class="" href="/ai-sdk/docs/python/overview#supported-models">Supported Models</a> for a comprehensive overview of supported models.</li>
+<li class="">Removed old models: Amazon Titan Text Express/Lite, Gemini 1.5-flash, Gemini 1.5-pro, Claude 3 Sonnet</li>
+<li class="">Allow botocore.config as input for Amazon Bedrock to set additional parameters, e.g. connect_timeout</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-8">Bugfixes<a href="#bugfixes-8" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Upgraded langchain-google-vertexai to fix a <a href="https://github.com/langchain-ai/langchain-google/issues/1057" target="_blank" rel="noopener noreferrer" class="">bug in ChatVertexAI</a></li>
+<li class="">Upgraded boto3 and langchain-aws dependencies to allow tool binding with Claude 4</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="563">5.6.3<a href="#563" class="hash-link" aria-label="Direct link to 5.6.3" title="Direct link to 5.6.3" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-12">Features<a href="#features-12" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for converse_stream for aws models and event streams</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-9">Bugfixes<a href="#bugfixes-9" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Display deployment not found error in orchestration</li>
+<li class="">Return http headers from orchestration in case of error</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="550">5.5.0<a href="#550" class="hash-link" aria-label="Direct link to 5.5.0" title="Direct link to 5.5.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-13">Features<a href="#features-13" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for Claude 4 Sonnet</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-10">Bugfixes<a href="#bugfixes-10" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Upgraded langchain-google-vertexai to fix a bug with streaming on newer gemini models</li>
+<li class="">Fix issue where template input parameters would be converted to CamelCase when sending to prompt registry API</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="545">5.4.5<a href="#545" class="hash-link" aria-label="Direct link to 5.4.5" title="Direct link to 5.4.5" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-14">Features<a href="#features-14" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for additional storage types (S3/SFTP) for the Grounding module of the Orchestration Service.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="541">5.4.1<a href="#541" class="hash-link" aria-label="Direct link to 5.4.1" title="Direct link to 5.4.1" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-15">Features<a href="#features-15" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for images in the orchestration service. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#using-images-as-input">Using Images as Input</a> for details.</li>
+<li class="">Added timeout parameter for amazon native streaming calls in method <code>invoke_model_with_response_stream</code>.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="534">5.3.4<a href="#534" class="hash-link" aria-label="Direct link to 5.3.4" title="Direct link to 5.3.4" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes-1">Breaking Changes<a href="#breaking-changes-1" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes" translate="no">​</a></h3>
+<ul>
+<li class="">Switch to different distribution name as part of a rebranding to <code>SAP Cloud SDK for AI (Python) - generative</code>. See <a class="" href="/ai-sdk/docs/python/overview#installation">Installation</a> for details. The package and subpackage names are unchanged, therefore no code adjustment is necessary, only the installation of the SDK has changed.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-16">Features<a href="#features-16" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for the translation module in the orchestration service. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#translation">Translation</a> for details.</li>
+<li class="">Added support for function calling in the orchestration service. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#tool-calling">Tool Calling (Function Calling)</a> for details.</li>
+<li class="">Added support for OpenAI o3, o4-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano models.</li>
+<li class="">Reworked the langchain dependency chain, only installing the vendor specific langchain libraries on demand, see <a class="" href="/ai-sdk/docs/python/overview#installation">Installation</a> for details.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-11">Bugfixes<a href="#bugfixes-11" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Set the dependency to h11 library and relaxed the dependecy to pydantic libary, see Package dependencies for details.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4121">4.12.1<a href="#4121" class="hash-link" aria-label="Direct link to 4.12.1" title="Direct link to 4.12.1" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-17">Features<a href="#features-17" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for Anthropic Claude 3.7 Sonnet model.</li>
+<li class="">Added support for gemini-2.0 and gemini-2.0-flash models.</li>
+<li class="">Retirement of Gemini 1.0 Pro.</li>
+<li class="">Added async examples for bedrock and vertex models. See <a class="" href="/ai-sdk/docs/python/examples/async-examples">Async Examples</a> for details.</li>
+<li class="">Deprecation of SAP Generative AI Hub SDK, as it will be rebranded to sap-ai-sdk-gen.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4102">4.10.2<a href="#4102" class="hash-link" aria-label="Direct link to 4.10.2" title="Direct link to 4.10.2" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-18">Features<a href="#features-18" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Added support for OpenAI o1 and o3-mini models.</li>
+<li class="">Added support for AWS amazon--nova-micro, amazon--nova-lite, and amazon--nova-pro models.</li>
+<li class="">Added support for asynchronous calls to Bedrock models.</li>
+<li class="">Added support for asynchronous calls to Vertex models.</li>
+<li class="">Added support for <code>masked_grounding_input</code> and <code>allowlist</code> also for the grounding output in the orchestration service. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#data-masking">allow_list</a> for details.</li>
+<li class="">Deprecation of <code>input_filters</code> and <code>output_filters</code> in the orchestration configuration, use <code>ContentFiltering</code> instead. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#content-filtering">Content Filtering</a> for details.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="443">4.4.3<a href="#443" class="hash-link" aria-label="Direct link to 4.4.3" title="Direct link to 4.4.3" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-19">Features<a href="#features-19" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Add support for LlamaGuard38b content filtering in the orchestration service. You can use LlamaGuard38b filters for filtering input and output along different content categories, see <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering?locale=en-US" target="_blank" rel="noopener noreferrer" class="">SAP AI Core help documentation</a>. For usage examples, see <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#content-filtering">Content Filtering</a></li>
+<li class="">Add support for grounding metadata parameters, see <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/metadata?locale=en-US" target="_blank" rel="noopener noreferrer" class="">SAP AI Core help documentation</a></li>
+<li class="">Add support for asynchronous calls to orchestration service. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#async-support">Async Support</a> for details.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="431">4.3.1<a href="#431" class="hash-link" aria-label="Direct link to 4.3.1" title="Direct link to 4.3.1" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-20">Features<a href="#features-20" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Add support for prompt registry APIs. You can create, retrieve and modify prompt templates from the prompt repository. For example usage, see <a class="" href="/ai-sdk/docs/python/examples/prompt-registry">Prompt Registry</a></li>
+<li class="">Add support for grounding in orchestration. You can now configure the grounding module in the orchestration service.</li>
+<li class="">Add support for structured output in the orchestration service by specifying the response format, for instance text or json. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#response-format-options">Response Format Options</a> for details.</li>
+<li class="">Add autodiscovery for orchestration deployments. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#understanding-deployment-resolution">Understanding Deployment Resolution</a> for details.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-12">Bugfixes<a href="#bugfixes-12" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">OpenAI deprecated max_tokens in favor of max_completion_tokens parameter. This was now also included in the generative AI Hub SDK and the dependency of the langchain-openai version could be relaxed.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="411">4.1.1<a href="#411" class="hash-link" aria-label="Direct link to 4.1.1" title="Direct link to 4.1.1" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-21">Features<a href="#features-21" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Add support for prompt registry templates in orchestration. You can now configure a prompt registry template in the orchestration service call by referencing the ID or scenario, template name, and version. See <a class="" href="/ai-sdk/docs/python/examples/prompt-registry">Prompt Registry</a></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-13">Bugfixes<a href="#bugfixes-13" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Set langchain-openai==0.2.9 due to max_completion_token issues with later versions.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="400">4.0.0<a href="#400" class="hash-link" aria-label="Direct link to 4.0.0" title="Direct link to 4.0.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes-2">Breaking Changes<a href="#breaking-changes-2" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes" translate="no">​</a></h3>
+<ul>
+<li class="">Switch to <a href="https://python.langchain.com/docs/versions/v0_3/" target="_blank" rel="noopener noreferrer" class="">langchain 0.3.x</a> This also results in upgrading of dependent langchain libraries and a transition to pydantic v2. You need to ensure your code works with the upgraded dependencies. Langchain 0.2.x is no longer supported in the SDK. Please refer to Package dependencies for details on the dependencies.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-22">Features<a href="#features-22" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Add support for streaming in orchestration service. See <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#streaming">Streaming</a>.</li>
+<li class="">Add enhanced debug logging: When log level debug is enabled the source of configuration will be logged to support troubleshooting.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="380">3.8.0<a href="#380" class="hash-link" aria-label="Direct link to 3.8.0" title="Direct link to 3.8.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-23">Features<a href="#features-23" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Add support for mistralai--mistral-large-instruct model</li>
+<li class="">Add support for ibm--granite-13b-chat model</li>
+<li class="">Add capability to access unsupported models, see the <a class="" href="/ai-sdk/docs/python/overview#supported-models">Supported Models</a> for details.</li>
+<li class="">Add enhanced logging for API calls<!-- -->
+<ul>
+<li class="">By setting the environment variable <code>DEBUG_LOG_API_CALLS</code> to <code>true</code>, all calls to the backend are logged for better error diagnosis</li>
+</ul>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="326">3.2.6<a href="#326" class="hash-link" aria-label="Direct link to 3.2.6" title="Direct link to 3.2.6" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-24">Features<a href="#features-24" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Add support for orchestration service: data masking. See the <a class="" href="/ai-sdk/docs/python/examples/orchestration-service#data-masking">Data Masking</a> for details.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bugfixes-14">Bugfixes<a href="#bugfixes-14" class="hash-link" aria-label="Direct link to Bugfixes" title="Direct link to Bugfixes" translate="no">​</a></h3>
+<ul>
+<li class="">Bugfix for x509 certificate authentication support</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="311">3.1.1<a href="#311" class="hash-link" aria-label="Direct link to 3.1.1" title="Direct link to 3.1.1" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-25">Features<a href="#features-25" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Add support for gpt-4o model</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="310">3.1.0<a href="#310" class="hash-link" aria-label="Direct link to 3.1.0" title="Direct link to 3.1.0" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes-3">Breaking Changes<a href="#breaking-changes-3" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes" translate="no">​</a></h3>
+<ul>
+<li class="">Switch to vertexAI SDK for native Google model access. The previous library &#x27;google-generativeai&#x27; is no longer supported by the generative AI Hub SDK.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features-26">Features<a href="#features-26" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<ul>
+<li class="">Add support for orchestration service: templating, content safety, inference. See the <a class="" href="/ai-sdk/docs/python/examples/orchestration-service">Orchestration Service</a> for details.</li>
+<li class="">Add support for anthropic--claude-3.5-sonnet model</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/SAP/ai-sdk/edit/main/docs-python/release-notes.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#gen-v741-2026-09-23" class="table-of-contents__link toc-highlight">gen-v7.4.1 (2026-09-23)</a><ul><li><a href="#features" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#gen-v740-2026-09-14" class="table-of-contents__link toc-highlight">gen-v7.4.0 (2026-09-14)</a><ul><li><a href="#features-1" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#gen-v730-2026-09-08" class="table-of-contents__link toc-highlight">gen-v7.3.0 (2026-09-08)</a><ul><li><a href="#features-2" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-1" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#720" class="table-of-contents__link toc-highlight">7.2.0</a><ul><li><a href="#features-3" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-2" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#6100" class="table-of-contents__link toc-highlight">6.10.0</a><ul><li><a href="#features-4" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-3" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#670" class="table-of-contents__link toc-highlight">6.7.0</a><ul><li><a href="#features-5" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-4" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#660" class="table-of-contents__link toc-highlight">6.6.0</a><ul><li><a href="#bugfixes-5" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#650" class="table-of-contents__link toc-highlight">6.5.0</a><ul><li><a href="#features-6" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-6" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#612" class="table-of-contents__link toc-highlight">6.1.2</a><ul><li><a href="#breaking-changes" class="table-of-contents__link toc-highlight">Breaking Changes</a></li><li><a href="#features-7" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#5110" class="table-of-contents__link toc-highlight">5.11.0</a><ul><li><a href="#features-8" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#5100" class="table-of-contents__link toc-highlight">5.10.0</a><ul><li><a href="#features-9" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#590" class="table-of-contents__link toc-highlight">5.9.0</a><ul><li><a href="#bugfixes-7" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#580" class="table-of-contents__link toc-highlight">5.8.0</a><ul><li><a href="#features-10" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#575" class="table-of-contents__link toc-highlight">5.7.5</a><ul><li><a href="#features-11" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-8" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#563" class="table-of-contents__link toc-highlight">5.6.3</a><ul><li><a href="#features-12" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-9" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#550" class="table-of-contents__link toc-highlight">5.5.0</a><ul><li><a href="#features-13" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-10" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#545" class="table-of-contents__link toc-highlight">5.4.5</a><ul><li><a href="#features-14" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#541" class="table-of-contents__link toc-highlight">5.4.1</a><ul><li><a href="#features-15" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#534" class="table-of-contents__link toc-highlight">5.3.4</a><ul><li><a href="#breaking-changes-1" class="table-of-contents__link toc-highlight">Breaking Changes</a></li><li><a href="#features-16" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-11" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#4121" class="table-of-contents__link toc-highlight">4.12.1</a><ul><li><a href="#features-17" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#4102" class="table-of-contents__link toc-highlight">4.10.2</a><ul><li><a href="#features-18" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#443" class="table-of-contents__link toc-highlight">4.4.3</a><ul><li><a href="#features-19" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#431" class="table-of-contents__link toc-highlight">4.3.1</a><ul><li><a href="#features-20" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-12" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#411" class="table-of-contents__link toc-highlight">4.1.1</a><ul><li><a href="#features-21" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-13" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#400" class="table-of-contents__link toc-highlight">4.0.0</a><ul><li><a href="#breaking-changes-2" class="table-of-contents__link toc-highlight">Breaking Changes</a></li><li><a href="#features-22" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#380" class="table-of-contents__link toc-highlight">3.8.0</a><ul><li><a href="#features-23" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#326" class="table-of-contents__link toc-highlight">3.2.6</a><ul><li><a href="#features-24" class="table-of-contents__link toc-highlight">Features</a></li><li><a href="#bugfixes-14" class="table-of-contents__link toc-highlight">Bugfixes</a></li></ul></li><li><a href="#311" class="table-of-contents__link toc-highlight">3.1.1</a><ul><li><a href="#features-25" class="table-of-contents__link toc-highlight">Features</a></li></ul></li><li><a href="#310" class="table-of-contents__link toc-highlight">3.1.0</a><ul><li><a href="#breaking-changes-3" class="table-of-contents__link toc-highlight">Breaking Changes</a></li><li><a href="#features-26" class="table-of-contents__link toc-highlight">Features</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">SAP Cloud SDK for AI Java</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://developers.sap.com/group.sap-ai-core-generative.html" target="_blank" rel="noopener noreferrer" class="footer__link-item">Tutorials<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://central.sonatype.com/search?smo=true&amp;namespace=com.sap.ai.sdk" target="_blank" rel="noopener noreferrer" class="footer__link-item">Maven<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/SAP/ai-sdk-java" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app" target="_blank" rel="noopener noreferrer" class="footer__link-item">Sample Code<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/ai-sdk/docs/overview/get-support">Support</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">SAP Cloud SDK for AI JavaScript</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://developers.sap.com/group.sap-ai-core-generative.html" target="_blank" rel="noopener noreferrer" class="footer__link-item">Tutorials<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://www.npmjs.com/org/sap-ai-sdk" target="_blank" rel="noopener noreferrer" class="footer__link-item">npm<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/SAP/ai-sdk-js" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/SAP/ai-sdk-js/tree/main/sample-code" target="_blank" rel="noopener noreferrer" class="footer__link-item">Sample Code<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/ai-sdk/docs/overview/get-support">Support</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">SAP Cloud SDK for AI Python</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://developers.sap.com/group.sap-ai-core-generative.html" target="_blank" rel="noopener noreferrer" class="footer__link-item">Tutorials<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://pypi.org/project/sap-ai-sdk-gen/" target="_blank" rel="noopener noreferrer" class="footer__link-item">PyPI<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Additional Resources</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/SAP/cloud-sdk-java" target="_blank" rel="noopener noreferrer" class="footer__link-item">SAP Cloud SDK (Java) - GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/SAP/cloud-sdk-js" target="_blank" rel="noopener noreferrer" class="footer__link-item">SAP Cloud SDK (JavaScript) - GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://sap.github.io/cloud-sdk/" target="_blank" rel="noopener noreferrer" class="footer__link-item">SAP Cloud SDK Documentation<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 SAP SE or an SAP affiliate company. All rights reserved.</div></div></div></footer></div>
+</body>
+</html>

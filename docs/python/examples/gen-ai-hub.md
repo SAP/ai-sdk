@@ -1,4 +1,4 @@
-Our SDK offers a developer-friendly way to consume foundational models available in the SAP generative AI hub. We strive to facilitate seamless interactions with these models by providing integrations that act as drop-in replacements for the native client SDKs and LangChain.
+Our SDK offers a developer-friendly way to consume foundational models available in the SAP generative AI hub. We strive to facilitate seamless interactions with these models by providing integrations that act as drop-in replacements for the native client SDKs and LangChain. This allows developers to use familiar interfaces and workflows.
 
 # Native Client Integrations
 
@@ -10,7 +10,7 @@ The list of the available models can be found in the [overview](/ai-sdk/docs/pyt
 
 ### OpenAI[​](#openai "Direct link to OpenAI")
 
-`Completions` equivalent to `openai.Completions`:
+`Completions` equivalent to `openai.Completions`. All models that support the legacy completion endpoint can be used:
 
 ```
 from gen_ai_hub.proxy.native.openai import completions
@@ -124,7 +124,7 @@ print(response.output_text)
 
 #### Structured model outputs[​](#structured-model-outputs "Direct link to Structured model outputs")
 
-LLM output as JSON objects. See [OpenAI structured outputs](https://platform.openai.com/docs/guides/structured-outputs/examples).
+LLM output as JSON objects is a powerful feature that allows you to define the structure of the output you expect from the model. See [OpenAI structured outputs](https://platform.openai.com/docs/guides/structured-outputs/examples).
 
 ```
 from pydantic import BaseModel
@@ -356,6 +356,8 @@ print(response)
 
 ### OpenAI[​](#openai-1 "Direct link to OpenAI")
 
+`Embeddings` are equivalent to `openai.Embeddings`. See the examples below for how to use `Embeddings` in the generative AI hub SDK.
+
 ```
 from gen_ai_hub.proxy.native.openai import embeddings
 
@@ -414,7 +416,9 @@ print(response_body)
 
 # LangChain Integration
 
-LangChain provides an interface that abstracts provider-specific details into a common interface.
+LangChain provides an interface that abstracts provider-specific details into a common interface. Classes like `Chat` and `Embeddings` are interchangeable.
+
+The list of the available models can be found in the [overview](/ai-sdk/docs/python/overview.md#supported-models).
 
 ## Harmonized Model Initialization[​](#harmonized-model-initialization "Direct link to Harmonized Model Initialization")
 
@@ -608,11 +612,17 @@ print(response)
 
 # SAP RPT-1 Models
 
-SAP-RPT-1 is a relational pretrained transformer for use on relational and structured data. It solves predictive tasks such as classification and regression out-of-the-box via in-context learning.
+SAP-RPT-1 is a relational pretrained transformer for use on relational and structured data, developed and maintained by SAP. Relational Foundation Models (RFMs) are large-scale machine learning models designed to understand, process, and make predictions on tabular and relational data.
+
+SAP-RPT-1 is a table-native model aiming to achieve the highest prediction quality and lowest error rates for predictions on tabular business data. It's pretrained and doesn't need additional training or fine-tuning steps. It solves predictive tasks such as classification and regression out-of-the-box via in-context learning. Due to its table-native architecture, prediction quality on enterprise data is typically very high, ahead of state-of-the-art narrow AI models and LLMs employed for such tasks.
+
+You can get predictions directly by the native SDK client.
 
 For detailed information visit the [SAP Help Portal](https://help.sap.com/docs/sap-ai-core/generative-ai/example-payloads-for-inferencing-sap-rpt-1?locale=en-US).
 
 ### Regression[​](#regression "Direct link to Regression")
+
+This is a simple example of `RPTClient` usage with minimal fields in the request body, using pydantic models.
 
 ```
 from gen_ai_hub.proxy.native.sap import RPTRequest, PredictionConfig, TargetColumn, RPTClient
@@ -664,6 +674,8 @@ print(response.predictions)
 
 ### Classification[​](#classification "Direct link to Classification")
 
+This example shows that you can also use a plain dictionary for `RPTClient`.
+
 ```
 example_request_by_columns_dict = {
 
@@ -711,6 +723,8 @@ print(response.predictions)
 ```
 
 ### Async[​](#async "Direct link to Async")
+
+The `RPTClient` also supports asynchronous calls via the `apredict` method.
 
 ```
 await client.apredict(body=example_request_by_columns_dict, model_name="sap-rpt-1-small")

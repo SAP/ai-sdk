@@ -2,6 +2,8 @@
 
 ## Async Amazon Native[​](#async-amazon-native "Direct link to Async Amazon Native")
 
+This demonstrates how to use async-based calls for Amazon AI models.
+
 ### Invoke Model[​](#invoke-model "Direct link to Invoke Model")
 
 ```
@@ -115,6 +117,8 @@ async def async_amazon_titan_embedding(model_name):
 
     response_body = json.loads(await response.get("body").read())
 
+    print("Response Metadata:", response["ResponseMetadata"])
+
     print("Embedding:", response_body["embedding"])
 
     await bedrock.close()
@@ -196,6 +200,8 @@ async with Client(proxy_client=proxy_client).aio as aclient:
 
 ### Async Chat (Amazon Bedrock)[​](#async-chat-amazon-bedrock "Direct link to Async Chat (Amazon Bedrock)")
 
+This demonstrates how to use the `chat_model.ainvoke` method for the Claude model.
+
 ```
 from langchain_core.messages import HumanMessage, AIMessage
 
@@ -220,6 +226,8 @@ await async_amazon_chat_model()
 
 ### Async Streaming (Amazon Bedrock)[​](#async-streaming-amazon-bedrock "Direct link to Async Streaming (Amazon Bedrock)")
 
+This demonstrates how to use the `chat_model.astream` method for the Claude model.
+
 ```
 from langchain_core.messages import AIMessageChunk
 
@@ -239,9 +247,17 @@ async def async_chat_streaming():
 
     )
 
+    chunks = []
+
     async for chunk in chat_model.astream([HumanMessage(content="Write me a song about sparkling water in 20 words.")]):
 
+        chunks.append(chunk)
+
         print(chunk.content)
+
+
+
+    assert all(isinstance(chunk, AIMessageChunk) for chunk in chunks)
 
 
 
@@ -249,6 +265,8 @@ await async_chat_streaming()
 ```
 
 ### Async Chat (Amazon Bedrock Converse)[​](#async-chat-amazon-bedrock-converse "Direct link to Async Chat (Amazon Bedrock Converse)")
+
+This demonstrates how to use the `ChatBedrockConverse` model's `ainvoke` method.
 
 ```
 from gen_ai_hub.proxy.langchain import ChatBedrockConverse
@@ -272,6 +290,8 @@ await chat_converse_model_example("anthropic--claude-3-haiku")
 
 ### Async Gemini[​](#async-gemini "Direct link to Async Gemini")
 
+This demonstrates how to use the `ainvoke` method of the Gemini model asynchronously.
+
 ```
 from gen_ai_hub.proxy.langchain import init_llm
 
@@ -290,7 +310,33 @@ async def gemini_ainvoke_example():
 await gemini_ainvoke_example()
 ```
 
+```
+from gen_ai_hub.proxy.langchain import ChatGoogleGenerativeAI
+
+
+
+async def gemini_chat_ainvoke_example():
+
+    chat_model = ChatGoogleGenerativeAI(
+
+        proxy_model_name="gemini-2.0-flash",
+
+        max_tokens=300,
+
+    )
+
+    response = await chat_model.ainvoke("Write a ballad about LangChain")
+
+    print(response)
+
+
+
+await gemini_chat_ainvoke_example()
+```
+
 ### Async Gemini Streaming[​](#async-gemini-streaming "Direct link to Async Gemini Streaming")
+
+This demonstrates how to use the `astream` method of the Gemini chat model asynchronously.
 
 ```
 from gen_ai_hub.proxy.langchain import ChatGoogleGenerativeAI

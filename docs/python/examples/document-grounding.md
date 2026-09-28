@@ -1,10 +1,10 @@
 # Document Grounding
 
-The Document Grounding module implements Retrieval Augmented Generation (RAG). It uses the SAP HANA Vector Engine to retrieve relevant document context and generate more accurate responses.
+The Document Grounding module implements Retrieval Augmented Generation (RAG). It is a module in the [Orchestration Service](/ai-sdk/docs/python/examples/orchestration-service2.md). It uses the SAP HANA Vector Engine to retrieve relevant document context (the "context") and generate more accurate responses.
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
-A vector knowledge base is [required](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding#prerequisites). It can be created from:
+A vector knowledge base is [required](https://help.sap.com/docs/sap-ai-core/generative-ai/grounding-035c455a5a424697b60f4a24b6d791fe?q=document+grounding). It can be created from:
 
 * Documents in a SharePoint folder, S3 storage, or SFTP repository
 * Text chunks fed directly via the Vector API
@@ -12,6 +12,10 @@ A vector knowledge base is [required](https://help.sap.com/docs/sap-ai-core/sap-
 Another option is to use the `help.sap.com` elastic search endpoint.
 
 ### Create a Vector Knowledge Base (S3 Example)[​](#create-a-vector-knowledge-base-s3-example "Direct link to Create a Vector Knowledge Base (S3 Example)")
+
+In this example, an S3 data storage created by the user already has a set of documents uploaded to it. Check that [Document Grounding is enabled](https://help.sap.com/docs/sap-ai-core/generative-ai/grounding-035c455a5a424697b60f4a24b6d791fe?q=document+grounding), which allows retrieving the documents in the S3 bucket. The Pipelines API can be run via this SDK:
+
+Make sure a Generic Secret for the S3 bucket has been created in AI Core so the documents can be retrieved from the bucket.
 
 ```
 from gen_ai_hub.proxy import get_proxy_client
@@ -38,6 +42,8 @@ print(pipelines_api_client.get_pipeline_status(response.pipelineId))
 ```
 
 ## Configuration[​](#configuration "Direct link to Configuration")
+
+Provide the Orchestration Service URL and create a client for the Orchestration Service.
 
 ```
 from gen_ai_hub.orchestration.service import OrchestrationService
@@ -121,6 +127,8 @@ print(response.orchestration_result.choices[0].message.content)
 
 ### Grounding via Custom Data Repository[​](#grounding-via-custom-data-repository "Direct link to Grounding via Custom Data Repository")
 
+Assume the documentation for a custom product extension is vectorized and stored in the Vector knowledge base created earlier from the S3 bucket.
+
 ```
 filters = [DocumentGroundingFilter(
 
@@ -166,6 +174,8 @@ print(response.module_results.grounding.data['grounding_result'])
 ```
 
 ### Data Masking of Retrieved Context[​](#data-masking-of-retrieved-context "Direct link to Data Masking of Retrieved Context")
+
+The retrieved context can be masked in the same way as in the Orchestration Service, to avoid passing sensitive information to the LLM.
 
 ```
 from gen_ai_hub.orchestration.models.sap_data_privacy_integration import (

@@ -178,6 +178,41 @@ template = Template(
 )
 ```
 
+## Understanding Deployment Resolution[​](#understanding-deployment-resolution "Direct link to Understanding Deployment Resolution")
+
+The `OrchestrationService` class provides multiple ways to specify and target orchestration deployments when sending requests. Below are the available options:
+
+### Default Behavior[​](#default-behavior "Direct link to Default Behavior")
+
+If no parameters are provided, the `OrchestrationService` automatically searches for a `RUNNING` deployment. If multiple running deployments exist, the service selects the most recently created one.
+
+### Direct Deployment Specification[​](#direct-deployment-specification "Direct link to Direct Deployment Specification")
+
+You can explicitly define the target deployment using the following options:
+
+1. **API URL** (`api_url`):
+
+   * Specify the exact URL assigned to the deployment during its creation.
+   * Refer to the Prerequisites section for more details on obtaining the deployment URL.
+
+2. **Deployment ID** (`deployment_id`):
+
+   * Use the unique identifier assigned to the deployment instead of the URL.
+
+### Config-Based Specification[​](#config-based-specification "Direct link to Config-Based Specification")
+
+If you want to target deployments based on their configuration source, use one of the following options:
+
+1. **Configuration ID** (`config_id`):
+
+   * The `OrchestrationService` searches for a `RUNNING` deployment created using the provided configuration ID.
+
+2. **Configuration Name** (`config_name`):
+
+   * The service looks for a `RUNNING` deployment that matches the specified configuration name.
+
+If multiple deployments match the given configuration criteria, the most recently created one will be selected automatically.
+
 ## Optional Modules[​](#optional-modules "Direct link to Optional Modules")
 
 ### Data Masking[​](#data-masking "Direct link to Data Masking")
