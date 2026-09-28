@@ -90,6 +90,9 @@ The following models are deprecated in SAP Cloud SDK for AI and should not be us
 | `gpt-4.1-mini`                      |                                                    |
 | `o3`                                |                                                    |
 | `o4-mini`                           |                                                    |
+| `mistralai--mistral-large-instruct` |                                                    |
+| `gemini-2.5-flash`                  |                                                    |
+| `gemini-2.5-pro`                    |                                                    |
 
 ## Contribute, Support and Feedback[​](#contribute-support-and-feedback "Direct link to Contribute, Support and Feedback")
 
