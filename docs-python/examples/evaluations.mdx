@@ -87,9 +87,9 @@ There are multiple ways to create an `EvaluationConfig` — with a prompt templa
 
 ```python
 from gen_ai_hub.prompt_registry import PromptTemplateSpec, PromptTemplate
-from gen_ai_hub.orchestration.models.template_ref import TemplateRef
+from gen_ai_hub.orchestration_v2.models.template_ref import TemplateRef, TemplateRefByID
 from gen_ai_hub.evaluations import Dataset, MetricConfig, MetricRef, EvaluationConfig
-from gen_ai_hub.orchestration.models.llm import LLM
+from gen_ai_hub.orchestration_v2.models.llm_model_details import LLMModelDetails as LLM
 
 evaluation_config_list = [
     EvaluationConfig(
@@ -110,7 +110,7 @@ evaluation_config_list = [
         ],
     ),
     EvaluationConfig(
-        orchestration_registry_reference="fa938934-ca94-4f8d-b59d-76c4570f0394",
+        orchestration_registry_reference="ab0f5164-fc1d-412a-951b-885aa796fce3",
         template_variable_mapping={"question": "topic"},
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[
@@ -122,8 +122,8 @@ evaluation_config_list = [
         ],
     ),
     EvaluationConfig(
-        llm=LLM(name="gpt-5", version="latest"),
-        template=TemplateRef(id="73282020-9141-46af-981f-c4816dd01d33"),
+        llm=LLM(name="gpt-4o", version="latest"),
+        template=TemplateRef(template_ref=TemplateRefByID(id="43c9076a-4954-4d1d-a52d-a8b45bb5fa9a")),
         template_variable_mapping={"question": "topic"},
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[

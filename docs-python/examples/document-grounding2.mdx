@@ -157,7 +157,7 @@ from gen_ai_hub.document_grounding.models.retrieval import (
 retrieval_req = RetrievalSearchInput(
     query='How to configure Document Grounding?',
     filters=[
-        FixedRetrievalSearchFilter(
+        RetrievalSearchFilter(
             id='r1',
             dataRepositoryType='help.sap.com',
             searchConfiguration=RetrievalSearchConfiguration(maxChunkCount=5),
