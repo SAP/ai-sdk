@@ -47,10 +47,10 @@ The `LLM` class is used to configure and initialize a language model for generat
 ```python
 from gen_ai_hub.orchestration_v2 import LLMModelDetails
 
-llm = LLMModelDetails(name="gpt-5-nano", params={"max_completion_tokens": 512})
+llm = LLMModelDetails(name="gpt-5-nano", params={"max_completion_tokens": 2048})
 ```
 
-Initializes the language model to use the `gpt-5-nano` model. It will generate responses up to 512 tokens in length.
+Initializes the language model to use the `gpt-5-nano` model. It will generate responses up to 2048 tokens in length.
 
 ### Step 3: Create the Configuration
 
@@ -972,7 +972,7 @@ embeddings_config_with_masking = EmbeddingsOrchestrationConfig(
             model=EmbeddingsModelDetails(name="text-embedding-3-large")
         ),
         masking=MaskingModuleConfig(
-            masking_providers=[
+            providers=[
                 MaskingProviderConfig(
                     method=MaskingMethod.ANONYMIZATION,
                     entities=[
@@ -1011,7 +1011,7 @@ embeddings_config_advanced_masking = EmbeddingsOrchestrationConfig(
             model=EmbeddingsModelDetails(name="text-embedding-3-large")
         ),
         masking=MaskingModuleConfig(
-            masking_providers=[
+            providers=[
                 MaskingProviderConfig(
                     method=MaskingMethod.ANONYMIZATION,
                     entities=[

@@ -17,20 +17,6 @@ The list of the available models can be found in the [overview](../overview.mdx#
 
 ### OpenAI
 
-`Completions` equivalent to `openai.Completions`. All models that support the legacy completion endpoint can be used:
-
-```python
-from gen_ai_hub.proxy.native.openai import completions
-
-response = completions.create(
-    model_name="gpt-4o-mini",
-    prompt="The Answer to the Ultimate Question of Life, the Universe, and Everything is",
-    max_tokens=20,
-    temperature=0
-)
-print(response)
-```
-
 `ChatCompletions` equivalent to `openai.ChatCompletions`:
 
 ```python
@@ -258,13 +244,14 @@ The `init_llm` and `init_embedding_model` functions allow easy initialization of
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from gen_ai_hub.proxy.langchain import init_llm
+from gen_ai_hub.proxy import get_proxy_client
 
 template = """Question: {question}
     Answer: Let's think step by step."""
 prompt = PromptTemplate(template=template, input_variables=['question'])
 question = 'What is a supernova?'
 
-llm = init_llm('gpt-5-nano', max_tokens=300)
+llm = init_llm('gpt-5.4-nano', max_tokens=300, proxy_client=get_proxy_client())
 chain = prompt | llm | StrOutputParser()
 response = chain.invoke({'question': question})
 print(response)
@@ -303,7 +290,7 @@ print(llm_chain.invoke({'question': question}))
 ## Chat Model
 
 ```python
-from langchain.prompts.chat import (
+from langchain_core.prompts import (
     AIMessagePromptTemplate,
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
@@ -333,7 +320,7 @@ print(response.content)
 ```python
 from gen_ai_hub.proxy.langchain import ChatOpenAI
 from gen_ai_hub.proxy import get_proxy_client
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 from pydantic import BaseModel
 
 class Person(BaseModel):
