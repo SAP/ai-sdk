@@ -98,7 +98,7 @@ stream_genai("Why is the sky blue?")
 import json
 from gen_ai_hub.proxy.native.amazon import Session
 
-def stream_claude(prompt, model_name='anthropic--claude-3-haiku'):
+def stream_claude(prompt, model_name='anthropic--claude-4.5-haiku'):
     bedrock = Session().client(model_name=model_name)
     body = json.dumps({
         "max_tokens": 500,
@@ -163,5 +163,5 @@ def stream_langchain(prompt, model_name):
 
 stream_langchain("How do airplanes stay in the air?", model_name='gpt-4o-mini')
 stream_langchain("How do airplanes stay in the air?", model_name='gemini-3.5-flash')
-stream_langchain("How do airplanes stay in the air?", model_name='anthropic--claude-3-haiku')
+stream_langchain("How do airplanes stay in the air?", model_name='anthropic--claude-4.5-haiku')
 ```

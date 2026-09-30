@@ -14,26 +14,7 @@ from gen_ai_hub.evaluations import EvaluationClient
 from dotenv import load_dotenv
 import os
 
-load_dotenv(override=True)
-
-client = EvaluationClient(
-    base_url=os.getenv("AICORE_BASE_URL"),
-    auth_url=os.getenv("AICORE_AUTH_URL"),
-    client_id=os.getenv("AICORE_CLIENT_ID"),
-    client_secret=os.getenv("AICORE_CLIENT_SECRET"),
-    resource_group=os.getenv("AICORE_RESOURCE_GROUP"),
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    orchestration_url=os.getenv("ORCHESTRATION_URL")
-)
-
-print(client.base_url)
-print(client.ai_core_client.object_store_secrets.query(
-    top=10, resource_group=os.getenv("AICORE_RESOURCE_GROUP")
-))
-
-# Alternative initialization from environment
-# client = EvaluationClient.from_env()
+client = EvaluationClient.from_env()
 ```
 
 **Note:** If you are using the default resource group, an orchestration URL is already available and will be selected automatically. If you have previously created object store secrets, the setup step below can be skipped.
