@@ -269,7 +269,7 @@ print(response)
 ## LLM
 
 ```python
-from langchain import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from gen_ai_hub.proxy.langchain import OpenAI
 from gen_ai_hub.proxy import get_proxy_client
 
@@ -395,6 +395,9 @@ print(response.predictions)
 This example shows that you can also use a plain dictionary for `RPTClient`.
 
 ```python
+from gen_ai_hub.proxy.native.sap import RPTClient
+
+client = RPTClient()
 example_request_by_columns_dict = {
     "prediction_config": {
         "target_columns": [{"name": "COSTCENTER", "prediction_placeholder": "[PREDICT]", "task_type": "classification"}]

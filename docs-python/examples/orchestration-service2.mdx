@@ -118,7 +118,7 @@ template = Template(
 **JSON Object:**
 
 ```python
-from gen_ai_hub.orchestration_v2 import ResponseFormatJsonObject
+from gen_ai_hub.orchestration_v2 import SystemMessage, UserMessage, Template, ResponseFormatJsonObject
 
 template = Template(
     template=[
@@ -140,7 +140,7 @@ template = Template(
 **JSON Schema:**
 
 ```python
-from gen_ai_hub.orchestration_v2 import ResponseFormatJsonSchema, JSONResponseSchema
+from gen_ai_hub.orchestration_v2 import SystemMessage, UserMessage, Template, ResponseFormatJsonSchema, JSONResponseSchema
 
 json_schema = {
     "title": "Person", "type": "object",
@@ -235,7 +235,7 @@ data_masking_config = MaskingModuleConfig(
 
 template = Template(template=[
     SystemMessage(content="You are a helpful AI assistant."),
-    UserMessage(content="Summarize the following CV in 10 sentences: {{?orgCV}}"),
+    UserMessage(content="Summarize the following CV in 10 sentences: {{?text}}"),
 ])
 llm = LLMModelDetails(name="gpt-4o")
 module_config = ModuleConfig(
@@ -245,7 +245,7 @@ module_config = ModuleConfig(
 config = OrchestrationConfig(modules=module_config)
 
 cv_as_string = load_text_file("data/cv.txt")
-result = OrchestrationService().run(config=config, placeholder_values={"orgCV": cv_as_string})
+result = OrchestrationService().run(config=config, placeholder_values={"text": cv_as_string})
 print(result.final_result.choices[0].message.content)
 ```
 
@@ -257,10 +257,17 @@ The `Content Filtering` module can be configured to filter both the `input` to t
 from gen_ai_hub.orchestration_v2 import (
     AzureContentSafetyInput, AzureContentSafetyOutput, AzureThreshold,
     LlamaGuard38bFilter, FilteringModuleConfig, InputFiltering, OutputFiltering,
-    AzureContentSafetyInputFilterConfig, AzureContentSafetyOutputFilterConfig, LlamaGuard38bFilterConfig
+    AzureContentSafetyInputFilterConfig, AzureContentSafetyOutputFilterConfig, LlamaGuard38bFilterConfig,
+    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
+    ModuleConfig, OrchestrationConfig, OrchestrationService
 )
-
 from gen_ai_hub.orchestration_v2 import OrchestrationError
+
+template = Template(template=[
+    SystemMessage(content="You are a helpful AI assistant."),
+    UserMessage(content="{{?text}}"),
+])
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=LLMModelDetails(name="gpt-4o"))
 
 content_filter_config = FilteringModuleConfig(
     input=InputFiltering(filters=[
@@ -284,7 +291,7 @@ config = OrchestrationConfig(modules=module_config)
 client = OrchestrationService(config=config)
 
 try:
-    result = client.run(placeholder_values={"orgCV": "I hate you"})
+    result = client.run(placeholder_values={"text": "I hate you"})
     print(result.final_result.choices[0].message.content)
 except OrchestrationError as er:
     print(er.message)
@@ -299,12 +306,23 @@ To activate streaming, use the `stream` method of the `OrchestrationService` wit
 Here's how you can set up a simple configuration to stream orchestration results:
 
 ```python
-from gen_ai_hub.orchestration_v2 import GlobalStreamOptions
+from gen_ai_hub.orchestration_v2 import (
+    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
+    ModuleConfig, OrchestrationConfig, OrchestrationService, GlobalStreamOptions
+)
+
+template = Template(template=[
+    SystemMessage(content="You are a helpful AI assistant."),
+    UserMessage(content="{{?text}}"),
+])
+llm = LLMModelDetails(name="gpt-4o")
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=llm)
+module_config = ModuleConfig(prompt_templating=prompt_template)
 
 config = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True))
 client = OrchestrationService(config=config)
 
-result = client.stream(placeholder_values={"orgCV": "Which color is the sky? Answer in one sentence."})
+result = client.stream(placeholder_values={"text": "Which color is the sky? Answer in one sentence."})
 for part in result:
     print(part.final_result.choices[0].delta.content)
     print("*" * 20)
@@ -318,7 +336,7 @@ You can customize the global stream behavior by setting options like `chunk_size
 config = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True, chunk_size=25))
 client = OrchestrationService(config=config)
 
-result = client.stream(placeholder_values={"orgCV": "Which color is the sky? Answer in one sentence."})
+result = client.stream(placeholder_values={"text": "Which color is the sky? Answer in one sentence."})
 for part in result:
     print(part.final_result.choices[0].delta.content)
     print("*" * 20)
@@ -327,7 +345,13 @@ for part in result:
 Modules that influence or process streaming results, such as `OutputFiltering`, might need specific stream options. The `overlap` option allows you to include extra context during the filtering process.
 
 ```python
-from gen_ai_hub.orchestration_v2 import FilteringStreamOptions
+from gen_ai_hub.orchestration_v2 import (
+    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
+    ModuleConfig, OrchestrationConfig, OrchestrationService, GlobalStreamOptions,
+    AzureContentSafetyOutput, AzureContentSafetyOutputFilterConfig,
+    FilteringModuleConfig, OutputFiltering, FilteringStreamOptions
+)
+
 content_filter_config = FilteringModuleConfig(
     output=OutputFiltering(
         filters=[AzureContentSafetyOutputFilterConfig(config=AzureContentSafetyOutput(hate=0))],
@@ -467,7 +491,10 @@ When the LLM decides to call a tool, the orchestration response will include a `
 
 ```python
 from typing import List
-from gen_ai_hub.orchestration_v2 import ChatMessage, ToolChatMessage
+from gen_ai_hub.orchestration_v2 import (
+    LLMModelDetails, PromptTemplatingModuleConfig, ModuleConfig, OrchestrationConfig, OrchestrationService,
+    ChatMessage, ToolChatMessage
+)
 
 llm = LLMModelDetails(name="gpt-4o-mini", params={"max_completion_tokens": 200, "temperature": 0.0})
 prompt_template = PromptTemplatingModuleConfig(prompt=template, model=llm)
@@ -497,6 +524,8 @@ print(response2.final_result.choices[0].message.content)
 When using streaming, tool calls may be split across multiple chunks. The `delta.tool_calls` field in each chunk contains partial or complete tool call information. You may need to buffer and concatenate arguments if they arrive in pieces.
 
 ```python
+from gen_ai_hub.orchestration_v2 import OrchestrationConfig, GlobalStreamOptions, OrchestrationService
+
 config = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True))
 service = OrchestrationService()
 stream = service.stream(config=config, placeholder_values=template_values)
@@ -805,7 +834,10 @@ except Exception as e:
 Once you have your `ImageItem` object(s), you can combine them with text to create a multimodal prompt. This is done by passing a list containing `ImageItem` instances and text strings to the `content` parameter of a `UserMessage`.
 
 ```python
-from gen_ai_hub.orchestration_v2 import UserMessage
+from gen_ai_hub.orchestration_v2 import (
+    UserMessage, LLMModelDetails, Template, PromptTemplatingModuleConfig,
+    ModuleConfig, OrchestrationConfig, OrchestrationService
+)
 
 llm=LLMModelDetails(name="gpt-4o")
 
@@ -833,14 +865,29 @@ The Translation module can translate text from one language to another. It can t
 
 ```python
 from gen_ai_hub.orchestration_v2 import (
+    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
+    ModuleConfig, OrchestrationConfig, OrchestrationService,
     TranslationModuleConfig, SAPDocumentTranslationInput, SAPDocumentTranslationOutput,
     InputTranslationConfig, OutputTranslationConfig
 )
+
+template = Template(template=[
+    SystemMessage(content="You are a helpful assistant."),
+    UserMessage(content="{{?text}}"),
+])
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=LLMModelDetails(name="gpt-4o"))
 
 translation_config = TranslationModuleConfig(
     input=SAPDocumentTranslationInput(config=InputTranslationConfig(source_language="en-US", target_language="de-DE")),
     output=SAPDocumentTranslationOutput(config=OutputTranslationConfig(source_language="de-DE", target_language="fr-FR"))
 )
+
+template = Template(template=[
+    SystemMessage(content="You are a helpful assistant."),
+    UserMessage(content="{{?text}}"),
+])
+llm = LLMModelDetails(name="gpt-4o")
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=llm)
 
 module_config = ModuleConfig(prompt_templating=prompt_template, translation=translation_config)
 config = OrchestrationConfig(modules=module_config)
@@ -893,7 +940,10 @@ You can customize the embedding output with parameters like `dimensions`, `encod
 | `normalize`       | Normalize the vector               | `True`, `False`             |
 
 ```python
-from gen_ai_hub.orchestration_v2 import EmbeddingsModelParams, EmbeddingsEncodingFormat
+from gen_ai_hub.orchestration_v2 import (
+    EmbeddingsOrchestrationConfig, EmbeddingsModuleConfigs, EmbeddingsModelConfig,
+    EmbeddingsModelDetails, EmbeddingsInput, EmbeddingsModelParams, EmbeddingsEncodingFormat
+)
 
 embeddings_config_custom = EmbeddingsOrchestrationConfig(
     modules=EmbeddingsModuleConfigs(
@@ -937,7 +987,7 @@ Some embedding models support asymmetric search, where queries and documents are
 | `QUERY`    | Search queries to find relevant documents |
 
 ```python
-from gen_ai_hub.orchestration_v2 import EmbeddingsInputType
+from gen_ai_hub.orchestration_v2 import EmbeddingsInput, EmbeddingsInputType
 
 # Embed a document for storage in a vector database
 doc_response = service.embed(
@@ -963,9 +1013,13 @@ query_response = service.embed(
 When embedding sensitive data, use the data masking module to anonymize PII before generating embeddings. This ensures sensitive information is not exposed to the embedding model.
 
 ```python
-from gen_ai_hub.orchestration_v2 import (MaskingModuleConfig, MaskingMethod, MaskingProviderConfig, DPIStandardEntity,
-                                         ProfileEntity)
+from gen_ai_hub.orchestration_v2 import (
+    OrchestrationService, EmbeddingsOrchestrationConfig, EmbeddingsModuleConfigs,
+    EmbeddingsModelConfig, EmbeddingsModelDetails, EmbeddingsInput,
+    MaskingModuleConfig, MaskingMethod, MaskingProviderConfig, DPIStandardEntity, ProfileEntity
+)
 
+service = OrchestrationService()
 embeddings_config_with_masking = EmbeddingsOrchestrationConfig(
     modules=EmbeddingsModuleConfigs(
         embeddings=EmbeddingsModelConfig(
@@ -1003,8 +1057,14 @@ print(f"Dimensions: {len(response.final_result.data[0].embedding)}")
 Use regular expressions to mask custom patterns and allowlists to exclude specific terms from masking.
 
 ```python
-from gen_ai_hub.orchestration_v2 import DPICustomEntity, DPIMethodConstant
+from gen_ai_hub.orchestration_v2 import (
+    OrchestrationService, EmbeddingsOrchestrationConfig, EmbeddingsModuleConfigs,
+    EmbeddingsModelConfig, EmbeddingsModelDetails, EmbeddingsInput,
+    MaskingModuleConfig, MaskingMethod, MaskingProviderConfig, DPIStandardEntity, ProfileEntity,
+    DPICustomEntity, DPIMethodConstant
+)
 
+service = OrchestrationService()
 embeddings_config_advanced_masking = EmbeddingsOrchestrationConfig(
     modules=EmbeddingsModuleConfigs(
         embeddings=EmbeddingsModelConfig(
@@ -1047,6 +1107,8 @@ response = service.embed(
 For non-blocking operations, use the async `aembed` method.
 
 ```python
+from gen_ai_hub.orchestration_v2 import OrchestrationService, EmbeddingsInput
+
 async def embed_async():
     async_service = OrchestrationService()
     response = await async_service.aembed(config=embeddings_config, input=EmbeddingsInput(text="Hello async world!"))
@@ -1089,7 +1151,7 @@ class TranslationService:
         return response.final_result.choices[0].message.content
 
 
-service = OrchestrationService(api_url=YOUR_API_URL)
+service = OrchestrationService()
 translator = TranslationService(orchestration_service=service)
 print(translator.translate(text="Hello, world!", to_lang="French"))
 print(translator.translate(text="Hello, world!", to_lang="Spanish"))

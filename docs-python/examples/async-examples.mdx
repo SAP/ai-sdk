@@ -57,6 +57,7 @@ await async_bedrock_invoke_with_stream()
 ### Embeddings
 
 ```python
+import json
 from gen_ai_hub.proxy.native.amazon import AsyncSession
 async def async_amazon_titan_embedding(model_name):
     session = AsyncSession()
@@ -76,7 +77,7 @@ await async_amazon_titan_embedding("amazon--titan-embed-text")
 ### Generate Content
 
 ```python
-import json
+
 from gen_ai_hub.proxy.native.google_genai import Client
 from gen_ai_hub.proxy import get_proxy_client
 
@@ -92,6 +93,9 @@ print(response)
 ### Chat
 
 ```python
+from gen_ai_hub.proxy.native.google_genai import Client
+from gen_ai_hub.proxy import get_proxy_client
+
 async with Client(proxy_client=proxy_client).aio as aclient:
     chat_session = aclient.chats.create(model="gemini-3.5-flash")
     response1 = await chat_session.send_message("Hello.")
@@ -103,6 +107,8 @@ async with Client(proxy_client=proxy_client).aio as aclient:
 ### Streaming
 
 ```python
+from gen_ai_hub.proxy.native.google_genai import Client
+from gen_ai_hub.proxy import get_proxy_client
 from google.genai.types import GenerateContentConfig, Content, Part
 
 proxy_client = get_proxy_client('gen-ai-hub')
@@ -140,8 +146,7 @@ await async_amazon_chat_model()
 This demonstrates how to use the `chat_model.astream` method for the Claude model.
 
 ```python
-from langchain_core.messages import AIMessageChunk
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import AIMessageChunk, HumanMessage
 from gen_ai_hub.proxy.langchain import ChatBedrock
 
 async def async_chat_streaming():
@@ -165,6 +170,7 @@ await async_chat_streaming()
 This demonstrates how to use the `ChatBedrockConverse` model's `ainvoke` method.
 
 ```python
+from langchain_core.messages import HumanMessage, AIMessage
 from gen_ai_hub.proxy.langchain import ChatBedrockConverse
 
 async def chat_converse_model_example(model_name):
