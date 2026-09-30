@@ -81,7 +81,13 @@ result = orchestration_service.run(placeholder_values={"user_query": "The Orches
 print(result.final_result.choices[0].message.content)
 ```
 
+### Additional Pipeline Options
+
+Beyond the basic four-step setup, the orchestration pipeline supports several configuration options that you can apply independently or in combination.
+
 #### Using Fallback Configurations
+
+Use multiple configurations to make your pipeline resilient: if one fails, the service automatically tries the next.
 
 You can provide multiple `ModuleConfig` objects to `OrchestrationConfig` instead of a single one.
 The configurations are tried in order: if a call with one configuration fails, the next one is used as fallback.
