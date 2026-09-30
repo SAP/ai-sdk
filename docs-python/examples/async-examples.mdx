@@ -12,6 +12,7 @@ This demonstrates how to use async-based calls for Amazon AI models.
 ### Converse
 
 ```python
+from gen_ai_hub.proxy.native.amazon import AsyncSession
 async def async_amazon_bedrock_converse(model_name):
     session = AsyncSession()
     bedrock = await session.async_client(model_name=model_name)
@@ -29,6 +30,7 @@ await async_amazon_bedrock_converse("amazon--nova-lite")
 ### Async Function to Stream Amazon Model Response
 
 ```python
+from gen_ai_hub.proxy.native.amazon import AsyncSession
 async def async_bedrock_invoke_with_stream():
     session = AsyncSession()
     bedrock = await session.async_client(model_name="amazon--nova-lite")
@@ -55,6 +57,7 @@ await async_bedrock_invoke_with_stream()
 ### Embeddings
 
 ```python
+from gen_ai_hub.proxy.native.amazon import AsyncSession
 async def async_amazon_titan_embedding(model_name):
     session = AsyncSession()
     bedrock = await session.async_client(model_name=model_name)
@@ -73,6 +76,7 @@ await async_amazon_titan_embedding("amazon--titan-embed-text")
 ### Generate Content
 
 ```python
+import json
 from gen_ai_hub.proxy.native.google_genai import Client
 from gen_ai_hub.proxy import get_proxy_client
 
@@ -123,7 +127,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from gen_ai_hub.proxy.langchain import ChatBedrock
 
 async def async_amazon_chat_model():
-    chat_model = ChatBedrock(model_name="anthropic--claude-3-haiku", model_kwargs={"temperature": 0.0})
+    chat_model = ChatBedrock(model_name="anthropic--claude-4.5-haiku", model_kwargs={"temperature": 0.0})
     response = await chat_model.ainvoke([HumanMessage(content="Write me a song about sparkling water.")])
     if isinstance(response, AIMessage):
         print("Response:", response.content)
@@ -137,11 +141,12 @@ This demonstrates how to use the `chat_model.astream` method for the Claude mode
 
 ```python
 from langchain_core.messages import AIMessageChunk
+from langchain_core.messages import HumanMessage
 from gen_ai_hub.proxy.langchain import ChatBedrock
 
 async def async_chat_streaming():
     chat_model = ChatBedrock(
-        model_name="anthropic--claude-3-haiku",
+        model_name="anthropic--claude-4.5-haiku",
         model_kwargs={"temperature": 0.0},
         streaming=True
     )
@@ -168,7 +173,7 @@ async def chat_converse_model_example(model_name):
     if isinstance(response, AIMessage):
         print("Response:", response.content)
 
-await chat_converse_model_example("anthropic--claude-3-haiku")
+await chat_converse_model_example("anthropic--claude-4.5-haiku")
 ```
 
 ### Async Gemini
