@@ -11,7 +11,7 @@ Find it here:
 
 - [JavaScript/TypeScript](https://github.com/SAP/ai-sdk-js).
 - [Java](https://github.com/SAP/ai-sdk-java).
-- [Python](https://github.com/SAP/ai-sdk-python)
+- [Python](https://github.com/SAP/ai-sdk-python).
 
 ## Requirements and Setup
 
