@@ -63,7 +63,7 @@ Poll the `getDataDestinationByName()` method and check `status` until it reaches
 
 #### List Data Destinations
 
-```ts
+```ts twoslash
 import type { GetDataDestinations } from '@sap-ai-sdk/context-registry';
 // ---cut---
 import { DataDestinationsApi } from '@sap-ai-sdk/context-registry';
@@ -80,17 +80,15 @@ const response: GetDataDestinations =
 Use the `createUpdateDataDestination()` method to upsert a destination.
 Use `executeRaw()` to access the `Location` header for polling.
 
-```ts
+```ts twoslash
 import { DataDestinationsApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
 const response = await DataDestinationsApi.createUpdateDataDestination(
   'my-hdl-destination',
   {
     type: 'HDL',
-    connectionConfig: {
-      address: 'https://my-hdl-instance.hanacloud.ondemand.com',
-      user: 'MY_USER',
-      password: 'MY_PASSWORD'
+    config: {
+      host: 'my-hdl-instance.hanacloud.ondemand.com'
     }
   },
   { 'AI-Resource-Group': 'default' }
@@ -105,18 +103,19 @@ const response = await DataDestinationsApi.createUpdateDataDestination(
 Use the `validateDataDestination()` method to test provider connectivity before saving.
 Nothing is persisted.
 
-```ts
+```ts twoslash
 import { DataDestinationsApi } from '@sap-ai-sdk/context-registry';
 import type { ValidateDataDestinationResponse } from '@sap-ai-sdk/context-registry';
 // ---cut---
 const result: ValidateDataDestinationResponse =
   await DataDestinationsApi.validateDataDestination(
     {
-      type: 'HDL',
-      connectionConfig: {
-        address: 'https://my-hdl-instance.hanacloud.ondemand.com',
-        user: 'MY_USER',
-        password: 'MY_PASSWORD'
+      type: 'S3',
+      config: {
+        bucket: 'my-bucket',
+        region: 'eu-central-1',
+        access_key_id: 'MY_ACCESS_KEY_ID',
+        secret_access_key: 'MY_SECRET_ACCESS_KEY'
       }
     },
     { 'AI-Resource-Group': 'default' }
@@ -128,7 +127,7 @@ const result: ValidateDataDestinationResponse =
 The API checks for dependent Tabular Artifacts synchronously, then returns `202 Accepted` and marks the destination as `DELETING`.
 A background task handles the actual removal.
 
-```ts
+```ts twoslash
 import { DataDestinationsApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
 await DataDestinationsApi.deleteDataDestinationByName('my-hdl-destination', {
@@ -144,7 +143,7 @@ Creation is asynchronous; poll the `getTabularArtifactByName()` method until `st
 
 #### List Tabular Artifacts
 
-```ts
+```ts twoslash
 import type { TabularArtifactListResponse } from '@sap-ai-sdk/context-registry';
 // ---cut---
 import { TabularArtifactsApi } from '@sap-ai-sdk/context-registry';
@@ -158,7 +157,7 @@ const response: TabularArtifactListResponse =
 
 #### Create a Tabular Artifact
 
-```ts
+```ts twoslash
 import { TabularArtifactsApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
 const response = await TabularArtifactsApi.createTabularArtifact(
@@ -180,7 +179,7 @@ const response = await TabularArtifactsApi.createTabularArtifact(
 
 Use the `getTabularArtifactData()` method to retrieve the first 10 rows of the artifact, which is useful for verifying the data is readable before building a Scenario Configuration.
 
-```ts
+```ts twoslash
 import type { TabularArtifactDataPreview } from '@sap-ai-sdk/context-registry';
 // ---cut---
 import { TabularArtifactsApi } from '@sap-ai-sdk/context-registry';
@@ -199,7 +198,7 @@ Pass that name to the Tabular Orchestration service when requesting a prediction
 
 #### List Scenario Configurations
 
-```ts
+```ts twoslash
 import type { GetScenarioConfigurations } from '@sap-ai-sdk/context-registry';
 // ---cut---
 import { ScenarioConfigurationManagerApi } from '@sap-ai-sdk/context-registry';
@@ -213,7 +212,7 @@ const response: GetScenarioConfigurations =
 
 #### Create a Scenario Configuration
 
-```ts
+```ts twoslash
 import { ScenarioConfigurationManagerApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
 await ScenarioConfigurationManagerApi.createScenarioConfiguration(
@@ -231,7 +230,7 @@ await ScenarioConfigurationManagerApi.createScenarioConfiguration(
 
 Use the `patchScenarioConfigurationByName()` method to update individual fields without replacing the entire resource.
 
-```ts
+```ts twoslash
 import { ScenarioConfigurationManagerApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
 await ScenarioConfigurationManagerApi.patchScenarioConfigurationByName(
@@ -249,7 +248,7 @@ await ScenarioConfigurationManagerApi.patchScenarioConfigurationByName(
 
 #### Delete a Scenario Configuration
 
-```ts
+```ts twoslash
 import { ScenarioConfigurationManagerApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
 await ScenarioConfigurationManagerApi.deleteScenarioConfigurationByName(
@@ -264,7 +263,7 @@ Create and delete operations return `202 Accepted` and complete in the backgroun
 Poll the corresponding `GET` endpoint and wait until `status` is `ACTIVE` (or `404` for deletions).
 The following example polls until a Tabular Artifact is ready:
 
-```ts
+```ts twoslash
 import { TabularArtifactsApi } from '@sap-ai-sdk/context-registry';
 import type { TabularArtifactDetails } from '@sap-ai-sdk/context-registry';
 // ---cut---
@@ -297,7 +296,7 @@ The same pattern applies to Data Destinations and Scenario Configurations.
 
 Pass a `destinationName` to the `execute()` method to target a specific SAP AI Core instance.
 
-```ts
+```ts twoslash
 import { DataDestinationsApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
 const response = await DataDestinationsApi.getAllDataDestinations(
@@ -315,7 +314,7 @@ For more information about configuring a destination, refer to the [Using a Dest
 
 Pass request configuration as a second argument to the `execute()` method.
 
-```ts
+```ts twoslash
 import { DataDestinationsApi } from '@sap-ai-sdk/context-registry';
 // ---cut---
 const response = await DataDestinationsApi.getAllDataDestinations(
