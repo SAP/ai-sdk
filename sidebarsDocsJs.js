@@ -64,6 +64,7 @@ export default {
       label: 'Tutorials',
       items: [
         'tutorials/getting-started-agents',
+        'tutorials/langgraph-template-orchestration-client',
         'tutorials/scoped-prompt-registry-templates',
         'tutorials/llm-batch-api',
         {
