@@ -89,11 +89,11 @@ There are multiple ways to create an `EvaluationConfig` — with a prompt templa
 from gen_ai_hub.prompt_registry import PromptTemplateSpec, PromptTemplate
 from gen_ai_hub.orchestration_v2.models.template_ref import TemplateRef, TemplateRefByID
 from gen_ai_hub.evaluations import Dataset, MetricConfig, MetricRef, EvaluationConfig
-from gen_ai_hub.orchestration_v2.models.llm_model_details import LLMModelDetails as LLM
+from gen_ai_hub.orchestration_v2.models.llm_model_details import LLMModelDetails
 
 evaluation_config_list = [
     EvaluationConfig(
-        llm=LLM(name="gpt-4o", version="latest"),
+        llm=LLMModelDetails(name="gpt-4o", version="latest"),
         template=PromptTemplateSpec(
             template=[PromptTemplate(
                 role="user",
@@ -104,26 +104,26 @@ evaluation_config_list = [
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[
             MetricConfig(
-                reference=MetricRef(id="3ea07c1f-5b10-4b12-bf46-6d429faf8010"),
+                reference=MetricRef(id="<METRIC ID>"),
                 variable_mapping={"reference": "ground_truth"},
             ),
         ],
     ),
     EvaluationConfig(
-        orchestration_registry_reference="ab0f5164-fc1d-412a-951b-885aa796fce3",
+        orchestration_registry_reference="<ORCHESTRATION REGISTRY REFERENCE>",
         template_variable_mapping={"question": "topic"},
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[
             MetricConfig(
-                reference=MetricRef(id="3ea07c1f-5b10-4b12-bf46-6d429faf8010"),
+                reference=MetricRef(id="<METRIC ID>"),
                 variable_mapping={"reference": "ground_truth"},
             ),
             MetricConfig(reference=MetricRef(name="Content Filter on Input")),
         ],
     ),
     EvaluationConfig(
-        llm=LLM(name="gpt-4o", version="latest"),
-        template=TemplateRef(template_ref=TemplateRefByID(id="43c9076a-4954-4d1d-a52d-a8b45bb5fa9a")),
+        llm=LLMModelDetails(name="gpt-4o", version="latest"),
+        template=TemplateRef(template_ref=TemplateRefByID(id="<TEMPLATE REF ID>")),
         template_variable_mapping={"question": "topic"},
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[

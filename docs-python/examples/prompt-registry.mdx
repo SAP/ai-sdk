@@ -157,15 +157,6 @@ response = prompt_registry_client.get_orchestration_configs(
 print(response.resources)
 ```
 
-### Orchestration Config History
-
-Retrieve the history of Orchestration Config by scenario, name and version.
-
-```python
-response = prompt_registry_client.get_orchestration_configs(scenario='MyScenario', name='prompt_template_name', version='1.0.0')
-print(response.resources)
-```
-
 ### Export an Orchestration Config
 
 Export a design orchestration config to a declarative-compatible YAML file.

@@ -148,11 +148,10 @@ repo = retrieval.get_data_repository_by_id(repo_id)
 ### Retrieval Search
 
 ```python
-from typing import List, Optional
 from gen_ai_hub.document_grounding.models.retrieval import (
     RetrievalSearchInput, RetrievalSearchFilter, RetrievalSearchConfiguration,
-    RetrievalKeyValueListPair, RetrievalSearchDocumentKeyValueListPair
 )
+
 
 retrieval_req = RetrievalSearchInput(
     query='How to configure Document Grounding?',
@@ -161,7 +160,7 @@ retrieval_req = RetrievalSearchInput(
             id='r1',
             dataRepositoryType='help.sap.com',
             searchConfiguration=RetrievalSearchConfiguration(maxChunkCount=5),
-            dataRepositories=["*"],
+            dataRepositories=["*"]
         )
     ],
 )

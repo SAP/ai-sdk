@@ -120,7 +120,7 @@ response = client.models.generate_content(model="gemini-3.5-flash",
 )
 print(response)
 
-response = client.models.generate_content(model="gemini-3.0-flash",
+response = client.models.generate_content(model="gemini-3.5-flash",
                                           contents="Explain the theory of relativity in simple terms.")
 print(response)
 ```
@@ -251,7 +251,7 @@ template = """Question: {question}
 prompt = PromptTemplate(template=template, input_variables=['question'])
 question = 'What is a supernova?'
 
-llm = init_llm('gpt-5.4-nano', max_tokens=300, proxy_client=get_proxy_client())
+llm = init_llm('gpt-5.4-nano', max_tokens=300, proxy_client=get_proxy_client('gen-ai-hub'))
 chain = prompt | llm | StrOutputParser()
 response = chain.invoke({'question': question})
 print(response)
@@ -327,7 +327,7 @@ class Person(BaseModel):
     name: str
     age: int
 
-chat_model = ChatOpenAI(proxy_model_name="gpt-4o-mini", proxy_client=get_proxy_client())
+chat_model = ChatOpenAI(proxy_model_name="gpt-4o-mini", proxy_client=get_proxy_client('gen-ai-hub'))
 chat_model = chat_model.with_structured_output(method="json_schema", schema=Person, strict=True)
 
 message = HumanMessage(content="Tell me about a person named John who is 30")
