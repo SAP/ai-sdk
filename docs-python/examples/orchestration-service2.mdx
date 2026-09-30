@@ -357,7 +357,7 @@ for chunk in response:
 
 The Orchestration Service accepts a harmonized parameter `reasoning_effort` to control the level of reasoning a model performs. This parameter can take the values `minimal`, `low`, `medium`, `high`, and `none`, which are mapped to the closest equivalent in the model's native reasoning configuration. See the [Orchestration Service reasoning documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning) for details.
 
-When reasoning is enabled, models can expose their intermediate reasoning content in addition to the final answer. This reasoning content is returned as a list of reasoning blocks, which contain the human-readable reasoning text in their `content` attribute. 
+When reasoning is enabled, models can expose their intermediate reasoning content in addition to the final answer. This reasoning content is returned as a list of reasoning blocks, which contain the human-readable reasoning text in their `content` attribute.
 
 ```python
 config = OrchestrationConfig(
