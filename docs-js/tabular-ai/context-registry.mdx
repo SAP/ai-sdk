@@ -177,7 +177,8 @@ const response = await TabularArtifactsApi.createTabularArtifact(
 
 #### Preview Tabular Artifact Data
 
-Use the `getTabularArtifactData()` method to retrieve the first 10 rows of the artifact, which is useful for verifying the data is readable before building a Scenario Configuration.
+Use the `getTabularArtifactData()` method to retrieve the first 10 rows of the artifact.
+This is useful for verifying the data is readable before creating a Scenario Configuration.
 
 ```ts twoslash
 import type { TabularArtifactDataPreview } from '@sap-ai-sdk/context-registry';
@@ -260,7 +261,7 @@ await ScenarioConfigurationManagerApi.deleteScenarioConfigurationByName(
 ### Polling for Async Operations
 
 Create and delete operations return `202 Accepted` and complete in the background.
-Poll the corresponding `GET` endpoint and wait until `status` is `ACTIVE` (or `404` for deletions).
+Poll the corresponding `GET` endpoint and wait until `status` is `ACTIVE`, or until the endpoint returns 404 for deletions.
 The following example polls until a Tabular Artifact is ready:
 
 ```ts twoslash
