@@ -33,7 +33,7 @@ stream_openai("Why is the sky blue?")
 #### Structured model outputs
 
 ```python
-from gen_ai_hub.proxy.native.openai import chat, OpenAI
+from gen_ai_hub.proxy.native.openai import chat
 from pydantic import BaseModel
 
 class Person(BaseModel):
@@ -58,6 +58,9 @@ print(stream_openai_structured_outputs(messages, Person, "gpt-4o-mini"))
 ```
 
 ```python
+from gen_ai_hub.proxy import get_proxy_client
+from gen_ai_hub.proxy.native.openai import OpenAI
+
 def stream_beta_openai_structured_outputs(messages, response_object, model_name):
     chat = OpenAI(proxy_client=get_proxy_client())
     with chat.beta.chat.completions.stream(

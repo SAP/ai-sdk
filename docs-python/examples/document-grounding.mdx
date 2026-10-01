@@ -45,7 +45,7 @@ from gen_ai_hub.orchestration_v2.service import OrchestrationService
 from gen_ai_hub.orchestration_v2.models.config import OrchestrationConfig, ModuleConfig
 from gen_ai_hub.orchestration_v2.models.document_grounding import (
     GroundingModuleConfig, GroundingType, DataRepositoryType,
-    GroundingSearchConfig, DocumentGroundingConfig, DocumentGroundingFilter,
+    DocumentGroundingConfig, DocumentGroundingFilter, GroundingSearchConfig,
     DocumentGroundingPlaceholders
 )
 from gen_ai_hub.orchestration_v2.models.llm_model_details import LLMModelDetails
@@ -72,19 +72,6 @@ prompt = Template(template=[
 ### Grounding via SAP Help (Elastic Search)
 
 ```python
-from gen_ai_hub.orchestration_v2 import (
-    OrchestrationService, OrchestrationConfig, ModuleConfig,
-    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
-    GroundingModuleConfig, GroundingType, DataRepositoryType,
-    DocumentGroundingConfig, DocumentGroundingFilter, DocumentGroundingPlaceholders
-)
-orchestration_service = OrchestrationService()
-llm = LLMModelDetails(name="gpt-4o-mini", params={"temperature": 0.0})
-prompt = Template(template=[
-    SystemMessage(content="You are an expert on SAP Product features."),
-    UserMessage(content="Context: {{ ?grounding_response }}\nQuestion: What are the features of {{ ?product }}"),
-])
-
 filters = [DocumentGroundingFilter(id="SAPHelp", data_repository_type=DataRepositoryType.URL.value)]
 
 grounding_config = GroundingModuleConfig(
@@ -110,20 +97,6 @@ print(response.final_result.choices[0].message.content)
 Assume the documentation for a custom product extension is vectorized and stored in the Vector knowledge base created earlier from the S3 bucket.
 
 ```python
-from gen_ai_hub.orchestration_v2 import (
-    OrchestrationService, OrchestrationConfig, ModuleConfig,
-    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
-    GroundingModuleConfig, GroundingType, DataRepositoryType,
-    DocumentGroundingConfig, DocumentGroundingFilter, DocumentGroundingPlaceholders
-)
-from gen_ai_hub.orchestration_v2.models.document_grounding import GroundingSearchConfig
-orchestration_service = OrchestrationService()
-llm = LLMModelDetails(name="gpt-4o-mini", params={"temperature": 0.0})
-prompt = Template(template=[
-    SystemMessage(content="You are an expert on SAP Product features."),
-    UserMessage(content="Context: {{ ?grounding_response }}\nQuestion: What are the features of {{ ?product }}"),
-])
-
 filters = [DocumentGroundingFilter(
     id="<*** product extension docs id ***>",
     data_repositories=["<*** data repository referencing the S3 pipeline id ***>"],

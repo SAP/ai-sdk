@@ -259,9 +259,8 @@ from gen_ai_hub.orchestration_v2 import (
     LlamaGuard38bFilter, FilteringModuleConfig, InputFiltering, OutputFiltering,
     AzureContentSafetyInputFilterConfig, AzureContentSafetyOutputFilterConfig, LlamaGuard38bFilterConfig,
     Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
-    ModuleConfig, OrchestrationConfig, OrchestrationService
+    ModuleConfig, OrchestrationConfig, OrchestrationService, OrchestrationError
 )
-from gen_ai_hub.orchestration_v2 import OrchestrationError
 
 template = Template(template=[
     SystemMessage(content="You are a helpful AI assistant."),
@@ -1220,13 +1219,10 @@ This example demonstrates the different message `roles` in the templating module
 The `FewShotLearner` class manages the dynamic creation of the template and ensures the correct message roles are used for each user input.
 
 ```python
-from typing import List, Tuple
 from gen_ai_hub.orchestration_v2 import (
     OrchestrationConfig, ModuleConfig, LLMModelDetails, SystemMessage, UserMessage,
     AssistantMessage, Template, PromptTemplatingModuleConfig, OrchestrationService
 )
-
-
 class FewShotLearner:
     def __init__(self, orchestration_service, system_message, examples):
         self.service = orchestration_service
@@ -1279,7 +1275,7 @@ The `OrchestrationService` also supports asynchronous calls. Use:
 ```python
 from gen_ai_hub.orchestration_v2 import (
     SystemMessage, UserMessage, Template, PromptTemplatingModuleConfig,
-    LLMModelDetails, OrchestrationConfig, ModuleConfig, OrchestrationService, GlobalStreamOptions
+    LLMModelDetails, OrchestrationConfig, ModuleConfig, OrchestrationService
 )
 
 template = Template(template=[
@@ -1302,6 +1298,8 @@ await test_async()
 Async streaming:
 
 ```python
+from gen_ai_hub.orchestration_v2 import GlobalStreamOptions
+
 config_stream = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True))
 
 async def test_streaming_async():

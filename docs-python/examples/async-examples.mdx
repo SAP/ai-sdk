@@ -96,6 +96,7 @@ print(response)
 from gen_ai_hub.proxy.native.google_genai import Client
 from gen_ai_hub.proxy import get_proxy_client
 
+proxy_client = get_proxy_client('gen-ai-hub')
 async with Client(proxy_client=proxy_client).aio as aclient:
     chat_session = aclient.chats.create(model="gemini-3.5-flash")
     response1 = await chat_session.send_message("Hello.")
