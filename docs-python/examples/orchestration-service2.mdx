@@ -81,6 +81,52 @@ result = orchestration_service.run(placeholder_values={"user_query": "The Orches
 print(result.final_result.choices[0].message.content)
 ```
 
+### Additional Pipeline Options
+
+Beyond the basic four-step setup, the orchestration pipeline supports several configuration options that you can apply independently or in combination.
+
+#### Using Fallback Configurations
+
+Use multiple configurations to make your pipeline resilient: if one fails, the service automatically tries the next.
+
+You can provide multiple `ModuleConfig` objects to `OrchestrationConfig` instead of a single one.
+The configurations are tried in order: if a call with one configuration fails, the next one is used as fallback.
+
+This works for both regular and streaming calls.
+
+```python
+from gen_ai_hub.orchestration_v2 import (SystemMessage, UserMessage, Template, PromptTemplatingModuleConfig,
+                                        LLMModelDetails, ModuleConfig, OrchestrationConfig, OrchestrationService)
+
+working_config = ModuleConfig(
+    prompt_templating=PromptTemplatingModuleConfig(
+        prompt=Template(template=[UserMessage(content="What is the longest river on planet earth?")]),
+        model=LLMModelDetails(name="gpt-4o-mini"),
+    )
+)
+
+second_working_config = ModuleConfig(
+    prompt_templating=PromptTemplatingModuleConfig(
+        prompt=Template(template=[UserMessage(content="What is the longest river on planet earth?")]),
+        model=LLMModelDetails(name="gpt-4o"),
+    )
+)
+
+broken_config = ModuleConfig(
+    prompt_templating=PromptTemplatingModuleConfig(
+        prompt=Template(template=[UserMessage(content="What is the longest river on planet earth?")]),
+        model=LLMModelDetails(name="dummy-model"),
+    )
+)
+
+# broken_config is tried first and will fail, so working_config is used as fallback
+config = OrchestrationConfig(modules=[broken_config, working_config, second_working_config])
+
+service = OrchestrationService(config=config)
+result = service.run()
+print(result.final_result.choices[0].message.content)
+```
+
 #### Referencing Templates from the Prompt Registry
 
 In Step 3 you can also use a prompt template reference, which allows you to reuse existing templates stored in the Prompt Registry.
