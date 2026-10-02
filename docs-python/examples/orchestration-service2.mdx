@@ -399,6 +399,68 @@ for chunk in response:
     print(chunk.final_result.choices[0].delta.content, end='')
 ```
 
+## Reasoning
+
+The Orchestration Service accepts a harmonized parameter `reasoning_effort` to control the level of reasoning a model performs. This parameter can take the values `minimal`, `low`, `medium`, `high`, and `none`, which are mapped to the closest equivalent in the model's native reasoning configuration. See the [Orchestration Service reasoning documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning) for details.
+
+When reasoning is enabled, models can expose their intermediate reasoning content in addition to the final answer. This reasoning content is returned as a list of reasoning blocks, which contain the human-readable reasoning text in their `content` attribute.
+
+```python
+config = OrchestrationConfig(
+    modules=ModuleConfig(
+        prompt_templating=PromptTemplatingModuleConfig(
+            prompt=Template(
+                template=[
+                    UserMessage(
+                        content="What is the longest river on planet earth?"
+                    )
+                ]
+            ),
+            # pass the reasoning_effort parameter in params
+            model=LLMModelDetails(name="gemini-3.5-flash", params={ "reasoning_effort": "high" }),
+        )
+    )
+)
+service = OrchestrationService(config=config)
+result = service.run()
+reasoning_content = result.final_result.choices[0].message.reasoning_content
+if reasoning_content:
+    # print the human-readable reasoning content
+    print("".join([block.content for block in reasoning_content]))
+```
+
+In streaming responses, the reasoning content is spread across different chunks which are again lists of reasoning blocks available in the `reasoning_content` attribute of each `delta`.
+
+```python
+config = OrchestrationConfig(
+    modules=ModuleConfig(
+        prompt_templating=PromptTemplatingModuleConfig(
+            prompt=Template(
+                template=[
+                    UserMessage(
+                        content="What is the longest river on planet earth?"
+                    )
+                ]
+            ),
+            model=LLMModelDetails(name="gemini-3.5-flash", params={ "reasoning_effort": "high" }),
+        )
+    ),
+    stream=GlobalStreamOptions(enabled=True),
+)
+
+service = OrchestrationService(config=config)
+stream = service.stream()
+for chunk in stream:
+    reasoning_content_chunk = chunk.final_result.choices[0].delta.reasoning_content
+    if reasoning_content_chunk:
+        # print the human-readable reasoning content chunk
+        print("".join([block.content for block in reasoning_content_chunk]))
+```
+
+:::note
+In multi-turn conversations, the full and unmodified list of `reasoning_content` blocks needs to be passed in the message history. In a streaming setting, the chunks have to be accumulated before using them in a follow-up request.
+:::
+
 ## Tool Calling (Function Calling)
 
 The Orchestration Service supports **tool calling**, which allows large language models (LLMs) to request the execution of external operations such as Python functions, API calls, or other tools as part of their workflow. This feature enables you to build advanced AI solutions that can perform calculations, access data, or interact with external systems in response to user input.
