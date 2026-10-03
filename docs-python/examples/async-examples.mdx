@@ -9,50 +9,10 @@ hide_table_of_contents: false
 
 This demonstrates how to use async-based calls for Amazon AI models.
 
-### Invoke Model
-
-```python
-import json
-from gen_ai_hub.proxy.native.amazon import AsyncSession
-
-async def async_bedrock_invoke_model():
-    session = AsyncSession()
-    bedrock = await session.async_client(model_name="amazon--nova-premier")
-    body = json.dumps({
-        "inputText": "Explain black holes to 8th graders.",
-        "textGenerationConfig": {"maxTokenCount": 300, "stopSequences": [], "temperature": 0.0, "topP": 0.9},
-    })
-    response = await bedrock.invoke_model(body=body)
-    response_body = json.loads(await response.get("body").read())
-    print("Response:", response_body)
-    await bedrock.close()
-
-await async_bedrock_invoke_model()
-```
-
-### Streaming
-
-```python
-async def async_bedrock_invoke_with_stream():
-    session = AsyncSession()
-    bedrock = await session.async_client(model_name="amazon--nova-premier")
-    body = json.dumps({
-        "inputText": "You are a story teller. Tell me a short story about boats.",
-        "textGenerationConfig": {"maxTokenCount": 300, "stopSequences": [], "temperature": 0.0, "topP": 0.9},
-    })
-    async for event in bedrock.invoke_model_with_response_stream(body=body):
-        for line in event["chunk"]["bytes"].splitlines():
-            if line and line.startswith(b"data: "):
-                chunk = json.loads(line[6:])
-                if "outputText" in chunk:
-                    print("Chunk Output:", chunk["outputText"])
-
-await async_bedrock_invoke_with_stream()
-```
-
 ### Converse
 
 ```python
+from gen_ai_hub.proxy.native.amazon import AsyncSession
 async def async_amazon_bedrock_converse(model_name):
     session = AsyncSession()
     bedrock = await session.async_client(model_name=model_name)
@@ -64,12 +24,41 @@ async def async_amazon_bedrock_converse(model_name):
     print("Response:", response["output"]["message"]["content"][0]["text"])
     await bedrock.close()
 
-await async_amazon_bedrock_converse("amazon--nova-premier")
+await async_amazon_bedrock_converse("amazon--nova-lite")
+```
+
+### Async Function to Stream Amazon Model Response
+
+```python
+from gen_ai_hub.proxy.native.amazon import AsyncSession
+async def async_bedrock_invoke_with_stream():
+    session = AsyncSession()
+    bedrock = await session.async_client(model_name="amazon--nova-lite")
+    conversation = [
+        {
+            "role": "user",
+            "content": [
+                {"text": "You are a story teller. Tell me a short story about boats."}
+            ],
+        }
+    ]
+    response = await bedrock.converse_stream(
+        messages=conversation,
+        inferenceConfig={"maxTokens": 300, "temperature": 0.0, "topP": 0.9},
+    )
+    async for event in response["stream"]:
+        delta = event.get("contentBlockDelta", {}).get("delta", {})
+        if "text" in delta:
+            print("Chunk Output:", delta["text"])
+
+await async_bedrock_invoke_with_stream()
 ```
 
 ### Embeddings
 
 ```python
+import json
+from gen_ai_hub.proxy.native.amazon import AsyncSession
 async def async_amazon_titan_embedding(model_name):
     session = AsyncSession()
     bedrock = await session.async_client(model_name=model_name)
@@ -88,13 +77,14 @@ await async_amazon_titan_embedding("amazon--titan-embed-text")
 ### Generate Content
 
 ```python
+
 from gen_ai_hub.proxy.native.google_genai import Client
 from gen_ai_hub.proxy import get_proxy_client
 
 proxy_client = get_proxy_client('gen-ai-hub')
 async with Client(proxy_client=proxy_client).aio as aclient:
     response = await aclient.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.5-flash",
         contents="Explain the relativity theory in simple terms."
     )
 print(response)
@@ -103,8 +93,12 @@ print(response)
 ### Chat
 
 ```python
+from gen_ai_hub.proxy.native.google_genai import Client
+from gen_ai_hub.proxy import get_proxy_client
+
+proxy_client = get_proxy_client('gen-ai-hub')
 async with Client(proxy_client=proxy_client).aio as aclient:
-    chat_session = aclient.chats.create(model="gemini-2.5-flash")
+    chat_session = aclient.chats.create(model="gemini-3.5-flash")
     response1 = await chat_session.send_message("Hello.")
     print("Response 1:", response1.text)
     response2 = await chat_session.send_message("What is your opinion about the latest Gemini model?")
@@ -114,12 +108,14 @@ async with Client(proxy_client=proxy_client).aio as aclient:
 ### Streaming
 
 ```python
+from gen_ai_hub.proxy.native.google_genai import Client
+from gen_ai_hub.proxy import get_proxy_client
 from google.genai.types import GenerateContentConfig, Content, Part
 
 proxy_client = get_proxy_client('gen-ai-hub')
 async with Client(proxy_client=proxy_client).aio as aclient:
     async_response_stream = await aclient.models.generate_content_stream(
-        model="gemini-2.5-flash",
+        model="gemini-3.5-flash",
         contents=[Content(role="user", parts=[Part(text="Write a paragraph about a magic kingdom.")])],
         config=GenerateContentConfig(temperature=0),
     )
@@ -138,7 +134,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from gen_ai_hub.proxy.langchain import ChatBedrock
 
 async def async_amazon_chat_model():
-    chat_model = ChatBedrock(model_name="anthropic--claude-3-haiku", model_kwargs={"temperature": 0.0})
+    chat_model = ChatBedrock(model_name="anthropic--claude-4.5-haiku", model_kwargs={"temperature": 0.0})
     response = await chat_model.ainvoke([HumanMessage(content="Write me a song about sparkling water.")])
     if isinstance(response, AIMessage):
         print("Response:", response.content)
@@ -151,12 +147,12 @@ await async_amazon_chat_model()
 This demonstrates how to use the `chat_model.astream` method for the Claude model.
 
 ```python
-from langchain_core.messages import AIMessageChunk
+from langchain_core.messages import AIMessageChunk, HumanMessage
 from gen_ai_hub.proxy.langchain import ChatBedrock
 
 async def async_chat_streaming():
     chat_model = ChatBedrock(
-        model_name="anthropic--claude-3-haiku",
+        model_name="anthropic--claude-4.5-haiku",
         model_kwargs={"temperature": 0.0},
         streaming=True
     )
@@ -175,6 +171,7 @@ await async_chat_streaming()
 This demonstrates how to use the `ChatBedrockConverse` model's `ainvoke` method.
 
 ```python
+from langchain_core.messages import HumanMessage, AIMessage
 from gen_ai_hub.proxy.langchain import ChatBedrockConverse
 
 async def chat_converse_model_example(model_name):
@@ -183,7 +180,7 @@ async def chat_converse_model_example(model_name):
     if isinstance(response, AIMessage):
         print("Response:", response.content)
 
-await chat_converse_model_example("anthropic--claude-3-haiku")
+await chat_converse_model_example("anthropic--claude-4.5-haiku")
 ```
 
 ### Async Gemini
@@ -194,7 +191,7 @@ This demonstrates how to use the `ainvoke` method of the Gemini model asynchrono
 from gen_ai_hub.proxy.langchain import init_llm
 
 async def gemini_ainvoke_example():
-    llm = init_llm(model_name="gemini-2.0-flash", max_tokens=300)
+    llm = init_llm(model_name="gemini-3.5-flash", max_tokens=300)
     response = await llm.ainvoke("Write a ballad about LangChain")
     print(response)
 
@@ -206,7 +203,7 @@ from gen_ai_hub.proxy.langchain import ChatGoogleGenerativeAI
 
 async def gemini_chat_ainvoke_example():
     chat_model = ChatGoogleGenerativeAI(
-        proxy_model_name="gemini-2.0-flash",
+        proxy_model_name="gemini-3.5-flash",
         max_tokens=300,
     )
     response = await chat_model.ainvoke("Write a ballad about LangChain")
@@ -223,7 +220,7 @@ This demonstrates how to use the `astream` method of the Gemini chat model async
 from gen_ai_hub.proxy.langchain import ChatGoogleGenerativeAI
 
 async def gemini_astream_example():
-    chat_model = ChatGoogleGenerativeAI(proxy_model_name="gemini-2.0-flash", temperature=0)
+    chat_model = ChatGoogleGenerativeAI(proxy_model_name="gemini-3.5-flash", temperature=0)
     async for chunk in chat_model.astream("Write a story about a magic backpack."):
         print("Chunk:", chunk.content)
 
