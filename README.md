@@ -32,6 +32,7 @@ Add or change an article and create a pull request.
 
 - [SAP Cloud SDK for AI Java](https://github.com/SAP/ai-sdk/issues)
 - [SAP Cloud SDK for AI JavaScript / TypeScript](https://github.com/SAP/ai-sdk-js/issues)
+- [SAP Cloud SDK for AI Python](https://github.com/SAP/ai-sdk-python/issues)
 - [Documentation portal](https://sap.github.io/ai-sdk/)
 
 ## Contributing
