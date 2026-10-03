@@ -1,0 +1,6 @@
+extends: existence
+message: "Avoid using Lombok's 'val' — use Java's 'var' instead."
+ignorecase: false
+level: error
+tokens:
+  - 'val'
