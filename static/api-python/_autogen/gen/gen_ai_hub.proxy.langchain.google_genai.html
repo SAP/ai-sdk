@@ -416,6 +416,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a><input aria-label="Toggle navigation of gen_ai_hub.orchestration_v2.models package" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.azure_content_filter.html">gen_ai_hub.orchestration_v2.models.azure_content_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html">gen_ai_hub.orchestration_v2.models.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.cache_control.html">gen_ai_hub.orchestration_v2.models.cache_control module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.config.html">gen_ai_hub.orchestration_v2.models.config module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filter.html">gen_ai_hub.orchestration_v2.models.content_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filtering.html">gen_ai_hub.orchestration_v2.models.content_filtering module</a></li>
@@ -540,6 +541,31 @@
 <dt class="sig sig-object py" id="gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'ignore',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'protected_namespaces':</span> <span class="pre">(),</span> <span class="pre">'validate_by_alias':</span> <span class="pre">True,</span> <span class="pre">'validate_by_name':</span> <span class="pre">True}</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.model_post_init" title="Link to this definition">¶</a></dt>
+<dd><p>Pydantic V2 lifecycle hook called automatically after <cite>__init__</cite>.</p>
+<p>Seeds <cite>metadata[“lc_versions”]</cite> with the installed <cite>langchain-core</cite>
+(and <cite>langchain</cite>, if installed) versions so that every LLM trace
+carries the package versions that produced it.</p>
+<p>Partner packages should <strong>not</strong> override this method. Instead, they
+should define a <cite>&#64;model_validator(mode=”after”)</cite> that calls
+<cite>_add_version</cite> to append their own version to the same dict.</p>
+<p>!!! warning “Validator naming”</p>
+<blockquote>
+<div><p>Each subclass’s validator <strong>must</strong> have a unique name. Pydantic
+replaces — rather than chains — same-named <cite>model_validator</cite> methods
+in child classes. For example, a <cite>BaseChatOpenAI</cite> subclass should
+use <cite>_set_&lt;partner&gt;_version</cite>, not <cite>_set_version</cite>, to avoid silently
+dropping the parent’s entry.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>_context</strong> – Pydantic validation context (typically <cite>None</cite>).</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1439,6 +1465,7 @@ targeting a proxy or gateway that expects a different API version segment
 <li><a class="reference internal" href="#">gen_ai_hub.proxy.langchain.google_genai module</a><ul>
 <li><a class="reference internal" href="#gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI"><code class="docutils literal notranslate"><span class="pre">ChatGoogleGenerativeAI</span></code></a><ul>
 <li><a class="reference internal" href="#gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.model_config"><code class="docutils literal notranslate"><span class="pre">ChatGoogleGenerativeAI.model_config</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.model_post_init"><code class="docutils literal notranslate"><span class="pre">ChatGoogleGenerativeAI.model_post_init()</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.client"><code class="docutils literal notranslate"><span class="pre">ChatGoogleGenerativeAI.client</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.default_metadata"><code class="docutils literal notranslate"><span class="pre">ChatGoogleGenerativeAI.default_metadata</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.proxy.langchain.google_genai.ChatGoogleGenerativeAI.model_kwargs"><code class="docutils literal notranslate"><span class="pre">ChatGoogleGenerativeAI.model_kwargs</span></code></a></li>
