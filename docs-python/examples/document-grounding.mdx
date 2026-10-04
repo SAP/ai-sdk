@@ -33,6 +33,9 @@ generic_secret_s3_bucket = "<*** generic secret name for the S3 bucket ***>"
 s3_config = S3PipelineCreateRequest(configuration=CommonConfiguration(destination=generic_secret_s3_bucket))
 response = pipelines_api_client.create_pipeline(s3_config)
 print(f"Pipeline ID: {response.pipelineId}")
+```
+After creating the pipeline, wait a few seconds before triggering or querying its status, as it may not be immediately available.
+```python
 print(pipelines_api_client.get_pipeline_status(response.pipelineId))
 ```
 
