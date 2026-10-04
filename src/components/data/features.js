@@ -186,7 +186,7 @@ export const features = [
     },
     python: {
       status: YES,
-      docsLink: `[docs](https://pypi.org/project/ai-core-sdk/)`
+      docsLink: `[docs](https://pypi.org/project/sap-ai-sdk-core/)`
     }
   },
   {
