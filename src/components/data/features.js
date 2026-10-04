@@ -141,7 +141,8 @@ export const features = [
       docsLink: `[docs](${baseUrl}/js/orchestration/chat-completion#grounding)`
     },
     python: {
-      status: YES
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/document-grounding)`
     }
   },
   {
