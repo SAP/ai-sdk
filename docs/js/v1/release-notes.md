@@ -178,7 +178,7 @@
 ### Fixed Issues[​](#fixed-issues-4 "Direct link to Fixed Issues")
 
 * \[ai-api, foundation-models, orchestration] Consider destination when resolving deployment ids. (09b0d2d)
-* \[langchain] Add tool\_calls array to assistant messages only when it is not empty. (cd06f2a)
+* \[langchain] Add tool_calls array to assistant messages only when it is not empty. (cd06f2a)
 
 ## 1.7.0 - Jan 30, 2025[​](#170---jan-30-2025 "Direct link to 1.7.0 - Jan 30, 2025")
 
@@ -205,7 +205,7 @@
 
 ### Improvements[​](#improvements-7 "Direct link to Improvements")
 
-* \[orchestration] Make model\_params property in the LlmModuleConfig optional and refine the type definition to also include known properties. (1476584)
+* \[orchestration] Make model_params property in the LlmModuleConfig optional and refine the type definition to also include known properties. (1476584)
 * \[orchestration] Add buildDocumentGroundingConfig() convenience function to create document grounding configuration in the Orchestration client. (a039890)
 
 ## 1.5.0 - Jan 7, 2025[​](#150---jan-7-2025 "Direct link to 1.5.0 - Jan 7, 2025")

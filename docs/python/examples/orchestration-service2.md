@@ -8,7 +8,7 @@ Before you begin, set up a virtual deployment of the Orchestration Service. See 
 
 ## Authentication[​](#authentication "Direct link to Authentication")
 
-By default, the OrchestrationService initializes a GenAIHubProxyClient, which automatically configures credentials using configuration files or environment variables, as outlined in the Introduction section. If you prefer to set credentials manually, you can provide a custom instance using the proxy\_client parameter.
+By default, the OrchestrationService initializes a GenAIHubProxyClient, which automatically configures credentials using configuration files or environment variables, as outlined in the Introduction section. If you prefer to set credentials manually, you can provide a custom instance using the proxy_client parameter.
 
 ## Basic Orchestration Pipeline[​](#basic-orchestration-pipeline "Direct link to Basic Orchestration Pipeline")
 
@@ -185,8 +185,8 @@ template_by_names = TemplateRefByScenarioNameVersion(scenario="translation", nam
 The `response_format` parameter allows the model output to be formatted in several predefined ways, as follows:
 
 1. **text**: This is the simplest form where the model's output is generated as plain text. It is suitable for applications that require raw text processing.
-2. **json\_object**: Under this setting, the model's output is structured as a JSON object. This is useful for applications that handle data in JSON format, enabling easy integration with web applications and APIs.
-3. **json\_schema**: This setting allows the model's output to adhere to a defined JSON schema. This is particularly useful for applications that require strict data validation, ensuring the output matches a predefined schema.
+2. **json_object**: Under this setting, the model's output is structured as a JSON object. This is useful for applications that handle data in JSON format, enabling easy integration with web applications and APIs.
+3. **json_schema**: This setting allows the model's output to adhere to a defined JSON schema. This is particularly useful for applications that require strict data validation, ensuring the output matches a predefined schema.
 
 **Text:**
 
@@ -246,7 +246,7 @@ template = Template(
 # }
 ```
 
-**Important:** When using `response_format` as json\_object, ensure that messages contain the word 'json' in some form.
+**Important:** When using `response_format` as json_object, ensure that messages contain the word 'json' in some form.
 
 **JSON Schema:**
 
@@ -340,8 +340,8 @@ The `Data Masking` module `anonymizes` or `pseudonymizes` personally identifiabl
 
 #### Masking Types[​](#masking-types "Direct link to Masking Types")
 
-* **Anonymization**: All identifying information is replaced with placeholders (e.g., MASKED\_ENTITY), and the original data cannot be recovered, ensuring that no trace of the original information is retained.
-* **Pseudonymization**: Data is substituted with unique placeholders (e.g., MASKED\_ENTITY\_ID), allowing the original information to be restored if needed.
+* **Anonymization**: All identifying information is replaced with placeholders (e.g., MASKED_ENTITY), and the original data cannot be recovered, ensuring that no trace of the original information is retained.
+* **Pseudonymization**: Data is substituted with unique placeholders (e.g., MASKED_ENTITY_ID), allowing the original information to be restored if needed.
 
 In both cases, the masking module identifies sensitive data and replaces it with appropriate placeholders before further processing.
 
@@ -349,7 +349,7 @@ In both cases, the masking module identifies sensitive data and replaces it with
 
 * **entities**: Specify which types of entities to mask (e.g., EMAIL, PHONE, PERSON).
 * **allowlist**: Provide specific terms or patterns that should be excluded from masking, even if they match entity types.
-* **mask\_grounding\_input**: When enabled, ensures that masking is also applied to the context provided to the grounding module.
+* **mask_grounding_input**: When enabled, ensures that masking is also applied to the context provided to the grounding module.
 
 ```
 from gen_ai_hub.orchestration_v2.utils import load_text_file

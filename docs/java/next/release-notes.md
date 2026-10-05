@@ -158,7 +158,7 @@ To receive raw tool calls without execution (e.g. to forward them to a client), 
 
 **Dependency updates**
 
-***New required minimum versions***
+**_New required minimum versions_**
 
 `com.github.victools:jsonschema-generator 5.0.0`
 

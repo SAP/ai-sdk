@@ -4,8 +4,8 @@
 
 ### Features[​](#features "Direct link to Features")
 
-* Added Support for cache\_control in Orchestration Service V2
-* Added support for reasoning\_content in Orchestration Service V2
+* Added Support for cache_control in Orchestration Service V2
+* Added support for reasoning_content in Orchestration Service V2
 
 ### Bugfixes[​](#bugfixes "Direct link to Bugfixes")
 
@@ -54,7 +54,7 @@
 
 ### Features[​](#features-4 "Direct link to Features")
 
-* Added model\_version as model identifier
+* Added model_version as model identifier
 * Updated Prompt Registry Client to align with API changes
 * Added support for OpenAI Responses API, see [Responses API](/ai-sdk/docs/python/examples/gen-ai-hub.md#responses-api)
 * Enabled flat import for Model/Client classes
@@ -122,7 +122,7 @@
 
 ### Features[​](#features-9 "Direct link to Features")
 
-* Added retry logic for orchestration service with exponential backoff. Use method "run\_with\_retries" instead of "run" for your orchestration service instance.
+* Added retry logic for orchestration service with exponential backoff. Use method "run_with_retries" instead of "run" for your orchestration service instance.
 
 ## 5.9.0[​](#590 "Direct link to 5.9.0")
 
@@ -142,7 +142,7 @@
 
 * Added support for new models: Amazon Nova Premier, Claude 4 Opus, Gemini 2.5-flash, Gemini 2.5-pro, GPT-5, GPT-5-mini, GPT-5-nano, Mistral Small Instruct. See [Supported Models](/ai-sdk/docs/python/overview.md#supported-models) for a comprehensive overview of supported models.
 * Removed old models: Amazon Titan Text Express/Lite, Gemini 1.5-flash, Gemini 1.5-pro, Claude 3 Sonnet
-* Allow botocore.config as input for Amazon Bedrock to set additional parameters, e.g. connect\_timeout
+* Allow botocore.config as input for Amazon Bedrock to set additional parameters, e.g. connect_timeout
 
 ### Bugfixes[​](#bugfixes-8 "Direct link to Bugfixes")
 
@@ -153,7 +153,7 @@
 
 ### Features[​](#features-12 "Direct link to Features")
 
-* Added support for converse\_stream for aws models and event streams
+* Added support for converse_stream for aws models and event streams
 
 ### Bugfixes[​](#bugfixes-9 "Direct link to Bugfixes")
 
@@ -219,7 +219,7 @@
 * Added support for AWS amazon--nova-micro, amazon--nova-lite, and amazon--nova-pro models.
 * Added support for asynchronous calls to Bedrock models.
 * Added support for asynchronous calls to Vertex models.
-* Added support for `masked_grounding_input` and `allowlist` also for the grounding output in the orchestration service. See [allow\_list](/ai-sdk/docs/python/examples/orchestration-service.md#data-masking) for details.
+* Added support for `masked_grounding_input` and `allowlist` also for the grounding output in the orchestration service. See [allow_list](/ai-sdk/docs/python/examples/orchestration-service.md#data-masking) for details.
 * Deprecation of `input_filters` and `output_filters` in the orchestration configuration, use `ContentFiltering` instead. See [Content Filtering](/ai-sdk/docs/python/examples/orchestration-service.md#content-filtering) for details.
 
 ## 4.4.3[​](#443 "Direct link to 4.4.3")
@@ -241,7 +241,7 @@
 
 ### Bugfixes[​](#bugfixes-12 "Direct link to Bugfixes")
 
-* OpenAI deprecated max\_tokens in favor of max\_completion\_tokens parameter. This was now also included in the generative AI Hub SDK and the dependency of the langchain-openai version could be relaxed.
+* OpenAI deprecated max_tokens in favor of max_completion_tokens parameter. This was now also included in the generative AI Hub SDK and the dependency of the langchain-openai version could be relaxed.
 
 ## 4.1.1[​](#411 "Direct link to 4.1.1")
 
@@ -251,7 +251,7 @@
 
 ### Bugfixes[​](#bugfixes-13 "Direct link to Bugfixes")
 
-* Set langchain-openai==0.2.9 due to max\_completion\_token issues with later versions.
+* Set langchain-openai==0.2.9 due to max_completion_token issues with later versions.
 
 ## 4.0.0[​](#400 "Direct link to 4.0.0")
 

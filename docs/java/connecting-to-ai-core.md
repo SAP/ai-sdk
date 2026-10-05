@@ -38,7 +38,7 @@ Here are three examples of how this can be done:
 
    Create a `.env` file in the **working directory** from which you run your code as shown in the image below. Add the copied JSON object in the file as the value of the `AICORE_SERVICE_KEY` variable as shown in the image below.
 
-   ![AICORE\_SERVICE\_KEY environment variable in .env file](/ai-sdk/img/JSON-Object-Steps.png)
+   ![AICORE_SERVICE_KEY environment variable in .env file](/ai-sdk/img/JSON-Object-Steps.png)
 
    info
 

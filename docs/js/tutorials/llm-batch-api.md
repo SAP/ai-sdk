@@ -53,11 +53,11 @@ The input file must be in **JSONL format** — one JSON object per line. Each li
 {"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-5", "messages": [{"role": "user", "content": "Explain neural networks in simple terms"}], "max_tokens": 150}}
 ```
 
-| Field       | Description                                                                |
-| ----------- | -------------------------------------------------------------------------- |
-| `custom_id` | Unique identifier used to match results back to their input request        |
-| `url`       | Always `/v1/chat/completions`                                              |
-| `body`      | Standard chat completion request body (model, messages, max\_tokens, etc.) |
+| Field       | Description                                                               |
+| ----------- | ------------------------------------------------------------------------- |
+| `custom_id` | Unique identifier used to match results back to their input request       |
+| `url`       | Always `/v1/chat/completions`                                             |
+| `body`      | Standard chat completion request body (model, messages, max_tokens, etc.) |
 
 Upload this file to your object store before creating a batch job. Use the URI format `ai://MY_OBJECT_STORE/input-batch.jsonl` to reference it.
 

@@ -824,7 +824,7 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 
 It is possible to set the response format for the chat completion. Available options are using `JSON_OBJECT`, `JSON_SCHEMA`, and `TEXT`, where `TEXT` is the default behavior.
 
-### JSON\_OBJECT[​](#json_object "Direct link to JSON_OBJECT")
+### JSON_OBJECT[​](#json_object "Direct link to JSON_OBJECT")
 
 Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON. This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
 
@@ -850,7 +850,7 @@ var response = client.chatCompletion(prompt, configWithJsonResponse).getContent(
 
 Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt. The result might not adhere exactly to the given JSON format, but it will be a JSON object.
 
-### JSON\_SCHEMA[​](#json_schema "Direct link to JSON_SCHEMA")
+### JSON_SCHEMA[​](#json_schema "Direct link to JSON_SCHEMA")
 
 If you want the response to not only consist of valid JSON but additionally adhere to a specific JSON schema, you can use `JSON_SCHEMA`. In order to do that, add a JSON schema to the configuration as shown below and the response will adhere to the given schema.
 
@@ -1182,15 +1182,15 @@ User messages and tool messages can also be cached.
 
 Caching is only supported for the following models currently:
 
-| Model name           | Max caching points per request | Min tokens per cache point | Supported TTLs | Default TTL |
-| -------------------- | ------------------------------ | -------------------------- | -------------- | ----------- |
-| CLAUDE\_4\_5\_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
-| CLAUDE\_4\_6\_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
-| CLAUDE\_4\_5\_SONNET | 4                              | 4096                       | 5m or 1h       | 5m          |
-| CLAUDE\_4\_6\_SONNET | 4                              | 1024                       | 5m or 1h       | 5m          |
-| CLAUDE\_4\_5\_HAIKU  | 4                              | 4096                       | 5m or 1h       | 5m          |
-| CLAUDE\_4\_OPUS      | 4                              | 4096                       | 5m             | 5m          |
-| CLAUDE\_4\_7\_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
-| CLAUDE\_4\_8\_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| Model name        | Max caching points per request | Min tokens per cache point | Supported TTLs | Default TTL |
+| ----------------- | ------------------------------ | -------------------------- | -------------- | ----------- |
+| CLAUDE_4_5_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_6_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_5_SONNET | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_6_SONNET | 4                              | 1024                       | 5m or 1h       | 5m          |
+| CLAUDE_4_5_HAIKU  | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_OPUS     | 4                              | 4096                       | 5m             | 5m          |
+| CLAUDE_4_7_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
+| CLAUDE_4_8_OPUS   | 4                              | 4096                       | 5m or 1h       | 5m          |
 
 Please find a [working example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)

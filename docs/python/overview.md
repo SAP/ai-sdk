@@ -42,7 +42,7 @@ There are different ways to configure the SAP AI Core access (listed in order of
 
 * environment variables
 * (profile) configuration file
-* from VCAP\_SERVICES environment variable, if it exists
+* from VCAP_SERVICES environment variable, if it exists
 
 These methods automatically initialize an authenticated client. For custom authentication, you can provide a `proxy_client` parameter when instantiating SDK classes to use your own `GenAIHubProxyClient` with direct credential configuration.
 
