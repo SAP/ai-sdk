@@ -19,6 +19,7 @@ export default {
         'examples/ai-vs-ai'
       ]
     },
+    'release-notes',
     {
       type: 'link',
       label: 'API Reference',
