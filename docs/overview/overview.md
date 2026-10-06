@@ -6,10 +6,11 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 Integrate chat completion into your business applications with SAP Cloud SDK for AI. Leverage the SAP Generative AI Hub of [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) to make use of templating, grounding, data masking, content filtering and more. Set up your SAP AI Core instance with SAP Cloud SDK for AI.
 
-The SAP Cloud SDK for AI is available in two flavors:
+The SAP Cloud SDK for AI is available in three flavors:
 
 * [SAP Cloud SDK for AI Java](/ai-sdk/docs/java/overview.md)
 * [SAP Cloud SDK for AI JavaScript](/ai-sdk/docs/js/overview.md)
+* [SAP Cloud SDK for AI Python](/ai-sdk/docs/python/overview.md)
 
 ## Capabilities[​](#capabilities "Direct link to Capabilities")
 
@@ -44,7 +45,7 @@ For a complete overview of supported features, check out the [feature matrix](/a
 
 ## License[​](#license "Direct link to License")
 
-Both [JavaScript / TypeScript](https://github.com/SAP/ai-sdk-js) and [Java](https://github.com/SAP/ai-sdk-java) variants are open-source and available under the Apache 2.0 license.
+[JavaScript / TypeScript](https://github.com/SAP/ai-sdk-js), [Java](https://github.com/SAP/ai-sdk-java), and [Python](https://github.com/SAP/ai-sdk-python) variants are open-source and available under the Apache 2.0 license.
 
 ## Products Using the SAP Cloud SDK for AI[​](#products-using-the-sap-cloud-sdk-for-ai "Direct link to Products Using the SAP Cloud SDK for AI")
 

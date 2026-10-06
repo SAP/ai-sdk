@@ -34,11 +34,15 @@ SAP Cloud SDK for AI Python
 
 * [Tutorials](https://developers.sap.com/group.sap-ai-core-generative.html)
 * [PyPI](https://pypi.org/project/sap-ai-sdk-gen/)
+* [GitHub](https://github.com/SAP/ai-sdk-python)
+* [Sample Code](https://github.com/SAP/ai-sdk-python/tree/main/sample-code)
+* [Support](/ai-sdk/docs/overview/get-support.md)
 
 Additional Resources
 
 * [SAP Cloud SDK (Java) - GitHub](https://github.com/SAP/cloud-sdk-java)
 * [SAP Cloud SDK (JavaScript) - GitHub](https://github.com/SAP/cloud-sdk-js)
+* [SAP Cloud SDK (Python) - GitHub](https://github.com/SAP/ai-sdk-python)
 * [SAP Cloud SDK Documentation](https://sap.github.io/cloud-sdk/)
 
 Copyright © 2026 SAP SE or an SAP affiliate company. All rights reserved.
