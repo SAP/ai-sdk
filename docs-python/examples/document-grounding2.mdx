@@ -53,8 +53,6 @@ trigger_res = pipelines.trigger_pipeline(trigger_req)
 
 The trigger request returns immediately with a `202` response. Poll `get_pipeline_status` until the status changes from `NEW` to `INPROGRESS` before proceeding.
 
-Even after the status reaches `INPROGRESS`, execution records may not be immediately available. Wait a moment before querying executions to avoid `404` errors.
-
 ### Executions and Documents
 
 ```python
