@@ -1329,9 +1329,10 @@ template = Template(template=[
     UserMessage(content="Write a markdown cheatsheet!"),
 ])
 llm = LLMModelDetails(name="gemini-3.5-flash")
-config = OrchestrationConfig(modules=ModuleConfig(
+module_config = ModuleConfig(
     prompt_templating=PromptTemplatingModuleConfig(prompt=template, model=llm)
-))
+)
+config = OrchestrationConfig(modules=module_config)
 orchestration_service = OrchestrationService(config=config)
 
 async def test_async():

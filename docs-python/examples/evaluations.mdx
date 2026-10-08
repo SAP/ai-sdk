@@ -88,7 +88,7 @@ from gen_ai_hub.orchestration_v2.models.llm_model_details import LLMModelDetails
 
 evaluation_config_list = [
     EvaluationConfig(
-        llm=LLMModelDetails(name="gpt-4o", version="latest"),
+        llm=LLMModelDetails(name="gpt-5", version="latest"),
         template=PromptTemplateSpec(
             template=[PromptTemplate(
                 role="user",
@@ -99,12 +99,16 @@ evaluation_config_list = [
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[
             MetricConfig(
+                # Retrieve the metric ID from client.get_system_supported_metrics()
                 reference=MetricRef(id="<METRIC ID>"),
                 variable_mapping={"reference": "ground_truth"},
             ),
         ],
     ),
     EvaluationConfig(
+        # The name of an orchestration configuration registered in the Orchestration Registry.
+        # Use the AI Launchpad or the Orchestration SDK to create and register a configuration,
+        # then pass its registry name here.
         orchestration_registry_reference="<ORCHESTRATION REGISTRY REFERENCE>",
         template_variable_mapping={"question": "topic"},
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
@@ -117,7 +121,7 @@ evaluation_config_list = [
         ],
     ),
     EvaluationConfig(
-        llm=LLMModelDetails(name="gpt-4o", version="latest"),
+        llm=LLMModelDetails(name="gpt-5", version="latest"),
         template=TemplateRef(template_ref=TemplateRefByID(id="<TEMPLATE REF ID>")),
         template_variable_mapping={"question": "topic"},
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),

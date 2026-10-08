@@ -152,18 +152,6 @@ export default {
             {
               label: 'PyPI',
               href: 'https://pypi.org/project/sap-ai-sdk-gen/'
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/SAP/ai-sdk-python'
-            },
-            {
-              label: 'Sample Code',
-              href: 'https://github.com/SAP/ai-sdk-python/tree/main/sample-code'
-            },
-            {
-              label: 'Support',
-              to: 'docs/overview/get-support'
             }
           ]
         },
@@ -177,10 +165,6 @@ export default {
             {
               label: 'SAP Cloud SDK (JavaScript) - GitHub',
               href: 'https://github.com/SAP/cloud-sdk-js'
-            },
-            {
-              label: 'SAP Cloud SDK (Python) - GitHub',
-              href: 'https://github.com/SAP/ai-sdk-python'
             },
             {
               label: 'SAP Cloud SDK Documentation',

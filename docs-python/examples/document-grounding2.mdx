@@ -51,11 +51,9 @@ trigger_req = ManualPipelineTrigger(pipelineId=pipeline_id)
 trigger_res = pipelines.trigger_pipeline(trigger_req)
 ```
 
-The trigger request returns immediately with a `202` response, but the pipeline does not transition to `INPROGRESS` right away. There is a short delay — typically a few seconds — before the pipeline actually starts executing. Poll `get_pipeline_status` until the status changes from `NEW` to `INPROGRESS` before proceeding.
+The trigger request returns immediately with a `202` response. Poll `get_pipeline_status` until the status changes from `NEW` to `INPROGRESS` before proceeding.
 
 ### Executions and Documents
-
-Execution records become available shortly after the pipeline starts. Querying executions immediately after triggering may result in a `404` error until the pipeline has had time to initialize.
 
 ```python
 execs = pipelines.get_pipeline_executions(pipeline_id, top=20)
