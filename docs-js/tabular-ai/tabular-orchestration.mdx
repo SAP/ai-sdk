@@ -50,7 +50,7 @@ To select context from stored data, also create a Data Destination, Tabular Arti
 Create a `TabularOrchestrationClient` instance.
 Without arguments, the client resolves a running `tabular-orchestration` deployment in the `default` resource group:
 
-```ts
+```ts twoslash
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 
 const client = new TabularOrchestrationClient();
@@ -58,7 +58,7 @@ const client = new TabularOrchestrationClient();
 
 To use a different resource group, pass its name to the constructor:
 
-```ts
+```ts twoslash
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 
 const client = new TabularOrchestrationClient({
@@ -71,7 +71,7 @@ const client = new TabularOrchestrationClient({
 Pass the name of a Scenario Configuration in the `scenarioConfigName` property.
 The service uses the Scenario Configuration and the `contextSelectionConfig` object to select context rows from its Tabular Artifacts:
 
-```ts
+```ts twoslash
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 
 const client = new TabularOrchestrationClient();
@@ -122,7 +122,7 @@ If you set `modelConfig.index_column`, each prediction contains the correspondin
 Omit `scenarioConfigName` when you provide context directly in the request.
 Use `contextRows` with row-wise query data, or use `contextColumns` with column-wise query data:
 
-```ts
+```ts twoslash
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 
 const client = new TabularOrchestrationClient();
@@ -159,7 +159,7 @@ For example, `sap-rpt-1.6-large` supports the `context_mode` property, while oth
 
 Use the `ModelConfigFor` type when you define a model configuration separately:
 
-```ts
+```ts twoslash
 import type { ModelConfigFor } from '@sap-ai-sdk/tabular-orchestration';
 
 const modelConfig: ModelConfigFor<'sap-rpt-1.6-large'> = {
@@ -178,7 +178,7 @@ Model-specific properties use the field names of the underlying model API, such 
 Pass a deployment ID to skip automatic deployment resolution.
 Set the resource group that contains the deployment when it differs from `default`:
 
-```ts
+```ts twoslash
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 
 const client = new TabularOrchestrationClient({
@@ -191,7 +191,7 @@ const client = new TabularOrchestrationClient({
 
 Pass a destination as the second constructor argument to target a specific SAP AI Core instance:
 
-```ts
+```ts twoslash
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 
 const client = new TabularOrchestrationClient(
@@ -208,7 +208,7 @@ For more information about configuring a destination, refer to the [Using a Dest
 
 Pass custom request configuration as the second argument to the `predict()` method:
 
-```ts
+```ts twoslash
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 import type { PredictRequest } from '@sap-ai-sdk/tabular-orchestration';
 
