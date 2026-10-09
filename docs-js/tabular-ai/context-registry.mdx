@@ -25,7 +25,8 @@ We strongly recommend using the tilde (`~`) version range instead of the caret (
 :::
 
 The `@sap-ai-sdk/context-registry` package provides a client for the SAP Context Registry service.
-Before you can request predictions from the Tabular Orchestration service, you need to configure three resources in the Context Registry.
+The Context Registry supplies stored prediction context to the Tabular AI Orchestration service.
+To select prediction context from stored data, configure three resources in the Context Registry.
 For an overview of the design-time setup process, see the [SAP AI Core documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/design-time-setup?locale=en-US).
 
 ```mermaid
@@ -33,7 +34,7 @@ flowchart LR
     subgraph ctx ["@sap-ai-sdk/context-registry"]
         DD[Data Destination] --> TA[Tabular Artifact] --> SC[Scenario Configuration]
     end
-    SC -- scenarioConfigName --> TO["Tabular Orchestration (future)"]
+    SC -- scenarioConfigName --> TO["@sap-ai-sdk/tabular-orchestration"]
     TO --> R[Prediction Result]
 ```
 
@@ -41,7 +42,9 @@ The three resources serve the following purposes:
 
 - **Data Destination**: stores the connection details and credentials for an external data store such as HANA Data Lake, Azure Blob Storage, S3, or GCS.
 - **Tabular Artifact**: references a file within a Data Destination (for example, a Parquet file) and carries the schema metadata the prediction service needs.
-- **Scenario Configuration**: groups one or more Tabular Artifacts under a single name. You pass that name to the Tabular Orchestration service when requesting a prediction.
+- **Scenario Configuration**: groups one or more Tabular Artifacts under a single name. You pass that name in the `scenarioConfigName` property when requesting a prediction.
+
+For prediction examples, see the [Tabular Orchestration documentation](./tabular-orchestration.mdx).
 
 ## Installation
 

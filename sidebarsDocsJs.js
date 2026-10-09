@@ -57,7 +57,11 @@ export default {
     {
       type: 'category',
       label: 'Tabular AI',
-      items: ['tabular-ai/rpt', 'tabular-ai/context-registry']
+      items: [
+        'tabular-ai/rpt',
+        'tabular-ai/context-registry',
+        'tabular-ai/tabular-orchestration'
+      ]
     },
     {
       type: 'category',
