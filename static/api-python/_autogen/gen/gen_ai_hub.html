@@ -416,6 +416,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a><input aria-label="Toggle navigation of gen_ai_hub.orchestration_v2.models package" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.azure_content_filter.html">gen_ai_hub.orchestration_v2.models.azure_content_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html">gen_ai_hub.orchestration_v2.models.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.cache_control.html">gen_ai_hub.orchestration_v2.models.cache_control module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.config.html">gen_ai_hub.orchestration_v2.models.config module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filter.html">gen_ai_hub.orchestration_v2.models.content_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filtering.html">gen_ai_hub.orchestration_v2.models.content_filtering module</a></li>
@@ -1644,6 +1645,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html">gen_ai_hub.orchestration_v2 package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheControl"><code class="docutils literal notranslate"><span class="pre">CacheControl</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheControl.model_config"><code class="docutils literal notranslate"><span class="pre">CacheControl.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheControl.serialize_wire_format"><code class="docutils literal notranslate"><span class="pre">CacheControl.serialize_wire_format()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheControl.type"><code class="docutils literal notranslate"><span class="pre">CacheControl.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheControl.ttl"><code class="docutils literal notranslate"><span class="pre">CacheControl.ttl</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.AzureContentFilter"><code class="docutils literal notranslate"><span class="pre">AzureContentFilter</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.AzureContentFilter.model_config"><code class="docutils literal notranslate"><span class="pre">AzureContentFilter.model_config</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.AzureContentFilter.hate"><code class="docutils literal notranslate"><span class="pre">AzureContentFilter.hate</span></code></a></li>
@@ -2017,6 +2025,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.AssistantMessage.content"><code class="docutils literal notranslate"><span class="pre">AssistantMessage.content</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.AssistantMessage.refusal"><code class="docutils literal notranslate"><span class="pre">AssistantMessage.refusal</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.AssistantMessage.tool_calls"><code class="docutils literal notranslate"><span class="pre">AssistantMessage.tool_calls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.AssistantMessage.reasoning_content"><code class="docutils literal notranslate"><span class="pre">AssistantMessage.reasoning_content</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ToolChatMessage"><code class="docutils literal notranslate"><span class="pre">ToolChatMessage</span></code></a><ul>
@@ -2038,6 +2047,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ResponseChatMessage.content"><code class="docutils literal notranslate"><span class="pre">ResponseChatMessage.content</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ResponseChatMessage.refusal"><code class="docutils literal notranslate"><span class="pre">ResponseChatMessage.refusal</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ResponseChatMessage.tool_calls"><code class="docutils literal notranslate"><span class="pre">ResponseChatMessage.tool_calls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ResponseChatMessage.reasoning_content"><code class="docutils literal notranslate"><span class="pre">ResponseChatMessage.reasoning_content</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.FunctionCall"><code class="docutils literal notranslate"><span class="pre">FunctionCall</span></code></a><ul>
@@ -2072,6 +2082,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.TextPart.model_config"><code class="docutils literal notranslate"><span class="pre">TextPart.model_config</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.TextPart.text"><code class="docutils literal notranslate"><span class="pre">TextPart.text</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.TextPart.type_"><code class="docutils literal notranslate"><span class="pre">TextPart.type_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.TextPart.cache_control"><code class="docutils literal notranslate"><span class="pre">TextPart.cache_control</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ImageUrl"><code class="docutils literal notranslate"><span class="pre">ImageUrl</span></code></a><ul>
@@ -2084,6 +2095,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ImagePart.model_config"><code class="docutils literal notranslate"><span class="pre">ImagePart.model_config</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ImagePart.image_url"><code class="docutils literal notranslate"><span class="pre">ImagePart.image_url</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ImagePart.type_"><code class="docutils literal notranslate"><span class="pre">ImagePart.type_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ImagePart.cache_control"><code class="docutils literal notranslate"><span class="pre">ImagePart.cache_control</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ImageItem"><code class="docutils literal notranslate"><span class="pre">ImageItem</span></code></a><ul>
@@ -2094,12 +2106,24 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ImageItem.detail"><code class="docutils literal notranslate"><span class="pre">ImageItem.detail</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheCreationTokenDetails"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheCreationTokenDetails.ephemeral_5m_input_tokens"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.ephemeral_5m_input_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheCreationTokenDetails.ephemeral_1h_input_tokens"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.ephemeral_1h_input_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CacheCreationTokenDetails.model_config"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id8"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.ephemeral_5m_input_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id9"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.ephemeral_1h_input_tokens</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.PromptTokensDetails"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.PromptTokensDetails.audio_tokens"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.audio_tokens</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.PromptTokensDetails.cached_tokens"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cached_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.PromptTokensDetails.cache_creation_tokens"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cache_creation_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.PromptTokensDetails.cache_creation_token_details"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cache_creation_token_details</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.PromptTokensDetails.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id8"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.audio_tokens</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id9"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cached_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id10"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.audio_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id11"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cached_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id12"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cache_creation_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id13"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cache_creation_token_details</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CompletionTokensDetails"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails</span></code></a><ul>
@@ -2108,10 +2132,10 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CompletionTokensDetails.reasoning_tokens"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.reasoning_tokens</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CompletionTokensDetails.rejected_prediction_tokens"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.rejected_prediction_tokens</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CompletionTokensDetails.model_config"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id10"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.accepted_prediction_tokens</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id11"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.audio_tokens</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id12"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.reasoning_tokens</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id13"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.rejected_prediction_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id14"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.accepted_prediction_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id15"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.audio_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id16"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.reasoning_tokens</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id17"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.rejected_prediction_tokens</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.TokenUsage"><code class="docutils literal notranslate"><span class="pre">TokenUsage</span></code></a><ul>
@@ -2134,9 +2158,9 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.TopLogprob.logprob"><code class="docutils literal notranslate"><span class="pre">TopLogprob.logprob</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.TopLogprob.bytes"><code class="docutils literal notranslate"><span class="pre">TopLogprob.bytes</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.TopLogprob.model_config"><code class="docutils literal notranslate"><span class="pre">TopLogprob.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id14"><code class="docutils literal notranslate"><span class="pre">TopLogprob.token</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id15"><code class="docutils literal notranslate"><span class="pre">TopLogprob.logprob</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id16"><code class="docutils literal notranslate"><span class="pre">TopLogprob.bytes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id18"><code class="docutils literal notranslate"><span class="pre">TopLogprob.token</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id19"><code class="docutils literal notranslate"><span class="pre">TopLogprob.logprob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id20"><code class="docutils literal notranslate"><span class="pre">TopLogprob.bytes</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChatCompletionTokenLogprob"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob</span></code></a><ul>
@@ -2145,10 +2169,10 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChatCompletionTokenLogprob.bytes"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.bytes</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChatCompletionTokenLogprob.top_logprobs"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.top_logprobs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChatCompletionTokenLogprob.model_config"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id17"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.token</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id18"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.logprob</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id19"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.bytes</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id20"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.top_logprobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id21"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.token</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id22"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.logprob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id23"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.bytes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id24"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.top_logprobs</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChoiceLogprobs"><code class="docutils literal notranslate"><span class="pre">ChoiceLogprobs</span></code></a><ul>
@@ -2169,8 +2193,8 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamFunctionObject.name"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamFunctionObject.arguments"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.arguments</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamFunctionObject.model_config"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id21"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id22"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.arguments</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id25"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id26"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.arguments</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamToolCall"><code class="docutils literal notranslate"><span class="pre">StreamToolCall</span></code></a><ul>
@@ -2186,6 +2210,8 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamDelta.role"><code class="docutils literal notranslate"><span class="pre">StreamDelta.role</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamDelta.content"><code class="docutils literal notranslate"><span class="pre">StreamDelta.content</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamDelta.tool_calls"><code class="docutils literal notranslate"><span class="pre">StreamDelta.tool_calls</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamDelta.refusal"><code class="docutils literal notranslate"><span class="pre">StreamDelta.refusal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamDelta.reasoning_content"><code class="docutils literal notranslate"><span class="pre">StreamDelta.reasoning_content</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamLLMChoice"><code class="docutils literal notranslate"><span class="pre">StreamLLMChoice</span></code></a><ul>
@@ -2203,11 +2229,11 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.Citation.start_index"><code class="docutils literal notranslate"><span class="pre">Citation.start_index</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.Citation.end_index"><code class="docutils literal notranslate"><span class="pre">Citation.end_index</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.Citation.model_config"><code class="docutils literal notranslate"><span class="pre">Citation.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id23"><code class="docutils literal notranslate"><span class="pre">Citation.ref_id</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id24"><code class="docutils literal notranslate"><span class="pre">Citation.title</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id25"><code class="docutils literal notranslate"><span class="pre">Citation.url</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id26"><code class="docutils literal notranslate"><span class="pre">Citation.start_index</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id27"><code class="docutils literal notranslate"><span class="pre">Citation.end_index</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id27"><code class="docutils literal notranslate"><span class="pre">Citation.ref_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id28"><code class="docutils literal notranslate"><span class="pre">Citation.title</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id29"><code class="docutils literal notranslate"><span class="pre">Citation.url</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id30"><code class="docutils literal notranslate"><span class="pre">Citation.start_index</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id31"><code class="docutils literal notranslate"><span class="pre">Citation.end_index</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.LLMModuleResult"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult</span></code></a><ul>
@@ -2220,14 +2246,14 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.LLMModuleResult.usage"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.usage</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.LLMModuleResult.citations"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.citations</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.LLMModuleResult.model_config"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id28"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.id</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id29"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.object</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id30"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.created</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id31"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.model</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id32"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.system_fingerprint</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id33"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.choices</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id34"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.usage</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id35"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.citations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id32"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id33"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.object</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id34"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.created</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id35"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id36"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.system_fingerprint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id37"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.choices</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id38"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.usage</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id39"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.citations</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamLLMModuleResult"><code class="docutils literal notranslate"><span class="pre">StreamLLMModuleResult</span></code></a><ul>
@@ -2247,15 +2273,15 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ModuleResults.llm"><code class="docutils literal notranslate"><span class="pre">ModuleResults.llm</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ModuleResults.output_unmasking"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_unmasking</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ModuleResults.model_config"><code class="docutils literal notranslate"><span class="pre">ModuleResults.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id36"><code class="docutils literal notranslate"><span class="pre">ModuleResults.grounding</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id37"><code class="docutils literal notranslate"><span class="pre">ModuleResults.templating</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id38"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_translation</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id39"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_masking</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id40"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_filtering</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id41"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_filtering</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id42"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_translation</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id43"><code class="docutils literal notranslate"><span class="pre">ModuleResults.llm</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id44"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_unmasking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id40"><code class="docutils literal notranslate"><span class="pre">ModuleResults.grounding</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id41"><code class="docutils literal notranslate"><span class="pre">ModuleResults.templating</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id42"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_translation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id43"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_masking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id44"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_filtering</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id45"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_filtering</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id46"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_translation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id47"><code class="docutils literal notranslate"><span class="pre">ModuleResults.llm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id48"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_unmasking</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.StreamModuleResults"><code class="docutils literal notranslate"><span class="pre">StreamModuleResults</span></code></a><ul>
@@ -2271,11 +2297,11 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.SAPAPIError.location"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.location</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.SAPAPIError.intermediate_results"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.intermediate_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.SAPAPIError.model_config"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id45"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.request_id</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id46"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.code</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id47"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.message</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id48"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.location</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id49"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.intermediate_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id49"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.request_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id50"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.code</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id51"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.message</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id52"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.location</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id53"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.intermediate_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.SAPAPIError.headers"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.headers</span></code></a></li>
 </ul>
 </li>
@@ -2286,11 +2312,11 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.SAPAPIErrorStreaming.location"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.location</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.SAPAPIErrorStreaming.intermediate_results"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.intermediate_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.SAPAPIErrorStreaming.model_config"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id50"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.request_id</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id51"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.code</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id52"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.message</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id53"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.location</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id54"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.intermediate_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id54"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.request_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id55"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.code</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id56"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.message</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id57"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.location</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id58"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.intermediate_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.SAPAPIErrorStreaming.headers"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.headers</span></code></a></li>
 </ul>
 </li>
@@ -2299,9 +2325,9 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CompletionPostResponse.intermediate_results"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.intermediate_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CompletionPostResponse.final_result"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.final_result</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CompletionPostResponse.model_config"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id55"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.request_id</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id56"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.intermediate_results</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id57"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.final_result</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id59"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.request_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id60"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.intermediate_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id61"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.final_result</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.CompletionPostResponse.intermediate_failures"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.intermediate_failures</span></code></a></li>
 </ul>
 </li>
@@ -2326,7 +2352,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.OrchestrationResponseWithRetries"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.OrchestrationResponseWithRetries.retries"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.retries</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.OrchestrationResponseWithRetries.model_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id58"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.retries</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#id62"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.retries</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ResponseFormatText"><code class="docutils literal notranslate"><span class="pre">ResponseFormatText</span></code></a><ul>
@@ -2399,6 +2425,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChatCompletionTool"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTool</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChatCompletionTool.model_config"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTool.model_config</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChatCompletionTool.type_"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTool.type_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.ChatCompletionTool.cache_control"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTool.cache_control</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.FunctionObject"><code class="docutils literal notranslate"><span class="pre">FunctionObject</span></code></a><ul>
@@ -2415,7 +2442,6 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.FunctionTool.execute"><code class="docutils literal notranslate"><span class="pre">FunctionTool.execute()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.FunctionTool.from_function"><code class="docutils literal notranslate"><span class="pre">FunctionTool.from_function()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.FunctionTool.model_config"><code class="docutils literal notranslate"><span class="pre">FunctionTool.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.FunctionTool.type_"><code class="docutils literal notranslate"><span class="pre">FunctionTool.type_</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#gen_ai_hub.orchestration_v2.FunctionTool.function"><code class="docutils literal notranslate"><span class="pre">FunctionTool.function</span></code></a></li>
 </ul>
 </li>
@@ -2491,6 +2517,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.orchestration_v2.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.CacheControl"><code class="docutils literal notranslate"><span class="pre">CacheControl</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.AzureContentFilter"><code class="docutils literal notranslate"><span class="pre">AzureContentFilter</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.AzureContentSafetyInput"><code class="docutils literal notranslate"><span class="pre">AzureContentSafetyInput</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.AzureContentSafetyOutput"><code class="docutils literal notranslate"><span class="pre">AzureContentSafetyOutput</span></code></a></li>
@@ -2550,11 +2577,13 @@
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.ResponseChatMessage"><code class="docutils literal notranslate"><span class="pre">ResponseChatMessage</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.FunctionCall"><code class="docutils literal notranslate"><span class="pre">FunctionCall</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.MessageToolCall"><code class="docutils literal notranslate"><span class="pre">MessageToolCall</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.ReasoningBlock"><code class="docutils literal notranslate"><span class="pre">ReasoningBlock</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.ImageDetailLevel"><code class="docutils literal notranslate"><span class="pre">ImageDetailLevel</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.TextPart"><code class="docutils literal notranslate"><span class="pre">TextPart</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.ImageUrl"><code class="docutils literal notranslate"><span class="pre">ImageUrl</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.ImagePart"><code class="docutils literal notranslate"><span class="pre">ImagePart</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.ImageItem"><code class="docutils literal notranslate"><span class="pre">ImageItem</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.CacheCreationTokenDetails"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.PromptTokensDetails"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.CompletionTokensDetails"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html#gen_ai_hub.orchestration_v2.models.TokenUsage"><code class="docutils literal notranslate"><span class="pre">TokenUsage</span></code></a></li>
