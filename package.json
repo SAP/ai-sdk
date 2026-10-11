@@ -41,7 +41,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.16",
+    "@langchain/core": "1.2.17",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/core": "canary",
     "@sap-ai-sdk/context-registry": "canary",
