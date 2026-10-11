@@ -25,11 +25,16 @@ retrieval = RetrievalAPIClient(proxy_client)
 ### List and Search Pipelines
 
 ```python
-from gen_ai_hub.document_grounding.models.pipeline import SearchPipelineRequest, SearchPipelineData
+from gen_ai_hub.document_grounding.models.pipeline import SearchPipelineRequest, DataRepositoryMetadataItem
 
 pipelines_list = pipelines.get_pipelines(top=10)
+print(pipelines_list)
 
-search_req = SearchPipelineRequest(data=SearchPipelineData(search='<SEARCH_QUERY>'))
+search_req = SearchPipelineRequest(
+    dataRepositoryMetadata=[
+        DataRepositoryMetadataItem(key='<KEY>', value=['<VALUE>'])
+    ]
+)
 search_res = pipelines.search_pipelines(search_req)
 ```
 
@@ -42,9 +47,13 @@ pipeline_id = '<PIPELINE_ID>'
 
 status = pipelines.get_pipeline_status(pipeline_id)
 
-trigger_req = ManualPipelineTrigger()
-trigger_res = pipelines.trigger_pipeline(pipeline_id, trigger_req)
+trigger_req = ManualPipelineTrigger(pipelineId=pipeline_id)
+trigger_res = pipelines.trigger_pipeline(trigger_req)
 ```
+
+The trigger request returns immediately with a `202` response. Poll `get_pipeline_status` until the status changes from `NEW` to `INPROGRESS` before proceeding.
+
+**Note:** Execution records are created asynchronously. Even after the pipeline reaches `INPROGRESS`, there may be a brief delay before `get_pipeline_executions` returns results. If the call returns an empty list, wait a while and retry.
 
 ### Executions and Documents
 
@@ -88,7 +97,7 @@ create_res = vector.create_collection(create_req)
 
 ```python
 from gen_ai_hub.document_grounding.models.vector import (
-    DocumentsCreateRequest, DocumentsUpdateRequest,
+    DocumentsCreateRequest,
     TextOnlyBaseChunk, BaseDocument, VectorKeyValueListPair
 )
 
@@ -119,7 +128,7 @@ search_req = TextSearchRequest(
         VectorSearchFilter(
             id='f1',
             collectionIds=[collection_id],
-            configuration=VectorSearchConfiguration(maxChunkCount=5, maxDocumentCount=3),
+            configuration=VectorSearchConfiguration(maxChunkCount=5),
             documentMetadata=[],
             chunkMetadata=[],
             collectionMetadata=[],
@@ -144,8 +153,9 @@ repo = retrieval.get_data_repository_by_id(repo_id)
 
 ```python
 from gen_ai_hub.document_grounding.models.retrieval import (
-    RetrievalSearchInput, RetrievalSearchFilter, RetrievalSearchConfiguration
+    RetrievalSearchInput, RetrievalSearchFilter, RetrievalSearchConfiguration,
 )
+
 
 retrieval_req = RetrievalSearchInput(
     query='How to configure Document Grounding?',
@@ -153,8 +163,8 @@ retrieval_req = RetrievalSearchInput(
         RetrievalSearchFilter(
             id='r1',
             dataRepositoryType='help.sap.com',
-            searchConfiguration=RetrievalSearchConfiguration(maxChunkCount=5, maxDocumentCount=3),
-            dataRepositories=[],
+            searchConfiguration=RetrievalSearchConfiguration(maxChunkCount=5),
+            dataRepositories=["*"]
         )
     ],
 )
