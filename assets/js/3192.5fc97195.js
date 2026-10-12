@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunksap_ai_sdk_documentation||=[]).push([[3192],{13192(e,a,c){c.d(a,{createArchitectureServices:()=>s.S});var s=c(84549);c(80184)}}]);
