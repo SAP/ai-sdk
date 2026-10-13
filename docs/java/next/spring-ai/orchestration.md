@@ -81,7 +81,7 @@ The Orchestration client is integrated in Spring AI classes:
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
@@ -101,7 +101,7 @@ Configure Orchestration modules within Spring AI:
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 
 
@@ -137,7 +137,7 @@ Apply [input filtering](https://help.sap.com/docs/sap-ai-core/sap-ai-core-servic
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 
 
@@ -175,7 +175,7 @@ It's possible to pass a stream of chat completion delta elements, e.g. from the 
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
@@ -244,7 +244,7 @@ Then pass your tool to the model as follows.
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config)
 
@@ -272,7 +272,7 @@ Create a Spring AI `ChatClient` from our `OrchestrationChatModel` and add a chat
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
@@ -334,7 +334,7 @@ public record Translation(
 
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 
 
@@ -522,7 +522,7 @@ ChatModel client = new OrchestrationChatModel(clientWithHeader);
 
 
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 

@@ -164,7 +164,7 @@ public class SpringAiAgenticWorkflowService {
 
   private final OrchestrationModuleConfig config =
 
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+      new OrchestrationModuleConfig(GPT_4O_MINI);
 
 
 
@@ -220,7 +220,7 @@ public class SpringAiAgenticWorkflowService {
 
   private final OrchestrationModuleConfig config =
 
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+      new OrchestrationModuleConfig(GPT_4O_MINI);
 
 
 

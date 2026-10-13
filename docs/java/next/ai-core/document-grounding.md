@@ -251,7 +251,7 @@ var groundingConfig =
 
 var configWithGrounding =
 
-    new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGroundingConfig(groundingConfig);
+    new OrchestrationModuleConfig(GPT_4O).withGroundingConfig(groundingConfig);
 
 
 
