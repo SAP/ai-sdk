@@ -114,7 +114,7 @@ The request contains the following main properties:
 - `modelConfig`: Passes model-specific options to the selected model.
 - `rows` or `columns`: Provides the query data in row-wise or column-wise form.
 
-The response contains the prediction request ID, status, selected metadata, and a `predictions` array.
+The response contains the status, selected metadata, and a `predictions` array.
 If you set `modelConfig.index_column`, each prediction contains the corresponding index value from the query row.
 
 ## Predict With Inline Context
@@ -155,18 +155,20 @@ const response = await client.predict({
 ## Configure a Model
 
 The `modelName` value determines the TypeScript type of `modelConfig`.
-For example, `sap-rpt-1.6-large` supports the `context_mode` property, while other model configurations expose only the properties supported by their generated schemas.
+For example, models based on RPT 1.5 and 1.6 support configuring `explanations` under `prediction_config`, while `sap-rpt-1` model configurations only expose the properties supported by their schema.
 
 Use the `ModelConfigFor` type when you define a model configuration separately:
 
 ```ts twoslash
 import type { ModelConfigFor } from '@sap-ai-sdk/tabular-orchestration';
 
-const modelConfig: ModelConfigFor<'sap-rpt-1.6-large'> = {
+const modelConfig: ModelConfigFor<'sap-rpt-1.6'> = {
   index_column: 'id',
   parse_data_types: true,
   prediction_config: {
-    context_mode: 'deep'
+    explanations: {
+      top_column_scores: 3
+    }
   }
 };
 ```
