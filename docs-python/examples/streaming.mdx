@@ -164,6 +164,12 @@ from gen_ai_hub.proxy import get_proxy_client
 
 def stream_langchain(prompt, model_name):
     llm = init_llm(model_name=model_name, max_tokens=500, proxy_client=get_proxy_client())
+    # Only Gemini routes through google-genai, which logs an "AFC not recommended"
+    # warning on the direct generate_content path. Pass the disable flag just for
+    # Gemini — other providers would reject this unknown kwarg.
+    # from google.genai.types import AutomaticFunctionCallingConfig
+    # for chunk in llm.stream(prompt, automatic_function_calling=AutomaticFunctionCallingConfig(disable=True)):
+    #    print(chunk.content, end='')
     for chunk in llm.stream(prompt):
         print(chunk.content, end='')
 
