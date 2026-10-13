@@ -89,6 +89,7 @@ def stream_genai(prompt, model_name='gemini-3.5-flash'):
         contents=prompt,
         config=GenerateContentConfig(
             max_output_tokens=2500,
+            # Only disables the "AFC not recommended" warning — remove or adjust if you need automatic function calling.
             automatic_function_calling=AutomaticFunctionCallingConfig(disable=True),
         ),
     )

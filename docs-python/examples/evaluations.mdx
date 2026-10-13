@@ -117,8 +117,7 @@ evaluation_config_list = [
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[
             MetricConfig(
-                # Retrieve the metric ID from client.get_system_supported_metrics()
-                reference=MetricRef(id="<METRIC ID>"),
+                reference=MetricRef(id="36d1abca-cf01-48f6-9bd1-8d5e1272a374"),  # Pointwise Correctness
                 variable_mapping={"reference": "ground_truth"},
             ),
         ],
@@ -132,10 +131,10 @@ evaluation_config_list = [
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[
             MetricConfig(
-                reference=MetricRef(id="<METRIC ID>"),
+                reference=MetricRef(id="36d1abca-cf01-48f6-9bd1-8d5e1272a374"),  # Pointwise Correctness
                 variable_mapping={"reference": "ground_truth"},
             ),
-            MetricConfig(reference=MetricRef(name="Content Filter on Input")),
+            MetricConfig(reference=MetricRef(id="ba2ece64-d4ed-4645-96d3-8728af12515f")),  # Content Filter on Input
         ],
     ),
     EvaluationConfig(
@@ -144,7 +143,7 @@ evaluation_config_list = [
         template_variable_mapping={"question": "topic"},
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
         metrics=[
-            MetricConfig(reference=MetricRef(name="Pointwise Instruction Following")),
+            MetricConfig(reference=MetricRef(id="cd3ffd21-faae-4f06-8184-52541182d9a5")),  # Pointwise Instruction Following
         ],
     ),
 ]

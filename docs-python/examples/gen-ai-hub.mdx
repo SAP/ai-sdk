@@ -115,6 +115,7 @@ from gen_ai_hub.proxy import get_proxy_client
 
 proxy_client = get_proxy_client('gen-ai-hub')
 client = Client(proxy_client=proxy_client)
+# Only disables the "AFC not recommended" warning — remove or adjust if you need automatic function calling.
 afc_off = types.GenerateContentConfig(
     automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True)
 )
@@ -146,6 +147,7 @@ response_stream = client.models.generate_content_stream(
     model="gemini-3.5-flash",
     contents="Explain singularity in short terms.",
     config=types.GenerateContentConfig(
+        # Only disables the "AFC not recommended" warning — remove or adjust if you need automatic function calling.
         automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True)
     ),
 )

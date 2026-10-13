@@ -43,7 +43,7 @@ async def async_bedrock_invoke_with_stream():
     ]
     response = await bedrock.converse_stream(
         messages=conversation,
-        inferenceConfig={"maxTokens": 300, "temperature": 0.0, "topP": 0.9},
+        inferenceConfig={"maxTokens": 512, "temperature": 0.0, "topP": 0.9},
     )
     async for event in response["stream"]:
         delta = event.get("contentBlockDelta", {}).get("delta", {})
@@ -85,6 +85,7 @@ async with Client(proxy_client=proxy_client).aio as aclient:
         model="gemini-3.5-flash",
         contents="Explain the relativity theory in simple terms.",
         config=GenerateContentConfig(
+            # Only disables the "AFC not recommended" warning — remove or adjust if you need automatic function calling.
             automatic_function_calling=AutomaticFunctionCallingConfig(disable=True)
         ),
     )
@@ -120,6 +121,7 @@ async with Client(proxy_client=proxy_client).aio as aclient:
         contents=[Content(role="user", parts=[Part(text="Write a paragraph about a magic kingdom.")])],
         config=GenerateContentConfig(
             temperature=0,
+            # Only disables the "AFC not recommended" warning — remove or adjust if you need automatic function calling.
             automatic_function_calling=AutomaticFunctionCallingConfig(disable=True),
         ),
     )
@@ -193,10 +195,12 @@ This demonstrates how to use the `ainvoke` method of the Gemini model asynchrono
 
 ```python
 from gen_ai_hub.proxy.langchain import init_llm
+from google.genai.types import AutomaticFunctionCallingConfig
 
 async def gemini_ainvoke_example():
     llm = init_llm(model_name="gemini-3.5-flash", max_tokens=300)
-    response = await llm.ainvoke("Write a ballad about LangChain")
+    # Only disables the "AFC not recommended" warning — remove or adjust if you need automatic function calling.
+    response = await llm.ainvoke("Write a ballad about LangChain", automatic_function_calling=AutomaticFunctionCallingConfig(disable=True))
     print(response)
 
 await gemini_ainvoke_example()
