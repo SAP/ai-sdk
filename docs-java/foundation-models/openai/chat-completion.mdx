@@ -24,17 +24,9 @@ They are safe to use, but may require updates even in minor releases.
 <details>
 <summary id="new-user-interface-v140">New User Interface (v1.4.0)</summary>
 
-We're excited to introduce a new user interface for OpenAI chat completions starting with **version 1.4.0**. This update is designed to improve the SAP AI SDK by:
-
-- **Decoupling Layers:** Separating the convenience layer from the model classes to deliver a more stable and maintainable experience.
-- **Staying Current:** Making it easier for the SAP AI SDK to adapt to the latest changes in the OpenAI API specification.
-- **Consistent Design:** Aligning with the Orchestrator convenience API for a smoother transition and easier adoption.
-
-**Please Note:**
-
-- The new interface is gradually being rolled out across the SAP AI SDK.
-- We welcome your feedback to help us refine this interface.
-- The existing interface (v1.0.0) is deprecated but available.
+Starting with **version 2.0.0**, the old OpenAI client interface (v1.0.0) has been removed.
+The new interface introduced in v1.4.0 provides a more stable and maintainable experience,
+stays current with the latest OpenAI API specification, and aligns with the Orchestration convenience API.
 
 </details>
 
@@ -115,10 +107,12 @@ In addition to the prerequisites above, we assume you have already set up the fo
 ## Simple chat completion
 
 ```java
-var result =
-    OpenAiClient.forModel(GPT_4O_MINI)
-        .withSystemPrompt("You are a helpful AI")
-        .chatCompletion("Hello World! Why is this phrase so famous?");
+var request =
+    new OpenAiChatCompletionRequest(
+        OpenAiMessage.system("You are a helpful AI"),
+        OpenAiMessage.user("Hello World! Why is this phrase so famous?"));
+
+var result = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
 
 String resultMessage = result.getContent();
 ```
@@ -134,10 +128,10 @@ OpenAiClient.withCustomDestination(destination);
 
 ## Custom Headers
 
-To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OpenAIClient`.
+To add custom headers to single or groups of your LLM calls, you can use the `.withHeader` method of the `OpenAiClient`.
 
 ```java
-var client = new OpenAIClient();
+OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
 
 var result = client.withHeader("foo", "bar").chatCompletion("Hello World! Why is this phrase so famous?");
 ```
@@ -145,7 +139,7 @@ var result = client.withHeader("foo", "bar").chatCompletion("Hello World! Why is
 Or, to add multiple headers at once, use `withHeaders`.
 
 ```java
-var client = new OpenAIClient();
+OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
 var headers = Map.of("foo", "bar", "foot", "baz");
 
 var result = client.withHeaders(headers).chatCompletion("Hello World! Why is this phrase so famous?");
@@ -167,20 +161,7 @@ var response = OpenAiClient.forModel(GPT_4O).chatCompletion(request).getContent(
 <details>
 <summary><b>Since v1.0.0</b></summary>
 
-```java
-var systemMessage =
-    new OpenAiChatSystemMessage().setContent("You are a helpful assistant");
-var userMessage =
-    new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
-var request =
-    new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
-
-var result = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
-
-String resultMessage = result.getContent();
-```
-
-See [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OpenAiService.java)
+This interface has been removed in v2.0.0. Please use `OpenAiChatCompletionRequest` with `OpenAiMessage` instead.
 
 </details>
 
@@ -272,43 +253,7 @@ System.out.println("Tokens used: " + tokensUsed);
 <details>
 <summary><b>Since v1.0.0</b></summary>
 
-The following example is non-blocking and demonstrates how to aggregate the complete response.
-Any asynchronous library can be used, such as the classic Thread API.
-
-```java
-var question = "Can you give me the first 100 numbers of the Fibonacci sequence?";
-
-var userMessage =
-    new OpenAiChatMessage.OpenAiChatUserMessage().addText(question);
-var requestParameters =
-    new OpenAiChatCompletionParameters().addMessages(userMessage);
-
-var client = OpenAiClient.forModel(GPT_4O_MINI);
-var totalOutput = new OpenAiChatCompletionOutput();
-
-// Prepare the stream before starting the thread to handle any initialization exceptions
-Stream<OpenAiChatCompletionDelta> stream =
-    client.streamChatCompletionDeltas(requestParameters);
-
-var streamProcessor =
-    new Thread(
-        () -> {
-          // try-with-resources ensures the stream is closed after processing
-          try (stream) {
-            stream.peek(totalOutput::addDelta).forEach(System.out::println);
-          }
-        });
-
-streamProcessor.start(); // Start processing in a separate thread (non-blocking)
-streamProcessor.join(); // Wait for the thread to finish (blocking)
-
-// Access aggregated information from total output
-Integer tokensUsed = totalOutput.getUsage().getCompletionTokens();
-System.out.println("Tokens used: " + tokensUsed);
-```
-
-Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OpenAiService.java). It shows the usage of Spring
-Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+This interface has been removed in v2.0.0. Please use `OpenAiChatCompletionRequest` with `OpenAiMessage` instead.
 
 </details>
 

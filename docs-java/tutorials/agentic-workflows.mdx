@@ -125,7 +125,7 @@ The agentic workflows will be triggered when calling the `runAgent()` method wit
 public class SpringAiAgenticWorkflowService {
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+      new OrchestrationModuleConfig(GPT_4O_MINI);
 
   public ChatResponse runAgent(String userInput) {
 
@@ -160,7 +160,7 @@ For this, we first define the system prompts that we will use in the call to the
 public class SpringAiAgenticWorkflowService {
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+      new OrchestrationModuleConfig(GPT_4O_MINI);
 
   @Nonnull
   public String runAgent(String userInput) {
