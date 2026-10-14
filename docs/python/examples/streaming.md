@@ -43,9 +43,7 @@ stream_openai("Why is the sky blue?")
 #### Structured model outputs[​](#structured-model-outputs "Direct link to Structured model outputs")
 
 ```
-from gen_ai_hub.proxy import get_proxy_client
-
-from gen_ai_hub.proxy.native.openai import chat, OpenAI
+from gen_ai_hub.proxy.native.openai import chat
 
 from pydantic import BaseModel
 
@@ -77,7 +75,7 @@ def stream_openai_structured_outputs(messages, response_object, model_name):
 
         messages=messages,
 
-        response_format=Person
+        response_format=response_object
 
     ) as stream:
 
@@ -91,6 +89,12 @@ print(stream_openai_structured_outputs(messages, Person, "gpt-4o-mini"))
 ```
 
 ```
+from gen_ai_hub.proxy import get_proxy_client
+
+from gen_ai_hub.proxy.native.openai import OpenAI
+
+
+
 def stream_beta_openai_structured_outputs(messages, response_object, model_name):
 
     chat = OpenAI(proxy_client=get_proxy_client())
@@ -101,7 +105,7 @@ def stream_beta_openai_structured_outputs(messages, response_object, model_name)
 
         messages=messages,
 
-        response_format=Person
+        response_format=response_object
 
     ) as stream:
 
@@ -125,7 +129,7 @@ from google.genai.types import GenerateContentConfig
 
 
 
-def stream_genai(prompt, model_name='gemini-2.0-flash'):
+def stream_genai(prompt, model_name='gemini-3.5-flash'):
 
     proxy_client = get_proxy_client('gen-ai-hub')
 
@@ -137,7 +141,7 @@ def stream_genai(prompt, model_name='gemini-2.0-flash'):
 
         contents=prompt,
 
-        config=GenerateContentConfig(max_output_tokens=500),
+        config=GenerateContentConfig(max_output_tokens=2500),
 
     )
 
@@ -159,7 +163,7 @@ from gen_ai_hub.proxy.native.amazon import Session
 
 
 
-def stream_claude(prompt, model_name='anthropic--claude-3-haiku'):
+def stream_claude(prompt, model_name='anthropic--claude-4.5-haiku'):
 
     bedrock = Session().client(model_name=model_name)
 
@@ -259,11 +263,13 @@ stream_bedrock("Why is the sky blue?")
 ```
 from gen_ai_hub.proxy.langchain import init_llm
 
+from gen_ai_hub.proxy import get_proxy_client
+
 
 
 def stream_langchain(prompt, model_name):
 
-    llm = init_llm(model_name=model_name, max_tokens=500)
+    llm = init_llm(model_name=model_name, max_tokens=500, proxy_client=get_proxy_client())
 
     for chunk in llm.stream(prompt):
 
@@ -273,9 +279,7 @@ def stream_langchain(prompt, model_name):
 
 stream_langchain("How do airplanes stay in the air?", model_name='gpt-4o-mini')
 
-stream_langchain("How do airplanes stay in the air?", model_name='gemini-2.0-flash')
+stream_langchain("How do airplanes stay in the air?", model_name='gemini-3.5-flash')
 
-stream_langchain("How do airplanes stay in the air?", model_name='anthropic--claude-3-haiku')
-
-stream_langchain("How do airplanes stay in the air?", model_name='amazon--nova-premier')
+stream_langchain("How do airplanes stay in the air?", model_name='anthropic--claude-4.5-haiku')
 ```

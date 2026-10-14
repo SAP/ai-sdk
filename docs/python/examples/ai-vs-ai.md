@@ -13,9 +13,7 @@ from time import sleep
 
 from langchain_classic.prompts.chat import ChatPromptTemplate, MessagesPlaceholder
 
-from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
-
-from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
 
 from langchain_core.messages import HumanMessage
 
@@ -23,7 +21,7 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 
 
 
-from gen_ai_hub.proxy.langchain.amazon import ChatBedrock
+from gen_ai_hub.proxy.langchain.amazon import ChatBedrock, ChatBedrockConverse
 
 from gen_ai_hub.proxy.langchain.openai import ChatOpenAI
 
@@ -37,11 +35,11 @@ available_models = [
 
     {
 
-        "model_class": ChatBedrock,
+        "model_class": ChatBedrockConverse,
 
-        "model_kwargs": {"model_name": "amazon--titan-text-express"},
+        "model_kwargs": {"model_name": "amazon--nova-lite"},
 
-        "speaking_name": "Amazon Titan Text Express",
+        "speaking_name": "Amazon Nova Lite",
 
     },
 
@@ -49,9 +47,9 @@ available_models = [
 
         "model_class": ChatBedrock,
 
-        "model_kwargs": {"model_name": "anthropic--claude-3-haiku"},
+        "model_kwargs": {"model_name": "anthropic--claude-4.5-haiku"},
 
-        "speaking_name": "Anthropic Claude 3 Haiku",
+        "speaking_name": "Anthropic Claude 4.5 Haiku",
 
     },
 
@@ -75,7 +73,7 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
 
     if session_id not in store:
 
-        store[session_id] = ChatMessageHistory()
+        store[session_id] = InMemoryChatMessageHistory()
 
     return store[session_id]
 
@@ -87,7 +85,7 @@ def create_session_history() -> str:
 
     session_id = str(uuid.uuid4())
 
-    store[session_id] = ChatMessageHistory()
+    store[session_id] = InMemoryChatMessageHistory()
 
     return session_id
 

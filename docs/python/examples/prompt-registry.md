@@ -111,7 +111,7 @@ response = prompt_registry_client.get_prompt_template_history(
 
 )
 
-print(response.json())
+print(response.model_dump_json())
 ```
 
 ### Fill a Prompt Template[​](#fill-a-prompt-template "Direct link to Fill a Prompt Template")
@@ -210,16 +210,6 @@ response = prompt_registry_client.get_orchestration_configs(
     scenario='MyScenario', name='prompt_template_name', version='1.0.0'
 
 )
-
-print(response.resources)
-```
-
-### Orchestration Config History[​](#orchestration-config-history "Direct link to Orchestration Config History")
-
-Retrieve the history of Orchestration Config by scenario, name and version.
-
-```
-response = prompt_registry_client.get_orchestration_configs(scenario='MyScenario', name='prompt_template_name', version='1.0.0')
 
 print(response.resources)
 ```

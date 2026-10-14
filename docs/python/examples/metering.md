@@ -160,7 +160,7 @@ from gen_ai_hub.prompt_registry import PromptTemplateClient
 
 client = PromptTemplateClient(proxy_client=proxy_client)
 
-templates = client.get_prompt_templates(scenario='my-scenario')
+templates = client.get_prompt_templates(scenario='my-scenario', name='my-prompt-template', version='1.0.0')
 
 print(f"Found {templates.count} templates")
 ```
@@ -178,7 +178,7 @@ client = PromptTemplateClient()
 
 with temporary_headers_addition(headers=METERING_HEADERS):
 
-    templates = client.get_prompt_templates(scenario='my-scenario')
+    templates = client.get_prompt_templates(scenario='my-scenario', name='my-prompt-template', version='1.0.0')
 
     print(f"Found {templates.count} templates")
 ```

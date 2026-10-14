@@ -10,28 +10,6 @@ The list of the available models can be found in the [overview](/ai-sdk/docs/pyt
 
 ### OpenAI[​](#openai "Direct link to OpenAI")
 
-`Completions` equivalent to `openai.Completions`. All models that support the legacy completion endpoint can be used:
-
-```
-from gen_ai_hub.proxy.native.openai import completions
-
-
-
-response = completions.create(
-
-    model_name="gpt-4o-mini",
-
-    prompt="The Answer to the Ultimate Question of Life, the Universe, and Everything is",
-
-    max_tokens=20,
-
-    temperature=0
-
-)
-
-print(response)
-```
-
 `ChatCompletions` equivalent to `openai.ChatCompletions`:
 
 ```
@@ -189,7 +167,7 @@ client = Client(proxy_client=proxy_client)
 
 
 
-response = client.models.generate_content(model="gemini-2.5-flash",
+response = client.models.generate_content(model="gemini-3.5-flash",
 
     contents="How many paws are there for a dog?"
 
@@ -199,9 +177,11 @@ print(response)
 
 
 
-response = client.models.generate_content(model="gemini-2.0-flash",
+response = client.models.generate_content(model="gemini-3.5-flash",
 
-                                          contents="Explain the theory of relativity in simple terms.")
+    contents="Explain the theory of relativity in simple terms."
+
+)
 
 print(response)
 ```
@@ -221,7 +201,7 @@ client = Client(proxy_client=proxy_client)
 
 
 
-response_stream = client.models.generate_content_stream(model="gemini-2.5-flash",
+response_stream = client.models.generate_content_stream(model="gemini-3.5-flash",
 
     contents="Explain singularity in short terms.")
 
@@ -265,60 +245,20 @@ client = Client(proxy_client=proxy_client)
 
 
 
-response = client.models.generate_content(
+chat = client.chats.create(
 
-    model='gemini-2.5-flash',
-
-    contents='What is the weather like in Boston?',
+    model='gemini-3.5-flash',
 
     config=types.GenerateContentConfig(tools=[get_current_weather]),
 
 )
 
+response = chat.send_message('What is the weather like in Boston?')
+
 print(response)
 ```
 
 ### Amazon[​](#amazon "Direct link to Amazon")
-
-Invoke Model:
-
-```
-import json
-
-from gen_ai_hub.proxy.native.amazon import Session
-
-
-
-bedrock = Session().client(model_name="amazon--nova-premier")
-
-body = json.dumps(
-
-    {
-
-        "inputText": "Explain black holes in astrophysics to 8th graders.",
-
-        "textGenerationConfig": {
-
-            "maxTokenCount": 3072,
-
-            "stopSequences": [],
-
-            "temperature": 0.7,
-
-            "topP": 0.9,
-
-        },
-
-    }
-
-)
-
-response = bedrock.invoke_model(body=body)
-
-response_body = json.loads(response.get("body").read())
-
-print(response_body)
-```
 
 Converse:
 
@@ -403,7 +343,7 @@ from gen_ai_hub.proxy.native.amazon import Session
 
 
 
-bedrock = Session().client(model_name="amazon--nova-premier")
+bedrock = Session().client(model_name="amazon--titan-embed-text")
 
 body = json.dumps({"inputText": "Please recommend books with a theme similar to the movie 'Inception'."})
 
@@ -431,6 +371,8 @@ from langchain_core.output_parsers import StrOutputParser
 
 from gen_ai_hub.proxy.langchain import init_llm
 
+from gen_ai_hub.proxy import get_proxy_client
+
 
 
 template = """Question: {question}
@@ -443,7 +385,7 @@ question = 'What is a supernova?'
 
 
 
-llm = init_llm('gpt-5-nano', max_tokens=300)
+llm = init_llm('gpt-5.4-nano', max_tokens=300, proxy_client=get_proxy_client('gen-ai-hub'))
 
 chain = prompt | llm | StrOutputParser()
 
@@ -469,7 +411,7 @@ print(response)
 ## LLM[​](#llm "Direct link to LLM")
 
 ```
-from langchain import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
 from gen_ai_hub.proxy.langchain import OpenAI
 
@@ -505,7 +447,7 @@ print(llm_chain.invoke({'question': question}))
 ## Chat Model[​](#chat-model "Direct link to Chat Model")
 
 ```
-from langchain.prompts.chat import (
+from langchain_core.prompts import (
 
     AIMessagePromptTemplate,
 
@@ -559,7 +501,7 @@ from gen_ai_hub.proxy.langchain import ChatOpenAI
 
 from gen_ai_hub.proxy import get_proxy_client
 
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 
 from pydantic import BaseModel
 
@@ -573,7 +515,7 @@ class Person(BaseModel):
 
 
 
-chat_model = ChatOpenAI(proxy_model_name="gpt-4o-mini", proxy_client=get_proxy_client())
+chat_model = ChatOpenAI(proxy_model_name="gpt-4o-mini", proxy_client=get_proxy_client('gen-ai-hub'))
 
 chat_model = chat_model.with_structured_output(method="json_schema", schema=Person, strict=True)
 
@@ -677,6 +619,12 @@ print(response.predictions)
 This example shows that you can also use a plain dictionary for `RPTClient`.
 
 ```
+from gen_ai_hub.proxy.native.sap import RPTClient
+
+
+
+client = RPTClient()
+
 example_request_by_columns_dict = {
 
     "prediction_config": {

@@ -27,15 +27,25 @@ retrieval = RetrievalAPIClient(proxy_client)
 ### List and Search Pipelines[​](#list-and-search-pipelines "Direct link to List and Search Pipelines")
 
 ```
-from gen_ai_hub.document_grounding.models.pipeline import SearchPipelineRequest, SearchPipelineData
+from gen_ai_hub.document_grounding.models.pipeline import SearchPipelineRequest, DataRepositoryMetadataItem
 
 
 
 pipelines_list = pipelines.get_pipelines(top=10)
 
+print(pipelines_list)
 
 
-search_req = SearchPipelineRequest(data=SearchPipelineData(search='<SEARCH_QUERY>'))
+
+search_req = SearchPipelineRequest(
+
+    dataRepositoryMetadata=[
+
+        DataRepositoryMetadataItem(key='<KEY>', value=['<VALUE>'])
+
+    ]
+
+)
 
 search_res = pipelines.search_pipelines(search_req)
 ```
@@ -55,10 +65,12 @@ status = pipelines.get_pipeline_status(pipeline_id)
 
 
 
-trigger_req = ManualPipelineTrigger()
+trigger_req = ManualPipelineTrigger(pipelineId=pipeline_id)
 
-trigger_res = pipelines.trigger_pipeline(pipeline_id, trigger_req)
+trigger_res = pipelines.trigger_pipeline(trigger_req)
 ```
+
+The trigger request returns immediately with a `202` response. Poll `get_pipeline_status` until the status changes from `NEW` to `INPROGRESS` before proceeding.
 
 ### Executions and Documents[​](#executions-and-documents "Direct link to Executions and Documents")
 
@@ -121,7 +133,7 @@ create_res = vector.create_collection(create_req)
 ```
 from gen_ai_hub.document_grounding.models.vector import (
 
-    DocumentsCreateRequest, DocumentsUpdateRequest,
+    DocumentsCreateRequest,
 
     TextOnlyBaseChunk, BaseDocument, VectorKeyValueListPair
 
@@ -177,7 +189,7 @@ search_req = TextSearchRequest(
 
             collectionIds=[collection_id],
 
-            configuration=VectorSearchConfiguration(maxChunkCount=5, maxDocumentCount=3),
+            configuration=VectorSearchConfiguration(maxChunkCount=5),
 
             documentMetadata=[],
 
@@ -213,9 +225,11 @@ repo = retrieval.get_data_repository_by_id(repo_id)
 ```
 from gen_ai_hub.document_grounding.models.retrieval import (
 
-    RetrievalSearchInput, RetrievalSearchFilter, RetrievalSearchConfiguration
+    RetrievalSearchInput, RetrievalSearchFilter, RetrievalSearchConfiguration,
 
 )
+
+
 
 
 
@@ -231,9 +245,9 @@ retrieval_req = RetrievalSearchInput(
 
             dataRepositoryType='help.sap.com',
 
-            searchConfiguration=RetrievalSearchConfiguration(maxChunkCount=5, maxDocumentCount=3),
+            searchConfiguration=RetrievalSearchConfiguration(maxChunkCount=5),
 
-            dataRepositories=[],
+            dataRepositories=["*"]
 
         )
 

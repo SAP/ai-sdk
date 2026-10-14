@@ -51,10 +51,10 @@ from gen_ai_hub.orchestration_v2 import LLMModelDetails
 
 
 
-llm = LLMModelDetails(name="gpt-5-nano", params={"max_completion_tokens": 512})
+llm = LLMModelDetails(name="gpt-5-nano", params={"max_completion_tokens": 2048})
 ```
 
-Initializes the language model to use the `gpt-5-nano` model. It will generate responses up to 512 tokens in length.
+Initializes the language model to use the `gpt-5-nano` model. It will generate responses up to 2048 tokens in length.
 
 ### Step 3: Create the Configuration[​](#step-3-create-the-configuration "Direct link to Step 3: Create the Configuration")
 
@@ -215,7 +215,7 @@ template = Template(
 **JSON Object:**
 
 ```
-from gen_ai_hub.orchestration_v2 import ResponseFormatJsonObject
+from gen_ai_hub.orchestration_v2 import SystemMessage, UserMessage, Template, ResponseFormatJsonObject
 
 
 
@@ -251,7 +251,7 @@ template = Template(
 **JSON Schema:**
 
 ```
-from gen_ai_hub.orchestration_v2 import ResponseFormatJsonSchema, JSONResponseSchema
+from gen_ai_hub.orchestration_v2 import SystemMessage, UserMessage, Template, ResponseFormatJsonSchema, JSONResponseSchema
 
 
 
@@ -396,7 +396,7 @@ template = Template(template=[
 
     SystemMessage(content="You are a helpful AI assistant."),
 
-    UserMessage(content="Summarize the following CV in 10 sentences: {{?orgCV}}"),
+    UserMessage(content="Summarize the following CV in 10 sentences: {{?text}}"),
 
 ])
 
@@ -416,7 +416,7 @@ config = OrchestrationConfig(modules=module_config)
 
 cv_as_string = load_text_file("data/cv.txt")
 
-result = OrchestrationService().run(config=config, placeholder_values={"orgCV": cv_as_string})
+result = OrchestrationService().run(config=config, placeholder_values={"text": cv_as_string})
 
 print(result.final_result.choices[0].message.content)
 ```
@@ -432,9 +432,25 @@ from gen_ai_hub.orchestration_v2 import (
 
     LlamaGuard38bFilter, FilteringModuleConfig, InputFiltering, OutputFiltering,
 
-    AzureContentSafetyInputFilterConfig, AzureContentSafetyOutputFilterConfig, LlamaGuard38bFilterConfig
+    AzureContentSafetyInputFilterConfig, AzureContentSafetyOutputFilterConfig, LlamaGuard38bFilterConfig,
+
+    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
+
+    ModuleConfig, OrchestrationConfig, OrchestrationService, OrchestrationError
 
 )
+
+
+
+template = Template(template=[
+
+    SystemMessage(content="You are a helpful AI assistant."),
+
+    UserMessage(content="{{?text}}"),
+
+])
+
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=LLMModelDetails(name="gpt-4o"))
 
 
 
@@ -468,7 +484,15 @@ content_filter_config = FilteringModuleConfig(
 
 
 
-from gen_ai_hub.orchestration_v2 import OrchestrationError
+module_config = ModuleConfig(prompt_templating=prompt_template, filtering=content_filter_config)
+
+
+
+config = OrchestrationConfig(modules=module_config)
+
+
+
+client = OrchestrationService(config=config)
 
 
 
@@ -492,7 +516,29 @@ To activate streaming, use the `stream` method of the `OrchestrationService` wit
 Here's how you can set up a simple configuration to stream orchestration results:
 
 ```
-from gen_ai_hub.orchestration_v2 import GlobalStreamOptions
+from gen_ai_hub.orchestration_v2 import (
+
+    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
+
+    ModuleConfig, OrchestrationConfig, OrchestrationService, GlobalStreamOptions
+
+)
+
+
+
+template = Template(template=[
+
+    SystemMessage(content="You are a helpful AI assistant."),
+
+    UserMessage(content="{{?text}}"),
+
+])
+
+llm = LLMModelDetails(name="gpt-4o")
+
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=llm)
+
+module_config = ModuleConfig(prompt_templating=prompt_template)
 
 
 
@@ -534,7 +580,19 @@ for part in result:
 Modules that influence or process streaming results, such as `OutputFiltering`, might need specific stream options. The `overlap` option allows you to include extra context during the filtering process.
 
 ```
-from gen_ai_hub.orchestration_v2 import FilteringStreamOptions
+from gen_ai_hub.orchestration_v2 import (
+
+    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
+
+    ModuleConfig, OrchestrationConfig, OrchestrationService, GlobalStreamOptions,
+
+    AzureContentSafetyOutput, AzureContentSafetyOutputFilterConfig,
+
+    FilteringModuleConfig, OutputFiltering, FilteringStreamOptions
+
+)
+
+
 
 content_filter_config = FilteringModuleConfig(
 
@@ -866,7 +924,13 @@ When the LLM decides to call a tool, the orchestration response will include a `
 ```
 from typing import List
 
-from gen_ai_hub.orchestration_v2 import ChatMessage, ToolChatMessage
+from gen_ai_hub.orchestration_v2 import (
+
+    LLMModelDetails, PromptTemplatingModuleConfig, ModuleConfig, OrchestrationConfig, OrchestrationService,
+
+    ChatMessage, ToolChatMessage
+
+)
 
 
 
@@ -918,6 +982,10 @@ print(response2.final_result.choices[0].message.content)
 When using streaming, tool calls may be split across multiple chunks. The `delta.tool_calls` field in each chunk contains partial or complete tool call information. You may need to buffer and concatenate arguments if they arrive in pieces.
 
 ```
+from gen_ai_hub.orchestration_v2 import OrchestrationConfig, GlobalStreamOptions, OrchestrationService
+
+
+
 config = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True))
 
 service = OrchestrationService()
@@ -963,6 +1031,402 @@ for chunk in stream:
 > * Re-invoking the orchestration service as needed
 >
 > This approach gives you maximum flexibility, but you must implement the orchestration loop logic yourself.
+
+## Prompt Caching[​](#prompt-caching "Direct link to Prompt Caching")
+
+Cache control improves performance by caching requests at the model provider level. Add a `cache_control` breakpoint to a content block to mark a cache breakpoint in the prompt. Availability of different time-to-live (TTL) options may depend on the model.
+
+This feature covers explicit cache control for AWS Bedrock-hosted models (Anthropic Claude and Amazon Nova). Other model providers, such as OpenAI and Gemini, use implicit context caching that is enabled by default and requires no additional configuration.
+
+**Note:** Prompt caching requires a minimum number of tokens in the cached content. If the prompt is too short, the cache breakpoint may not take effect.
+
+### Attaching `cache_control` to Content Blocks[​](#attaching-cache_control-to-content-blocks "Direct link to attaching-cache_control-to-content-blocks")
+
+Set `cache_control` on individual content parts inside a message. The example below caches a long system prompt and marks the last user turn as a second cache breakpoint, following the few-shot pattern recommended for classification tasks.
+
+```
+from gen_ai_hub.orchestration_v2 import (
+
+    CacheControl, TextPart,
+
+    SystemMessage, UserMessage, AssistantMessage, Template,
+
+    LLMModelDetails, PromptTemplatingModuleConfig, ModuleConfig,
+
+    OrchestrationConfig, OrchestrationService,
+
+)
+
+
+
+# A long system prompt whose tokens will be cached after the first request.
+
+system_text = "You are an expert news article classifier. Classify each article into exactly one category."
+
+system_text += " Classify each article into exactly one category." * 512  # repeat to exceed the minimum token threshold
+
+
+
+template = Template(
+
+    template=[
+
+        SystemMessage(
+
+            content=[
+
+                TextPart(
+
+                    text=system_text,
+
+                    cache_control=CacheControl(type="ephemeral"),
+
+                )
+
+            ]
+
+        ),
+
+        # Few-shot examples (plain strings, not cached)
+
+        UserMessage(content="input: Comcast launches prepaid plans"),
+
+        AssistantMessage(content="Business"),
+
+        # Dynamic user turn: second cache breakpoint
+
+        UserMessage(
+
+            content=[
+
+                TextPart(
+
+                    text="input: {{?article}}",
+
+                    cache_control=CacheControl(type="ephemeral"),
+
+                )
+
+            ]
+
+        ),
+
+    ]
+
+)
+
+
+
+llm = LLMModelDetails(name="anthropic--claude-4.5-sonnet")
+
+
+
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=llm)
+
+module_config = ModuleConfig(prompt_templating=prompt_template)
+
+config = OrchestrationConfig(modules=module_config)
+
+
+
+orchestration_service = OrchestrationService(config=config)
+
+
+
+result = orchestration_service.run(
+
+    placeholder_values={
+
+        "article": "Scaling up neural models has yielded significant advancements in language generation"
+
+    }
+
+)
+
+print(result.final_result.choices[0].message.content)
+```
+
+### Inspecting Cache Token Usage[​](#inspecting-cache-token-usage "Direct link to Inspecting Cache Token Usage")
+
+For supported models the `prompt_tokens_details` field on the usage object reports how many tokens were written to the cache (`cache_creation_tokens`) and how many were read from it (`cached_tokens`). On a warm cache at least one of the two values will be greater than zero.
+
+```
+usage = result.final_result.usage
+
+details = usage.prompt_tokens_details
+
+print(f"cache_creation_tokens : {details.cache_creation_tokens}")
+
+print(f"cached_tokens         : {details.cached_tokens}")
+```
+
+### Attaching `cache_control` to a Tool Definition[​](#attaching-cache_control-to-a-tool-definition "Direct link to attaching-cache_control-to-a-tool-definition")
+
+Some models also support caching tool definitions. Pass `cache_control` directly to the `FunctionTool` constructor.
+
+```
+from gen_ai_hub.orchestration_v2 import FunctionTool, FunctionObject, CacheControl
+
+
+
+def get_weather(location: str) -> str:
+
+    """Get current temperature for a given location."""
+
+    # Replace with your actual implementation
+
+    return "22°C"
+
+
+
+def get_climate_report(location: str, start_date: str, end_date: str, **kwargs) -> str:
+
+    """Get a verbose climate report for a given location and time interval"""
+
+    # Replace with your actual implementation
+
+    return "{}"
+
+
+
+weather_tool = FunctionTool(
+
+    function=FunctionObject(
+
+        name="get_weather",
+
+        description="Get the current temperature for a given location.",
+
+        parameters={
+
+            "type": "object",
+
+            "properties": {
+
+                "location": {"type": "string", "description": "City and country e.g. Bogotá, Colombia"},
+
+            },
+
+            "required": ["location"],
+
+            "additionalProperties": False,
+
+        },
+
+        strict=True,
+
+        function=get_weather,
+
+    ),
+
+)
+
+
+
+# Verbose tool definition, pushing total schema past Anthropic's 1024-token cache minimum.
+
+# cache_control goes on the last tool in the array, caching the entire tools prefix.
+
+climate_tool = FunctionTool(
+
+    function=FunctionObject(
+
+        name="get_climate_report",
+
+        description=(
+
+            "Retrieves a comprehensive climate and environmental report for a specified location "
+
+            "and date range. The report covers historical weather patterns, seasonal temperature "
+
+            "trends, air quality indices (AQI), UV exposure levels, precipitation forecasts, "
+
+            "relative humidity statistics, wind speed and direction analysis, atmospheric pressure "
+
+            "readings, pollen counts by category (tree, grass, weed), and general climate "
+
+            "advisories issued by local meteorological authorities. Intended for environmental "
+
+            "researchers, travel planners, outdoor event organizers, agricultural analysts, and "
+
+            "health-conscious users requiring detailed atmospheric data beyond simple temperature."
+
+        ) * 6,
+
+        parameters={
+
+            "type": "object",
+
+            "properties": {
+
+                "location": {
+
+                    "type": "string",
+
+                    "description": "Target location as city and country e.g. Berlin, Germany.",
+
+                },
+
+                "start_date": {
+
+                    "type": "string",
+
+                    "description": "Start of the reporting period in ISO 8601 format (YYYY-MM-DD).",
+
+                },
+
+                "end_date": {
+
+                    "type": "string",
+
+                    "description": "End of the reporting period in ISO 8601 format (YYYY-MM-DD).",
+
+                },
+
+                "metrics": {
+
+                    "type": "array",
+
+                    "items": {"type": "string"},
+
+                    "description": (
+
+                        "Subset of metrics to include. Accepted values: temperature, humidity, "
+
+                        "precipitation, wind_speed, wind_direction, aqi, uv_index, pressure, "
+
+                        "pollen_tree, pollen_grass, pollen_weed. Omit to retrieve all metrics."
+
+                    ),
+
+                },
+
+                "units": {
+
+                    "type": "string",
+
+                    "enum": ["metric", "imperial"],
+
+                    "description": "Unit system for numerical values. Defaults to metric.",
+
+                },
+
+                "interval": {
+
+                    "type": "string",
+
+                    "enum": ["hourly", "daily", "weekly"],
+
+                    "description": "Temporal resolution of the returned data series. Defaults to daily.",
+
+                },
+
+                "include_advisories": {
+
+                    "type": "boolean",
+
+                    "description": (
+
+                        "When true, appends any active climate or health advisories issued for "
+
+                        "the location within the requested date range."
+
+                    ),
+
+                },
+
+                "language": {
+
+                    "type": "string",
+
+                    "description": "BCP 47 language tag for advisory text e.g. en, de, es. Defaults to en.",
+
+                },
+
+            },
+
+            "required": ["location", "start_date", "end_date"],
+
+            "additionalProperties": False,
+
+        },
+
+        strict=False,
+
+        function=get_climate_report,
+
+    ),
+
+    cache_control=CacheControl(type="ephemeral"),
+
+)
+```
+
+Use the cached tools in a template and verify that the second run hits the cache:
+
+```
+from gen_ai_hub.orchestration_v2 import Template, SystemMessage, UserMessage
+
+
+
+template = Template(
+
+    template=[
+
+        SystemMessage(content="You are a weather assistant."),
+
+        UserMessage(content="What is the temperature in {{?location}}?"),
+
+    ],
+
+    tools=[weather_tool, climate_tool],
+
+)
+
+
+
+config = OrchestrationConfig(
+
+    modules=ModuleConfig(
+
+        prompt_templating=PromptTemplatingModuleConfig(
+
+            prompt=template,
+
+            model=LLMModelDetails(name="anthropic--claude-4.6-sonnet", params={"max_tokens": 50}),
+
+        )
+
+    )
+
+)
+
+
+
+service = OrchestrationService()
+
+placeholder_values = {"location": "Bogotá, Colombia"}
+
+
+
+# Run 1: writes the cache (cache_creation_tokens > 0, cached_tokens = 0)
+
+response1 = service.run(config=config, placeholder_values=placeholder_values)
+
+u1 = response1.final_result.usage.prompt_tokens_details
+
+print(f"Run 1 — cache_creation_tokens: {u1.cache_creation_tokens}, cached_tokens: {u1.cached_tokens}")
+
+
+
+# Run 2: hits the cache (cache_creation_tokens = 0, cached_tokens > 0)
+
+response2 = service.run(config=config, placeholder_values=placeholder_values)
+
+u2 = response2.final_result.usage.prompt_tokens_details
+
+print(f"Run 2 — cache_creation_tokens: {u2.cache_creation_tokens}, cached_tokens: {u2.cached_tokens}")
+```
 
 ## Using Images as Input[​](#using-images-as-input "Direct link to Using Images as Input")
 
@@ -1028,7 +1492,13 @@ except Exception as e:
 Once you have your `ImageItem` object(s), you can combine them with text to create a multimodal prompt. This is done by passing a list containing `ImageItem` instances and text strings to the `content` parameter of a `UserMessage`.
 
 ```
-from gen_ai_hub.orchestration_v2 import UserMessage
+from gen_ai_hub.orchestration_v2 import (
+
+    UserMessage, LLMModelDetails, Template, PromptTemplatingModuleConfig,
+
+    ModuleConfig, OrchestrationConfig, OrchestrationService
+
+)
 
 
 
@@ -1046,11 +1516,13 @@ content_vqa = [image_from_web, "What objects are prominent in this image?"]
 
 user_message = UserMessage(content=content_vqa)
 
+image_template = Template(template=[user_message])
+
 
 
 # Create a Template containing the UserMessage
 
-prompt_template = PromptTemplatingModuleConfig(prompt=template,model=llm)
+prompt_template = PromptTemplatingModuleConfig(prompt=image_template, model=llm)
 
 
 
@@ -1074,11 +1546,27 @@ The Translation module can translate text from one language to another. It can t
 ```
 from gen_ai_hub.orchestration_v2 import (
 
+    Template, SystemMessage, UserMessage, LLMModelDetails, PromptTemplatingModuleConfig,
+
+    ModuleConfig, OrchestrationConfig, OrchestrationService,
+
     TranslationModuleConfig, SAPDocumentTranslationInput, SAPDocumentTranslationOutput,
 
     InputTranslationConfig, OutputTranslationConfig
 
 )
+
+
+
+template = Template(template=[
+
+    SystemMessage(content="You are a helpful assistant."),
+
+    UserMessage(content="{{?text}}"),
+
+])
+
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=LLMModelDetails(name="gpt-4o"))
 
 
 
@@ -1089,6 +1577,20 @@ translation_config = TranslationModuleConfig(
     output=SAPDocumentTranslationOutput(config=OutputTranslationConfig(source_language="de-DE", target_language="fr-FR"))
 
 )
+
+
+
+template = Template(template=[
+
+    SystemMessage(content="You are a helpful assistant."),
+
+    UserMessage(content="{{?text}}"),
+
+])
+
+llm = LLMModelDetails(name="gpt-4o")
+
+prompt_template = PromptTemplatingModuleConfig(prompt=template, model=llm)
 
 
 
@@ -1161,7 +1663,13 @@ You can customize the embedding output with parameters like `dimensions`, `encod
 | `normalize`       | Normalize the vector               | `True`, `False`             |
 
 ```
-from gen_ai_hub.orchestration_v2 import EmbeddingsModelParams, EmbeddingsEncodingFormat
+from gen_ai_hub.orchestration_v2 import (
+
+    EmbeddingsOrchestrationConfig, EmbeddingsModuleConfigs, EmbeddingsModelConfig,
+
+    EmbeddingsModelDetails, EmbeddingsInput, EmbeddingsModelParams, EmbeddingsEncodingFormat
+
+)
 
 
 
@@ -1227,7 +1735,7 @@ Some embedding models support asymmetric search, where queries and documents are
 | `QUERY`    | Search queries to find relevant documents |
 
 ```
-from gen_ai_hub.orchestration_v2 import EmbeddingsInputType
+from gen_ai_hub.orchestration_v2 import EmbeddingsInput, EmbeddingsInputType
 
 
 
@@ -1271,11 +1779,19 @@ query_response = service.embed(
 When embedding sensitive data, use the data masking module to anonymize PII before generating embeddings. This ensures sensitive information is not exposed to the embedding model.
 
 ```
-from gen_ai_hub.orchestration_v2 import (MaskingModuleConfig, MaskingMethod, MaskingProviderConfig, DPIStandardEntity,
+from gen_ai_hub.orchestration_v2 import (
 
-                                         ProfileEntity)
+    OrchestrationService, EmbeddingsOrchestrationConfig, EmbeddingsModuleConfigs,
+
+    EmbeddingsModelConfig, EmbeddingsModelDetails, EmbeddingsInput,
+
+    MaskingModuleConfig, MaskingMethod, MaskingProviderConfig, DPIStandardEntity, ProfileEntity
+
+)
 
 
+
+service = OrchestrationService()
 
 embeddings_config_with_masking = EmbeddingsOrchestrationConfig(
 
@@ -1289,7 +1805,7 @@ embeddings_config_with_masking = EmbeddingsOrchestrationConfig(
 
         masking=MaskingModuleConfig(
 
-            masking_providers=[
+            providers=[
 
                 MaskingProviderConfig(
 
@@ -1343,9 +1859,21 @@ print(f"Dimensions: {len(response.final_result.data[0].embedding)}")
 Use regular expressions to mask custom patterns and allowlists to exclude specific terms from masking.
 
 ```
-from gen_ai_hub.orchestration_v2 import DPICustomEntity, DPIMethodConstant
+from gen_ai_hub.orchestration_v2 import (
+
+    OrchestrationService, EmbeddingsOrchestrationConfig, EmbeddingsModuleConfigs,
+
+    EmbeddingsModelConfig, EmbeddingsModelDetails, EmbeddingsInput,
+
+    MaskingModuleConfig, MaskingMethod, MaskingProviderConfig, DPIStandardEntity, ProfileEntity,
+
+    DPICustomEntity, DPIMethodConstant
+
+)
 
 
+
+service = OrchestrationService()
 
 embeddings_config_advanced_masking = EmbeddingsOrchestrationConfig(
 
@@ -1359,7 +1887,7 @@ embeddings_config_advanced_masking = EmbeddingsOrchestrationConfig(
 
         masking=MaskingModuleConfig(
 
-            masking_providers=[
+            providers=[
 
                 MaskingProviderConfig(
 
@@ -1423,6 +1951,10 @@ response = service.embed(
 For non-blocking operations, use the async `aembed` method.
 
 ```
+from gen_ai_hub.orchestration_v2 import OrchestrationService, EmbeddingsInput
+
+
+
 async def embed_async():
 
     async_service = OrchestrationService()
@@ -1497,7 +2029,7 @@ class TranslationService:
 
 
 
-service = OrchestrationService(api_url=YOUR_API_URL)
+service = OrchestrationService()
 
 translator = TranslationService(orchestration_service=service)
 
@@ -1609,8 +2141,6 @@ This example demonstrates the different message `roles` in the templating module
 The `FewShotLearner` class manages the dynamic creation of the template and ensures the correct message roles are used for each user input.
 
 ```
-from typing import List, Tuple
-
 from gen_ai_hub.orchestration_v2 import (
 
     OrchestrationConfig, ModuleConfig, LLMModelDetails, SystemMessage, UserMessage,
@@ -1618,10 +2148,6 @@ from gen_ai_hub.orchestration_v2 import (
     AssistantMessage, Template, PromptTemplatingModuleConfig, OrchestrationService
 
 )
-
-
-
-
 
 class FewShotLearner:
 
@@ -1716,7 +2242,7 @@ from gen_ai_hub.orchestration_v2 import (
 
     SystemMessage, UserMessage, Template, PromptTemplatingModuleConfig,
 
-    LLMModelDetails, OrchestrationConfig, ModuleConfig, OrchestrationService, GlobalStreamOptions
+    LLMModelDetails, OrchestrationConfig, ModuleConfig, OrchestrationService
 
 )
 
@@ -1730,13 +2256,15 @@ template = Template(template=[
 
 ])
 
-llm = LLMModelDetails(name="gemini-2.0-flash")
+llm = LLMModelDetails(name="gemini-3.5-flash")
 
-config = OrchestrationConfig(modules=ModuleConfig(
+module_config = ModuleConfig(
 
     prompt_templating=PromptTemplatingModuleConfig(prompt=template, model=llm)
 
-))
+)
+
+config = OrchestrationConfig(modules=module_config)
 
 orchestration_service = OrchestrationService(config=config)
 
@@ -1756,6 +2284,10 @@ await test_async()
 Async streaming:
 
 ```
+from gen_ai_hub.orchestration_v2 import GlobalStreamOptions
+
+
+
 config_stream = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True))
 
 

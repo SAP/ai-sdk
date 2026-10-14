@@ -4,88 +4,62 @@
 
 This demonstrates how to use async-based calls for Amazon AI models.
 
-### Invoke Model[​](#invoke-model "Direct link to Invoke Model")
-
-```
-import json
-
-from gen_ai_hub.proxy.native.amazon import AsyncSession
-
-
-
-async def async_bedrock_invoke_model():
-
-    session = AsyncSession()
-
-    bedrock = await session.async_client(model_name="amazon--nova-premier")
-
-    body = json.dumps({
-
-        "inputText": "Explain black holes to 8th graders.",
-
-        "textGenerationConfig": {"maxTokenCount": 300, "stopSequences": [], "temperature": 0.0, "topP": 0.9},
-
-    })
-
-    response = await bedrock.invoke_model(body=body)
-
-    response_body = json.loads(await response.get("body").read())
-
-    print("Response:", response_body)
-
-    await bedrock.close()
-
-
-
-await async_bedrock_invoke_model()
-```
-
-### Streaming[​](#streaming "Direct link to Streaming")
-
-```
-async def async_bedrock_invoke_with_stream():
-
-    session = AsyncSession()
-
-    bedrock = await session.async_client(model_name="amazon--nova-premier")
-
-    body = json.dumps({
-
-        "inputText": "You are a story teller. Tell me a short story about boats.",
-
-        "textGenerationConfig": {"maxTokenCount": 300, "stopSequences": [], "temperature": 0.0, "topP": 0.9},
-
-    })
-
-    async for event in bedrock.invoke_model_with_response_stream(body=body):
-
-        for line in event["chunk"]["bytes"].splitlines():
-
-            if line and line.startswith(b"data: "):
-
-                chunk = json.loads(line[6:])
-
-                if "outputText" in chunk:
-
-                    print("Chunk Output:", chunk["outputText"])
-
-
-
-await async_bedrock_invoke_with_stream()
-```
-
 ### Converse[​](#converse "Direct link to Converse")
 
 ```
+from gen_ai_hub.proxy.native.amazon import AsyncSession
+
 async def async_amazon_bedrock_converse(model_name):
 
     session = AsyncSession()
 
-    bedrock = await session.async_client(model_name=model_name)
+    async with await session.async_client(model_name=model_name) as bedrock:
 
-    conversation = [{"role": "user", "content": [{"text": "Describe the purpose of a 'hello world' program in one line."}]}]
+        conversation = [{"role": "user", "content": [{"text": "Describe the purpose of a 'hello world' program in one line."}]}]
 
-    response = await bedrock.converse(
+        response = await bedrock.converse(
+
+            messages=conversation,
+
+            inferenceConfig={"maxTokens": 512, "temperature": 0.0, "topP": 0.9},
+
+        )
+
+        print("Response:", response["output"]["message"]["content"][0]["text"])
+
+
+
+await async_amazon_bedrock_converse("amazon--nova-lite")
+```
+
+### Async Function to Stream Amazon Model Response[​](#async-function-to-stream-amazon-model-response "Direct link to Async Function to Stream Amazon Model Response")
+
+```
+from gen_ai_hub.proxy.native.amazon import AsyncSession
+
+async def async_bedrock_invoke_with_stream():
+
+    session = AsyncSession()
+
+    bedrock = await session.async_client(model_name="amazon--nova-lite")
+
+    conversation = [
+
+        {
+
+            "role": "user",
+
+            "content": [
+
+                {"text": "You are a story teller. Tell me a short story about boats."}
+
+            ],
+
+        }
+
+    ]
+
+    response = await bedrock.converse_stream(
 
         messages=conversation,
 
@@ -93,35 +67,41 @@ async def async_amazon_bedrock_converse(model_name):
 
     )
 
-    print("Response:", response["output"]["message"]["content"][0]["text"])
+    async for event in response["stream"]:
 
-    await bedrock.close()
+        delta = event.get("contentBlockDelta", {}).get("delta", {})
+
+        if "text" in delta:
+
+            print("Chunk Output:", delta["text"])
 
 
 
-await async_amazon_bedrock_converse("amazon--nova-premier")
+await async_bedrock_invoke_with_stream()
 ```
 
 ### Embeddings[​](#embeddings "Direct link to Embeddings")
 
 ```
+import json
+
+from gen_ai_hub.proxy.native.amazon import AsyncSession
+
 async def async_amazon_titan_embedding(model_name):
 
     session = AsyncSession()
 
-    bedrock = await session.async_client(model_name=model_name)
+    async with await session.async_client(model_name=model_name) as bedrock:
 
-    body = json.dumps({"inputText": "Please recommend books with a theme similar to the movie 'Inception'."})
+        body = json.dumps({"inputText": "Please recommend books with a theme similar to the movie 'Inception'."})
 
-    response = await bedrock.invoke_model(body=body)
+        response = await bedrock.invoke_model(body=body)
 
-    response_body = json.loads(await response.get("body").read())
+        response_body = json.loads(await response.get("body").read())
 
-    print("Response Metadata:", response["ResponseMetadata"])
+        print("Response Metadata:", response["ResponseMetadata"])
 
-    print("Embedding:", response_body["embedding"])
-
-    await bedrock.close()
+        print("Embedding:", response_body["embedding"])
 
 
 
@@ -145,7 +125,7 @@ async with Client(proxy_client=proxy_client).aio as aclient:
 
     response = await aclient.models.generate_content(
 
-        model="gemini-2.5-flash",
+        model="gemini-3.5-flash",
 
         contents="Explain the relativity theory in simple terms."
 
@@ -157,9 +137,17 @@ print(response)
 ### Chat[​](#chat "Direct link to Chat")
 
 ```
+from gen_ai_hub.proxy.native.google_genai import Client
+
+from gen_ai_hub.proxy import get_proxy_client
+
+
+
+proxy_client = get_proxy_client('gen-ai-hub')
+
 async with Client(proxy_client=proxy_client).aio as aclient:
 
-    chat_session = aclient.chats.create(model="gemini-2.5-flash")
+    chat_session = aclient.chats.create(model="gemini-3.5-flash")
 
     response1 = await chat_session.send_message("Hello.")
 
@@ -170,9 +158,13 @@ async with Client(proxy_client=proxy_client).aio as aclient:
     print("Response 2:", response2.text)
 ```
 
-### Streaming[​](#streaming-1 "Direct link to Streaming")
+### Streaming[​](#streaming "Direct link to Streaming")
 
 ```
+from gen_ai_hub.proxy.native.google_genai import Client
+
+from gen_ai_hub.proxy import get_proxy_client
+
 from google.genai.types import GenerateContentConfig, Content, Part
 
 
@@ -183,7 +175,7 @@ async with Client(proxy_client=proxy_client).aio as aclient:
 
     async_response_stream = await aclient.models.generate_content_stream(
 
-        model="gemini-2.5-flash",
+        model="gemini-3.5-flash",
 
         contents=[Content(role="user", parts=[Part(text="Write a paragraph about a magic kingdom.")])],
 
@@ -211,7 +203,7 @@ from gen_ai_hub.proxy.langchain import ChatBedrock
 
 async def async_amazon_chat_model():
 
-    chat_model = ChatBedrock(model_name="anthropic--claude-3-haiku", model_kwargs={"temperature": 0.0})
+    chat_model = ChatBedrock(model_name="anthropic--claude-4.5-haiku", model_kwargs={"temperature": 0.0})
 
     response = await chat_model.ainvoke([HumanMessage(content="Write me a song about sparkling water.")])
 
@@ -229,7 +221,7 @@ await async_amazon_chat_model()
 This demonstrates how to use the `chat_model.astream` method for the Claude model.
 
 ```
-from langchain_core.messages import AIMessageChunk
+from langchain_core.messages import AIMessageChunk, HumanMessage
 
 from gen_ai_hub.proxy.langchain import ChatBedrock
 
@@ -239,7 +231,7 @@ async def async_chat_streaming():
 
     chat_model = ChatBedrock(
 
-        model_name="anthropic--claude-3-haiku",
+        model_name="anthropic--claude-4.5-haiku",
 
         model_kwargs={"temperature": 0.0},
 
@@ -269,6 +261,8 @@ await async_chat_streaming()
 This demonstrates how to use the `ChatBedrockConverse` model's `ainvoke` method.
 
 ```
+from langchain_core.messages import HumanMessage, AIMessage
+
 from gen_ai_hub.proxy.langchain import ChatBedrockConverse
 
 
@@ -285,7 +279,7 @@ async def chat_converse_model_example(model_name):
 
 
 
-await chat_converse_model_example("anthropic--claude-3-haiku")
+await chat_converse_model_example("anthropic--claude-4.5-haiku")
 ```
 
 ### Async Gemini[​](#async-gemini "Direct link to Async Gemini")
@@ -299,7 +293,7 @@ from gen_ai_hub.proxy.langchain import init_llm
 
 async def gemini_ainvoke_example():
 
-    llm = init_llm(model_name="gemini-2.0-flash", max_tokens=300)
+    llm = init_llm(model_name="gemini-3.5-flash", max_tokens=300)
 
     response = await llm.ainvoke("Write a ballad about LangChain")
 
@@ -319,7 +313,7 @@ async def gemini_chat_ainvoke_example():
 
     chat_model = ChatGoogleGenerativeAI(
 
-        proxy_model_name="gemini-2.0-flash",
+        proxy_model_name="gemini-3.5-flash",
 
         max_tokens=300,
 
@@ -345,7 +339,7 @@ from gen_ai_hub.proxy.langchain import ChatGoogleGenerativeAI
 
 async def gemini_astream_example():
 
-    chat_model = ChatGoogleGenerativeAI(proxy_model_name="gemini-2.0-flash", temperature=0)
+    chat_model = ChatGoogleGenerativeAI(proxy_model_name="gemini-3.5-flash", temperature=0)
 
     async for chunk in chat_model.astream("Write a story about a magic backpack."):
 

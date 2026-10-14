@@ -37,54 +37,58 @@ s3_config = S3PipelineCreateRequest(configuration=CommonConfiguration(destinatio
 response = pipelines_api_client.create_pipeline(s3_config)
 
 print(f"Pipeline ID: {response.pipelineId}")
+```
 
+After creating the pipeline, wait a few seconds before triggering or querying its status, as it may not be immediately available.
+
+```
 print(pipelines_api_client.get_pipeline_status(response.pipelineId))
 ```
 
 ## Configuration[​](#configuration "Direct link to Configuration")
 
-Provide the Orchestration Service URL and create a client for the Orchestration Service.
+Create a client for the Orchestration Service. If no `api_url` is provided, the service auto-discovers the deployment URL for the current resource group.
 
 ```
-from gen_ai_hub.orchestration.service import OrchestrationService
+from gen_ai_hub.orchestration_v2.service import OrchestrationService
 
-from gen_ai_hub.orchestration.models.config import OrchestrationConfig
+from gen_ai_hub.orchestration_v2.models.config import OrchestrationConfig, ModuleConfig
 
-from gen_ai_hub.orchestration.models.document_grounding import (
+from gen_ai_hub.orchestration_v2.models.document_grounding import (
 
-    GroundingModule, GroundingType, DataRepositoryType,
+    GroundingModuleConfig, GroundingType, DataRepositoryType,
 
-    GroundingFilterSearch, DocumentGrounding, DocumentGroundingFilter
+    DocumentGroundingConfig, DocumentGroundingFilter, GroundingSearchConfig,
+
+    DocumentGroundingPlaceholders
 
 )
 
-from gen_ai_hub.orchestration.models.llm import LLM
+from gen_ai_hub.orchestration_v2.models.llm_model_details import LLMModelDetails
 
 
 
-orchestration_service_url = "https://api.ai.<*** cluster-name ***>.aws.ml.hana.ondemand.com/v2/inference/deployments/<*** deployment_id ***>"
-
-orchestration_service = OrchestrationService(api_url=orchestration_service_url)
+orchestration_service = OrchestrationService()
 
 
 
-llm = LLM(name="gpt-4o-mini", parameters={'temperature': 0.0})
+llm = LLMModelDetails(name="gpt-4o-mini", params={'temperature': 0.0})
 ```
 
 ### Define the Prompt[​](#define-the-prompt "Direct link to Define the Prompt")
 
 ```
-from gen_ai_hub.orchestration.models.message import SystemMessage, UserMessage
+from gen_ai_hub.orchestration_v2.models.message import SystemMessage, UserMessage
 
-from gen_ai_hub.orchestration.models.template import Template, TemplateValue
+from gen_ai_hub.orchestration_v2.models.template import Template, PromptTemplatingModuleConfig
 
 
 
-prompt = Template(messages=[
+prompt = Template(template=[
 
-    SystemMessage("You are an expert on SAP Product features."),
+    SystemMessage(content="You are an expert on SAP Product features."),
 
-    UserMessage("""Context: {{ ?grounding_response }}
+    UserMessage(content="""Context: {{ ?grounding_response }}
 
                    Question: What are the features of {{ ?product }}
 
@@ -100,15 +104,13 @@ filters = [DocumentGroundingFilter(id="SAPHelp", data_repository_type=DataReposi
 
 
 
-grounding_config = GroundingModule(
+grounding_config = GroundingModuleConfig(
 
     type=GroundingType.DOCUMENT_GROUNDING_SERVICE.value,
 
-    config=DocumentGrounding(
+    config=DocumentGroundingConfig(
 
-        input_params=["product"],
-
-        output_param="grounding_response",
+        placeholders=DocumentGroundingPlaceholders(input=["product"], output="grounding_response"),
 
         filters=filters
 
@@ -118,11 +120,21 @@ grounding_config = GroundingModule(
 
 
 
-config = OrchestrationConfig(template=prompt, llm=llm, grounding=grounding_config)
+config = OrchestrationConfig(
 
-response = orchestration_service.run(config=config, template_values=[TemplateValue("product", "Generative AI Hub")])
+    modules=ModuleConfig(
 
-print(response.orchestration_result.choices[0].message.content)
+        prompt_templating=PromptTemplatingModuleConfig(prompt=prompt, model=llm),
+
+        grounding=grounding_config
+
+    )
+
+)
+
+response = orchestration_service.run(config=config, placeholder_values={"product": "Generative AI Hub"})
+
+print(response.final_result.choices[0].message.content)
 ```
 
 ### Grounding via Custom Data Repository[​](#grounding-via-custom-data-repository "Direct link to Grounding via Custom Data Repository")
@@ -136,7 +148,7 @@ filters = [DocumentGroundingFilter(
 
     data_repositories=["<*** data repository referencing the S3 pipeline id ***>"],
 
-    search_config=GroundingFilterSearch(max_chunk_count=3),
+    search_config=GroundingSearchConfig(max_chunk_count=3),
 
     data_repository_type=DataRepositoryType.VECTOR.value
 
@@ -144,33 +156,49 @@ filters = [DocumentGroundingFilter(
 
 
 
-grounding_config = GroundingModule(
+grounding_config = GroundingModuleConfig(
 
     type=GroundingType.DOCUMENT_GROUNDING_SERVICE.value,
 
-    config=DocumentGrounding(input_params=["product"], output_param="grounding_response", filters=filters)
+    config=DocumentGroundingConfig(
+
+        placeholders=DocumentGroundingPlaceholders(input=["product"], output="grounding_response"),
+
+        filters=filters
+
+    )
 
 )
 
 
 
-config = OrchestrationConfig(template=prompt, llm=llm, grounding=grounding_config)
+config = OrchestrationConfig(
+
+    modules=ModuleConfig(
+
+        prompt_templating=PromptTemplatingModuleConfig(prompt=prompt, model=llm),
+
+        grounding=grounding_config
+
+    )
+
+)
 
 response = orchestration_service.run(
 
     config=config,
 
-    template_values=[TemplateValue("product", "<*** custom extension name ***>")]
+    placeholder_values={"product": "<*** custom extension name ***>"}
 
 )
 
-print(response.orchestration_result.choices[0].message.content)
+print(response.final_result.choices[0].message.content)
 ```
 
 ### Show Retrieved Context[​](#show-retrieved-context "Direct link to Show Retrieved Context")
 
 ```
-print(response.module_results.grounding.data['grounding_result'])
+print(response.intermediate_results.grounding.data['grounding_result'])
 ```
 
 ### Data Masking of Retrieved Context[​](#data-masking-of-retrieved-context "Direct link to Data Masking of Retrieved Context")
@@ -178,27 +206,27 @@ print(response.module_results.grounding.data['grounding_result'])
 The retrieved context can be masked in the same way as in the Orchestration Service, to avoid passing sensitive information to the LLM.
 
 ```
-from gen_ai_hub.orchestration.models.sap_data_privacy_integration import (
+from gen_ai_hub.orchestration_v2.models.data_masking import (
 
-    SAPDataPrivacyIntegration, MaskingMethod, ProfileEntity
+    MaskingModuleConfig, MaskingProviderConfig, MaskingMethod,
+
+    DPIStandardEntity, ProfileEntity, MaskGroundingInput
 
 )
 
-from gen_ai_hub.orchestration.models.data_masking import DataMasking
 
 
-
-data_masking = DataMasking(
+data_masking = MaskingModuleConfig(
 
     providers=[
 
-        SAPDataPrivacyIntegration(
+        MaskingProviderConfig(
 
             method=MaskingMethod.ANONYMIZATION,
 
-            entities=[ProfileEntity.SAP_IDS_INTERNAL],
+            entities=[DPIStandardEntity(type=ProfileEntity.SAP_IDS_INTERNAL)],
 
-            mask_grounding_input=True
+            mask_grounding_input=MaskGroundingInput(enabled=True)
 
         )
 
@@ -210,7 +238,15 @@ data_masking = DataMasking(
 
 masking_config = OrchestrationConfig(
 
-    template=prompt, llm=llm, grounding=grounding_config, data_masking=data_masking
+    modules=ModuleConfig(
+
+        prompt_templating=PromptTemplatingModuleConfig(prompt=prompt, model=llm),
+
+        grounding=grounding_config,
+
+        masking=data_masking
+
+    )
 
 )
 
@@ -218,11 +254,11 @@ response = orchestration_service.run(
 
     config=masking_config,
 
-    template_values=[TemplateValue("product", "<*** custom extension name ***>")]
+    placeholder_values={"product": "<*** custom extension name ***>"}
 
 )
 
-print(response.orchestration_result.choices[0].message.content)
+print(response.final_result.choices[0].message.content)
 
-print(response.module_results.grounding.data['grounding_result'])
+print(response.intermediate_results.grounding.data['grounding_result'])
 ```
