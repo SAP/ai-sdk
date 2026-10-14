@@ -124,8 +124,6 @@ evaluation_config_list = [
     ),
     EvaluationConfig(
         # The name of an orchestration configuration registered in the Orchestration Registry.
-        # Use the AI Launchpad or the Orchestration SDK to create and register a configuration,
-        # then pass its registry name here.
         orchestration_registry_reference="<ORCHESTRATION REGISTRY REFERENCE>",
         template_variable_mapping={"question": "topic"},
         dataset_config=Dataset("eval-data/testdata/medicalqna_dataset.csv"),
