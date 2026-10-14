@@ -109,26 +109,19 @@ print(response.output_parsed)  # Fully typed Person
 Generate Content:
 
 ```python
-from google.genai import types
 from gen_ai_hub.proxy.native.google_genai import Client
 from gen_ai_hub.proxy import get_proxy_client
 
 proxy_client = get_proxy_client('gen-ai-hub')
 client = Client(proxy_client=proxy_client)
-# Only disables the "AFC not recommended" warning — remove or adjust if you need automatic function calling.
-afc_off = types.GenerateContentConfig(
-    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True)
-)
 
 response = client.models.generate_content(model="gemini-3.5-flash",
-    contents="How many paws are there for a dog?",
-    config=afc_off,
+    contents="How many paws are there for a dog?"
 )
 print(response)
 
 response = client.models.generate_content(model="gemini-3.5-flash",
-    contents="Explain the theory of relativity in simple terms.",
-    config=afc_off,
+    contents="Explain the theory of relativity in simple terms."
 )
 print(response)
 ```
@@ -136,21 +129,15 @@ print(response)
 Generate Content streaming:
 
 ```python
-from google.genai import types
 from gen_ai_hub.proxy.native.google_genai import Client
 from gen_ai_hub.proxy import get_proxy_client
 
 proxy_client = get_proxy_client('gen-ai-hub')
 client = Client(proxy_client=proxy_client)
 
-response_stream = client.models.generate_content_stream(
-    model="gemini-3.5-flash",
-    contents="Explain singularity in short terms.",
-    config=types.GenerateContentConfig(
-        # Only disables the "AFC not recommended" warning — remove or adjust if you need automatic function calling.
-        automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True)
-    ),
-)
+response_stream = client.models.generate_content_stream(model="gemini-3.5-flash",
+    contents="Explain singularity in short terms.")
+
 for chunk in response_stream:
     print("Chunk: ", chunk.text)
 ```
