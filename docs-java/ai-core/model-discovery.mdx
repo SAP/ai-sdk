@@ -46,23 +46,20 @@ See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sd
 
 ## Query Available Models
 
-Use `ScenarioApi.queryModels()` to retrieve all models available for a given scenario in your Gen AI Hub instance.
-Both `scenarioId` and `aiResourceGroup` are required parameters.
-
-To query all foundation models, pass `"foundation-models"` as the scenario ID and your resource group (e.g. `"default"`):
+Use `AiCoreService.queryModels()` to retrieve all foundation models available in your Gen AI Hub instance.
+By default, both the scenario ID (`"foundation-models"`) and resource group (`"default"`) are pre-filled.
 
 ```java
-var api = new ScenarioApi();
-
-AiModelList models = api.queryModels("foundation-models", "default");
-
-// Example of some fields available on each model entry
-models.getResources().forEach(model -> {
-    System.out.println(model.getModel());        // e.g. "mistralai--mixtral-8x7b-instruct-v01"
-    System.out.println(model.getDisplayName());  // e.g. "Mistral FooBar"
-    System.out.println(model.getProvider()); // e.g. "Mistral"
-});
+AiModelList models = new AiCoreService().queryModels();
 ```
+
+To specify a custom scenario ID or resource group, pass them explicitly:
+
+```java
+AiModelList models = new AiCoreService().queryModels("foundation-models", "my-resource-group");
+```
+
+Both parameters are required when using the explicit overload.
 
 Refer to the [ScenarioController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/ScenarioController.java) in our Spring Boot application for a complete example.
 
