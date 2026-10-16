@@ -1,0 +1,72 @@
+---
+id: model-discovery
+title: Model Discovery
+hide_title: false
+hide_table_of_contents: false
+description: How to use the SAP AI SDK for Java to discover available models in SAP AI Core Gen AI Hub.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - ai core
+  - model discovery
+  - foundation models
+---
+
+## Introduction
+
+This guide explains how to query the available foundation models in your SAP AI Core Gen AI Hub instance using the SAP AI SDK for Java.
+
+:::warning
+All classes in the `...model` and `...client` packages are generated from an OpenAPI specification.
+These classes can be used, but no API stability guarantees are provided, even for minor releases.
+Maintenance and support are limited to ensuring consistency with the service specification.
+No additional convenience API layer is provided.
+:::
+
+## Prerequisites
+
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [overview](../overview.mdx#general-requirements).
+Additionally, include the necessary Maven dependency in your project.
+
+### Maven Dependencies
+
+Add the following dependency to your `pom.xml` file:
+
+```xml
+<dependency>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>core</artifactId>
+    <version>${ai-sdk.version}</version>
+</dependency>
+```
+
+See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml)
+
+## Query Available Models
+
+Use `ScenarioApi.queryModels()` to retrieve all models available for a given scenario in your Gen AI Hub instance.
+Both `scenarioId` and `aiResourceGroup` are required parameters.
+
+To query all foundation models, pass `"foundation-models"` as the scenario ID and your resource group (e.g. `"default"`):
+
+```java
+var api = new ScenarioApi();
+
+AiModelList models = api.queryModels("foundation-models", "default");
+
+// Example of some fields available on each model entry
+models.getResources().forEach(model -> {
+    System.out.println(model.getModel());        // e.g. "mistralai--mixtral-8x7b-instruct-v01"
+    System.out.println(model.getDisplayName());  // e.g. "Mistral FooBar"
+    System.out.println(model.getProvider()); // e.g. "Mistral"
+});
+```
+
+Refer to the [ScenarioController.java](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/ScenarioController.java) in our Spring Boot application for a complete example.
+
+:::tip
+Use the model names returned by this endpoint directly when creating deployments or configuring orchestration requests.
+Refer to the [AI Core Deployment](./ai-core-deployment.mdx) documentation for details on creating a deployment for a specific model.
+:::
