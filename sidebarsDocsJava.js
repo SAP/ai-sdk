@@ -38,6 +38,7 @@ export default {
       type: 'category',
       label: 'AI Core Services',
       items: [
+        'ai-core/model-discovery',
         'ai-core/ai-core-deployment',
         'ai-core/document-grounding',
         'ai-core/prompt-registry',
