@@ -44,19 +44,19 @@ Add the following dependency to your `pom.xml` file:
 
 See [an example pom in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/pom.xml)
 
-## Query Available Models
+## Get Available Models
 
-Use `AiCoreService.queryModels()` to retrieve all foundation models available in your Gen AI Hub instance.
+Use `CoreApi.availableAiModels()` to retrieve all foundation models available in your Gen AI Hub instance.
 By default, both the scenario ID (`"foundation-models"`) and resource group (`"default"`) are pre-filled.
 
 ```java
-AiModelList models = new AiCoreService().queryModels();
+AiModelList models = new CoreApi().availableAiModels();
 ```
 
 To specify a custom scenario ID or resource group, pass them explicitly:
 
 ```java
-AiModelList models = new AiCoreService().queryModels("foundation-models", "my-resource-group");
+AiModelList models = new CoreApi().availableAiModels("foundation-models", "my-resource-group");
 ```
 
 Both parameters are required when using the explicit overload.
