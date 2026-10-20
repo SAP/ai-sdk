@@ -379,15 +379,15 @@ rows_regression = [
 client = RPTClient()
 body = RPTRequest(
     prediction_config=PredictionConfig(
-        target_columns=[TargetColumn(name="DISCOUNT_RATE", task_type="regression")]
+        target_columns=[TargetColumn(name="DISCOUNT_RATE", prediction_placeholder="[PREDICT]", task_type="regression")]
     ),
     rows=rows_regression
 )
-response = client.predict(body=body, model_name="sap-rpt-1-small")
+response = client.predict(body=body, model_name="sap-rpt-1.6")
 print(response.predictions)
 
 # With model_version
-response = client.predict(body=body, model_name="sap-rpt-1-small", model_version="latest")
+response = client.predict(body=body, model_name="sap-rpt-1.6", model_version="latest")
 print(response.predictions)
 ```
 
@@ -419,7 +419,7 @@ example_request_by_columns_dict = {
     }
 }
 
-response = client.predict(body=example_request_by_columns_dict, model_name="sap-rpt-1-small")
+response = client.predict(body=example_request_by_columns_dict, model_name="sap-rpt-1.6")
 print(response.predictions)
 ```
 
