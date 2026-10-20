@@ -260,9 +260,6 @@ This can be helpful, for example, if you want to quickly iterate over a prompt t
 try {
   String yaml = Files.readString(Path.of("path/to/my/prompt-template.yaml"));
   LocalPromptTemplate template = PromptTemplate.fromYaml(yaml);
-  if (template == null) {
-    throw new IllegalArgumentException("The YAML did not contain a prompt template.");
-  }
 
   template = template.withInputParameters(Map.of("language", "German"));
   var response = client.chatCompletion().config(config).promptTemplate(template).execute();
@@ -272,8 +269,7 @@ try {
 }
 ```
 
-The `fromYaml()` method will throw an exception if the YAML is not valid or does not match the spec of the Prompt Registry.
-Handle `IOException` and nullable results when importing a template.
+The `fromYaml()` method will throw an `IOException` if the YAML is not valid or does not match the spec of the Prompt Registry.
 You can also import JSON templates with `PromptTemplate.fromJson(...)`.
 
 Note that `additionalFields` (as specified in the Prompt Registry spec) will be ignored when using a prompt template locally like this.
