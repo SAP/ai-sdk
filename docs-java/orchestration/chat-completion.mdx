@@ -246,7 +246,6 @@ var result = clientWithResourceGroup.chatCompletion()
 A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version.
 Complete the reference with `andInputParameters(Map.of())` when no input parameters are needed.
 Tenant scope is the default; set a custom scope only after completing the reference.
-Prompt-template references currently do not support message history.
 For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 You can find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating using templates from Prompt Registry.
