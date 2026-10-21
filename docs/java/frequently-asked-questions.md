@@ -31,9 +31,25 @@ There is also a convenient method to add custom headers to single calls through 
 ```
 var client = new OrchestrationClient();
 
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
+
+var template = PromptTemplate.create("Hello world!");
 
 
-var result = client.withHeader("my-header-key", "my-header-value").chatCompletion(prompt, config);
+
+var result =
+
+    client
+
+        .withHeader("my-header-key", "my-header-value")
+
+        .chatCompletion()
+
+        .config(config)
+
+        .promptTemplate(template)
+
+        .execute();
 ```
 
 For more information on this feature, see the respective documentation of the [OrchestrationClient](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#custom-headers) and [OpenAIClient](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers).

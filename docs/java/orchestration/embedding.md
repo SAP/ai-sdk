@@ -91,20 +91,24 @@ In addition to the prerequisites above, we assume you have already set up the fo
 Get the embeddings of a text input in list of float values:
 
 ```
-var request = OrchestrationEmbeddingRequest
+var client = new OrchestrationClient();
 
-    .forModel(TEXT_EMBEDDING_3_SMALL)
+var request =
 
-    .forInputs("I am John Doe")
+    OrchestrationEmbeddingRequest.forModel(TEXT_EMBEDDING_3_SMALL)
 
-    .asDocument() // Optionally optimize for document content
+        .forInputs("I am John Doe")
+
+        .asDocument(); // Optionally optimize for document content
 
 
 
-OrchestrationEmbeddingResponse response = client.embed(request);
+OrchestrationEmbeddingResponse response = client.embeddings().request(request).execute();
 
 float[] embedding = response.getEmbeddingVectors().get(0);
 ```
+
+For an existing low-level `EmbeddingsPostRequest`, use `client.embeddings().lowLevel().request(request).execute()` instead.
 
 See [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for more features including masking of sensitive data.
 

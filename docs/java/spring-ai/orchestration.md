@@ -353,41 +353,9 @@ var prompt =
 Translation translation = cl.prompt(prompt).call().entity(Translation.class);
 ```
 
-Tip: For more reliability, add this config
-
-```
-var schema = ResponseJsonSchema.fromType(Translation.class);
-
-var template = TemplateConfig.create().withJsonSchemaResponse(schema);
-
-var opts = new OrchestrationChatOptions(config.withTemplateConfig(template));
-```
-
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
 For detailed information on setting a response format, check the corresponding [Documentation for Orchestration](/ai-sdk/docs/java/orchestration/chat-completion.md#response-format).
-
-## Templates from Prompt Registry[​](#templates-from-prompt-registry "Direct link to Templates from Prompt Registry")
-
-You can use prompt templates stored in a prompt registry in your Spring AI application.
-
-```
-ChatModel client = new OrchestrationChatModel();
-
-
-
-var template = TemplateConfig.reference().byScenario("scenario").name("name").version("1.0.0");
-
-var opts = new OrchestrationChatOptions(config.withTemplateConfig(template));
-
-var prompt = new Prompt(List.of(), opts);
-
-
-
-ChatResponse response = client.call(prompt);
-```
-
-For more information on prompt registry, we refer to the corresponding [documentation](/ai-sdk/docs/java/ai-core/prompt-registry.md).
 
 ### Prompt Registry with input parameters and chat memory[​](#prompt-registry-with-input-parameters-and-chat-memory "Direct link to Prompt Registry with input parameters and chat memory")
 
@@ -504,7 +472,7 @@ Prompt prompt = new Prompt("Your prompt here", opts);
 
 
 
-// Use ChatClient to enable automatic tool execution
+// OrchestrationChatModel applies registered tool callbacks automatically
 
 ChatClient.builder(client).build().prompt(prompt).call().chatResponse();
 ```

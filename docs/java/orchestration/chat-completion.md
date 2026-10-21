@@ -119,11 +119,15 @@ var client = existingClient.withResourceGroup("myResourceGroup","orchestration")
 Use the Orchestration service to generate a response to a user message:
 
 ```
-var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
+LocalPromptTemplate template =
+
+    PromptTemplate.create("Hello world! Why is this phrase so famous?");
 
 
 
-var result = client.chatCompletion(prompt, config);
+OrchestrationChatResponse result =
+
+    client.chatCompletion().config(config).promptTemplate(template).execute();
 
 
 
@@ -181,7 +185,13 @@ var client = new OrchestrationClient();
 
 
 
-var result = client.withHeader("foo", "bar").chatCompletion(prompt, config);
+var result = client.withHeader("foo", "bar").chatCompletion()
+
+    .config(config)
+
+    .promptTemplate(template)
+
+    .execute();
 ```
 
 Or, to add multiple headers a once, use `withHeaders`.
@@ -193,7 +203,13 @@ var headers = Map.of("foo", "bar", "foot", "baz");
 
 
 
-var result = client.withHeaders(headers).chatCompletion(prompt, config);
+var result = client.withHeaders(headers).chatCompletion()
+
+    .config(config)
+
+    .promptTemplate(template)
+
+    .execute();
 ```
 
 ## Templating[​](#templating "Direct link to Templating")
@@ -203,22 +219,24 @@ Use a prepared [**template**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-
 ```
 var message = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
 
-var templatingConfig = TemplateConfig.create().withMessages(message);
-
-var configWithTemplate = config.withTemplateConfig(templatingConfig);
-
-
-
 var inputParams = Map.of("language", "German");
 
-var prompt = new OrchestrationPrompt(inputParams);
+var template = PromptTemplate.create(message).withInputParameters(inputParams);
 
 
 
-var result = client.chatCompletion(prompt, configWithTemplate);
+var result = client.chatCompletion()
+
+    .config(config)
+
+    .promptTemplate(template)
+
+    .execute();
 ```
 
 In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
+
+Templates are passed separately from `OrchestrationModuleConfig` and must contain at least one message. Set defaults, tools, and response formats on the local template with `withDefaults(...)`, `withTools(...)`, `withJsonResponse()`, or `withJsonSchemaResponse(...)`. All `with...` methods return updated instances, so retain their results.
 
 ### Prompt Templates from Prompt Registry[​](#prompt-templates-from-prompt-registry "Direct link to Prompt Templates from Prompt Registry")
 
@@ -227,19 +245,25 @@ Alternatively, you can use already prepared templates from the [**Prompt Registr
 #### Tenant Scope Level Approach[​](#tenant-scope-level-approach "Direct link to Tenant Scope Level Approach")
 
 ```
-var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
-
-var configWithTemplate = config.withTemplateConfig(template);
-
-
-
 var inputParams = Map.of("language", "Italian", "input", "cloud ERP systems");
 
-var prompt = new OrchestrationPrompt(inputParams);
+PromptTemplateReference templateReference =
+
+    PromptTemplate.reference()
+
+        .byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
+
+        .andInputParameters(inputParams);
 
 
 
-var result = client.chatCompletion(prompt, configWithTemplate);
+var result = client.chatCompletion()
+
+    .config(config)
+
+    .promptTemplate(templateReference)
+
+    .execute();
 ```
 
 #### Resource Group Scope Level Approach[​](#resource-group-scope-level-approach "Direct link to Resource Group Scope Level Approach")
@@ -249,22 +273,30 @@ var clientWithResourceGroup = new OrchestrationClient().withResourceGroup("resou
 
 
 
-var template = TemplateConfig.reference().byId("id").withScope(RESOURCE_GROUP);
-
-var configWithTemplate = config.withTemplateConfig(template);
-
-
-
 var inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", "What's the latest news on the stock market?");
 
-var prompt = new OrchestrationPrompt(inputParams);
+PromptTemplateReference template =
+
+    PromptTemplate.reference()
+
+        .byId("id")
+
+        .andInputParameters(inputParams)
+
+        .withScope(PromptTemplateReference.ScopeEnum.RESOURCE_GROUP);
 
 
 
-var result = clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+var result = clientWithResourceGroup.chatCompletion()
+
+    .config(config)
+
+    .promptTemplate(template)
+
+    .execute();
 ```
 
-A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version. For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
+A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version. Complete the reference with `andInputParameters(Map.of())` when no input parameters are needed. Tenant scope is the default; set a custom scope only after completing the reference. For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 You can find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating using templates from Prompt Registry.
 
@@ -273,22 +305,28 @@ You can find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample
 You can also test prompt templates in YAML format locally without using the prompt registry. This can be helpful, for example, if you want to quickly iterate over a prompt template before uploading it.
 
 ```
-String promptTemplate = Files.readString(Path.of("path/to/my/prompt-template.yaml"));
+try {
 
-var template = TemplateConfig.create().fromYaml(promptTemplate);
+  String yaml = Files.readString(Path.of("path/to/my/prompt-template.yaml"));
 
-var configWithTemplate = config.withTemplateConfig(template);
+  LocalPromptTemplate template = PromptTemplate.fromYaml(yaml);
 
 
 
-var inputParams = Map.of("language", "German");
+  template = template.withInputParameters(Map.of("language", "German"));
 
-var prompt = new OrchestrationPrompt(inputParams);
+  var response = client.chatCompletion().config(config).promptTemplate(template).execute();
 
-var response = client.chatCompletion(prompt, configWithTemplate);
+
+
+} catch (IOException e) {
+
+  throw new UncheckedIOException("Could not load the prompt template.", e);
+
+}
 ```
 
-The `fromYaml()` method will throw an exception if the YAML is not valid or does not match the spec of the Prompt Registry.
+The `fromYaml()` method will throw an `IOException` if the YAML is not valid or does not match the spec of the Prompt Registry. You can also import JSON templates with `PromptTemplate.fromJson(...)`.
 
 Note that `additionalFields` (as specified in the Prompt Registry spec) will be ignored when using a prompt template locally like this.
 
@@ -301,23 +339,21 @@ Include a message history to maintain context in the conversation:
 ```
 var messagesHistory =
 
-        List.of(
+    List.of(
 
-            Message.user("What is the capital of France?"),
+        Message.user("What is the capital of France?"),
 
-            Message.assistant("The capital of France is Paris."));
+        Message.assistant("The capital of France is Paris."));
 
-var message =
-
-    Message.user("What is the typical food there?");
+var message = Message.user("What is the typical food there?");
 
 
 
-var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
+var template = PromptTemplate.create(message).withMessageHistory(messagesHistory);
 
 
 
-var result = new OrchestrationClient().chatCompletion(prompt, config);
+var result = client.chatCompletion().config(config).promptTemplate(template).execute();
 ```
 
 ## Filtering[​](#filtering "Direct link to Filtering")
@@ -325,7 +361,7 @@ var result = new OrchestrationClient().chatCompletion(prompt, config);
 Apply [**input filtering**](https://help.sap.com/docs/sap-ai-core/generative-ai/enhancing-model-consumption-with-input-filtering-75c6d42355924b28905ffe435af93b51) and [**output filtering**](https://help.sap.com/docs/sap-ai-core/generative-ai/enhancing-model-consumption-with-output-filtering-0675b9c77d40467bb2f87b6474e95a80) to the chat completion:
 
 ````
-var prompt = new OrchestrationPrompt(
+var template = PromptTemplate.create(
 
         """
 
@@ -381,9 +417,7 @@ var configWithFilter = config.withInputFiltering(filterStrict).withOutputFilteri
 
 // this fails with Bad Request because the strict filter prohibits the input message
 
-var result =
-
-    new OrchestrationClient().chatCompletion(prompt, configWithFilter);
+var result = client.chatCompletion().config(configWithFilter).promptTemplate(template).execute();
 ````
 
 **Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks. **Since v1.16.0** The `protectedMaterialCode` has been introduced in `AzureContentFilter` for output filtering to safeguard against copyrighted content.
@@ -411,25 +445,33 @@ var configWithMasking = config.withMaskingConfig(maskingConfig);
 
 
 
-var systemMessage = Message.system("Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
+var systemMessage =
 
-var userMessage = Message.user("""
+    Message.system(
 
-                 I think the SAP AI SDK is good, but could use some further enhancements.
+        "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
 
-                 My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+var userMessage =
 
-                 """);
+    Message.user(
+
+        """
+
+        I think the SAP AI SDK is good, but could use some further enhancements.
+
+        My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+
+        """);
 
 
 
-var prompt = new OrchestrationPrompt(systemMessage, userMessage);
+var template = PromptTemplate.create(systemMessage, userMessage);
 
 
 
 var result =
 
-    new OrchestrationClient().chatCompletion(prompt, configWithMasking);
+    client.chatCompletion().config(configWithMasking).promptTemplate(template).execute();
 ```
 
 In this example, the input will be masked before the call to the LLM and will get unmasked in the output.
@@ -443,9 +485,7 @@ var regex = "patient_id_[0-9]+";
 
 var replacement = "REDACTED_ID";
 
-var maskingConfig =
-
-    DpiMasking.anonymization().withRegex(regex,replacement);
+var maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
 
 var configWithMasking = config.withMaskingConfig(maskingConfig);
 
@@ -457,13 +497,21 @@ var userMessage = Message.user("The patient id is patient_id_123.");
 
 
 
-var prompt = new OrchestrationPrompt(systemMessage, userMessage);
+var template = PromptTemplate.create(systemMessage, userMessage);
 
 
 
 var result =
 
-    new OrchestrationClient().chatCompletion(prompt, configWithMasking);
+    new OrchestrationClient()
+
+        .chatCompletion()
+
+        .config(configWithMasking)
+
+        .promptTemplate(template)
+
+        .execute();
 ```
 
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
@@ -495,23 +543,31 @@ var databaseFilter =
 
     DocumentGroundingFilter.create()
 
-        .id("")
-
         .dataRepositoryType(DataRepositoryType.VECTOR)
+
+        .id("")
 
         .addDocumentMetadataItem(documentMetadata);
 
 
 
-var groundingConfig = Grounding.create().filter(databaseFilter);
+var groundingConfig = Grounding.create().filters(databaseFilter);
 
-var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
+var template =
+
+    PromptTemplate.create(
+
+            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}")
+
+        .withInputParameters(Map.of("userMessage", "What does Joule do?"));
 
 var configWithGrounding = config.withGrounding(groundingConfig);
 
 
 
-var result = client.chatCompletion(prompt, configWithGrounding);
+var result =
+
+    client.chatCompletion().config(configWithGrounding).promptTemplate(template).execute();
 ```
 
 In this example, the AI model is provided with additional context in the form of grounding information.
@@ -533,11 +589,21 @@ var filter =
 
 var groundingConfig = Grounding.create().filters(filter);
 
-var prompt = groundingConfig.createGroundingPrompt("What is the information stored in the sharepoint?");
+var template =
+
+    PromptTemplate.create(
+
+            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}")
+
+        .withInputParameters(
+
+            Map.of("userMessage", "What is the information stored in the SharePoint?"));
 
 var configWithGrounding = config.withGrounding(groundingConfig);
 
-var result = client.chatCompletion(prompt, configWithGrounding);
+var result =
+
+    client.chatCompletion().config(configWithGrounding).promptTemplate(template).execute();
 ```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
@@ -549,9 +615,7 @@ You can also use grounding based on *help.sap.com* for convenient SAP specific g
 ```
 var groundingHelpSapCom =
 
-        DocumentGroundingFilter.create()
-
-                .dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
 
 var groundingConfig = Grounding.create().filters(groundingHelpSapCom);
 
@@ -559,9 +623,11 @@ var configWithGrounding = config.withGrounding(groundingConfig);
 
 
 
-var prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+var prompt = Grounding.createGroundingPrompt("What is a fuzzy search?");
 
-var response = client.chatCompletion(prompt, configWithGrounding);
+var response =
+
+    client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
 ```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
@@ -577,15 +643,17 @@ var maskingConfig =
 
         .withEntities(DPIEntities.SENSITIVE_DATA)
 
-        .withMaskGroundingEnabled()
+        .withMaskGroundingInput(true)
 
         .withAllowList(List.of("SAP", "Joule"));
 
-var maskedGroundingConfig = groundingConfig.withMaskingConfig(maskingConfig);
+var maskedGroundingConfig = configWithGrounding.withMaskingConfig(maskingConfig);
 
 
 
-var result = client.chatCompletion(prompt, maskedGroundingConfig);
+var result =
+
+    client.chatCompletion().config(maskedGroundingConfig).promptTemplate(prompt).execute();
 ```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
@@ -597,13 +665,15 @@ To include [metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-
 ```
 var groundingConfig = Grounding.create().metadataParams("foo", "bar");
 
-var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
+var prompt = Grounding.createGroundingPrompt("What does Joule do?");
 
 var configWithGrounding = config.withGrounding(groundingConfig);
 
 
 
-var result = client.chatCompletion(prompt, configWithGrounding);
+var result =
+
+    client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
 ```
 
 Note that retrieving this additional metadata information is not supported for data repository type *help.sap.com*. When using grounding via *help.sap.com* the SDK will ignore the provided metadata parameters.
@@ -619,25 +689,27 @@ It's possible to pass a stream of chat completion delta elements, e.g. from the 
 This is a blocking example for streaming and printing directly to the console:
 
 ```
-val msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+var msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-val prompt = new OrchestrationPrompt(msg);
+var template = PromptTemplate.create(msg);
 
 
 
 // try-with-resources on stream ensures the connection will be closed
 
-try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
+try (Stream<String> stream =
 
-    stream.forEach(
+    client.chatCompletion().config(config).promptTemplate(template).executeStream()) {
 
-        deltaString -> {
+  stream.forEach(
 
-            System.out.print(deltaString);
+      deltaString -> {
 
-            System.out.flush();
+        System.out.print(deltaString);
 
-        });
+        System.out.flush();
+
+      });
 
 }
 ```
@@ -673,13 +745,15 @@ var reasoningConfig =
 
         OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
 
-var prompt =
+var template =
 
-    new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+    PromptTemplate.create("Think carefully and explain step by step: Why is the sky blue?");
 
 
 
-var response = client.chatCompletion(prompt, reasoningConfig);
+var response =
+
+    client.chatCompletion().config(reasoningConfig).promptTemplate(template).execute();
 
 
 
@@ -695,41 +769,61 @@ String reasoning = response.getReasoningText();
 When streaming, each delta carries its answer and reasoning fragments separately. Read them with `getDeltaContent` and `getDeltaReasoningText`.
 
 ```
-var request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+try (var stream =
 
+    client
 
+        .chatCompletion()
 
-try (var stream = client.streamChatCompletionDeltas(request)) {
+        .config(reasoningConfig)
 
-    stream.forEach(
+        .promptTemplate(template)
 
-        delta -> {
+        .executeStreamDeltas()) {
 
-            System.out.print(delta.getDeltaReasoningText()); // thinking, as it arrives
+  stream.forEach(
 
-            System.out.print(delta.getDeltaContent());          // answer, as it arrives
+      delta -> {
 
-        });
+        System.out.print(delta.getDeltaReasoningText()); // thinking, as it arrives
+
+        System.out.print(delta.getDeltaContent()); // answer, as it arrives
+
+      });
 
 }
 ```
 
 Both methods return an empty string when the delta carries no fragment of that kind.
 
+Use `executeStreamDeltas()` for full deltas, including tool calls, usage, and intermediate results, or `executeStream()` for text only. Close either stream with try-with-resources.
+
 ### Multi-Turn Reasoning[​](#multi-turn-reasoning "Direct link to Multi-Turn Reasoning")
 
 To keep reasoning enabled across turns, feed the previous response's `getAllMessages()` into the follow-up prompt as message history.
 
 ```
-var firstResponse = client.chatCompletion(new OrchestrationPrompt("What is 6 times 7?"), reasoningConfig);
+var firstResponse =
+
+    client
+
+        .chatCompletion()
+
+        .config(reasoningConfig)
+
+        .promptTemplate(PromptTemplate.create("What is 6 times 7?"))
+
+        .execute();
 
 
 
 var followUp =
 
-    new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
+    PromptTemplate.create("Are you sure?").withMessageHistory(firstResponse.getAllMessages());
 
-var followUpResponse = client.chatCompletion(followUp, reasoningConfig);
+var followUpResponse =
+
+    client.chatCompletion().config(reasoningConfig).promptTemplate(followUp).execute();
 
 
 
@@ -825,19 +919,15 @@ Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, 
 ```
 var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 
-var configWithJsonResponse =
+var template =
 
-        config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
+    PromptTemplate.create(Message.user("Some message."), Message.system("Answer using JSON."))
 
+        .withJsonResponse();
 
+var response =
 
-var prompt =
-
-        new OrchestrationPrompt(
-
-                Message.user("Some message."), Message.system("Answer using JSON."));
-
-var response = client.chatCompletion(prompt, configWithJsonResponse).getContent();
+    client.chatCompletion().config(config).promptTemplate(template).execute().getContent();
 ```
 
 Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt. The result might not adhere exactly to the given JSON format, but it will be a JSON object.
@@ -867,21 +957,29 @@ var schema =
 
     ResponseJsonSchema.fromType(TestClass.class)
 
-            .withDescription("Output schema for the example class TestClass.")
+        .withDescription("Output schema for the example class TestClass.")
 
-            .withStrict(true);
+        .withStrict(true);
 
 var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 
-var configWithResponseSchema =
+var template =
 
-        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+    PromptTemplate.create(Message.user("Some message.")).withJsonSchemaResponse(schema);
 
+TestClass response =
 
+    client
 
-var prompt = new OrchestrationPrompt(Message.user("Some message."));
+        .chatCompletion()
 
-TestClass response = client.chatCompletion(prompt, configWithTemplate).asEntity(TestClass.class);
+        .config(config)
+
+        .promptTemplate(template)
+
+        .execute()
+
+        .asEntity(TestClass.class);
 ```
 
 Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)` and annotate schema fields with `@JsonProperty(required = true)`. Not all schemas are possible for OpenAI in strict mode. See [here](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) for more information.
@@ -897,15 +995,19 @@ var schemaMap =
 
         entry("type", "object"),
 
-        entry("properties", Map.ofEntries(
+        entry(
 
-            entry("language", Map.of("type", "string")),
+            "properties",
 
-            entry("translation", Map.of("type", "string"))),
+            Map.ofEntries(
 
-        entry("required", List.of("language","translation")),
+                entry("language", Map.of("type", "string")),
 
-        entry("additionalProperties", false)));
+                entry("translation", Map.of("type", "string")),
+
+                entry("required", List.of("language", "translation")),
+
+                entry("additionalProperties", false))));
 
 
 
@@ -913,9 +1015,13 @@ var schemaFromMap = ResponseJsonSchema.fromMap(schemaMap, "Translator-Schema");
 
 var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 
-var configWithResponseSchema =
+var template =
 
-        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schemaFromMap));
+    PromptTemplate.create("Translate 'Hello' into German.")
+
+        .withJsonSchemaResponse(schemaFromMap);
+
+var response = client.chatCompletion().config(config).promptTemplate(template).execute();
 ```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
@@ -925,7 +1031,7 @@ Please find [an example in our Spring Boot application](https://github.com/SAP/a
 Translate the input or output to [any supported language](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation). The following sample will translate the prompt into English, send it to the LLM, and then translate the output to German. The source language is identified from the whole user input.
 
 ```
-var prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel?");
+var template = PromptTemplate.create("Quelle est la couleur de la tour Eiffel?");
 
 
 
@@ -937,7 +1043,9 @@ var configWithTranslation = config
 
 
 
-var response = client.chatCompletion(prompt, configWithTranslation);
+var response =
+
+    client.chatCompletion().config(configWithTranslation).promptTemplate(template).execute();
 ```
 
 ### Translation using applyTo parameter[​](#translation-using-applyto-parameter "Direct link to Translation using applyTo parameter")
@@ -957,43 +1065,49 @@ var inputParams =
 
 var systemMessage =
 
-    Message.system("You are an expert study coach creating clear, concise exam notes and practice questions.");
+    Message.system(
+
+        "You are an expert study coach creating clear, concise exam notes and practice questions.");
 
 var userMessage =
 
-    Message.user("Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
+    Message.user(
+
+        "Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
 
 
 
-var templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+var template =
+
+    PromptTemplate.create(systemMessage, userMessage).withInputParameters(inputParams);
 
 
 
-var prompt = new OrchestrationPrompt(inputParams);
+var configWithTranslation =
 
-
-
-var configWithTranslation = config
-
-        .withTemplateConfig(templatingConfig)
+    config
 
         .withInputTranslationConfig(
 
-        TranslationConfig.translateInputTo("en-US")
+            TranslationConfig.translateInputTo("en-US")
 
-              .applyToPlaceholders("exam_type", "topic")
+                .applyToPlaceholders("exam_type", "topic")
 
-              .withSourceLanguage("de-DE")
+                .withSourceLanguage("de-DE")
 
-              .applyToTemplateRoles(USER, ASSISTANT)
+                .applyToTemplateRoles(USER, ASSISTANT)
 
-              .withSourceLanguage("en-US"))
+                .withSourceLanguage("en-US"))
 
-        .withOutputTranslationConfig(TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
+        .withOutputTranslationConfig(
+
+            TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
 
 
-var response = client.chatCompletion(prompt, configWithTranslation);
+var response =
+
+    client.chatCompletion().config(configWithTranslation).promptTemplate(template).execute();
 ```
 
 You can also optionally specify the source language, **the source-target pair has to be in the [list](https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation).**
@@ -1033,9 +1147,19 @@ You can create and store Orchestration configurations in Prompt Registry. For a 
 Once you stored an Orchestration configuration in Prompt Registry you can reference it either via its ID or via a combination of its scenario, name, and version as follows.
 
 ```
-var reference = OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
+var reference =
 
-OrchestrationChatResponse response = client.chatCompletionUsingReference(reference);
+    OrchestrationConfigReference.fromScenario("scenario")
+
+        .name("name")
+
+        .version("0.0.1")
+
+        .andInputParameters(Map.of());
+
+OrchestrationChatResponse response =
+
+    client.chatCompletion().configReference(reference).execute();
 ```
 
 Note that you have to add the necessary templating parameters that are used in your Orchestration configuration. Additionally, you can add a list of messages as message history. Here is an example that uses both for a stored Orchestration configuration that is referenced via its ID.
@@ -1051,40 +1175,16 @@ var reference =
 
         .withMessageHistory(history)
 
-        .withTemplateParameters(parameter);
+        .withInputParameters(parameter);
 
-OrchestrationChatResponse client.chatCompletionUsingReference(reference);
+OrchestrationChatResponse response =
+
+    client.chatCompletion().configReference(reference).execute();
 ```
 
 Note that besides setting the message history and the template parameters, the configuration itself cannot be changed during runtime if it is used via reference from prompt registry.
 
 You can also find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
-
-### Using a Configuration from AI Launchpad[​](#using-a-configuration-from-ai-launchpad "Direct link to Using a Configuration from AI Launchpad")
-
-In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
-
-```
-var configJson = """
-
-    ... paste your configuration JSON in here ...
-
-    """;
-
-// or load your config from a file, e.g.
-
-// configJson = Files.readString(Paths.get("path/to/my/orchestration-config.json"));
-
-
-
-var prompt = new OrchestrationPrompt(Map.of("your-input-parameter", "your-param-value"));
-
-
-
-new OrchestrationClient().executeRequestFromJsonModuleConfig(prompt, configJson);
-```
-
-While this is not recommended for long term use, it can be useful for creating demos and PoCs.
 
 ## Using Fallback Modules[​](#using-fallback-modules "Direct link to Using Fallback Modules")
 
@@ -1093,11 +1193,11 @@ It is possible to provide multiple `OrchestrationModuleConfig` objects to an Orc
 To use this feature, you can simply provide multiple `OrchestrationModuleConfig` objects in your (steaming or non-streaming) call.
 
 ```
-var prompt = new OrchestrationPrompt("your prompt");
+var template = PromptTemplate.create("your prompt");
 
 
 
-var workingConfig = new OrchestrationModuleConfig(GPT_4O_MINI);
+var workingConfig = new OrchestrationModuleConfig(GPT_41_MINI);
 
 var secondWorkingConfig = new OrchestrationModuleConfig(GPT_4O);
 
@@ -1107,15 +1207,31 @@ var brokenConfig =
 
 
 
-var fallbackConfigs = new OrchestrationModuleConfig[] {workingConfig, secondWorkingConfig};
+OrchestrationChatResponse result =
 
+    client
 
+        .chatCompletion()
 
-OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, fallbackConfigs);
+        .config(brokenConfig, workingConfig, secondWorkingConfig)
+
+        .promptTemplate(template)
+
+        .execute();
 
 // or:
 
-// OrchestrationChatResponse result = client.chatCompletion(prompt, brokenConfig, workingConfig, secondWorkingConfig);
+//  var fallbackConfigs = new OrchestrationModuleConfig[] {workingConfig, secondWorkingConfig};
+
+//  client
+
+//      .chatCompletion()
+
+//      .config(brokenConfig, fallbackConfigs)
+
+//      .promptTemplate(template)
+
+//      .execute();
 ```
 
 In the above example, the call with `brokenConfig` will return an error so another call with `workingConfig` is performed and the (positive) result of this call is returned.
@@ -1127,11 +1243,11 @@ Please find [a working example in our Spring Boot application](https://github.co
 The Orchestration service can return citations in the response when the LLM provides them, such as with Perplexity's Sonar model.
 
 ```
-val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
+var template = PromptTemplate.create("Where does \"Hello World\" come from?");
 
-val sonarConfig = new OrchestrationModuleConfig(SONAR);
+var sonarConfig = new OrchestrationModuleConfig(SONAR);
 
-return client.chatCompletion(prompt, sonarConfig);
+var response = client.chatCompletion().config(sonarConfig).promptTemplate(template).execute();
 
 
 
@@ -1145,21 +1261,29 @@ List<Citation> citations = response.getOriginalResponse().getFinalResult().getCi
 Use [**prompt caching**](https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching) to reduce usage costs for repetitive prompts:
 
 ```
+var systemMessage =
 
-
-var systemMessage = Message.system("<Long frequently used prompt here>", new CacheControl("1h"));
+    Message.system("<Long frequently used prompt here>", new CacheControl("1h"));
 
 var userMessage = Message.user("<Variable user prompt>");
 
 
 
-var prompt = new OrchestrationPrompt(systemMessage, userMessage);
+var template = PromptTemplate.create(systemMessage, userMessage);
 
 
 
 var result =
 
-    new OrchestrationClient().chatCompletion(prompt, config);
+    new OrchestrationClient()
+
+        .chatCompletion()
+
+        .config(config)
+
+        .promptTemplate(template)
+
+        .execute();
 ```
 
 In this example, the system message (prompt) will be cached so its intermediate model calculation results could be reused on subsequent requests across conversations.

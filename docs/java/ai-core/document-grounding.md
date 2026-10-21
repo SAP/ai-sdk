@@ -219,7 +219,7 @@ RetrievalSearchResults results = api.search(resourceGroupId, search);
 You can use the grounding service via orchestration. Please find the [Orchestration documentation on grounding](/ai-sdk/docs/java/orchestration/chat-completion.md#grounding).
 
 ```
-OrchestrationClient client;
+OrchestrationClient client = new OrchestrationClient();
 
 
 
@@ -259,17 +259,13 @@ var inputParams = Map.of("query", "What is SAP Cloud SDK for AI?");
 
 
 
-var prompt =
-
-    new OrchestrationPrompt(
-
-        inputParams,
-
-        Message.system("Context message with embedded grounding results. {{?results}}"));
+var template = Grounding.createGroundingPrompt("{{?query}}").withInputParameters(inputParams);
 
 
 
-OrchestrationChatResponse response = client.chatCompletion(prompt, configWithGrounding);
+OrchestrationChatResponse response =
+
+    client.chatCompletion().config(configWithGrounding).promptTemplate(template).execute();
 ```
 
 ## Custom Headers[​](#custom-headers "Direct link to Custom Headers")
