@@ -229,16 +229,16 @@ export default {
         routeBasePath: 'docs/java',
         sidebarPath: './sidebarsDocsJava.js',
         remarkPlugins: [remarkEnforceMdxLinks],
-        lastVersion: 'v1',
+        lastVersion: 'current',
         versions: {
           current: {
             label: 'v2',
-            banner: 'unreleased',
+            banner: 'none',
             badge: false
           },
           v1: {
             label: 'v1',
-            banner: 'none',
+            banner: 'unmaintained',
             badge: false
           }
         }
