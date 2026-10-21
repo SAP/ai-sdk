@@ -72,7 +72,7 @@ First, add the following dependencies to your `pom.xml`:
 
 Spring AI Version
 
-As of version `1.10.0` the minimum required version for Spring AI is `1.0.0`. Please refer to the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for details on how to upgrade from a previous milestone version.
+As of version `1.25.0` the minimum required version for Spring AI is `2.0.1`. Please refer to the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-2-0-1) for details on how to upgrade from a previous milestone version.
 
 ## Chat Completion[​](#chat-completion "Direct link to Chat Completion")
 
@@ -81,7 +81,7 @@ The Orchestration client is integrated in Spring AI classes:
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
@@ -101,7 +101,7 @@ Configure Orchestration modules within Spring AI:
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 
 
@@ -137,7 +137,7 @@ Apply [input filtering](https://help.sap.com/docs/sap-ai-core/sap-ai-core-servic
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 
 
@@ -175,7 +175,7 @@ It's possible to pass a stream of chat completion delta elements, e.g. from the 
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
@@ -244,13 +244,15 @@ Then pass your tool to the model as follows.
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
-OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config)
 
+    .mutate()
 
+    .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
 
-opts.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+    .build();
 
 
 
@@ -270,7 +272,7 @@ Create a Spring AI `ChatClient` from our `OrchestrationChatModel` and add a chat
 ```
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
@@ -332,7 +334,7 @@ public record Translation(
 
 ChatModel client = new OrchestrationChatModel();
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 
 
@@ -424,11 +426,11 @@ Add the Spring MCP auto configuration dependency:
 
     <groupId>org.springframework.ai</groupId>
 
-    <artifactId>spring-ai-autoconfigure-mcp-client</artifactId>
+    <artifactId>spring-ai-autoconfigure-mcp-client-common</artifactId>
+
+    <version>2.0.1</version>
 
     <scope>runtime</scope>
-
-    <version>1.0.0</version>
 
 </dependency>
 ```
@@ -488,15 +490,23 @@ ToolCallbackProvider toolCallbackProvider;
 These tools can now be used in requests to the Orchestration service [like any other tool](#tool-calling):
 
 ```
-OrchestrationChatOptions opts;
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config)
 
-opts.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
+    .mutate()
+
+    .toolCallbacks(toolCallbackProvider.getToolCallbacks())
+
+    .build();
 
 
 
-// optionally, enable automated tool execution
+Prompt prompt = new Prompt("Your prompt here", opts);
 
-opts.setInternalToolExecutionEnabled(true);
+
+
+// Use ChatClient to enable automatic tool execution
+
+ChatClient.builder(client).build().prompt(prompt).call().chatResponse();
 ```
 
 For more information also refer to the [sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
@@ -512,7 +522,7 @@ ChatModel client = new OrchestrationChatModel(clientWithHeader);
 
 
 
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_4O_MINI);
 
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 

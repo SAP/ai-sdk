@@ -10,17 +10,7 @@ All classes under any of the `...model` packages are generated from an OpenAPI s
 
 New User Interface (v1.4.0)
 
-We're excited to introduce a new user interface for OpenAI embedding calls starting with **version 1.4.0**. This update is designed to improve the SAP AI SDK by:
-
-* **Decoupling Layers:** Separating the convenience layer from the model classes to deliver a more stable and maintainable experience.
-* **Staying Current:** Making it easier for the SAP AI SDK to adapt to the latest changes in the OpenAI API specification.
-* **Consistent Design:** Aligning with the Orchestrator convenience API for a smoother transition and easier adoption.
-
-**Please Note:**
-
-* The new interface is gradually being rolled out across the SAP AI SDK.
-* We welcome your feedback to help us refine this interface.
-* The existing interface (v1.0.0) is deprecated but available.
+Starting with **version 2.0.0**, the old OpenAI client interface (v1.0.0) has been removed. The new interface introduced in v1.4.0 provides a more stable and maintainable experience, stays current with the latest OpenAI API specification, and aligns with the Orchestration convenience API.
 
 ## Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 
@@ -142,16 +132,4 @@ float[] embedding = embedding.getEmbeddingVectors().get(0);
 
 **Since v1.0.0**
 
-```
-var request = new OpenAiEmbeddingParameters().setInput("Hello World");
-
-
-
-OpenAiEmbeddingOutput embedding = OpenAiClient.forModel(TEXT_EMBEDDING_3_SMALL).embedding(request);
-
-
-
-float[] embedding = embedding.getData().get(0).getEmbedding();
-```
-
-See [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OpenAiService.java)
+This interface has been removed in v2.0.0. Please use `OpenAiEmbeddingRequest` instead.

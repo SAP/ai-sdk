@@ -91,9 +91,7 @@ var client = new OrchestrationClient();
 
 
 
-var config = new OrchestrationModuleConfig()
-
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 ```
 
 Please also refer to [our sample code](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for this and all following code examples.
@@ -149,9 +147,7 @@ The [Harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-g
 
 /*
 
-var config = new OrchestrationModuleConfig()
-
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 
 */
 
@@ -159,9 +155,7 @@ var config = new OrchestrationModuleConfig()
 
 // Switch to Claude 3.5 Sonnet
 
-var config = new OrchestrationModuleConfig()
-
-        .withLlmConfig(OrchestrationAiModel.CLAUDE_3_5_SONNET);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.CLAUDE_3_5_SONNET);
 ```
 
 Available LLMs on SAP Generative AI Hub
@@ -829,9 +823,7 @@ It is possible to set the response format for the chat completion. Available opt
 Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON. This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
 
 ```
-var config = new OrchestrationModuleConfig()
-
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 
 var configWithJsonResponse =
 
@@ -879,9 +871,7 @@ var schema =
 
             .withStrict(true);
 
-var config = new OrchestrationModuleConfig()
-
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 
 var configWithResponseSchema =
 
@@ -921,9 +911,7 @@ var schemaMap =
 
 var schemaFromMap = ResponseJsonSchema.fromMap(schemaMap, "Translator-Schema");
 
-var config = new OrchestrationModuleConfig()
-
-    .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 
 var configWithResponseSchema =
 
@@ -1109,15 +1097,13 @@ var prompt = new OrchestrationPrompt("your prompt");
 
 
 
-var workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+var workingConfig = new OrchestrationModuleConfig(GPT_4O_MINI);
 
-var secondWorkingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+var secondWorkingConfig = new OrchestrationModuleConfig(GPT_4O);
 
 var brokenConfig =
 
-    new OrchestrationModuleConfig()
-
-        .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
 
 
 
@@ -1143,7 +1129,7 @@ The Orchestration service can return citations in the response when the LLM prov
 ```
 val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
 
-val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+val sonarConfig = new OrchestrationModuleConfig(SONAR);
 
 return client.chatCompletion(prompt, sonarConfig);
 
