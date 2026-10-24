@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="gen_ai_hub.orchestration_v2.models.config module" href="gen_ai_hub.orchestration_v2.models.config.html"><link rel="prev" title="gen_ai_hub.orchestration_v2.models.azure_content_filter module" href="gen_ai_hub.orchestration_v2.models.azure_content_filter.html">
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="gen_ai_hub.orchestration_v2.models.cache_control module" href="gen_ai_hub.orchestration_v2.models.cache_control.html"><link rel="prev" title="gen_ai_hub.orchestration_v2.models.azure_content_filter module" href="gen_ai_hub.orchestration_v2.models.azure_content_filter.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
         <title>gen_ai_hub.orchestration_v2.models.base module - SAP AI SDK Python documentation</title>
@@ -416,6 +416,7 @@
 <li class="toctree-l3 current has-children"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a><input aria-label="Toggle navigation of gen_ai_hub.orchestration_v2.models package" checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.azure_content_filter.html">gen_ai_hub.orchestration_v2.models.azure_content_filter module</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">gen_ai_hub.orchestration_v2.models.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.cache_control.html">gen_ai_hub.orchestration_v2.models.cache_control module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.config.html">gen_ai_hub.orchestration_v2.models.config module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filter.html">gen_ai_hub.orchestration_v2.models.content_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filtering.html">gen_ai_hub.orchestration_v2.models.content_filtering module</a></li>
@@ -560,6 +561,23 @@ derived models.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.base.</span></span><span class="sig-name descname"><span class="pre">ResponseBaseModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Base model for API response models.</p>
+<ul class="simple">
+<li><p><cite>extra=”allow”</cite> allows unexpected fields in responses to be accepted,
+since the external API might introduce new attributes in the response.</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'allow',</span> <span class="pre">'frozen':</span> <span class="pre">False}</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
         </article>
@@ -567,12 +585,12 @@ derived models.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="gen_ai_hub.orchestration_v2.models.config.html">
+          <a class="next-page" href="gen_ai_hub.orchestration_v2.models.cache_control.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">gen_ai_hub.orchestration_v2.models.config module</div>
+                <div class="title">gen_ai_hub.orchestration_v2.models.cache_control module</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -621,6 +639,10 @@ derived models.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.base.ABCBaseModel"><code class="docutils literal notranslate"><span class="pre">ABCBaseModel</span></code></a><ul>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.base.ABCBaseModel.model_config"><code class="docutils literal notranslate"><span class="pre">ABCBaseModel.model_config</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.base.ABCBaseModel.model_dump"><code class="docutils literal notranslate"><span class="pre">ABCBaseModel.model_dump()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a><ul>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel.model_config"><code class="docutils literal notranslate"><span class="pre">ResponseBaseModel.model_config</span></code></a></li>
 </ul>
 </li>
 </ul>
