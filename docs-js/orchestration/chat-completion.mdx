@@ -1138,6 +1138,11 @@ const filterConfig = buildAzureContentSafetyFilter('output', {
 
 ### Llama Guard Filter
 
+:::warning Deprecated
+The Llama Guard 3 8B filter is deprecated and will be removed on 2027-09-20.
+The [IBM Granite Guardian Filter](#ibm-granite-guardian-filter) is a non-deprecated, SAP-hosted alternative.
+:::
+
 Use `buildLlamaGuard38BFilter()` function to build a Llama Guard 3 8B content filter.
 Input and output filters are differentiated.
 Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
@@ -1153,6 +1158,37 @@ const outputFilter = buildLlamaGuard38BFilter('output', [
   'self_harm',
   'violent_crimes'
 ]);
+```
+
+### IBM Granite Guardian Filter
+
+Use `buildGraniteGuardianFilter()` function to build an IBM Granite Guardian 4.1 content filter.
+It is a non-deprecated, SAP-hosted content filter and an alternative to the deprecated [Llama Guard Filter](#llama-guard-filter).
+The same configuration can be used for both input and output filtering — add it to the `input` or `output` filters list as needed.
+
+Available categories can be found with autocompletion.
+Pass at least one category as an array to the function to enable it.
+
+:::info
+Granite Guardian requires a separate call for each configured content category.
+To keep latency and cost low, prefer the `harm` catch-all category over enabling many categories.
+:::
+
+```ts twoslash
+import { buildGraniteGuardianFilter } from '@sap-ai-sdk/orchestration';
+
+const filter = buildGraniteGuardianFilter(['harm']);
+const multiCategoryFilter = buildGraniteGuardianFilter(['harm', 'violence']);
+```
+
+Set `enable_reasoning` to `true` to run Granite Guardian in reasoning mode, which returns reasoning content alongside each category verdict.
+
+```ts twoslash
+import { buildGraniteGuardianFilter } from '@sap-ai-sdk/orchestration';
+
+const filter = buildGraniteGuardianFilter(['harm'], {
+  enable_reasoning: true
+});
 ```
 
 ## Data Masking
