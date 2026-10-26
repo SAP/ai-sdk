@@ -1162,7 +1162,7 @@ const outputFilter = buildLlamaGuard38BFilter('output', [
 
 ### IBM Granite Guardian Filter
 
-Use `buildGraniteGuardianFilter()` function to build an IBM Granite Guardian 4.1 content filter.
+Use `buildGraniteGuardian41Filter()` function to build an IBM Granite Guardian 4.1 content filter.
 It is a non-deprecated, SAP-hosted content filter and an alternative to the deprecated [Llama Guard Filter](#llama-guard-filter).
 The same configuration can be used for both input and output filtering — add it to the `input` or `output` filters list as needed.
 
@@ -1175,18 +1175,18 @@ To keep latency and cost low, prefer the `harm` catch-all category over enabling
 :::
 
 ```ts twoslash
-import { buildGraniteGuardianFilter } from '@sap-ai-sdk/orchestration';
+import { buildGraniteGuardian41Filter } from '@sap-ai-sdk/orchestration';
 
-const filter = buildGraniteGuardianFilter(['harm']);
-const multiCategoryFilter = buildGraniteGuardianFilter(['harm', 'violence']);
+const filter = buildGraniteGuardian41Filter(['harm']);
+const multiCategoryFilter = buildGraniteGuardian41Filter(['harm', 'violence']);
 ```
 
 Set `enable_reasoning` to `true` to run Granite Guardian in reasoning mode, which returns reasoning content alongside each category verdict.
 
 ```ts twoslash
-import { buildGraniteGuardianFilter } from '@sap-ai-sdk/orchestration';
+import { buildGraniteGuardian41Filter } from '@sap-ai-sdk/orchestration';
 
-const filter = buildGraniteGuardianFilter(['harm'], {
+const filter = buildGraniteGuardian41Filter(['harm'], {
   enable_reasoning: true
 });
 ```
