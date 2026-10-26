@@ -402,11 +402,6 @@ buildAzureContentSafetyFilter('output', {
 
 ### Llama Guard Filter
 
-:::warning Deprecated
-The Llama Guard 3 8B filter is deprecated and will be removed on 2027-09-20.
-The non-deprecated, SAP-hosted IBM Granite Guardian filter (`buildGraniteGuardian41Filter()`) is available as an alternative — see [Content Filtering](orchestration/chat-completion.mdx#ibm-granite-guardian-filter).
-:::
-
 The `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()` function.
 It now requires a `type` parameter as the first argument to distinguish between `input` and `output` filter configurations, and accepts categories as an array instead of individual parameters.
 

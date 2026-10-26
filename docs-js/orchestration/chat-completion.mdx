@@ -1140,7 +1140,7 @@ const filterConfig = buildAzureContentSafetyFilter('output', {
 
 :::warning Deprecated
 The Llama Guard 3 8B filter is deprecated and will be removed on 2027-09-20.
-The [IBM Granite Guardian Filter](#ibm-granite-guardian-filter) is a non-deprecated, SAP-hosted alternative.
+The [IBM Granite Guardian Filter](#ibm-granite-guardian-filter) is a different SAP-hosted content filter for input and output filtering with the orchestration service that is not deprecated.
 :::
 
 Use `buildLlamaGuard38BFilter()` function to build a Llama Guard 3 8B content filter.
@@ -1163,7 +1163,6 @@ const outputFilter = buildLlamaGuard38BFilter('output', [
 ### IBM Granite Guardian Filter
 
 Use `buildGraniteGuardian41Filter()` function to build an IBM Granite Guardian 4.1 content filter.
-It is a non-deprecated, SAP-hosted content filter and an alternative to the deprecated [Llama Guard Filter](#llama-guard-filter).
 The same configuration can be used for both input and output filtering — add it to the `input` or `output` filters list as needed.
 
 Available categories can be found with autocompletion.
