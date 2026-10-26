@@ -351,11 +351,11 @@ response = embedding_model.embed_query('Every decoding is another encoding.')
 print(response)
 ```
 
-# SAP RPT-1 Models
+# SAP RPT Models
 
-SAP-RPT-1 is a relational pretrained transformer for use on relational and structured data, developed and maintained by SAP. Relational Foundation Models (RFMs) are large-scale machine learning models designed to understand, process, and make predictions on tabular and relational data.
+SAP-RPT is a relational pretrained transformer for use on relational and structured data, developed and maintained by SAP. Relational Foundation Models (RFMs) are large-scale machine learning models designed to understand, process, and make predictions on tabular and relational data.
 
-SAP-RPT-1 is a table-native model aiming to achieve the highest prediction quality and lowest error rates for predictions on tabular business data. It's pretrained and doesn't need additional training or fine-tuning steps. It solves predictive tasks such as classification and regression out-of-the-box via in-context learning. Due to its table-native architecture, prediction quality on enterprise data is typically very high, ahead of state-of-the-art narrow AI models and LLMs employed for such tasks.
+SAP-RPT is a table-native model aiming to achieve the highest prediction quality and lowest error rates for predictions on tabular business data. It's pretrained and doesn't need additional training or fine-tuning steps. It solves predictive tasks such as classification and regression out-of-the-box via in-context learning. Due to its table-native architecture, prediction quality on enterprise data is typically very high, ahead of state-of-the-art narrow AI models and LLMs employed for such tasks.
 
 You can get predictions directly by the native SDK client.
 
@@ -428,5 +428,5 @@ print(response.predictions)
 The `RPTClient` also supports asynchronous calls via the `apredict` method.
 
 ```python
-await client.apredict(body=example_request_by_columns_dict, model_name="sap-rpt-1-small")
+await client.apredict(body=example_request_by_columns_dict, model_name="sap-rpt-1.6")
 ```
