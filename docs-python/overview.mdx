@@ -60,6 +60,32 @@ For custom authentication, you can provide a `proxy_client` parameter when insta
 We recommend setting these values as environment variables or via config file. The default path for the configuration file
 is `~/.aicore/config.json`.
 
+## Custom Headers
+
+## Adding Custom Headers to Requests
+
+The SDK supports adding custom HTTP headers to your requests.
+
+### Instance-level Headers
+
+Instance-level headers are attached to a `GenAIHubProxyClient` and included in **every request** made by that client instance.
+
+```python
+from gen_ai_hub.proxy import get_proxy_client
+
+proxy_client = get_proxy_client('gen-ai-hub')
+proxy_client.set_headers_addition(headers={
+    'X-Custom-Header': 'my-value'
+})
+```
+
+```python
+from gen_ai_hub.proxy.gen_ai_hub_proxy import temporary_headers_addition
+
+with temporary_headers_addition(headers={'X-Custom-Header': 'my-value'}):
+    result = service.run(placeholder_values={'input': 'Hello!'})
+```
+
 ### Environment variables
 
 - `AICORE_CLIENT_ID`: This represents the client ID.
