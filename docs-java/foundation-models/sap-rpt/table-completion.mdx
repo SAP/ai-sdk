@@ -102,11 +102,11 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
 An RPT request is built from three objects, each with a distinct responsibility:
 
-| Object | Purpose |
-|---|---|
-| `TargetColumnConfig` | Tells RPT _what_ to predict: the column name, the placeholder sentinel, and the task type (regression or classification). |
-| `PredictionConfig` | Wraps one or more `TargetColumnConfig` objects and attaches optional settings such as explanation requests. |
-| `PredictRequestPayloadOneOf` | Bundles the prediction config together with the actual row data and additional parameters, then sends it to RPT. |
+| Object                       | Purpose                                                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `TargetColumnConfig`         | Tells RPT _what_ to predict: the column name, the placeholder sentinel, and the task type (regression or classification). |
+| `PredictionConfig`           | Wraps one or more `TargetColumnConfig` objects and attaches optional settings such as explanation requests.               |
+| `PredictRequestPayloadOneOf` | Bundles the prediction config together with the actual row data and additional parameters, then sends it to RPT.          |
 
 ### Task type
 
