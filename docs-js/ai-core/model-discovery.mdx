@@ -42,28 +42,28 @@ const models = await getModels();
 
 Each `AiModelBaseData` entry contains:
 
-| Field | Description |
-|---|---|
-| `model` | Model name (e.g. `'gpt-4o'`) — use this in foundation model clients |
-| `executableId` | Executable identifier (e.g. `'azure-openai'`) |
-| `provider` | Model provider (e.g. `'Microsoft'`) |
-| `description` | Human-readable model description |
-| `versions` | Array of `AiModelVersion` objects with detailed per-version metadata |
+| Field          | Description                                                          |
+| -------------- | -------------------------------------------------------------------- |
+| `model`        | Model name (e.g. `'gpt-4o'`) — use this in foundation model clients  |
+| `executableId` | Executable identifier (e.g. `'azure-openai'`)                        |
+| `provider`     | Model provider (e.g. `'Microsoft'`)                                  |
+| `description`  | Human-readable model description                                     |
+| `versions`     | Array of `AiModelVersion` objects with detailed per-version metadata |
 
 Each `AiModelVersion` entry contains:
 
-| Field | Description |
-|---|---|
-| `name` | Version name (e.g. `'2024-11-20'`) |
-| `isLatest` | Whether this is the current recommended version |
-| `deprecated` | Whether this version is deprecated |
-| `retirementDate` | ISO 8601 date after which the version will be removed |
-| `suggestedReplacements` | Replacement version names if deprecated |
-| `contextLength` | Maximum token context window |
-| `inputTypes` | Supported input modalities (e.g. `['text', 'image']`) |
-| `capabilities` | General model capabilities (e.g. `'vision'`) |
+| Field                       | Description                                                                       |
+| --------------------------- | --------------------------------------------------------------------------------- |
+| `name`                      | Version name (e.g. `'2024-11-20'`)                                                |
+| `isLatest`                  | Whether this is the current recommended version                                   |
+| `deprecated`                | Whether this version is deprecated                                                |
+| `retirementDate`            | ISO 8601 date after which the version will be removed                             |
+| `suggestedReplacements`     | Replacement version names if deprecated                                           |
+| `contextLength`             | Maximum token context window                                                      |
+| `inputTypes`                | Supported input modalities (e.g. `['text', 'image']`)                             |
+| `capabilities`              | General model capabilities (e.g. `'vision'`)                                      |
 | `orchestrationCapabilities` | Capabilities exposed via the orchestration service (e.g. `'chat'`, `'embedding'`) |
-| `streamingSupported` | Whether streaming responses are supported |
+| `streamingSupported`        | Whether streaming responses are supported                                         |
 
 ### Custom Scenario or Resource Group
 
@@ -137,7 +137,10 @@ The result is cached for five minutes.
 ```ts twoslash
 import { getFoundationModelDeploymentId } from '@sap-ai-sdk/ai-api';
 
-const deploymentId = await getFoundationModelDeploymentId('gpt-4o', 'azure-openai');
+const deploymentId = await getFoundationModelDeploymentId(
+  'gpt-4o',
+  'azure-openai'
+);
 ```
 
 Alternatively, pass a model config object or a direct deployment ID:
