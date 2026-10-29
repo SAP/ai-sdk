@@ -1269,16 +1269,16 @@ for result in response.final_result.data:
 
 Some embedding models support asymmetric search, where queries and documents are embedded differently for better retrieval. Use the `type` parameter to hint the purpose of your text.
 
-| Type               | Use Case                                              |
-| ------------------ | ----------------------------------------------------- |
-| `TEXT`             | General purpose (default)                             |
-| `DOCUMENT`         | Content to be indexed and searched                    |
-| `QUERY`            | Search queries to find relevant documents             |
-| `SEARCH_DOCUMENT`  | Content stored in a search index to be retrieved      |
-| `SEARCH_QUERY`     | Query run against a search index                      |
-| `CLASSIFICATION`   | Text used in a text classification task               |
-| `CLUSTERING`       | Text used in a clustering task                        |
-| `IMAGE`            | Image input (for multimodal embedding models)         |
+| Type              | Use Case                                         |
+| ----------------- | ------------------------------------------------ |
+| `TEXT`            | General purpose (default)                        |
+| `DOCUMENT`        | Content to be indexed and searched               |
+| `QUERY`           | Search queries to find relevant documents        |
+| `SEARCH_DOCUMENT` | Content stored in a search index to be retrieved |
+| `SEARCH_QUERY`    | Query run against a search index                 |
+| `CLASSIFICATION`  | Text used in a text classification task          |
+| `CLUSTERING`      | Text used in a clustering task                   |
+| `IMAGE`           | Image input (for multimodal embedding models)    |
 
 ```python
 from gen_ai_hub.orchestration_v2 import EmbeddingsInput, EmbeddingsInputType
