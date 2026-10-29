@@ -1,0 +1,169 @@
+---
+id: model-discovery
+title: Model Discovery
+hide_title: false
+hide_table_of_contents: false
+description: How to discover available models on SAP Gen AI Hub, check their capabilities, and resolve deployment IDs.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - model
+  - discovery
+  - capabilities
+  - foundation models
+  - deployment
+---
+
+The `@sap-ai-sdk/ai-api` package provides convenience helpers to discover all models available on SAP Gen AI Hub, inspect their capabilities, and programmatically resolve deployment IDs — without needing to call the low-level API directly.
+
+## Installation
+
+```bash
+npm install @sap-ai-sdk/ai-api
+```
+
+## Prerequisites
+
+Refer to prerequisites outlined [here](../overview.mdx#prerequisites).
+
+## List Available Models
+
+Use `getModels()` to retrieve all models from the `foundation-models` scenario, which is the global scenario that exposes every LLM available on Gen AI Hub:
+
+```ts twoslash
+import { getModels } from '@sap-ai-sdk/ai-api';
+
+const models = await getModels();
+// models: AiModelBaseData[]
+// Each entry includes model name, provider, description, executableId, and version details.
+```
+
+Each `AiModelBaseData` entry contains:
+
+| Field | Description |
+|---|---|
+| `model` | Model name (e.g. `'gpt-4o'`) — use this in foundation model clients |
+| `executableId` | Executable identifier (e.g. `'azure-openai'`) |
+| `provider` | Model provider (e.g. `'Microsoft'`) |
+| `description` | Human-readable model description |
+| `versions` | Array of `AiModelVersion` objects with detailed per-version metadata |
+
+Each `AiModelVersion` entry contains:
+
+| Field | Description |
+|---|---|
+| `name` | Version name (e.g. `'2024-11-20'`) |
+| `isLatest` | Whether this is the current recommended version |
+| `deprecated` | Whether this version is deprecated |
+| `retirementDate` | ISO 8601 date after which the version will be removed |
+| `suggestedReplacements` | Replacement version names if deprecated |
+| `contextLength` | Maximum token context window |
+| `inputTypes` | Supported input modalities (e.g. `['text', 'image']`) |
+| `capabilities` | General model capabilities (e.g. `'vision'`) |
+| `orchestrationCapabilities` | Capabilities exposed via the orchestration service (e.g. `'chat'`, `'embedding'`) |
+| `streamingSupported` | Whether streaming responses are supported |
+
+### Custom Scenario or Resource Group
+
+```ts twoslash
+import { getModels } from '@sap-ai-sdk/ai-api';
+// ---cut---
+const models = await getModels({
+  scenarioId: 'foundation-models', // default; change for custom scenarios
+  resourceGroup: 'my-resource-group' // default: 'default'
+});
+```
+
+## Filter Models by Capability
+
+### Orchestration Service Capabilities
+
+Use `filterByOrchestrationCapability()` to find models usable via the [Orchestration Service](../orchestration/chat-completion.mdx) for a given task:
+
+```ts twoslash
+import { getModels, filterByOrchestrationCapability } from '@sap-ai-sdk/ai-api';
+
+const models = await getModels();
+
+const chatModels = filterByOrchestrationCapability(models, 'chat');
+const embeddingModels = filterByOrchestrationCapability(models, 'embedding');
+```
+
+This only returns models that have **at least one non-deprecated version** supporting the capability.
+
+### General Model Capabilities
+
+Use `filterByCapability()` to filter by a general capability such as multimodal input support:
+
+```ts twoslash
+import { getModels, filterByCapability } from '@sap-ai-sdk/ai-api';
+
+const models = await getModels();
+
+const visionModels = filterByCapability(models, 'vision');
+```
+
+## Filter Out Deprecated Models
+
+Use `filterNonDeprecated()` to remove deprecated versions from the result set.
+Models that have **no remaining active versions** are excluded entirely:
+
+```ts twoslash
+import { getModels, filterNonDeprecated } from '@sap-ai-sdk/ai-api';
+
+const models = await getModels();
+const activeModels = filterNonDeprecated(models);
+```
+
+## Get the Latest Version of Each Model
+
+Use `getLatestVersions()` to get a flat list pairing each model name with its `isLatest: true` version:
+
+```ts twoslash
+import { getModels, getLatestVersions } from '@sap-ai-sdk/ai-api';
+
+const models = await getModels();
+const latestVersions = getLatestVersions(models);
+// [{ model: 'gpt-4o', executableId: 'azure-openai', latestVersion: { name: '2024-11-20', ... } }]
+```
+
+## Resolve a Deployment ID
+
+Use `getFoundationModelDeploymentId()` to programmatically resolve the deployment ID for a model.
+The result is cached for five minutes.
+
+```ts twoslash
+import { getFoundationModelDeploymentId } from '@sap-ai-sdk/ai-api';
+
+const deploymentId = await getFoundationModelDeploymentId('gpt-4o', 'azure-openai');
+```
+
+Alternatively, pass a model config object or a direct deployment ID:
+
+```ts twoslash
+import { getFoundationModelDeploymentId } from '@sap-ai-sdk/ai-api';
+// ---cut---
+// With explicit version
+const deploymentId = await getFoundationModelDeploymentId(
+  { modelName: 'gpt-4o', modelVersion: '2024-11-20' },
+  'azure-openai'
+);
+
+// With a direct deployment ID (no resolution needed)
+const directId = await getFoundationModelDeploymentId(
+  { deploymentId: 'd1234' },
+  'azure-openai'
+);
+```
+
+:::tip
+The model name and `executableId` to use can be discovered via `getModels()` — the `model` field is the model name and `executableId` is the executable identifier.
+:::
+
+## Related
+
+- [Foundation Models](../foundation-models/foundation-models.mdx) — Use discovered models directly via `AzureOpenAiChatClient` and similar clients.
+- [Orchestration](../orchestration/chat-completion.mdx) — Use discovered models through the orchestration pipeline.
+- [AI API](./ai-api.mdx) — Full reference for the low-level AI Core API, including `ScenarioApi` and `DeploymentApi`.
