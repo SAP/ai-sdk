@@ -552,15 +552,15 @@ response = embedding_model.embed_query('Every decoding is another encoding.')
 print(response)
 ```
 
-# SAP RPT-1 Models
+# SAP RPT Models
 
-SAP-RPT-1 is a relational pretrained transformer for use on relational and structured data, developed and maintained by SAP. Relational Foundation Models (RFMs) are large-scale machine learning models designed to understand, process, and make predictions on tabular and relational data.
+SAP-RPT is a relational pretrained transformer for use on relational and structured data, developed and maintained by SAP. Relational Foundation Models (RFMs) are large-scale machine learning models designed to understand, process, and make predictions on tabular and relational data.
 
-SAP-RPT-1 is a table-native model aiming to achieve the highest prediction quality and lowest error rates for predictions on tabular business data. It's pretrained and doesn't need additional training or fine-tuning steps. It solves predictive tasks such as classification and regression out-of-the-box via in-context learning. Due to its table-native architecture, prediction quality on enterprise data is typically very high, ahead of state-of-the-art narrow AI models and LLMs employed for such tasks.
+SAP-RPT is a table-native model aiming to achieve the highest prediction quality and lowest error rates for predictions on tabular business data. It's pretrained and doesn't need additional training or fine-tuning steps. It solves predictive tasks such as classification and regression out-of-the-box via in-context learning. Due to its table-native architecture, prediction quality on enterprise data is typically very high, ahead of state-of-the-art narrow AI models and LLMs employed for such tasks.
 
 You can get predictions directly by the native SDK client.
 
-For detailed information visit the [SAP Help Portal](https://help.sap.com/docs/sap-ai-core/generative-ai/example-payloads-for-inferencing-sap-rpt-1?locale=en-US).
+For detailed information visit the [SAP Help Portal](https://help.sap.com/docs/sap-ai-core/generative-ai/sap-rpt-1-6?locale=en-US).
 
 ### Regression[​](#regression "Direct link to Regression")
 
@@ -593,7 +593,7 @@ body = RPTRequest(
 
     prediction_config=PredictionConfig(
 
-        target_columns=[TargetColumn(name="DISCOUNT_RATE", task_type="regression")]
+        target_columns=[TargetColumn(name="DISCOUNT_RATE", prediction_placeholder="[PREDICT]", task_type="regression")]
 
     ),
 
@@ -601,7 +601,7 @@ body = RPTRequest(
 
 )
 
-response = client.predict(body=body, model_name="sap-rpt-1-small")
+response = client.predict(body=body, model_name="sap-rpt-1.6")
 
 print(response.predictions)
 
@@ -609,7 +609,7 @@ print(response.predictions)
 
 # With model_version
 
-response = client.predict(body=body, model_name="sap-rpt-1-small", model_version="latest")
+response = client.predict(body=body, model_name="sap-rpt-1.6", model_version="latest")
 
 print(response.predictions)
 ```
@@ -665,7 +665,7 @@ example_request_by_columns_dict = {
 
 
 
-response = client.predict(body=example_request_by_columns_dict, model_name="sap-rpt-1-small")
+response = client.predict(body=example_request_by_columns_dict, model_name="sap-rpt-1.6")
 
 print(response.predictions)
 ```
@@ -675,5 +675,5 @@ print(response.predictions)
 The `RPTClient` also supports asynchronous calls via the `apredict` method.
 
 ```
-await client.apredict(body=example_request_by_columns_dict, model_name="sap-rpt-1-small")
+await client.apredict(body=example_request_by_columns_dict, model_name="sap-rpt-1.6")
 ```
