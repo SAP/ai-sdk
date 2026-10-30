@@ -456,6 +456,109 @@ const structuredLlm = llm.withStructuredOutput(joke, {
 const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
 ```
 
+## Reasoning Content
+
+Some models (e.g., Anthropic Claude extended thinking, Cohere) return reasoning blocks alongside their final answer.
+The `OrchestrationClient` surfaces these blocks in `AIMessage.additional_kwargs.reasoning_content` as a `ReasoningBlock[]`.
+The `content` field of the `AIMessage` contains only the final answer text.
+
+### Reading Reasoning Blocks
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { HumanMessage } from '@langchain/core/messages';
+import type { ReasoningBlock } from '@sap-ai-sdk/orchestration';
+
+const client = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku',
+      params: { reasoning_effort: 'low' }
+    }
+  }
+});
+
+const response = await client.invoke([
+  new HumanMessage('What is 17 × 23? Think step by step.')
+]);
+
+const reasoning = response.additional_kwargs.reasoning_content as ReasoningBlock[] | undefined;
+console.log(reasoning?.map(b => b.content ?? '').join('')); // reasoning text
+console.log(response.content); // final answer (plain string when no reasoning blocks in content)
+```
+
+### Multi-Turn Round-Trip
+
+When reasoning blocks are stored in `additional_kwargs.reasoning_content`, the client automatically forwards them back to the orchestration service on subsequent turns.
+This preserves the reasoning context and, when present, the encrypted thinking `signature` required by some models.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { HumanMessage } from '@langchain/core/messages';
+import type { BaseMessage } from '@langchain/core/messages';
+
+const client = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku',
+      params: { reasoning_effort: 'low' }
+    }
+  }
+});
+
+// Turn 1
+const messages: BaseMessage[] = [
+  new HumanMessage('What is 17 × 23? Think step by step.')
+];
+const turn1 = await client.invoke(messages);
+messages.push(turn1); // reasoning_content in additional_kwargs is forwarded automatically
+
+// Turn 2 — reasoning from turn 1 is sent back to the model
+messages.push(new HumanMessage('Now divide that result by 17.'));
+const turn2 = await client.invoke(messages);
+```
+
+:::note
+Reasoning placed directly in `message.content` (as a `reasoning` content block, not in `additional_kwargs`) is treated as output only and is **not** forwarded to the model on subsequent turns.
+A warning is logged if this case is detected.
+:::
+
+### Streaming with Reasoning
+
+Reasoning blocks are also available when streaming.
+Accumulate chunks with `concat()` to access the full `reasoning_content` in `additional_kwargs` after the stream completes.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { HumanMessage } from '@langchain/core/messages';
+import type { AIMessageChunk } from '@langchain/core/messages';
+import type { ReasoningBlock } from '@sap-ai-sdk/orchestration';
+
+const client = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku',
+      params: { reasoning_effort: 'low' }
+    }
+  }
+});
+
+const stream = await client.stream([
+  new HumanMessage('What is 17 × 23? Think step by step.')
+]);
+
+let merged: AIMessageChunk | undefined;
+for await (const chunk of stream) {
+  merged = merged ? merged.concat(chunk) : chunk;
+}
+
+const reasoning = (merged?.additional_kwargs.reasoning_content as ReasoningBlock[] | undefined);
+console.log(reasoning?.map(b => b.content ?? '').join('')); // reasoning text
+console.log(merged?.content); // final answer
+```
+
+The merged chunk can be pushed into history for multi-turn conversations the same way as in the [non-streaming example](#multi-turn-round-trip) — `reasoning_content` in `additional_kwargs` is forwarded automatically.
+
 ## Resilience
 
 <!-- vale off -->
