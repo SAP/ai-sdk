@@ -98,7 +98,9 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
 <!-- prettier-ignore-end-->
 
-## Request Object Model
+## Simple table completion
+
+Predict missing targets in tabular data using `RptClient` with a SAP RPT model.
 
 An RPT request is built from three objects, each with a distinct responsibility:
 
@@ -108,56 +110,14 @@ An RPT request is built from three objects, each with a distinct responsibility:
 | `PredictionConfig`           | Wraps one or more `TargetColumnConfig` objects and attaches optional settings such as explanation requests.               |
 | `PredictRequestPayloadOneOf` | Bundles the prediction config together with the actual row data and additional parameters, then sends it to RPT.          |
 
-### Task type
-
-Set `.taskType()` on `TargetColumnConfig` to tell RPT how to treat the target column:
-
-- `CLASSIFICATION` — for discrete labels or categories (e.g. cost center names, product categories).
-- `REGRESSION` — for continuous numeric values (e.g. monetary amounts, quantities).
-
-Choosing the wrong task type significantly degrades prediction quality.
-
-### Data schema
-
-Use `.dataSchema()` on `PredictRequestPayloadOneOf` to explicitly declare the type of each column.
-This is useful when column types cannot be reliably inferred from the row values alone:
-
 ```java
-var dataSchema = Map.of(
-    "PRODUCT", SchemaFieldConfig.create().dtype(ColumnType.STRING),
-    "PRICE",   SchemaFieldConfig.create().dtype(ColumnType.STRING),
-    "ORDERDATE", SchemaFieldConfig.create().dtype(ColumnType.DATE),
-    "ID",      SchemaFieldConfig.create().dtype(ColumnType.STRING),
-    "COSTCENTER", SchemaFieldConfig.create().dtype(ColumnType.STRING));
-```
-
-### Index column
-
-Use `.indexColumn()` to specify which column uniquely identifies each row.
-RPT uses this as a row key and preserves it in the response, making it easier to match predictions back to source rows:
-
-```java
-PredictRequestPayloadOneOf.create()
-    .predictionConfig(predictionConfig)
-    .rows(rows)
-    .indexColumn("ID");
-```
-
-### Parse data types
-
-Set `.parseDataTypes(true)` to let RPT auto-detect whether each column is numeric or categorical.
-Without this, all values are treated as strings and regression quality degrades significantly.
-
-## Simple table completion
-
-Predict missing targets in tabular data using `RptClient` with a SAP RPT model.
-
-```java
+// Declare column types explicitly so RPT does not have to infer them from row values.
 var dataSchema = Map.of(
     "fruit",    SchemaFieldConfig.create().dtype(ColumnType.STRING),
     "id",       SchemaFieldConfig.create().dtype(ColumnType.STRING),
     "category", SchemaFieldConfig.create().dtype(ColumnType.STRING));
 
+// Rows with "[PREDICT]" as the value are the targets RPT will fill in.
 List<Map<String, RowsInnerValue>> rows =
     List.of(
         Map.of(
@@ -172,14 +132,25 @@ List<Map<String, RowsInnerValue>> rows =
             "id",       RowsInnerValue.create("3"),
             "fruit",    RowsInnerValue.create("Mango"),
             "category", RowsInnerValue.create("Tropical")));
+```
 
+Use `CLASSIFICATION` for discrete labels or categories, `REGRESSION` for continuous numeric values.
+The `predictionPlaceholder` must match the sentinel value used in the rows above.
+Choosing the wrong task type significantly degrades prediction quality.
+
+```java
 var targetColumns =
     List.of(
         TargetColumnConfig.create()
             .name("category")
             .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
             .taskType(CLASSIFICATION));
+```
 
+`indexColumn` is the unique row key, preserved in the response to match predictions back to source rows.
+`parseDataTypes` auto-detects numeric vs. categorical columns; without this, regression quality degrades significantly.
+
+```java
 var request =
     PredictRequestPayloadOneOf.create()
         .predictionConfig(PredictionConfig.create().targetColumns(targetColumns))
@@ -197,6 +168,7 @@ Please find more to the example in [the sample application](https://github.com/S
 ## Table Completion with Parquet Files
 
 For larger datasets, you can provide data as a Parquet file instead of constructing the data structure in code.
+The same `TargetColumnConfig` and `PredictionConfig` objects described above are reused here.
 
 ```java
 var parquetFile = new File("path/to/your/data.parquet");
