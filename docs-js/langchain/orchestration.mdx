@@ -482,7 +482,8 @@ const response = await client.invoke([
   new HumanMessage('What is 17 × 23? Think step by step.')
 ]);
 
-const reasoning = response.additional_kwargs.reasoning_content as ReasoningBlock[] | undefined;
+const reasoning = response.additional_kwargs.reasoning_content as
+  ReasoningBlock[] | undefined;
 console.log(reasoning?.map(b => b.content ?? '').join('')); // reasoning text
 console.log(response.content); // final answer (plain string when no reasoning blocks in content)
 ```
@@ -552,7 +553,8 @@ for await (const chunk of stream) {
   merged = merged ? merged.concat(chunk) : chunk;
 }
 
-const reasoning = (merged?.additional_kwargs.reasoning_content as ReasoningBlock[] | undefined);
+const reasoning = merged?.additional_kwargs.reasoning_content as
+  ReasoningBlock[] | undefined;
 console.log(reasoning?.map(b => b.content ?? '').join('')); // reasoning text
 console.log(merged?.content); // final answer
 ```
