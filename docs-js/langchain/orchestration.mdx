@@ -459,7 +459,7 @@ const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
 ## Reasoning Content
 
 Some models (e.g., Anthropic Claude extended thinking, Cohere) return reasoning blocks alongside their final answer.
-The `OrchestrationClient` surfaces these blocks in `AIMessage.additional_kwargs.reasoning_content` as a `ReasoningBlock[]`.
+The `OrchestrationClient` surfaces these blocks in `AIMessage.additional_kwargs.reasoning_content` as a [`ReasoningBlock[]`](pathname:///api/v2/types/orchestration_src.ReasoningBlock.html).
 The `content` field of the `AIMessage` contains only the final answer text.
 
 ### Reading Reasoning Blocks
