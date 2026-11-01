@@ -246,6 +246,33 @@ var prompt =
 Translation translation = cl.prompt(prompt).call().entity(Translation.class);
 ```
 
+### Reliability Switches
+
+Spring AI provides [reliability switches](https://docs.spring.io/spring-ai/reference/api/structured-output.html#_reliability_switches_entityparamspec) via `EntityParamSpec` to improve the likelihood of receiving a valid, schema-conformant response.
+
+**`validateSchema()`** enables a self-correcting retry loop: if the response does not match the schema, Spring AI appends the validation error to the prompt and retries the call for up to 3 attempts by default:
+
+```java
+Translation translation =
+    cl.prompt(prompt).call().entity(Translation.class, spec -> spec.validateSchema());
+```
+
+**`useProviderStructuredOutput()`** sends the schema to the provider as an API-level constraint, so the provider's runtime enforces conformance rather than relying on prompt instructions:
+
+```java
+Translation translation =
+    cl.prompt(prompt).call().entity(Translation.class, spec -> spec.useProviderStructuredOutput());
+```
+
+Both switches solve different problems and compose naturally where `useProviderStructuredOutput()` minimizes malformed output at the API level, while `validateSchema()` catches residual edge cases and corrects them automatically:
+
+```java
+Translation translation =
+    cl.prompt(prompt)
+        .call()
+        .entity(Translation.class, spec -> spec.useProviderStructuredOutput().validateSchema());
+```
+
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
 For detailed information on setting a response format, check the corresponding [Documentation for Orchestration](../orchestration/chat-completion.mdx#response-format).

@@ -102,29 +102,62 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
 Predict missing targets in tabular data using `RptClient` with a SAP RPT model.
 
+An RPT request is built from three objects, each with a distinct responsibility:
+
+| Object                       | Purpose                                                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `TargetColumnConfig`         | Tells RPT _what_ to predict: the column name, the placeholder sentinel, and the task type (regression or classification). |
+| `PredictionConfig`           | Wraps one or more `TargetColumnConfig` objects and attaches optional settings such as explanation requests.               |
+| `PredictRequestPayloadOneOf` | Bundles the prediction config together with the actual row data and additional parameters, then sends it to RPT.          |
+
 ```java
+// Declare column types explicitly so RPT does not have to infer them from row values.
+var dataSchema = Map.of(
+    "fruit",    SchemaFieldConfig.create().dtype(ColumnType.STRING),
+    "id",       SchemaFieldConfig.create().dtype(ColumnType.STRING),
+    "category", SchemaFieldConfig.create().dtype(ColumnType.STRING));
+
+// Rows with "[PREDICT]" as the value are the targets RPT will fill in.
 List<Map<String, RowsInnerValue>> rows =
     List.of(
         Map.of(
-            "fruit", RowsInnerValue.create("Apple"),
+            "id",       RowsInnerValue.create("1"),
+            "fruit",    RowsInnerValue.create("Apple"),
             "category", RowsInnerValue.create("[PREDICT]")),
         Map.of(
-            "fruit", RowsInnerValue.create("Banana"),
+            "id",       RowsInnerValue.create("2"),
+            "fruit",    RowsInnerValue.create("Banana"),
             "category", RowsInnerValue.create("Tropical")),
         Map.of(
-            "fruit", RowsInnerValue.create("Mango"),
+            "id",       RowsInnerValue.create("3"),
+            "fruit",    RowsInnerValue.create("Mango"),
             "category", RowsInnerValue.create("Tropical")));
+```
 
+Use `CLASSIFICATION` for discrete labels or categories, `REGRESSION` for continuous numeric values.
+The `predictionPlaceholder` must match the sentinel value used in the rows above.
+Choosing the wrong task type significantly degrades prediction quality.
+
+```java
 var targetColumns =
     List.of(
         TargetColumnConfig.create()
             .name("category")
-            .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]")));
+            .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
+            .taskType(CLASSIFICATION));
+```
 
+`indexColumn` is the unique row key, preserved in the response to match predictions back to source rows.
+`parseDataTypes` auto-detects numeric vs. categorical columns; without this, regression quality degrades significantly.
+
+```java
 var request =
     PredictRequestPayloadOneOf.create()
         .predictionConfig(PredictionConfig.create().targetColumns(targetColumns))
-        .rows(rows);
+        .rows(rows)
+        .indexColumn("id")
+        .dataSchema(dataSchema)
+        .parseDataTypes(true);
 
 PredictResponsePayload response = RptClient.forModel(SAP_RPT_1_5).tableCompletion(request);
 ```
@@ -135,6 +168,7 @@ Please find more to the example in [the sample application](https://github.com/S
 ## Table Completion with Parquet Files
 
 For larger datasets, you can provide data as a Parquet file instead of constructing the data structure in code.
+The same `TargetColumnConfig` and `PredictionConfig` objects described above are reused here.
 
 ```java
 var parquetFile = new File("path/to/your/data.parquet");
