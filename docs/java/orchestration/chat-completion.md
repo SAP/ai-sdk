@@ -803,13 +803,13 @@ Use `executeStreamDeltas()` for full deltas, including tool calls, usage, and in
 To keep reasoning enabled across turns, feed the previous response's `getAllMessages()` into the follow-up prompt as message history.
 
 ```
+var clientWithConfig = client.chatCompletion().config(reasoningConfig);
+
+
+
 var firstResponse =
 
-    client
-
-        .chatCompletion()
-
-        .config(reasoningConfig)
+    clientWithConfig
 
         .promptTemplate(PromptTemplate.create("What is 6 times 7?"))
 
@@ -823,7 +823,7 @@ var followUp =
 
 var followUpResponse =
 
-    client.chatCompletion().config(reasoningConfig).promptTemplate(followUp).execute();
+    clientWithConfig.promptTemplate(followUp).execute();
 
 
 
