@@ -75,6 +75,13 @@ Their API signatures may change, for example, due to updates in the underlying s
 - [Document Grounding client](https://github.com/SAP/ai-sdk-java/tree/main/core-services/document-grounding)
 - [Prompt Registry client](https://github.com/SAP/ai-sdk-java/tree/main/core-services/prompt-registry)
 
+### What are the minimum supported versions of common dependencies?
+
+The SAP AI SDK is continuously verified to build against a set of minimum supported versions for its most common consumer-facing dependencies (see the [General Requirements](overview.mdx#general-requirements)).
+
+This guards against unintentionally relying on APIs introduced in newer releases of a dependency.
+If your application pins an older (but still supported) version of such a dependency, the SDK is designed to remain compatible with it.
+
 ### There's a vulnerability warning `CVE-2021-41251`?
 
 This is a known false-positive finding.
