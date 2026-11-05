@@ -228,7 +228,7 @@ It is possible to force the response of the LLM to follow a certain JSON schema 
 The response can automatically be deserialized back into the Java class.
 The following example uses the `Translation` class:
 
-````java
+```java
 public record Translation(
   @JsonProperty(required = true) String translation,
   @JsonProperty(required = true) String language) {}
@@ -247,6 +247,7 @@ Translation translation = cl
   .prompt(prompt)
   .call()
   .entity(Translation.class, spec -> spec.useProviderStructuredOutput());
+```
 
 Spring AI provides [reliability switches](https://docs.spring.io/spring-ai/reference/api/structured-output.html#_reliability_switches_entityparamspec) via `EntityParamSpec` to improve the likelihood of receiving a valid, schema-conformant response.
 
@@ -273,7 +274,7 @@ EmbeddingOptions options = EmbeddingOptionsBuilder.builder()
 
 var model = new OrchestrationSpringEmbeddingModel(options);
 float[] embedding = model.embed("Hi Orchestration!");
-````
+```
 
 Please find [an example in our Spring Boot application](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
