@@ -21,8 +21,7 @@ export default {
           label: 'OpenAI',
           items: [
             'foundation-models/openai/chat-completion',
-            'foundation-models/openai/embedding',
-            'foundation-models/openai/batch'
+            'foundation-models/openai/embedding'
           ]
         }
       ]
@@ -51,7 +50,8 @@ export default {
       items: [
         'ai-core/ai-api',
         'ai-core/document-grounding',
-        'ai-core/prompt-registry'
+        'ai-core/prompt-registry',
+        'ai-core/batch'
       ]
     },
     {
