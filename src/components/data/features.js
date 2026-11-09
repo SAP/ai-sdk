@@ -408,5 +408,20 @@ export const features = [
     python: {
       status: YES
     }
+  },
+  {
+    name: 'SAP RPT',
+    java: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/java/foundation-models/sap-rpt/table-completion)`
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/tabular-ai/rpt)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub)`
+    }
   }
 ];
