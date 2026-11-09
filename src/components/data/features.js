@@ -271,25 +271,25 @@ export const features = [
   {
     name: 'Framework Integration: LangChain/Spring AI for Foundation Models (Amazon)',
     java: {
-      status: NO,
+      status: NO
     },
     js: {
-      status: NO,
+      status: NO
     },
     python: {
-      status: YES,
+      status: YES
     }
   },
   {
     name: 'Framework Integration: LangChain/Spring AI for Foundation Models (Google GenAI)',
     java: {
-      status: NO,
+      status: NO
     },
     js: {
-      status: NO,
+      status: NO
     },
     python: {
-      status: YES,
+      status: YES
     }
   },
   {
@@ -340,10 +340,10 @@ export const features = [
   {
     name: 'Foundation Model: Amazon Chat Completion',
     java: {
-      status: NO,
+      status: NO
     },
     js: {
-      status: NO,
+      status: NO
     },
     python: {
       status: YES,
@@ -353,22 +353,22 @@ export const features = [
   {
     name: 'Foundation Model: Amazon Streaming',
     java: {
-      status: NO,
+      status: NO
     },
     js: {
-      status: NO,
+      status: NO
     },
     python: {
-      status: YES,
+      status: YES
     }
   },
   {
     name: 'Foundation Model: Amazon Embedding',
     java: {
-      status: NO,
+      status: NO
     },
     js: {
-      status: NO,
+      status: NO
     },
     python: {
       status: YES,
@@ -378,10 +378,10 @@ export const features = [
   {
     name: 'Foundation Model: Google GenAI Chat Completion',
     java: {
-      status: NO,
+      status: NO
     },
     js: {
-      status: NO,
+      status: NO
     },
     python: {
       status: YES,
@@ -391,10 +391,10 @@ export const features = [
   {
     name: 'Foundation Model: Google GenAI Streaming',
     java: {
-      status: NO,
+      status: NO
     },
     js: {
-      status: NO,
+      status: NO
     },
     python: {
       status: YES,
@@ -404,13 +404,13 @@ export const features = [
   {
     name: 'Foundation Model: Google GenAI Embedding',
     java: {
-      status: NO,
+      status: NO
     },
     js: {
-      status: NO,
+      status: NO
     },
     python: {
-      status: YES,
+      status: YES
     }
   }
 ];
