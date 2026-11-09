@@ -221,6 +221,21 @@ export const features = [
     }
   },
   {
+    name: '[Batch Service API](https://help.sap.com/docs/sap-ai-core/generative-ai/batch-consumption?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/java/ai-core/batch)`
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/foundation-models/openai/batch)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/batch-service)`
+    }
+  },
+  {
     name: 'Framework Integration: LangChain/Spring AI for Orchestration',
     java: {
       status: YES,
@@ -235,7 +250,7 @@ export const features = [
     }
   },
   {
-    name: 'Framework Integration: LangChain/Spring AI for Foundation Model',
+    name: 'Framework Integration: LangChain/Spring AI for Foundation Model (OpenAI)',
     java: {
       status: YES,
       docsLink: `[docs](${baseUrl}/java/spring-ai/openai)`
@@ -247,6 +262,30 @@ export const features = [
     python: {
       status: YES,
       docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#harmonized-model-initialization)`
+    }
+  },
+  {
+    name: 'Framework Integration: LangChain/Spring AI for Foundation Models (Amazon)',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: NO,
+    },
+    python: {
+      status: YES,
+    }
+  },
+  {
+    name: 'Framework Integration: LangChain/Spring AI for Foundation Models (Google GenAI)',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: NO,
+    },
+    python: {
+      status: YES,
     }
   },
   {
@@ -292,6 +331,82 @@ export const features = [
     python: {
       status: YES,
       docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#openai-1)`
+    }
+  },
+  {
+    name: 'Foundation Model: Amazon Chat Completion',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: NO,
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#amazon)`
+    }
+  },
+  {
+    name: 'Foundation Model: Amazon Streaming',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: NO,
+    },
+    python: {
+      status: YES,
+    }
+  },
+  {
+    name: 'Foundation Model: Amazon Embedding',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: NO,
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#amazon-1)`
+    }
+  },
+  {
+    name: 'Foundation Model: Google GenAI Chat Completion',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: NO,
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#google-genai)`
+    }
+  },
+  {
+    name: 'Foundation Model: Google GenAI Streaming',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: NO,
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#google-genai)`
+    }
+  },
+  {
+    name: 'Foundation Model: Google GenAI Embedding',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: NO,
+    },
+    python: {
+      status: YES,
     }
   }
 ];
