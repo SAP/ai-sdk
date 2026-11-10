@@ -64,12 +64,12 @@
 - [Release Notes](/docs/js/v1/release-notes.md): Release notes of SAP Cloud SDK for AI, stay up to date with the recent features, fixes, dependency updates and recommendations.
 - [Getting Started with Agents using LangChain](/docs/js/v1/tutorials/getting-started-with-agents.md): Building a Travel Itinerary Assistant with LangGraph and LangChain Client
 - [AI API](/docs/js/ai-core/ai-api.md): How to use SAP Cloud SDK for AI to interact with SAP AI Core.
+- [Batch API](/docs/js/ai-core/batch.md): How to use the SAP Cloud SDK for AI to process multiple LLM requests asynchronously using the Batch API with Azure OpenAI models through SAP AI Core.
 - [Document Grounding](/docs/js/ai-core/document-grounding.md): How to use SAP Cloud SDK for AI to interact with the document grounding service.
 - [Prompt Registry](/docs/js/ai-core/prompt-registry.md): How to use SAP Cloud SDK for AI to interact with the prompt registry service.
 - [Connecting to AI Core](/docs/js/connecting-to-ai-core.md): How to connect to AI Core in BTP using a wide variety of credentials.
 - [Error Handling](/docs/js/error-handling.md): Error handling instructions for SAP Cloud SDK for AI
 - [Foundation Models](/docs/js/foundation-models.md): How to use the SAP Cloud SDK for AI to perform tasks using foundation models deployed on SAP AI Core.
-- [Batch API](/docs/js/foundation-models/openai/batch.md): How to use the SAP Cloud SDK for AI to process multiple LLM requests asynchronously using the Batch API with Azure OpenAI models through SAP AI Core.
 - [Chat Completion](/docs/js/foundation-models/openai/chat-completion.md): How to use the SAP Cloud SDK for AI to perform chat completion tasks using Azure OpenAI models deployed through SAP AI Core.
 - [Embedding](/docs/js/foundation-models/openai/embedding.md): How to use the SAP Cloud SDK for AI to perform embedding tasks using Azure OpenAI models through SAP AI Core.
 - [Frequently Asked Questions](/docs/js/frequently-asked-questions.md): You asked! We answered! We collected here the most frequent question about SAP Cloud SDK for AI (JavaScript).

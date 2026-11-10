@@ -259,7 +259,7 @@ Each line corresponds to one input request, matched via `custom_id`:
 
 ## Manage Batch Jobs[​](#manage-batch-jobs "Direct link to Manage Batch Jobs")
 
-The Batch API also supports listing, cancelling, and deleting batch jobs. For the full management API reference, see [Batch — Managing Batch Jobs](/ai-sdk/docs/js/foundation-models/openai/batch.md#managing-batch-jobs).
+The Batch API also supports listing, cancelling, and deleting batch jobs. For the full management API reference, see [Batch — Managing Batch Jobs](/ai-sdk/docs/js/ai-core/batch.md#managing-batch-jobs).
 
 ## Summary[​](#summary "Direct link to Summary")
 
