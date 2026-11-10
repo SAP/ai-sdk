@@ -295,14 +295,13 @@ var result = client.chatCompletion().config(config).promptTemplate(template).exe
 
 Apply [**input filtering**](https://help.sap.com/docs/sap-ai-core/generative-ai/enhancing-model-consumption-with-input-filtering-75c6d42355924b28905ffe435af93b51) and [**output filtering**](https://help.sap.com/docs/sap-ai-core/generative-ai/enhancing-model-consumption-with-output-filtering-0675b9c77d40467bb2f87b6474e95a80) to the chat completion:
 
-````java
-var template = PromptTemplate.create(
-        """
-        Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
+:::warning
+`LlamaGuardFilter` is deprecated. Use `GraniteGuardianFilter` instead.
+:::
 
-        ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
-        """);
+Use `AzureContentFilter` to filter content by category and severity threshold:
 
+```java
 var filterStrict = new AzureContentFilter()
                 .hate(ALLOW_SAFE)
                 .selfHarm(ALLOW_SAFE)
@@ -317,18 +316,45 @@ var filterLoose = new AzureContentFilter()
                 .sexual(ALLOW_SAFE_LOW_MEDIUM)
                 .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-// choose Llama Guard filter or/and Azure filter
-var llamaGuardFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterLoose);
+```
+
+**Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks.
+**Since v1.16.0** The `protectedMaterialCode` has been introduced in `AzureContentFilter` for output filtering to safeguard against copyrighted content.
+
+Use `GraniteGuardianFilter` to filter content using IBM Granite Guardian 4.1, enabling only the categories you need:
+
+```java
+var categories =
+    GraniteGuardian41Categories.create()
+        .harm(true)
+        .violence(true)
+        .jailbreak(true)
+        .socialBias(true)
+        .profanity(true)
+        .sexualContent(true)
+        .unethicalBehavior(true);
+var graniteGuardianFilter = new GraniteGuardianFilter().config(GraniteGuardian41.create().categories(categories));
+
+var configWithFilter = config.withInputFiltering(graniteGuardianFilter);
+```
+
+Both filters can be combined and applied independently to input and output:
+
+````java
+var template = PromptTemplate.create(
+        """
+        Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
+
+        ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
+        """);
 
 // changing the input to filterLoose will allow the message to pass
-var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict, llamaGuardFilter);
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict, graniteGuardianFilter);
 
 // this fails with Bad Request because the strict filter prohibits the input message
 var result = client.chatCompletion().config(configWithFilter).promptTemplate(template).execute();
 ````
-
-**Since v1.9.0** The `promptShield` has been introduced in `AzureContentFilter` for input filtering to safeguard against prompt attacks.
-**Since v1.16.0** The `protectedMaterialCode` has been introduced in `AzureContentFilter` for output filtering to safeguard against copyrighted content.
 
 ### Behavior of Input and Output Filters
 
@@ -341,7 +367,7 @@ var result = client.chatCompletion().config(configWithFilter).promptTemplate(tem
   The convenience method `getContent()` on the resulting object will throw an `OrchestrationFilterException.Output` upon invocation.
   The low level API under `getOriginalResponse()` will not throw an exception.
 
-- To obtain diagnostic information for filter violation, you may call `getFilterDetails()`, `getAzureContentSafetyInput()`, `getAzureContentSafetyOutput()` or `getLlamaGuard38b()` on the exception as relevant.
+- To obtain diagnostic information for filter violation, you may call `getFilterDetails()`, `getAzureContentSafetyInput()`, `getAzureContentSafetyOutput()` or `getGraniteGuardian41()` on the exception as relevant.
 
 You will find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating response handling with filters.
 
