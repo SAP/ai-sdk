@@ -180,10 +180,12 @@ for await (const event of stream) {
 
 #### Stateful Conversations[​](#stateful-conversations "Direct link to Stateful Conversations")
 
-Pass `previous_response_id` to let the server maintain the conversation history. Each turn only needs to send the new message. Use this when you want simple multi-turn conversations without managing history yourself. Note that responses are stored on the server.
+Pass `previous_response_id` to let the server maintain the conversation history. Each turn only needs to send the new message. Set `store: true` on the initial response to retain it for follow-up turns. Use this when you want simple multi-turn conversations without managing history yourself.
 
 ```
 const first = await client.responses.create({
+
+  store: true,
 
   instructions: 'You are a helpful assistant.',
 
