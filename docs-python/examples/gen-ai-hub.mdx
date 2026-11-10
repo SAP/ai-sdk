@@ -419,13 +419,8 @@ chat_model = ChatGoogleGenerativeAI(
     proxy_model_name="gemini-3.8-flash", proxy_client=get_proxy_client()
 )
 
-template = "You are a helpful assistant that transforms English prose to 16th century poems."
-
-system_message_prompt = SystemMessagePromptTemplate.from_template(template)
-
-human_template = "{text}"
-
-human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
+system_message_prompt = SystemMessagePromptTemplate.from_template("You are a helpful assistant that transforms English prose to 16th century poems.")
+human_message_prompt = HumanMessagePromptTemplate.from_template("{text}")
 chat_prompt = ChatPromptTemplate.from_messages(
     [system_message_prompt, human_message_prompt]
 )
@@ -439,7 +434,6 @@ response = chain.invoke("I love programming")
 ```python
 from gen_ai_hub.proxy import get_proxy_client
 from langchain_classic.prompts import (
-    AIMessagePromptTemplate,
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
     SystemMessagePromptTemplate,
@@ -448,17 +442,11 @@ from gen_ai_hub.proxy.langchain.amazon import ChatBedrockConverse
 chat_model = ChatBedrockConverse(
     model_name="anthropic--claude-4.8-opus", proxy_client=get_proxy_client()
 )
-template = "You are a helpful assistant that translates english to pirate."
 
-system_message_prompt = SystemMessagePromptTemplate.from_template(template)
-
-example_human = HumanMessagePromptTemplate.from_template("Hi")
-example_ai = AIMessagePromptTemplate.from_template("Ahoy!")
-human_template = "{text}"
-
-human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
+system_message_prompt = SystemMessagePromptTemplate.from_template("You are a helpful assistant that translates english to pirate.")
+human_message_prompt = HumanMessagePromptTemplate.from_template("{text}")
 chat_prompt = ChatPromptTemplate.from_messages(
-    [system_message_prompt, example_human, example_ai, human_message_prompt]
+    [system_message_prompt, human_message_prompt]
 )
 
 chain = chat_prompt | chat_model
