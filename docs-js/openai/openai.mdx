@@ -175,13 +175,15 @@ for await (const event of stream) {
 
 Pass `previous_response_id` to let the server maintain the conversation history.
 Each turn only needs to send the new message.
-Use this when you want simple multi-turn conversations without managing history yourself. Note that responses are stored on the server.
+Set `store: true` on the initial response to retain it for follow-up turns.
+Use this when you want simple multi-turn conversations without managing history yourself.
 
 ```ts twoslash
 import { SapOpenAi } from '@sap-ai-sdk/openai';
 const client = await SapOpenAi.createClient('gpt-5.4');
 // ---cut---
 const first = await client.responses.create({
+  store: true,
   instructions: 'You are a helpful assistant.',
   input: 'What is the capital of France?'
 });
