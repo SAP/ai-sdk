@@ -1525,6 +1525,10 @@ const filterConfig = buildAzureContentSafetyFilter('output', {
 
 ### Llama Guard Filter[​](#llama-guard-filter "Direct link to Llama Guard Filter")
 
+Deprecated
+
+The Llama Guard 3 8B filter is deprecated and will be removed on 2027-09-20. The [IBM Granite Guardian Filter](#ibm-granite-guardian-filter) is a different SAP-hosted content filter for input and output filtering with the orchestration service that is not deprecated.
+
 Use `buildLlamaGuard38BFilter()` function to build a Llama Guard 3 8B content filter. Input and output filters are differentiated. Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
 
 Available categories can be found with autocompletion. Pass the categories as an array to the function to enable them.
@@ -1543,6 +1547,40 @@ const outputFilter = buildLlamaGuard38BFilter('output', [
   'violent_crimes'
 
 ]);
+```
+
+### IBM Granite Guardian Filter[​](#ibm-granite-guardian-filter "Direct link to IBM Granite Guardian Filter")
+
+Use `buildGraniteGuardian41Filter()` function to build an IBM Granite Guardian 4.1 content filter. The same configuration can be used for both input and output filtering — add it to the `input` or `output` filters list as needed.
+
+Available categories can be found with autocompletion. Pass at least one category as an array to the function to enable it.
+
+info
+
+Granite Guardian requires a separate call for each configured content category. To keep latency and cost low, prefer the `harm` catch-all category over enabling many categories.
+
+```
+import { buildGraniteGuardian41Filter } from '@sap-ai-sdk/orchestration';
+
+
+
+const filter = buildGraniteGuardian41Filter(['harm']);
+
+const multiCategoryFilter = buildGraniteGuardian41Filter(['harm', 'violence']);
+```
+
+Set `enable_reasoning` to `true` to run Granite Guardian in reasoning mode, which returns reasoning content alongside each category verdict.
+
+```
+import { buildGraniteGuardian41Filter } from '@sap-ai-sdk/orchestration';
+
+
+
+const filter = buildGraniteGuardian41Filter(['harm'], {
+
+  enable_reasoning: true
+
+});
 ```
 
 ## Data Masking[​](#data-masking "Direct link to Data Masking")
