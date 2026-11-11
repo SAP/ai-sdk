@@ -65,7 +65,7 @@
     "eslint-plugin-promise": "7.3.0",
     "eslint-plugin-react": "7.37.5",
     "globals": "17.14.0",
-    "langchain": "1.6.2",
+    "langchain": "1.6.3",
     "openai": "7.53.0",
     "prettier": "3.9.10",
     "prettier-plugin-java": "2.11.0",
