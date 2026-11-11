@@ -367,7 +367,22 @@ var result = client.chatCompletion().config(configWithFilter).promptTemplate(tem
   The convenience method `getContent()` on the resulting object will throw an `OrchestrationFilterException.Output` upon invocation.
   The low level API under `getOriginalResponse()` will not throw an exception.
 
-- To obtain diagnostic information for filter violation, you may call `getFilterDetails()`, `getAzureContentSafetyInput()`, `getAzureContentSafetyOutput()` or `getGraniteGuardian41()` on the exception as relevant.
+- To obtain diagnostic information for filter violation, inspect the exception:
+
+  ```java
+  } catch (OrchestrationFilterException.Input e) {
+      // Azure Content Safety details
+      AzureContentSafetyInput azureDetails = e.getAzureContentSafetyInput();
+
+      // Granite Guardian details
+      GraniteGuardian41FilterResult graniteDetails = e.getGraniteGuardian41();
+      if (graniteDetails != null) {
+          boolean violence = graniteDetails.isViolence();
+          boolean jailbreak = graniteDetails.isJailbreak();
+          // isHarm(), isSocialBias(), isProfanity(), isSexualContent(), isUnethicalBehavior() also available
+      }
+  }
+  ```
 
 You will find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating response handling with filters.
 
