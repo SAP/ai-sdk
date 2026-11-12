@@ -88,7 +88,7 @@ function useTransformItems(props) {
 function useResultsFooterComponent({ closeModal }) {
   return useMemo(
     () =>
-      // eslint-disable-next-line react/display-name
+      // oxlint-disable-next-line react/display-name
       ({ state }) => <ResultsFooter state={state} onClose={closeModal} />,
     [closeModal]
   );
@@ -120,19 +120,21 @@ function useSearchParameters({ contextualSearch, ...props }) {
   }
 
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
-
-  if (typeof document !== 'undefined') {
-    const tag = document.querySelector('meta[name="docusaurus_tag"]')?.content;
-    if (tag && tag.startsWith('docs-docs-j')) {
-      contextualSearchFacetFilters[1] = [`docusaurus_tag:${tag}`];
-    }
-  }
+  const tag =
+    typeof document !== 'undefined'
+      ? document.querySelector('meta[name="docusaurus_tag"]')?.content
+      : undefined;
+  const contextualSearchFacetFiltersWithTag = tag?.startsWith('docs-docs-j')
+    ? contextualSearchFacetFilters.map((filters, index) =>
+        index === 1 ? [`docusaurus_tag:${tag}`] : filters
+      )
+    : contextualSearchFacetFilters;
 
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
 
   const facetFilters = contextualSearch
     ? // Merge contextual search filters with config filters
-      mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
+      mergeFacetFilters(contextualSearchFacetFiltersWithTag, configFacetFilters)
     : // ... or use config facetFilters
       configFacetFilters;
 
@@ -149,16 +151,18 @@ function DocSearch({ externalUrlRegex, ...props }) {
   const transformItems = useTransformItems(props);
   const transformSearchClient = useTransformSearchClient();
 
-  const searchContainer = useRef(null);
+  const searchContainerRef = useRef(null);
+  const [searchContainer, setSearchContainer] = useState(null);
   // TODO remove "as any" after React 19 upgrade
   const searchButtonRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [initialQuery, setInitialQuery] = useState(undefined);
 
   const prepareSearchContainer = useCallback(() => {
-    if (!searchContainer.current) {
+    if (!searchContainerRef.current) {
       const divElement = document.createElement('div');
-      searchContainer.current = divElement;
+      searchContainerRef.current = divElement;
+      setSearchContainer(divElement);
       document.body.insertBefore(divElement, document.body.firstChild);
     }
   }, []);
@@ -222,7 +226,7 @@ function DocSearch({ externalUrlRegex, ...props }) {
 
       {isOpen &&
         DocSearchModal &&
-        searchContainer.current &&
+        searchContainer &&
         createPortal(
           <DocSearchModal
             onClose={closeModal}
@@ -240,7 +244,7 @@ function DocSearch({ externalUrlRegex, ...props }) {
             translations={props.translations?.modal ?? translations.modal}
             searchParameters={searchParameters}
           />,
-          searchContainer.current
+          searchContainer
         )}
     </>
   );

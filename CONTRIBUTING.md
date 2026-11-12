@@ -70,18 +70,18 @@ Once installed, add the following lines to your configuration.
 }
 ```
 
-### ESLint and Prettier
+### Oxlint and Prettier
 
-Please use [ESLint](https://eslint.org) and [Prettier](https://prettier.io/) to keep the markdown files and code examples consistently formatted.
+Please use [Oxlint](https://oxc.rs/docs/guide/usage/linter/) and [Prettier](https://prettier.io/) to keep the markdown files and code examples consistently formatted.
 
 ```bash
-# Install dependencies including ESLint and Prettier
+# Install dependencies including Oxlint and Prettier
 npm install
 
-# Run ESLint and Prettier
+# Run Oxlint and Prettier
 npm run lint
 
-# Fix ESLint and Prettier issues automatically
+# Fix Oxlint and Prettier issues automatically
 npm run lint:fix
 ```
 

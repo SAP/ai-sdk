@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from '@docusaurus/router';
 import BrowserOnly from '@docusaurus/BrowserOnly';
+
+function RedirectToLatestVersion({ path }) {
+  useEffect(() => {
+    window.location.href = path;
+  }, [path]);
+
+  return null;
+}
 
 export default function LatestApiDoc({ latestBaseUrl, versions }) {
   const explicitLatestBaseUrl = [
@@ -9,5 +17,9 @@ export default function LatestApiDoc({ latestBaseUrl, versions }) {
   ].join('/');
   const loc = useLocation();
   const newPath = loc.pathname.replace(latestBaseUrl, explicitLatestBaseUrl);
-  return <BrowserOnly>{() => (window.location.href = newPath)}</BrowserOnly>;
+  return (
+    <BrowserOnly>
+      {() => <RedirectToLatestVersion path={newPath} />}
+    </BrowserOnly>
+  );
 }
