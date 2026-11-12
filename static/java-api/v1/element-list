@@ -5,6 +5,7 @@ com.sap.ai.sdk.core.model
 com.sap.ai.sdk.foundationmodels.openai
 com.sap.ai.sdk.foundationmodels.openai.generated.model
 com.sap.ai.sdk.foundationmodels.openai.model
+com.sap.ai.sdk.foundationmodels.openai.realtime
 com.sap.ai.sdk.foundationmodels.openai.spring
 com.sap.ai.sdk.foundationmodels.rpt
 com.sap.ai.sdk.foundationmodels.rpt.generated.client

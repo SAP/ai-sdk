@@ -21,13 +21,20 @@ export default {
           label: 'OpenAI',
           items: [
             'foundation-models/openai/chat-completion',
-            'foundation-models/openai/embedding',
-            'foundation-models/openai/batch'
+            'foundation-models/openai/embedding'
           ]
         }
       ]
     },
-    'openai/openai',
+    {
+      type: 'category',
+      label: 'OpenAI',
+      link: {
+        type: 'doc',
+        id: 'openai/openai'
+      },
+      items: ['openai/realtime']
+    },
     {
       type: 'category',
       label: 'LangChain',
@@ -43,15 +50,25 @@ export default {
       items: [
         'ai-core/ai-api',
         'ai-core/document-grounding',
-        'ai-core/prompt-registry'
+        'ai-core/prompt-registry',
+        'ai-core/batch'
       ]
     },
-    'rpt',
+    {
+      type: 'category',
+      label: 'Tabular AI',
+      items: [
+        'tabular-ai/rpt',
+        'tabular-ai/context-registry',
+        'tabular-ai/tabular-orchestration'
+      ]
+    },
     {
       type: 'category',
       label: 'Tutorials',
       items: [
         'tutorials/getting-started-agents',
+        'tutorials/langgraph-template-orchestration-client',
         'tutorials/scoped-prompt-registry-templates',
         'tutorials/llm-batch-api',
         {

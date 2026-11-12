@@ -18,6 +18,12 @@ export default {
         'examples/metering',
         'examples/ai-vs-ai'
       ]
+    },
+    'release-notes',
+    {
+      type: 'link',
+      label: 'API Reference',
+      href: 'pathname:///api-python/index.html'
     }
   ]
 };

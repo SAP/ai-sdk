@@ -36,8 +36,16 @@ There is also a convenient method to add custom headers to single calls through 
 
 ```java
 var client = new OrchestrationClient();
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
+var template = PromptTemplate.create("Hello world!");
 
-var result = client.withHeader("my-header-key", "my-header-value").chatCompletion(prompt, config);
+var result =
+    client
+        .withHeader("my-header-key", "my-header-value")
+        .chatCompletion()
+        .config(config)
+        .promptTemplate(template)
+        .execute();
 ```
 
 For more information on this feature, see the respective documentation of the [OrchestrationClient](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#custom-headers) and [OpenAIClient](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers).
@@ -66,6 +74,13 @@ Their API signatures may change, for example, due to updates in the underlying s
   - [model classes](https://github.com/SAP/ai-sdk-java/tree/main/core/src/main/java/com/sap/ai/sdk/core/model)
 - [Document Grounding client](https://github.com/SAP/ai-sdk-java/tree/main/core-services/document-grounding)
 - [Prompt Registry client](https://github.com/SAP/ai-sdk-java/tree/main/core-services/prompt-registry)
+
+### What are the minimum supported versions of common dependencies?
+
+The SAP AI SDK is continuously verified to build against a set of minimum supported versions for its most common consumer-facing dependencies (see the [General Requirements](overview.mdx#general-requirements)).
+
+The SDK is designed to be compatible with any version higher or equal to these minimal requirements.
+Nevertheless, we highly recommend to always use the latest versions of all dependencies.
 
 ### There's a vulnerability warning `CVE-2021-41251`?
 

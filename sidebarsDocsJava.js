@@ -18,7 +18,8 @@ export default {
           items: [
             'foundation-models/openai/chat-completion',
             'foundation-models/openai/embedding',
-            'foundation-models/openai/responses'
+            'foundation-models/openai/responses',
+            'foundation-models/openai/realtime'
           ]
         },
         {
@@ -56,11 +57,12 @@ export default {
       ]
     },
     'release-notes',
+    'migration-guide',
     'frequently-asked-questions',
     {
       type: 'link',
       label: 'API Reference',
-      href: `pathname:///java-api/v1/index.html`
+      href: `pathname:///java-api/v2/index.html`
     },
     {
       type: 'link',

@@ -44,7 +44,8 @@ const orchestrationClient = new OrchestrationClient({
 });
 ```
 
-Here, the model name is specified along with a user message as the prompt.
+Here, only the model name is configured in the `promptTemplating` module.
+The user message is passed directly to the `chatCompletion()` method call.
 
 To send a chat completion request, use the `chatCompletion()` method.
 Use the following convenience methods for handling chat completion response:
@@ -406,9 +407,8 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-:::info
-The `promptTemplating.prompt.template` messages defined in the client configuration are static - they are always included in every `chatCompletion()` request.
-For more dynamic prompts, i.e., you want to vary the full message list per request without re-initializing the client, use the `messages` property instead.
+:::warning
+Template messages are **always prepended** to every request. Reusing the same client across multiple turns will include the template on every call. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for how to avoid duplication in multi-turn workflows with prompt templates.
 :::
 
 ```ts twoslash
@@ -455,9 +455,8 @@ const response = await orchestrationClient.chatCompletion({
 });
 ```
 
-:::info Messages with Prompt Template References
-When using the `template_ref` property, messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored prompt template.
-The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
+:::warning
+Messages passed alongside a `template_ref` are **automatically routed to `messages_history`** and cannot be merged into the remotely stored template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows with template references.
 :::
 
 A prompt template can be referenced either by ID, or by a combination of name, scenario and version.
@@ -891,6 +890,69 @@ const usage = response.getTokenUsage();
 console.log('Cache details', usage?.prompt_tokens_details ?? usage);
 ```
 
+### Reasoning Content
+
+Some models can expose their intermediate reasoning steps in addition to the final answer.
+Enable reasoning by setting the harmonized `reasoning_effort` model parameter.
+Orchestration maps this single parameter to each provider's native reasoning configuration, so the same client code works across different models.
+
+:::note
+Anthropic Claude, GCP Gemini, and OpenAI reasoning models are among the models that expose reasoning content.
+Every reasoning model accepts the `reasoning_effort` values `minimal`, `low`, `medium`, `high`, and `none`, though each model maps them differently.
+You can also pass a model's native reasoning options directly.
+See the [SAP AI Core reasoning documentation](https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning?locale=en-US) for details.
+:::
+
+Use the `getReasoningContent()` method to retrieve the reasoning content from the response.
+It returns an array of reasoning text blocks, or `undefined` when the model did not produce any reasoning content.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gemini-3.5-flash',
+      params: { reasoning_effort: 'high' }
+    }
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  messages: [
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+  ]
+});
+
+const reasoning = response.getReasoningContent();
+reasoning?.forEach(block => console.log(`<reasoning>${block}</reasoning>`));
+console.log(response.getContent());
+```
+
+`getReasoningContent()` exposes only the human-readable reasoning text; any encrypted or redacted reasoning blocks the model returns are excluded.
+
+To preserve the reasoning context across turns, pass the result of `getAllMessages()` as `messagesHistory` in the next request.
+The reasoning blocks are included in the returned messages automatically, so you do not need to handle them manually.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'gemini-3.5-flash', params: { reasoning_effort: 'high' } }
+  }
+});
+const response = await orchestrationClient.chatCompletion({
+  messages: [
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+  ]
+});
+// ---cut---
+const followUp = await orchestrationClient.chatCompletion({
+  messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+  messagesHistory: response.getAllMessages()
+});
+```
+
 ### File Input
 
 Some models in the orchestration service accept files as input, such as PDFs, CSV files, Word documents, and audio files.
@@ -1076,6 +1138,11 @@ const filterConfig = buildAzureContentSafetyFilter('output', {
 
 ### Llama Guard Filter
 
+:::warning Deprecated
+The Llama Guard 3 8B filter is deprecated and will be removed on 2027-09-20.
+The [IBM Granite Guardian Filter](#ibm-granite-guardian-filter) is a different SAP-hosted content filter for input and output filtering with the orchestration service that is not deprecated.
+:::
+
 Use `buildLlamaGuard38BFilter()` function to build a Llama Guard 3 8B content filter.
 Input and output filters are differentiated.
 Set the `type` parameter to `input` to build input filter configuration and `output` to build output filter configuration.
@@ -1091,6 +1158,36 @@ const outputFilter = buildLlamaGuard38BFilter('output', [
   'self_harm',
   'violent_crimes'
 ]);
+```
+
+### IBM Granite Guardian Filter
+
+Use `buildGraniteGuardian41Filter()` function to build an IBM Granite Guardian 4.1 content filter.
+The same configuration can be used for both input and output filtering — add it to the `input` or `output` filters list as needed.
+
+Available categories can be found with autocompletion.
+Pass at least one category as an array to the function to enable it.
+
+:::info
+Granite Guardian requires a separate call for each configured content category.
+To keep latency and cost low, prefer the `harm` catch-all category over enabling many categories.
+:::
+
+```ts twoslash
+import { buildGraniteGuardian41Filter } from '@sap-ai-sdk/orchestration';
+
+const filter = buildGraniteGuardian41Filter(['harm']);
+const multiCategoryFilter = buildGraniteGuardian41Filter(['harm', 'violence']);
+```
+
+Set `enable_reasoning` to `true` to run Granite Guardian in reasoning mode, which returns reasoning content alongside each category verdict.
+
+```ts twoslash
+import { buildGraniteGuardian41Filter } from '@sap-ai-sdk/orchestration';
+
+const filter = buildGraniteGuardian41Filter(['harm'], {
+  enable_reasoning: true
+});
 ```
 
 ## Data Masking
@@ -1414,6 +1511,42 @@ for await (const chunk of response.stream.toContentStream()) {
 }
 ```
 
+### Streaming Reasoning Content
+
+When streaming, reasoning content is delivered incrementally alongside the regular content.
+Use the `getDeltaReasoningContent()` method on each chunk to read the reasoning delta as it arrives.
+Use the `getReasoningContent()` method on the full response after the stream ends to read the accumulated reasoning content.
+
+Configure reasoning by setting the harmonized `reasoning_effort` model parameter, the same as for non-streaming requests.
+
+```ts twoslash
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+// ---cut---
+const orchestrationClient = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'gemini-3.5-flash',
+      params: { reasoning_effort: 'high' }
+    }
+  }
+});
+
+const response = await orchestrationClient.stream({
+  messages: [
+    { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+  ]
+});
+
+for await (const chunk of response.stream) {
+  const reasoningDelta = chunk.getDeltaReasoningContent();
+  reasoningDelta?.forEach(block =>
+    console.log(`<delta-reasoning>${block}</delta-reasoning>`)
+  );
+}
+
+const finalReasoning = response.getReasoningContent();
+```
+
 ### Streaming with Tool Calls
 
 Use `getToolCalls()` method to get the tool calls at the end of a stream.
@@ -1673,9 +1806,8 @@ const response = await orchestrationClient.chatCompletion({
 console.log(response.getContent());
 ```
 
-:::info Messages with Orchestration Configuration References
-When initializing the client with an orchestration configuration reference, any messages passed to the `chatCompletion()` or `stream()` methods are automatically appended to the `messages_history` array as they cannot be merged into the stored configuration's prompt template.
-The `messages` property defined in the `template` array are appended after any existing `messagesHistory` entries.
+:::warning
+Messages passed alongside a configuration reference are **automatically routed to `messages_history`** and cannot be merged into the remotely stored configuration's prompt template. See the [LangGraph tutorial](../tutorials/langgraph-orchestration-client.mdx) for the recommended two-client pattern in multi-turn workflows with configuration references.
 :::
 
 ### Overriding the Stored Configuration

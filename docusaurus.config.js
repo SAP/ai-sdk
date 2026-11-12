@@ -13,14 +13,15 @@ export default {
   baseUrl: '/ai-sdk/',
   onBrokenLinks: 'throw',
   onBrokenAnchors: 'throw',
-  markdown: { hooks: { onBrokenMarkdownLinks: 'throw' } },
+  markdown: { mermaid: true, hooks: { onBrokenMarkdownLinks: 'throw' } },
   favicon: 'img/AI-SDK-Logo.svg',
   organizationName: 'SAP',
   projectName: 'ai-sdk',
   trailingSlash: false,
   themes: [
     '@saucelabs/theme-github-codeblock',
-    'docusaurus-plugin-copy-page-button'
+    'docusaurus-plugin-copy-page-button',
+    '@docusaurus/theme-mermaid'
   ],
   themeConfig: {
     colorMode: {
@@ -74,7 +75,7 @@ export default {
           position: 'left',
           docsPluginId: 'docs-python',
           activeBasePath: 'docs/python',
-          className: 'navbar-item-invisible'
+          sdkSwitch: true
         },
         {
           type: 'docsVersionDropdown',
@@ -85,11 +86,6 @@ export default {
           type: 'docsVersionDropdown',
           position: 'right',
           docsPluginId: 'docs-java'
-        },
-        {
-          type: 'docsVersionDropdown',
-          position: 'right',
-          docsPluginId: 'docs-python'
         }
       ]
     },
@@ -156,6 +152,18 @@ export default {
             {
               label: 'PyPI',
               href: 'https://pypi.org/project/sap-ai-sdk-gen/'
+            },
+            {
+              label: 'GitHub',
+              href: 'https://github.com/SAP/ai-sdk-python'
+            },
+            {
+              label: 'Sample Code',
+              href: 'https://github.com/SAP/ai-sdk-python/tree/main/sample-code'
+            },
+            {
+              label: 'Support',
+              to: 'docs/overview/get-support'
             }
           ]
         },
@@ -169,6 +177,10 @@ export default {
             {
               label: 'SAP Cloud SDK (JavaScript) - GitHub',
               href: 'https://github.com/SAP/cloud-sdk-js'
+            },
+            {
+              label: 'SAP Cloud SDK (Python) - GitHub',
+              href: 'https://github.com/SAP/ai-sdk-python'
             },
             {
               label: 'SAP Cloud SDK Documentation',
@@ -220,7 +232,13 @@ export default {
         lastVersion: 'current',
         versions: {
           current: {
+            label: 'v2',
+            banner: 'none',
+            badge: false
+          },
+          v1: {
             label: 'v1',
+            banner: 'unmaintained',
             badge: false
           }
         }
@@ -274,7 +292,7 @@ export default {
         filename: 'sitemap-js.xml',
         changefreq: 'weekly',
         priority: 0.5,
-        ignorePatterns: ['**/docs/java/**']
+        ignorePatterns: ['**/docs/java/**', '**/docs/python/**']
       }
     ],
     [
@@ -284,7 +302,17 @@ export default {
         filename: 'sitemap-java.xml',
         changefreq: 'weekly',
         priority: 0.5,
-        ignorePatterns: ['**/docs/js/**']
+        ignorePatterns: ['**/docs/js/**', '**/docs/python/**']
+      }
+    ],
+    [
+      '@docusaurus/plugin-sitemap',
+      {
+        id: 'sitemap-python',
+        filename: 'sitemap-python.xml',
+        changefreq: 'weekly',
+        priority: 0.5,
+        ignorePatterns: ['**/docs/java/**', '**/docs/js/**']
       }
     ],
     [
@@ -349,6 +377,14 @@ export default {
             from: '/docs/js/guides/connecting-to-ai-core',
             to: '/docs/js/connecting-to-ai-core'
           },
+          {
+            from: '/docs/js/rpt',
+            to: '/docs/js/tabular-ai/rpt'
+          },
+          {
+            from: '/docs/js/foundation-models/openai/batch',
+            to: '/docs/js/ai-core/batch'
+          },
           // SEO slug renames
           {
             from: '/docs/overview/overview-cloud-sdk-for-ai',
@@ -391,7 +427,8 @@ export default {
               rules: [
                 // Docusaurus generates files in .docusaurus/ with require() calls;
                 // treat them as non-strict so require is available in the bundle.
-                { test: /\.docusaurus\/.*\.js$/, type: 'javascript/auto' }
+                // Use [/\\] to match both Unix and Windows path separators.
+                { test: /\.docusaurus[/\\].*\.js$/, type: 'javascript/auto' }
               ]
             }
           };

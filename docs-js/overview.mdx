@@ -31,21 +31,21 @@ Below you can find an overview of the currently available features and documenta
 
 **Legend:** ✅ - Generally Available, ❌ - Not Available, 📅 - Planned, ➖- Not Applicable
 
-| Feature                            |                                      Orchestration                                      |               Orchestration with LangChain               |                                   OpenAI                                   |                OpenAI with LangChain                |
-| ---------------------------------- | :-------------------------------------------------------------------------------------: | :------------------------------------------------------: | :------------------------------------------------------------------------: | :-------------------------------------------------: |
-| **Chat Completion**                |               ✅ [docs](./orchestration/chat-completion.mdx#quick-start)                | ✅ [docs](./langchain/orchestration.mdx#chat-completion) | ✅ [docs](./foundation-models/openai/chat-completion.mdx#making-requests)  |  ✅ [docs](./langchain/openai.mdx#chat-completion)  |
-| **Templates**                      |            ✅ [docs](./orchestration/chat-completion.mdx#prompt-templating)             |                            ❌                            |                                     ❌                                     |                         ➖                          |
-| **Content Moderation (Filtering)** |            ✅ [docs](./orchestration/chat-completion.mdx#content-filtering)             |                          ✅ \*                           |                                     ➖                                     |                         ➖                          |
-| **Data Masking**                   |               ✅ [docs](./orchestration/chat-completion.mdx#data-masking)               |                          ✅ \*                           |                                     ➖                                     |                         ➖                          |
-| **Grounding**                      |                ✅ [docs](./orchestration/chat-completion.mdx#grounding)                 |                            ❌                            |                                     ❌                                     |                         ➖                          |
-| **Chat Memory / Message History**  |             ✅ [docs](./orchestration/chat-completion.mdx#message-history)              |                          ✅ \*                           | ✅ [docs](./foundation-models/openai/chat-completion.mdx#message-history)  |                         ➖                          |
-| **JSON Configuration**             | ✅ [docs](./orchestration/chat-completion.mdx#use-json-configuration-from-ai-launchpad) |                            ➖                            |                                     ➖                                     |                         ➖                          |
-| **Stream Chat Completion**         |                ✅ [docs](./orchestration/chat-completion.mdx#streaming)                 |    ✅ [docs](./langchain/orchestration.mdx#streaming)    |    ✅ [docs](./foundation-models/openai/chat-completion.mdx#streaming)     |     ✅ [docs](./langchain/openai.mdx#streaming)     |
-| **Multi-modal Messages**           |            ✅ [docs](./orchestration/chat-completion.mdx#image-recognition)             |                            ❌                            |                                     ❌                                     |                         ➖                          |
-| **Response Format**                |             ✅ [docs](./orchestration/chat-completion.mdx#response-format)              |                            ❌                            | ✅ [docs](./foundation-models/openai/chat-completion.mdx#response-format)  | ✅ [docs](./langchain/openai.mdx#structured-output) |
-| **Translation Service**            |               ✅ [docs](./orchestration/chat-completion.mdx#translation)                |                            ❌                            |                                     ➖                                     |                         ➖                          |
-| **Chat Completion: Tool Call**     |             ✅ [docs](./orchestration/chat-completion.mdx#function-calling)             |                          ✅ \*                           | ✅ [docs](./foundation-models/openai/chat-completion.mdx#function-calling) |                        ✅ \*                        |
-| **Embedding**                      |                                           ❌                                            |                            ❌                            |    ✅ [docs](./foundation-models/openai/embedding.mdx#making-requests)     |     ✅ [docs](./langchain/openai.mdx#embedding)     |
+| Feature                            |                                      Orchestration                                      |                Orchestration with LangChain                |                                   OpenAI                                   |                OpenAI with LangChain                |
+| ---------------------------------- | :-------------------------------------------------------------------------------------: | :--------------------------------------------------------: | :------------------------------------------------------------------------: | :-------------------------------------------------: |
+| **Chat Completion**                |               ✅ [docs](./orchestration/chat-completion.mdx#quick-start)                |  ✅ [docs](./langchain/orchestration.mdx#chat-completion)  | ✅ [docs](./foundation-models/openai/chat-completion.mdx#making-requests)  |  ✅ [docs](./langchain/openai.mdx#chat-completion)  |
+| **Templates**                      |            ✅ [docs](./orchestration/chat-completion.mdx#prompt-templating)             |                             ❌                             |                                     ❌                                     |                         ➖                          |
+| **Content Moderation (Filtering)** |            ✅ [docs](./orchestration/chat-completion.mdx#content-filtering)             |                           ✅ \*                            |                                     ➖                                     |                         ➖                          |
+| **Data Masking**                   |               ✅ [docs](./orchestration/chat-completion.mdx#data-masking)               |                           ✅ \*                            |                                     ➖                                     |                         ➖                          |
+| **Grounding**                      |                ✅ [docs](./orchestration/chat-completion.mdx#grounding)                 |                             ❌                             |                                     ❌                                     |                         ➖                          |
+| **Chat Memory / Message History**  |             ✅ [docs](./orchestration/chat-completion.mdx#message-history)              |                           ✅ \*                            | ✅ [docs](./foundation-models/openai/chat-completion.mdx#message-history)  |                         ➖                          |
+| **JSON Configuration**             | ✅ [docs](./orchestration/chat-completion.mdx#use-json-configuration-from-ai-launchpad) |                             ➖                             |                                     ➖                                     |                         ➖                          |
+| **Stream Chat Completion**         |                ✅ [docs](./orchestration/chat-completion.mdx#streaming)                 |     ✅ [docs](./langchain/orchestration.mdx#streaming)     |    ✅ [docs](./foundation-models/openai/chat-completion.mdx#streaming)     |     ✅ [docs](./langchain/openai.mdx#streaming)     |
+| **Multi-modal Messages**           |            ✅ [docs](./orchestration/chat-completion.mdx#image-recognition)             |                           ✅ \*                            |                                     ❌                                     |                         ➖                          |
+| **Response Format**                |             ✅ [docs](./orchestration/chat-completion.mdx#response-format)              | ✅ [docs](./langchain/orchestration.mdx#structured-output) | ✅ [docs](./foundation-models/openai/chat-completion.mdx#response-format)  | ✅ [docs](./langchain/openai.mdx#structured-output) |
+| **Translation Service**            |               ✅ [docs](./orchestration/chat-completion.mdx#translation)                |                             ❌                             |                                     ➖                                     |                         ➖                          |
+| **Chat Completion: Tool Call**     |             ✅ [docs](./orchestration/chat-completion.mdx#function-calling)             |                           ✅ \*                            | ✅ [docs](./foundation-models/openai/chat-completion.mdx#function-calling) |                        ✅ \*                        |
+| **Embedding**                      |                  ✅ [docs](./orchestration/embedding.mdx#quick-start)                   |                             ❌                             |    ✅ [docs](./foundation-models/openai/embedding.mdx#making-requests)     |     ✅ [docs](./langchain/openai.mdx#embedding)     |
 
 :::note
 \*: The LangChain clients conform to LangChain interface.
@@ -62,7 +62,8 @@ To use the SAP Cloud SDK for AI in a JavaScript / TypeScript application, it is 
 
 :::tip Node.js Version Recommendations
 Node.js v22 is supported but **approaching end-of-life (EOL).**
-➡️ We strongly recommend upgrading to **Node.js v24 (Active LTS)** for long-term support and security updates.
+➡️ We strongly recommend **Node.js v24 (Active LTS)** for long-term support and security updates.
+Node.js v26 (Current) is also supported and tested.
 :::
 
 :::tip CommonJS users
@@ -93,21 +94,32 @@ The following models are deprecated in SAP Cloud SDK for AI and should not be us
 Replace them with the recommended alternatives.
 For retired models, refer to the **Recently Retired Models** table in the SAP note [Availability of Generative AI Models](https://me.sap.com/notes/3437766).
 
-| Model Name                          | Replacement                                        |
-| ----------------------------------- | -------------------------------------------------- |
-| `text-embedding-ada-002`            | `text-embedding-3-small`, `text-embedding-3-large` |
-| `gpt-4o-mini`                       | `gpt-5-mini`                                       |
-| `gpt-4o`                            | `gpt-5`                                            |
-| `o1`                                |                                                    |
-| `o3-mini`                           |                                                    |
-| `mistralai--mistral-small-instruct` | `mistralai--mistral-small`                         |
-| `amazon--nova-premier`              | `amazon--nova-lite`                                |
-| `anthropic--claude-3-haiku`         | `anthropic--claude-4.5-haiku`                      |
-| `anthropic--claude-4-sonnet`        | `anthropic--claude-4.5-sonnet`                     |
-| `gpt-4.1`                           |                                                    |
-| `gpt-4.1-mini`                      |                                                    |
-| `o3`                                |                                                    |
-| `o4-mini`                           |                                                    |
+| Model Name                           | Replacement                                        |
+| ------------------------------------ | -------------------------------------------------- |
+| `text-embedding-ada-002`             | `text-embedding-3-small`, `text-embedding-3-large` |
+| `gpt-4o-mini`                        | `gpt-5.6-terra`, `gpt-5.6-luna`                    |
+| `gpt-4o`                             | `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`     |
+| `o1`                                 | `gpt-5.6-sol`                                      |
+| `o3-mini`                            | `gpt-5.6-terra`                                    |
+| `mistralai--mistral-small-instruct`  | `mistralai--mistral-small`                         |
+| `amazon--nova-premier`               | `amazon--nova-lite`                                |
+| `anthropic--claude-3-haiku`          | `anthropic--claude-4.5-haiku`                      |
+| `anthropic--claude-4-sonnet`         | `anthropic--claude-4.5-sonnet`                     |
+| `gpt-4.1`                            |                                                    |
+| `gpt-4.1-mini`                       |                                                    |
+| `gpt-4.1-nano`                       |                                                    |
+| `o3`                                 | `gpt-5.6-sol`                                      |
+| `o4-mini`                            | `gpt-5.6-terra`                                    |
+| `mistralai--mistral-large-instruct`  | `mistralai--mistral-medium`                        |
+| `gemini-2.5-flash`                   | `gemini-3.5-flash-lite`                            |
+| `gemini-2.5-pro`                     | `gemini-3.5-flash`                                 |
+| `mistralai--mistral-medium-instruct` | `mistralai--mistral-medium`                        |
+| `cohere--command-a-reasoning`        |                                                    |
+| `gemini-2.5-flash-lite`              | `gemini-3.5-flash-lite`                            |
+| `sap-rpt-1-small`                    | `sap-rpt-1.6`                                      |
+| `sap-rpt-1-large`                    | `sap-rpt-1.6-large`                                |
+| `sap-rpt-1.5`                        | `sap-rpt-1.6`                                      |
+| `sap-rpt-1.5-large`                  | `sap-rpt-1.6-large`                                |
 
 ## Contribute, Support and Feedback
 
