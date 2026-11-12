@@ -57,7 +57,6 @@
     "@typescript-eslint/eslint-plugin": "8.72.1",
     "@typescript-eslint/parser": "8.72.1",
     "assert": "2.1.0",
-    "eslint": "9.39.5",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-n": "18.5.0",
@@ -71,7 +70,8 @@
     "prettier-plugin-java": "2.11.0",
     "process": "0.11.10",
     "twoslash": "0.3.9",
-    "typescript": "5.9.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "zod": "4.6.7"
   },
   "browserslist": {
