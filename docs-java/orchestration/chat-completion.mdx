@@ -185,6 +185,85 @@ var result = client.withHeaders(headers).chatCompletion()
     .execute();
 ```
 
+## Exception and error handling
+
+Execution of requests can throw `OrchestrationClientException` at runtime.
+
+```java
+var promptTemplate = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
+try {
+  return client
+      .chatCompletion()
+      .config(config)
+      .promptTemplate(promptTemplate)
+      .execute() // throws OrchestrationClientException and OrchestrationFilterException.Input
+      .getContent(); // throws OrchestrationFilterException.Output
+}
+```
+
+### Input filter
+
+If you have a filter, catch the more specific exceptions first:
+
+```java
+catch (OrchestrationFilterException.Input e) {
+  // Can be Azure, LlamaGuard or GraniteGuardian filter
+  if (e.getAzureContentSafetyInput() != null) {
+    int hateThreshold = e.getAzureContentSafetyInput().getHate().getValue();
+    System.out.println("Filtered input with hate: " + hateThreshold);
+  }
+  throw or return;
+}
+```
+
+### Output filter
+
+If you have an output filter, catch this when calling `getContent()`:
+
+```java
+catch (OrchestrationFilterException.Output e) {
+  // Can be Azure, LlamaGuard or GraniteGuardian filter
+  if (e.getAzureContentSafetyOutput() != null) {
+    int hateThreshold = e.getAzureContentSafetyOutput().getHate().getValue();
+    System.out.println("Filtered output with hate: " + hateThreshold);
+  }
+  throw or return;
+}
+```
+
+### Additional details
+
+Finally, if the execution fails, additional information is available on the exception itself to investigate the cause:
+
+```java
+catch (OrchestrationClientException e) {
+  // The HTTP status code
+  var code = e.getStatusCode();
+  System.out.println("Call failed with status code " + code);
+
+  // The error payload received from the remote service
+  var error = e.getClientError();
+  if(error != null) {
+    var message = error.getMessage();
+    System.out.println(" and the following error message: " + message);
+  }
+
+  // The original HTTP request that caused this exception
+  var failingRequest = e.getHttpRequest();
+  if(failingRequest != null) {
+    try{
+      var payload = new String(failingRequest.getEntity().getContent().readAllBytes());
+      var url = failingRequest.getUri().toString();
+      System.out.println("The request that caused the failure targeted " + url + " and had the following payload:" + payload);
+    } catch (Exception ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  throw or return;
+}
+```
+
 ## Templating
 
 Use a prepared [**template**](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating) and execute requests with by passing only the input parameters:
@@ -334,14 +413,14 @@ var result = client.chatCompletion().config(configWithFilter).promptTemplate(tem
 
 - **Input Filter**:
   If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
-  An `OrchestrationFilterException.Input` will be thrown.
+  [An `OrchestrationFilterException.Input` will be thrown.](#input-filter)
 
 - **Output Filter**:
   If the response message violates the output filter policy, the `chatCompletion` call will complete without exception.
-  The convenience method `getContent()` on the resulting object will throw an `OrchestrationFilterException.Output` upon invocation.
+  The convenience method `getContent()` on the resulting object will [throw an `OrchestrationFilterException.Output` upon invocation.](#output-filter)
   The low level API under `getOriginalResponse()` will not throw an exception.
 
-- To obtain diagnostic information for filter violation, you may call `getFilterDetails()`, `getAzureContentSafetyInput()`, `getAzureContentSafetyOutput()` or `getLlamaGuard38b()` on the exception as relevant.
+- To obtain diagnostic information for filter violation, you may call [`getFilterDetails()`, `getAzureContentSafetyInput()`, `getAzureContentSafetyOutput()` or `getLlamaGuard38b()` on the exception as relevant.](#input-filter)
 
 You will find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating response handling with filters.
 

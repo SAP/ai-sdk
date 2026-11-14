@@ -145,6 +145,42 @@ var headers = Map.of("foo", "bar", "foot", "baz");
 var result = client.withHeaders(headers).chatCompletion("Hello World! Why is this phrase so famous?");
 ```
 
+## Exception and error handling
+
+Execution of requests can throw `OpenAiClientException` at runtime.
+
+Additional information is available on the exception itself to investigate the cause:
+
+```java
+try {
+  return OpenAiClient.forModel(GPT_5_MINI)
+      .chatCompletion(new OpenAiChatCompletionRequest(prompt));
+}
+catch (OpenAiClientException e) {
+
+  // The error payload received from the remote service
+  var error = e.getClientError();
+  if(error != null) {
+    var message = error.getMessage();
+    System.out.println(" and the following error message: " + message);
+  }
+
+  // The original HTTP request that caused this exception
+  var failingRequest = e.getHttpRequest();
+  if(failingRequest != null) {
+    try{
+      var payload = new String(failingRequest.getEntity().getContent().readAllBytes());
+      var url = failingRequest.getUri().toString();
+      System.out.println("The request that caused the failure targeted " + url + " and had the following payload:" + payload);
+    } catch (Exception ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  throw or return;
+}
+```
+
 ## Message history
 
 **Since v1.4.0**
