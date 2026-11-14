@@ -56,7 +56,7 @@
     "@sap-ai-sdk/tabular-orchestration": "canary",
     "assert": "2.1.0",
     "langchain": "1.6.3",
-    "openai": "7.54.0",
+    "openai": "7.55.0",
     "oxlint": "1.93.0",
     "prettier": "3.9.10",
     "prettier-plugin-java": "2.11.0",
