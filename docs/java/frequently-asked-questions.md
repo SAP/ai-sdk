@@ -1,5 +1,57 @@
 # Frequently Asked Questions
 
+### Is the SDK API mature and stable?[​](#is-the-sdk-api-mature-and-stable "Direct link to Is the SDK API mature and stable?")
+
+Generally the SDK is very stable, we stay for years on a major version. We also try to have our main features in stable API and avoid generated code.
+
+If you have to use generated code we do communicate with all AI Core services to try to avoid breaking changes but we can’t promise anything. The generated code is rarely broken and we do document breaking changes in the release notes.
+
+### How are vulnerabilities handled?[​](#how-are-vulnerabilities-handled "Direct link to How are vulnerabilities handled?")
+
+We also regularly update our dependencies and release new versions. But you can overwrite transitive dependencies yourself in your project `pom.xml`, so vulnerabilities shouldn’t be an issue:
+
+```
+<dependencies>
+
+    <dependency>
+
+        <groupId>com.sap.ai.sdk</groupId>
+
+        <artifactId>core</artifactId> <!-- contains vulnerable-transitive-dependency -->
+
+    </dependency>
+
+</dependencies>
+
+
+
+
+
+<dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+
+            <groupId>com.package.dependency</groupId>
+
+            <artifactId>vulnerable-transitive-dependency</artifactId>
+
+            <version>newer.version</version> <!-- fix the vulnerability -->
+
+        </dependency>
+
+    </dependencies>
+
+</dependencyManagement>
+```
+
+### Is there a rate-limit or resilience?[​](#is-there-a-rate-limit-or-resilience "Direct link to Is there a rate-limit or resilience?")
+
+Some AI Core services do have a rate limit in the hundred or thousands of requests per minute. The Orchestration service doesn’t have a hard threshold, but it might have a lower limit depending on which modules are configured for your requests. The Orchestration service should return a `Retry-After` header on a failing request. They also have a circuit breaker.
+
+On the AI SDK side there is also an automatic retry and general resilience configured, we recommend to not retry too soon after a failure.
+
 ### How to add a custom header to AI Core requests?[​](#how-to-add-a-custom-header-to-ai-core-requests "Direct link to How to add a custom header to AI Core requests?")
 
 SAP AI SDK leverages the destination concept from the SAP Cloud SDK to manage the connection to AI Core. This opens up a wide range of possibilities to customize the connection, including adding custom headers. The following shows how to add custom headers to all requests sent to AI Core.
