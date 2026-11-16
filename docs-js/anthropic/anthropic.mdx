@@ -1,0 +1,357 @@
+---
+id: anthropic
+title: Anthropic
+hide_title: false
+hide_table_of_contents: false
+description: How to use the @sap-ai-sdk/anthropic package to access Anthropic Claude models on SAP AI Core using the official Anthropic Bedrock SDK.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - anthropic
+  - claude
+  - bedrock
+---
+
+:::caution
+The `@sap-ai-sdk/anthropic` package is experimental and may change at any time without prior notice.
+
+If you do not need Anthropic-specific features, consider using the [`@sap-ai-sdk/orchestration`](../orchestration/chat-completion.mdx) package instead, which provides a stable, model-agnostic interface for chat completion and other AI tasks on SAP AI Core.
+:::
+
+The `@sap-ai-sdk/anthropic` package is a thin wrapper around the official [`@anthropic-ai/bedrock-sdk`](https://www.npmjs.com/package/@anthropic-ai/bedrock-sdk) npm package, pre-configured for [Anthropic Claude](https://www.anthropic.com/claude) deployments on SAP AI Core.
+SAP AI Core serves Claude models through [Amazon Bedrock](https://aws.amazon.com/bedrock/), so the package uses the [Bedrock Invoke API](https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock).
+It handles deployment resolution, authentication, and SAP-specific headers automatically.
+The upstream SDK handles request payload adaptation, binary stream decoding, and message helpers.
+
+The client is named [`SapAnthropicBedrockInvoke`](pathname:///api/v2/classes/anthropic_src.SapAnthropicBedrockInvoke.html) to distinguish it from integrations targeting other Anthropic APIs.
+It exposes the [Messages API](https://platform.claude.com/docs/en/api/messages) only.
+
+For request and response details, see the [Anthropic API documentation](https://platform.claude.com/docs/en/api/messages) and the [Anthropic TypeScript SDK](https://github.com/anthropics/anthropic-sdk-typescript).
+
+## Installation
+
+```bash
+npm install @sap-ai-sdk/anthropic @anthropic-ai/bedrock-sdk @anthropic-ai/sdk
+```
+
+## Prerequisites
+
+See the [prerequisites](../overview.mdx#prerequisites) section.
+Ensure a deployment of an Anthropic model, for example `anthropic--claude-4.6-sonnet`, is available in SAP AI Core.
+
+## Client Initialization
+
+Use the `SapAnthropicBedrockInvoke` constructor to create a client.
+The client does not select a deployment at initialization; each request selects one through its `model` parameter, as described in [deployment selection](#deployment-selection).
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+
+const client = new SapAnthropicBedrockInvoke();
+```
+
+Use the `resourceGroup` property to target a specific resource group.
+The resource group defaults to `default`:
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+// ---cut---
+const client = new SapAnthropicBedrockInvoke({
+  resourceGroup: 'my-resource-group'
+});
+```
+
+To use a custom SAP AI Core destination, pass the `destination` option:
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+// ---cut---
+const client = new SapAnthropicBedrockInvoke({
+  destination: { destinationName: 'DESTINATION_NAME' }
+});
+```
+
+For all options, see [`SapAnthropicBedrockInvokeOptions`](pathname:///api/v2/interfaces/anthropic_src.SapAnthropicBedrockInvokeOptions.html).
+
+## Deployment Selection
+
+The `model` parameter of each request selects a running Amazon Bedrock deployment in the configured resource group.
+It accepts the following values:
+
+- A model name, for example `anthropic--claude-4.6-sonnet`. The client uses the first matching deployment.
+- A model name and version separated by a colon, for example `anthropic--claude-4.6-sonnet:MODEL_VERSION`.
+- A deployment ID, for example for custom deployments.
+
+Model names take precedence over deployment IDs.
+Deployment resolution results are cached, so repeated requests to the same model do not incur additional network requests.
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+const client = new SapAnthropicBedrockInvoke();
+// ---cut---
+const params = {
+  max_tokens: 1024,
+  messages: [{ role: 'user' as const, content: 'Hello!' }]
+};
+
+// By model name
+await client.messages.create({
+  ...params,
+  model: 'anthropic--claude-4.6-sonnet'
+});
+
+// By model name and version
+await client.messages.create({
+  ...params,
+  model: 'anthropic--claude-4.6-sonnet:MODEL_VERSION'
+});
+
+// By deployment ID
+await client.messages.create({ ...params, model: 'DEPLOYMENT_ID' });
+```
+
+If no matching deployment exists, the request fails with an error.
+
+## Making Requests
+
+The client exposes the `create()`, `parse()`, and `stream()` methods on `messages`.
+
+### Messages
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+// ---cut---
+const model = 'anthropic--claude-4.6-sonnet';
+const client = new SapAnthropicBedrockInvoke();
+
+const message = await client.messages.create({
+  model,
+  max_tokens: 1024,
+  system: 'You are a helpful assistant.',
+  messages: [{ role: 'user', content: 'What is the capital of France?' }]
+});
+
+for (const block of message.content) {
+  if (block.type === 'text') {
+    console.log(block.text);
+  }
+}
+```
+
+### Streaming
+
+Use the `stream()` method to receive the response incrementally.
+The returned `MessageStream` emits `text` events and accumulates the final message.
+For details, see [streaming messages](https://platform.claude.com/docs/en/build-with-claude/streaming).
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+const model = 'anthropic--claude-4.6-sonnet';
+const client = new SapAnthropicBedrockInvoke();
+// ---cut---
+const stream = client.messages.stream({
+  model,
+  max_tokens: 1024,
+  messages: [
+    { role: 'user', content: 'Give me a short introduction of SAP Cloud SDK.' }
+  ]
+});
+
+stream.on('text', text => process.stdout.write(text));
+
+const finalMessage = await stream.finalMessage();
+console.log(finalMessage.usage);
+```
+
+Alternatively, iterate over the raw stream events with `for await`.
+The text delta is only available when `event.type === 'content_block_delta'` and `event.delta.type === 'text_delta'`:
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+const model = 'anthropic--claude-4.6-sonnet';
+const client = new SapAnthropicBedrockInvoke();
+// ---cut---
+const stream = client.messages.stream({
+  model,
+  max_tokens: 1024,
+  messages: [
+    { role: 'user', content: 'Give me a short introduction of SAP Cloud SDK.' }
+  ]
+});
+
+for await (const event of stream) {
+  if (
+    event.type === 'content_block_delta' &&
+    event.delta.type === 'text_delta'
+  ) {
+    process.stdout.write(event.delta.text);
+  }
+}
+```
+
+### Multi-Turn Conversations
+
+The Messages API is stateless.
+Append the previous assistant response and the next user message to `messages` for each turn:
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+const model = 'anthropic--claude-4.6-sonnet';
+const client = new SapAnthropicBedrockInvoke();
+// ---cut---
+import type { MessageParam } from '@anthropic-ai/sdk/resources/messages';
+
+const messages: MessageParam[] = [
+  { role: 'user', content: 'What is the capital of France?' }
+];
+
+const first = await client.messages.create({
+  model,
+  max_tokens: 1024,
+  messages
+});
+
+messages.push(
+  { role: 'assistant', content: first.content },
+  { role: 'user', content: 'What is the population of that city?' }
+);
+
+const second = await client.messages.create({
+  model,
+  max_tokens: 1024,
+  messages
+});
+```
+
+### Structured Output
+
+Use the `parse()` method with the `zodOutputFormat()` helper for [structured output](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) with a Zod schema.
+The parsed result is available in the `parsed_output` property:
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+const model = 'anthropic--claude-4.6-sonnet';
+const client = new SapAnthropicBedrockInvoke();
+// ---cut---
+import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
+import { z } from 'zod';
+
+const CapitalResponse = z.object({ capital: z.string() });
+
+const message = await client.messages.parse({
+  model,
+  max_tokens: 1024,
+  messages: [{ role: 'user', content: 'What is the capital of France?' }],
+  output_config: { format: zodOutputFormat(CapitalResponse) }
+});
+
+console.log(message.parsed_output?.capital);
+```
+
+:::note
+Structured output support depends on the deployed Claude model.
+:::
+
+### Tool Use
+
+Define tools with a JSON schema to let the model call your own functions.
+When the model requests a tool call, the response contains a `tool_use` content block and `stop_reason` is `tool_use`.
+Execute the function and send the result back as a `tool_result` block in a follow-up request.
+For details, see [tool use with Claude](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview).
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+const model = 'anthropic--claude-4.6-sonnet';
+const client = new SapAnthropicBedrockInvoke();
+// ---cut---
+import type { MessageParam, Tool } from '@anthropic-ai/sdk/resources/messages';
+
+const tools: Tool[] = [
+  {
+    name: 'get_weather',
+    description: 'Get the current weather for a city.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        city: { type: 'string', description: 'The city name.' }
+      },
+      required: ['city']
+    }
+  }
+];
+
+const messages: MessageParam[] = [
+  { role: 'user', content: 'What is the weather in Paris?' }
+];
+
+const response = await client.messages.create({
+  model,
+  max_tokens: 1024,
+  tools,
+  messages
+});
+
+const toolUse = response.content.find(block => block.type === 'tool_use');
+if (toolUse && toolUse.type === 'tool_use') {
+  // toolUse.input is { city: 'Paris' }
+  // Call your actual function here.
+  const result = JSON.stringify({ temperature: '15°C', condition: 'Cloudy' });
+
+  const finalResponse = await client.messages.create({
+    model,
+    max_tokens: 1024,
+    tools,
+    messages: [
+      ...messages,
+      { role: 'assistant', content: response.content },
+      {
+        role: 'user',
+        content: [
+          { type: 'tool_result', tool_use_id: toolUse.id, content: result }
+        ]
+      }
+    ]
+  });
+}
+```
+
+### Beta Features
+
+The `beta.messages` property exposes the beta variants of the `create()`, `parse()`, and `stream()` methods, as well as the [`toolRunner()`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner) helper.
+They accept the same parameters as `messages`, plus a `betas` array to opt in to [beta features](https://platform.claude.com/docs/en/api/beta-headers).
+The upstream SDK sends the `betas` values as the `anthropic_beta` field in the Bedrock Invoke request body.
+The `toolRunner()` helper runs locally: it executes your tool functions and sends the results back to the model until it produces a final answer.
+
+Beta features may change without notice.
+Their availability depends on the deployed Claude model and the Amazon Bedrock backend, so check the [Amazon Bedrock documentation for Anthropic Claude](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html) before you rely on a beta feature.
+
+## Client Options
+
+Use the `anthropicConfig` option to pass transport settings to the upstream client, such as `timeout`, `maxRetries`, `fetch`, `middleware`, and `defaultHeaders`.
+SAP manages the deployment URL and authentication, so options such as `baseURL`, `apiKey`, and AWS credentials are not accepted.
+For all options, see [`SapAnthropicBedrockInvokeConfig`](pathname:///api/v2/types/anthropic_src.SapAnthropicBedrockInvokeConfig.html).
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+// ---cut---
+const client = new SapAnthropicBedrockInvoke({
+  anthropicConfig: { timeout: 60_000, maxRetries: 0 }
+});
+```
+
+Use the `withOptions()` method to derive a client with different transport settings.
+The derived client keeps the resource group, destination, and client type of the original client:
+
+```ts twoslash
+import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
+const client = new SapAnthropicBedrockInvoke();
+// ---cut---
+const patientClient = client.withOptions({ timeout: 300_000 });
+```
+
+## Limitations
+
+The client exposes Messages endpoints that SAP AI Core supports through Bedrock Invoke.
+Other Anthropic resources, such as token counting, message batches, the Models API, and the Files API, are not available.
