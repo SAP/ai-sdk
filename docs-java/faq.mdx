@@ -47,7 +47,8 @@ But you can overwrite transitive dependencies yourself in your project `pom.xml`
 
 ### Is there a rate-limit or resilience?
 
-The AI Core rate limit is 5000 calls per minute, the Orchestration service doesn’t have a hard threshold, but it might have a lower limit depending on which modules are configured for your requests.
+Some AI Core services do have a rate limit in the hundred or thousands of requests per minute.
+The Orchestration service doesn’t have a hard threshold, but it might have a lower limit depending on which modules are configured for your requests.
 The Orchestration service should return a `Retry-After` header on a failing request.
 They also have a circuit breaker.
 
