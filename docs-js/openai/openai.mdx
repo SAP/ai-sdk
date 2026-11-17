@@ -361,6 +361,8 @@ const config = await createOpenAiConfig('gpt-5.4');
 const client = new AzureOpenAI(config);
 ```
 
+To use the configuration with LangChain, refer to the [LangChain OpenAI integration](./langchain.mdx).
+
 ## Token Provider
 
 Use the `createTokenProvider()` function when you need an `azureADTokenProvider`-compatible function for custom `AzureOpenAI` configurations.

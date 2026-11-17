@@ -1,0 +1,313 @@
+---
+id: langchain
+title: LangChain OpenAI Integration
+hide_title: false
+hide_table_of_contents: false
+sidebar_label: LangChain
+description: How to use the @langchain/openai package with the @sap-ai-sdk/openai package to access Azure OpenAI models on SAP AI Core.
+keywords:
+  - sap
+  - cloud
+  - sdk
+  - ai
+  - openai
+  - langchain
+---
+
+:::caution
+The `@sap-ai-sdk/openai` package is experimental and may change at any time without prior notice.
+:::
+
+Use the `ChatOpenAI` and `OpenAIEmbeddings` classes from the official [`@langchain/openai`](https://www.npmjs.com/package/@langchain/openai) package to access Azure OpenAI deployments on SAP AI Core.
+The `createOpenAiConfig()` function from `@sap-ai-sdk/openai` resolves the deployment URL and provides the token provider, which you pass to the LangChain models as `configuration`.
+
+Use this setup when you need features of `@langchain/openai`, such as the Responses API.
+For a LangChain client maintained as part of the SAP Cloud SDK for AI, see the [LangChain OpenAI integration](../langchain/openai.mdx) of the `@sap-ai-sdk/langchain` package.
+
+:::note
+Use `ChatOpenAI`, not `AzureChatOpenAI`.
+`AzureChatOpenAI` ignores a custom base URL once a token provider is set and builds Azure-style URLs instead of using the SAP AI Core deployment URL.
+:::
+
+## Installation
+
+```bash
+npm install @sap-ai-sdk/openai openai @langchain/openai @langchain/core
+```
+
+## Prerequisites
+
+See the [prerequisites](../overview.mdx#prerequisites) section.
+
+## Client Initialization
+
+The `createOpenAiConfig()` function returns options for the `AzureOpenAI` client of the `openai` package.
+Map these options to the `ClientOptions` expected by `@langchain/openai`:
+
+- Use the deployment URL as `baseURL`.
+- Pass the token provider as `apiKey` to send the SAP AI Core token as bearer token.
+- Add the API version as `api-version` query parameter.
+- Forward the SAP-specific default headers.
+
+```ts twoslash
+import { createOpenAiConfig } from '@sap-ai-sdk/openai';
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+
+async function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions> {
+  const { baseURL, apiVersion, azureADTokenProvider, defaultHeaders } =
+    await createOpenAiConfig(options);
+
+  return {
+    baseURL,
+    apiKey: azureADTokenProvider,
+    defaultQuery: { 'api-version': apiVersion },
+    defaultHeaders
+  };
+}
+```
+
+Pass the result as `configuration` when creating a `ChatOpenAI` model:
+
+```ts twoslash
+import { createOpenAiConfig } from '@sap-ai-sdk/openai';
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+import { ChatOpenAI } from '@langchain/openai';
+
+const model = new ChatOpenAI({
+  model: 'gpt-5.4',
+  configuration: await createLangChainOpenAiConfig('gpt-5.4')
+});
+```
+
+Requests are routed via the resolved deployment URL.
+Set the `model` property to the model name of the deployment, as LangChain uses it to apply model-specific behavior, for example, for reasoning models.
+
+`createLangChainOpenAiConfig()` accepts the same options as `createOpenAiConfig()`.
+Use them to select a model version, deployment ID, resource group, or custom destination:
+
+```ts twoslash
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+const configuration = await createLangChainOpenAiConfig({
+  deployment: { modelName: 'gpt-5.4', resourceGroup: 'my-resource-group' },
+  destination: { destinationName: 'DESTINATION_NAME' }
+});
+```
+
+For more information about deployment options, refer to the [client initialization](./openai.mdx#client-initialization) section of the `@sap-ai-sdk/openai` package.
+
+## Chat Completion
+
+Invoke the model with a prompt:
+
+```ts twoslash
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+import { ChatOpenAI } from '@langchain/openai';
+
+const model = new ChatOpenAI({
+  model: 'gpt-5.4-nano',
+  maxTokens: 1000,
+  configuration: await createLangChainOpenAiConfig('gpt-5.4-nano')
+});
+
+const response = await model.invoke('What is the capital of France?');
+console.log(response.text);
+```
+
+### Responses API
+
+By default, `ChatOpenAI` uses the Chat Completions API.
+Set the `useResponsesApi` option to `true` to use the Responses API instead:
+
+```ts twoslash
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+import { ChatOpenAI } from '@langchain/openai';
+
+const model = new ChatOpenAI({
+  model: 'gpt-5.4-nano',
+  useResponsesApi: true,
+  configuration: await createLangChainOpenAiConfig('gpt-5.4-nano')
+});
+
+const response = await model.invoke('What is the capital of France?');
+```
+
+### Streaming
+
+Use the `stream()` method to receive a stream of chunks.
+Set the `streamUsage` option to `true` to include token usage in the stream.
+Pass an `AbortSignal` object to cancel the stream:
+
+```ts twoslash
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+import { ChatOpenAI } from '@langchain/openai';
+import type { AIMessageChunk } from '@langchain/core/messages';
+
+const model = new ChatOpenAI({
+  model: 'gpt-5.4-nano',
+  streamUsage: true,
+  configuration: await createLangChainOpenAiConfig('gpt-5.4-nano')
+});
+
+const controller = new AbortController();
+const stream = await model.stream(
+  'Give me a short introduction of SAP Cloud SDK.',
+  { signal: controller.signal }
+);
+
+let finalResult: AIMessageChunk | undefined;
+for await (const chunk of stream) {
+  process.stdout.write(chunk.text);
+  finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+}
+
+console.log(finalResult?.usage_metadata);
+```
+
+### Reasoning Models
+
+Use the `reasoning` option to configure reasoning models with the Responses API:
+
+```ts twoslash
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+import { ChatOpenAI } from '@langchain/openai';
+
+const model = new ChatOpenAI({
+  model: 'gpt-5.4',
+  useResponsesApi: true,
+  reasoning: { effort: 'low' },
+  configuration: await createLangChainOpenAiConfig('gpt-5.4')
+});
+
+const response = await model.invoke(
+  'Which city is the capital of France? Answer in one sentence.'
+);
+```
+
+### Structured Output
+
+Use the `withStructuredOutput()` method to get a response that matches a [Zod](https://zod.dev/) schema:
+
+```ts twoslash
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+import { ChatOpenAI } from '@langchain/openai';
+import * as z from 'zod';
+
+const model = new ChatOpenAI({
+  model: 'gpt-5.4-nano',
+  useResponsesApi: true,
+  configuration: await createLangChainOpenAiConfig('gpt-5.4-nano')
+});
+
+const capitalSchema = z.object({
+  city: z.string().describe('The capital city.'),
+  country: z.string().describe('The country of the capital city.')
+});
+
+const capital = await model
+  .withStructuredOutput(capitalSchema, { name: 'capital', strict: true })
+  .invoke('What is the capital of France?');
+```
+
+For more details, refer to the [official LangChain documentation on structured output](https://docs.langchain.com/oss/javascript/langchain/models#structured-outputs).
+
+### Agents and Tool Calling
+
+Pass the model and your tools to the `createAgent()` function of the [`langchain`](https://www.npmjs.com/package/langchain) package:
+
+```ts twoslash
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+import { ChatOpenAI } from '@langchain/openai';
+import { tool } from '@langchain/core/tools';
+import { createAgent } from 'langchain';
+import * as z from 'zod';
+
+const model = new ChatOpenAI({
+  model: 'gpt-5.4',
+  useResponsesApi: true,
+  configuration: await createLangChainOpenAiConfig('gpt-5.4')
+});
+
+const getWeather = tool(
+  ({ city }) => `The weather in ${city} is sunny and 21 degrees Celsius.`,
+  {
+    name: 'get_weather',
+    description: 'Get the current weather for a city.',
+    schema: z.object({ city: z.string() })
+  }
+);
+
+const agent = createAgent({ model, tools: [getWeather] });
+const result = await agent.invoke({
+  messages: [{ role: 'user', content: 'What is the weather in Paris?' }]
+});
+
+console.log(result.messages.at(-1)?.text);
+```
+
+For more details, refer to the [official LangChain documentation on tool calling](https://docs.langchain.com/oss/javascript/langchain/models#tool-calling).
+
+## Embedding
+
+Use the `OpenAIEmbeddings` class to embed text with an embedding model deployment:
+
+```ts twoslash
+import type { SapOpenAiInput } from '@sap-ai-sdk/openai';
+import type { ClientOptions } from '@langchain/openai';
+declare function createLangChainOpenAiConfig(
+  options: SapOpenAiInput
+): Promise<ClientOptions>;
+// ---cut---
+import { OpenAIEmbeddings } from '@langchain/openai';
+
+const embeddings = new OpenAIEmbeddings({
+  model: 'text-embedding-3-small',
+  configuration: await createLangChainOpenAiConfig('text-embedding-3-small')
+});
+
+const vector = await embeddings.embedQuery('Hello, world!');
+```
+
+For more examples, refer to the [sample code](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-openai.ts).

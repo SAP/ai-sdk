@@ -33,7 +33,7 @@ export default {
         type: 'doc',
         id: 'openai/openai'
       },
-      items: ['openai/realtime']
+      items: ['openai/realtime', 'openai/langchain']
     },
     {
       type: 'category',
