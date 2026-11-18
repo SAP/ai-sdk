@@ -1,4 +1,6 @@
 const baseUrl = '/ai-sdk/docs';
+
+/* oxlint-disable no-unused-vars */
 const YES = ':white_check_mark:';
 const NO = ':x:';
 const PLANNED = ':date:';
@@ -6,6 +8,8 @@ const DEPRECATED = ':warning:';
 const WIP = ':wrench:';
 const FEATURE_REQUEST =
   '[Request this feature](https://github.com/SAP/ai-sdk/issues/new?assignees=&labels=feature+request&template=feature_request.md&title=)';
+/* oxlint-enable no-unused-vars */
+
 /**
  * Global SDK feature list.
  */

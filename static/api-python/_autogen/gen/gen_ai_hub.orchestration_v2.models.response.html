@@ -416,6 +416,7 @@
 <li class="toctree-l3 current has-children"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.html">gen_ai_hub.orchestration_v2.models package</a><input aria-label="Toggle navigation of gen_ai_hub.orchestration_v2.models package" checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.azure_content_filter.html">gen_ai_hub.orchestration_v2.models.azure_content_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html">gen_ai_hub.orchestration_v2.models.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.cache_control.html">gen_ai_hub.orchestration_v2.models.cache_control module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.config.html">gen_ai_hub.orchestration_v2.models.config module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filter.html">gen_ai_hub.orchestration_v2.models.content_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filtering.html">gen_ai_hub.orchestration_v2.models.content_filtering module</a></li>
@@ -532,9 +533,55 @@
 <span id="gen-ai-hub-orchestration-v2-models-response-module"></span><h1>gen_ai_hub.orchestration_v2.models.response module<a class="headerlink" href="#module-gen_ai_hub.orchestration_v2.models.response" title="Link to this heading">¶</a></h1>
 <p>Response models for orchestration v2</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">CacheCreationTokenDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">ephemeral_5m_input_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ephemeral_1h_input_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
+<p>Per-TTL breakdown of tokens written to the prompt cache.</p>
+<p>Present only when cache_control includes an explicit ttl value.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.ephemeral_5m_input_tokens">
+<span class="sig-name descname"><span class="pre">ephemeral_5m_input_tokens</span></span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.ephemeral_5m_input_tokens" title="Link to this definition">¶</a></dt>
+<dd><p>Tokens cached with a 5-minute TTL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.ephemeral_1h_input_tokens">
+<span class="sig-name descname"><span class="pre">ephemeral_1h_input_tokens</span></span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.ephemeral_1h_input_tokens" title="Link to this definition">¶</a></dt>
+<dd><p>Tokens cached with a 1-hour TTL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">ephemeral_5m_input_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">ephemeral_1h_input_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'allow',</span> <span class="pre">'frozen':</span> <span class="pre">False}</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">PromptTokensDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cached_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">PromptTokensDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cached_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_creation_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_creation_token_details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails" title="gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails"><span class="pre">CacheCreationTokenDetails</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Represents the details of prompt tokens used in a specific operation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.audio_tokens">
@@ -550,7 +597,7 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cached_tokens">
 <span class="sig-name descname"><span class="pre">cached_tokens</span></span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cached_tokens" title="Link to this definition">¶</a></dt>
-<dd><p>Cached tokens present in the prompt.</p>
+<dd><p>Tokens read from the prompt cache (cache hit).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Optional[int]</p>
@@ -559,13 +606,46 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">audio_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cache_creation_tokens">
+<span class="sig-name descname"><span class="pre">cache_creation_tokens</span></span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cache_creation_tokens" title="Link to this definition">¶</a></dt>
+<dd><p>Tokens written to the prompt cache (cache miss).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cache_creation_token_details">
+<span class="sig-name descname"><span class="pre">cache_creation_token_details</span></span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cache_creation_token_details" title="Link to this definition">¶</a></dt>
+<dd><p>Per-TTL
+breakdown of cache writes. Present only when an explicit ttl was used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails" title="gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails">CacheCreationTokenDetails</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">audio_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">cached_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">cached_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">cache_creation_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">cache_creation_token_details</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails" title="gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails"><span class="pre">CacheCreationTokenDetails</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -579,7 +659,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">CompletionTokensDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">accepted_prediction_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasoning_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rejected_prediction_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Breakdown of tokens used in a completion.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails.accepted_prediction_tokens">
@@ -630,23 +710,23 @@ window limits.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">accepted_prediction_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">accepted_prediction_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">audio_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">audio_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">reasoning_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">reasoning_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">rejected_prediction_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">rejected_prediction_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -660,7 +740,7 @@ window limits.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.TokenUsage">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">TokenUsage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">completion_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_tokens_details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails" title="gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails"><span class="pre">PromptTokensDetails</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completion_tokens_details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails" title="gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails"><span class="pre">CompletionTokensDetails</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.TokenUsage" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Usage of tokens in the response</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.TokenUsage.completion_tokens">
@@ -698,7 +778,7 @@ window limits.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">GenericModuleResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Generic module result
 :param message: Some message created from the module. Example: Input to LLM is masked successfully.
 :param data: Additional data object from the module</p>
@@ -723,7 +803,7 @@ window limits.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.TopLogprob">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">TopLogprob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logprob</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.TopLogprob" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Represents one of the most likely tokens and its log probability
 at a given token position.</p>
 <dl class="py attribute">
@@ -760,18 +840,18 @@ at a given token position.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">logprob</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">logprob</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">bytes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">bytes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id12" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -785,7 +865,7 @@ at a given token position.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">ChatCompletionTokenLogprob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logprob</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_logprobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TopLogprob" title="gen_ai_hub.orchestration_v2.models.response.TopLogprob"><span class="pre">TopLogprob</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Represents a token in the message content along with its
 log probability and alternative top log probabilities.</p>
 <dl class="py attribute">
@@ -834,23 +914,23 @@ at this token position.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id13" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id10">
-<span class="sig-name descname"><span class="pre">logprob</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">logprob</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#id14" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id11">
-<span class="sig-name descname"><span class="pre">bytes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">bytes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id15" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id12">
-<span class="sig-name descname"><span class="pre">top_logprobs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TopLogprob" title="gen_ai_hub.orchestration_v2.models.response.TopLogprob"><span class="pre">TopLogprob</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id12" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">top_logprobs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TopLogprob" title="gen_ai_hub.orchestration_v2.models.response.TopLogprob"><span class="pre">TopLogprob</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id16" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -864,7 +944,7 @@ at this token position.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ChoiceLogprobs">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">ChoiceLogprobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob" title="gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob"><span class="pre">ChatCompletionTokenLogprob</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refusal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob" title="gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob"><span class="pre">ChatCompletionTokenLogprob</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.ChoiceLogprobs" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Log probabilities for the choice.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ChoiceLogprobs.content">
@@ -887,7 +967,7 @@ at this token position.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.LLMChoice">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">LLMChoice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ResponseChatMessage" title="gen_ai_hub.orchestration_v2.models.message.ResponseChatMessage"><span class="pre">ResponseChatMessage</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logprobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ChoiceLogprobs" title="gen_ai_hub.orchestration_v2.models.response.ChoiceLogprobs"><span class="pre">ChoiceLogprobs</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finish_reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.LLMChoice" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -975,13 +1055,13 @@ arguments in your code before calling your function.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id13">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id13" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id17" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id14">
-<span class="sig-name descname"><span class="pre">arguments</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id14" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">arguments</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id18" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -989,7 +1069,7 @@ arguments in your code before calling your function.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamToolCall">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">StreamToolCall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamFunctionObject" title="gen_ai_hub.orchestration_v2.models.response.StreamFunctionObject"><span class="pre">StreamFunctionObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamToolCall" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamToolCall.type_">
 <span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamToolCall.type_" title="Link to this definition">¶</a></dt>
@@ -1020,8 +1100,8 @@ arguments in your code before calling your function.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamDelta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">StreamDelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamToolCall" title="gen_ai_hub.orchestration_v2.models.response.StreamToolCall"><span class="pre">StreamToolCall</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">StreamDelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamToolCall" title="gen_ai_hub.orchestration_v2.models.response.StreamToolCall"><span class="pre">StreamToolCall</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refusal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasoning_content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ReasoningBlock" title="gen_ai_hub.orchestration_v2.models.message.ReasoningBlock"><span class="pre">ReasoningBlock</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamDelta.role">
 <span class="sig-name descname"><span class="pre">role</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.role" title="Link to this definition">¶</a></dt>
@@ -1038,6 +1118,16 @@ arguments in your code before calling your function.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamDelta.refusal">
+<span class="sig-name descname"><span class="pre">refusal</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.refusal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamDelta.reasoning_content">
+<span class="sig-name descname"><span class="pre">reasoning_content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ReasoningBlock" title="gen_ai_hub.orchestration_v2.models.message.ReasoningBlock"><span class="pre">ReasoningBlock</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.reasoning_content" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamDelta.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'allow',</span> <span class="pre">'frozen':</span> <span class="pre">False}</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
@@ -1048,7 +1138,7 @@ arguments in your code before calling your function.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamLLMChoice">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">StreamLLMChoice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta" title="gen_ai_hub.orchestration_v2.models.response.StreamDelta"><span class="pre">StreamDelta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logprobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ChoiceLogprobs" title="gen_ai_hub.orchestration_v2.models.response.ChoiceLogprobs"><span class="pre">ChoiceLogprobs</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finish_reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamLLMChoice" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamLLMChoice.index">
 <span class="sig-name descname"><span class="pre">index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamLLMChoice.index" title="Link to this definition">¶</a></dt>
@@ -1080,7 +1170,7 @@ arguments in your code before calling your function.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.Citation">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">Citation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.Citation" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Represents a citation with related metadata.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.Citation.ref_id">
@@ -1140,28 +1230,28 @@ a referenced text.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id15">
-<span class="sig-name descname"><span class="pre">ref_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id15" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id16">
-<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id16" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id17">
-<span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id17" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id18">
-<span class="sig-name descname"><span class="pre">start_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id18" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="id19">
-<span class="sig-name descname"><span class="pre">end_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id19" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ref_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id19" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id20" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id21" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">start_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id22" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">end_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id23" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1175,7 +1265,7 @@ a referenced text.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.LLMModuleResult">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">LLMModuleResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_fingerprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMChoice" title="gen_ai_hub.orchestration_v2.models.response.LLMChoice"><span class="pre">LLMChoice</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TokenUsage" title="gen_ai_hub.orchestration_v2.models.response.TokenUsage"><span class="pre">TokenUsage</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">citations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.Citation" title="gen_ai_hub.orchestration_v2.models.response.Citation"><span class="pre">Citation</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Output from LLM. Follows the OpenAI spec.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.LLMModuleResult.id">
@@ -1266,43 +1356,43 @@ a referenced text.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id20">
-<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id20" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id21">
-<span class="sig-name descname"><span class="pre">object</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id21" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id22">
-<span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id22" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id23">
-<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id23" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="id24">
-<span class="sig-name descname"><span class="pre">system_fingerprint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id24" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id24" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id25">
-<span class="sig-name descname"><span class="pre">choices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMChoice" title="gen_ai_hub.orchestration_v2.models.response.LLMChoice"><span class="pre">LLMChoice</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id25" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">object</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id25" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id26">
-<span class="sig-name descname"><span class="pre">usage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TokenUsage" title="gen_ai_hub.orchestration_v2.models.response.TokenUsage"><span class="pre">TokenUsage</span></a></em><a class="headerlink" href="#id26" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id26" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id27">
-<span class="sig-name descname"><span class="pre">citations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.Citation" title="gen_ai_hub.orchestration_v2.models.response.Citation"><span class="pre">Citation</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id27" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id27" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id28">
+<span class="sig-name descname"><span class="pre">system_fingerprint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id28" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id29">
+<span class="sig-name descname"><span class="pre">choices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMChoice" title="gen_ai_hub.orchestration_v2.models.response.LLMChoice"><span class="pre">LLMChoice</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id29" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id30">
+<span class="sig-name descname"><span class="pre">usage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TokenUsage" title="gen_ai_hub.orchestration_v2.models.response.TokenUsage"><span class="pre">TokenUsage</span></a></em><a class="headerlink" href="#id30" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-name descname"><span class="pre">citations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.Citation" title="gen_ai_hub.orchestration_v2.models.response.Citation"><span class="pre">Citation</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id31" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1368,7 +1458,7 @@ a referenced text.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ModuleResults">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">ModuleResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">grounding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">templating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.SystemMessage" title="gen_ai_hub.orchestration_v2.models.message.SystemMessage"><span class="pre">SystemMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.UserMessage" title="gen_ai_hub.orchestration_v2.models.message.UserMessage"><span class="pre">UserMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.AssistantMessage" title="gen_ai_hub.orchestration_v2.models.message.AssistantMessage"><span class="pre">AssistantMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ToolChatMessage" title="gen_ai_hub.orchestration_v2.models.message.ToolChatMessage"><span class="pre">ToolChatMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.DeveloperChatMessage" title="gen_ai_hub.orchestration_v2.models.message.DeveloperChatMessage"><span class="pre">DeveloperChatMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ResponseChatMessage" title="gen_ai_hub.orchestration_v2.models.message.ResponseChatMessage"><span class="pre">ResponseChatMessage</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_translation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_masking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_filtering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_filtering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_translation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">llm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult" title="gen_ai_hub.orchestration_v2.models.response.LLMModuleResult"><span class="pre">LLMModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_unmasking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMChoice" title="gen_ai_hub.orchestration_v2.models.response.LLMChoice"><span class="pre">LLMChoice</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Represents the results of each module used in a processing pipeline.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ModuleResults.grounding">
@@ -1472,48 +1562,48 @@ module.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id28">
-<span class="sig-name descname"><span class="pre">grounding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id28" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id29">
-<span class="sig-name descname"><span class="pre">templating</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.SystemMessage" title="gen_ai_hub.orchestration_v2.models.message.SystemMessage"><span class="pre">SystemMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.UserMessage" title="gen_ai_hub.orchestration_v2.models.message.UserMessage"><span class="pre">UserMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.AssistantMessage" title="gen_ai_hub.orchestration_v2.models.message.AssistantMessage"><span class="pre">AssistantMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ToolChatMessage" title="gen_ai_hub.orchestration_v2.models.message.ToolChatMessage"><span class="pre">ToolChatMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.DeveloperChatMessage" title="gen_ai_hub.orchestration_v2.models.message.DeveloperChatMessage"><span class="pre">DeveloperChatMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ResponseChatMessage" title="gen_ai_hub.orchestration_v2.models.message.ResponseChatMessage"><span class="pre">ResponseChatMessage</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id29" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id30">
-<span class="sig-name descname"><span class="pre">input_translation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id30" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id31">
-<span class="sig-name descname"><span class="pre">input_masking</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id31" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="id32">
-<span class="sig-name descname"><span class="pre">input_filtering</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id32" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">grounding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id32" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id33">
-<span class="sig-name descname"><span class="pre">output_filtering</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id33" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">templating</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.SystemMessage" title="gen_ai_hub.orchestration_v2.models.message.SystemMessage"><span class="pre">SystemMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.UserMessage" title="gen_ai_hub.orchestration_v2.models.message.UserMessage"><span class="pre">UserMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.AssistantMessage" title="gen_ai_hub.orchestration_v2.models.message.AssistantMessage"><span class="pre">AssistantMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ToolChatMessage" title="gen_ai_hub.orchestration_v2.models.message.ToolChatMessage"><span class="pre">ToolChatMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.DeveloperChatMessage" title="gen_ai_hub.orchestration_v2.models.message.DeveloperChatMessage"><span class="pre">DeveloperChatMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html#gen_ai_hub.orchestration_v2.models.message.ResponseChatMessage" title="gen_ai_hub.orchestration_v2.models.message.ResponseChatMessage"><span class="pre">ResponseChatMessage</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id33" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id34">
-<span class="sig-name descname"><span class="pre">output_translation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id34" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">input_translation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id34" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id35">
-<span class="sig-name descname"><span class="pre">llm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult" title="gen_ai_hub.orchestration_v2.models.response.LLMModuleResult"><span class="pre">LLMModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id35" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">input_masking</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id35" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id36">
-<span class="sig-name descname"><span class="pre">output_unmasking</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMChoice" title="gen_ai_hub.orchestration_v2.models.response.LLMChoice"><span class="pre">LLMChoice</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id36" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">input_filtering</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id36" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id37">
+<span class="sig-name descname"><span class="pre">output_filtering</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id37" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id38">
+<span class="sig-name descname"><span class="pre">output_translation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.GenericModuleResult" title="gen_ai_hub.orchestration_v2.models.response.GenericModuleResult"><span class="pre">GenericModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id38" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id39">
+<span class="sig-name descname"><span class="pre">llm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult" title="gen_ai_hub.orchestration_v2.models.response.LLMModuleResult"><span class="pre">LLMModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id39" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id40">
+<span class="sig-name descname"><span class="pre">output_unmasking</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMChoice" title="gen_ai_hub.orchestration_v2.models.response.LLMChoice"><span class="pre">LLMChoice</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id40" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1584,7 +1674,7 @@ module.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.SAPAPIError">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">SAPAPIError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults" title="gen_ai_hub.orchestration_v2.models.response.ModuleResults"><span class="pre">ModuleResults</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Represents an error returned from an SAP API.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.SAPAPIError.request_id">
@@ -1647,28 +1737,28 @@ applicable.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id37">
-<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id37" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id38">
-<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id38" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id39">
-<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id39" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id40">
-<span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id40" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="id41">
-<span class="sig-name descname"><span class="pre">intermediate_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults" title="gen_ai_hub.orchestration_v2.models.response.ModuleResults"><span class="pre">ModuleResults</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id41" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id41" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id42">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id42" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id43">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id43" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id44">
+<span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id44" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id45">
+<span class="sig-name descname"><span class="pre">intermediate_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults" title="gen_ai_hub.orchestration_v2.models.response.ModuleResults"><span class="pre">ModuleResults</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id45" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1686,8 +1776,8 @@ applicable.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">SAPAPIErrorStreaming</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration.models.response.html#gen_ai_hub.orchestration.models.response.ModuleResultsStreaming" title="gen_ai_hub.orchestration.models.response.ModuleResultsStreaming"><span class="pre">ModuleResultsStreaming</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">SAPAPIErrorStreaming</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamModuleResults" title="gen_ai_hub.orchestration_v2.models.response.StreamModuleResults"><span class="pre">StreamModuleResults</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Represents an error returned from an SAP API.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming.request_id">
@@ -1750,28 +1840,28 @@ applicable.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id42">
-<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id42" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id43">
-<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id43" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id44">
-<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id44" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id45">
-<span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id45" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="id46">
-<span class="sig-name descname"><span class="pre">intermediate_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration.models.response.html#gen_ai_hub.orchestration.models.response.ModuleResultsStreaming" title="gen_ai_hub.orchestration.models.response.ModuleResultsStreaming"><span class="pre">ModuleResultsStreaming</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id46" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id46" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id47">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id47" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id48">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id48" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id49">
+<span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id49" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id50">
+<span class="sig-name descname"><span class="pre">intermediate_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamModuleResults" title="gen_ai_hub.orchestration_v2.models.response.StreamModuleResults"><span class="pre">StreamModuleResults</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id50" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1790,7 +1880,7 @@ applicable.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.CompletionPostResponse">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">CompletionPostResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults" title="gen_ai_hub.orchestration_v2.models.response.ModuleResults"><span class="pre">ModuleResults</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult" title="gen_ai_hub.orchestration_v2.models.response.LLMModuleResult"><span class="pre">LLMModuleResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_failures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIError"><span class="pre">SAPAPIError</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.CompletionPostResponse" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <p>Represents the response for a completion post request.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.CompletionPostResponse.request_id">
@@ -1826,18 +1916,18 @@ applicable.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id47">
-<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id47" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id51">
+<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id51" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id48">
-<span class="sig-name descname"><span class="pre">intermediate_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults" title="gen_ai_hub.orchestration_v2.models.response.ModuleResults"><span class="pre">ModuleResults</span></a></em><a class="headerlink" href="#id48" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id52">
+<span class="sig-name descname"><span class="pre">intermediate_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults" title="gen_ai_hub.orchestration_v2.models.response.ModuleResults"><span class="pre">ModuleResults</span></a></em><a class="headerlink" href="#id52" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id49">
-<span class="sig-name descname"><span class="pre">final_result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult" title="gen_ai_hub.orchestration_v2.models.response.LLMModuleResult"><span class="pre">LLMModuleResult</span></a></em><a class="headerlink" href="#id49" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id53">
+<span class="sig-name descname"><span class="pre">final_result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult" title="gen_ai_hub.orchestration_v2.models.response.LLMModuleResult"><span class="pre">LLMModuleResult</span></a></em><a class="headerlink" href="#id53" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1856,7 +1946,7 @@ applicable.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamCompletionPostResponse">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">StreamCompletionPostResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamModuleResults" title="gen_ai_hub.orchestration_v2.models.response.StreamModuleResults"><span class="pre">StreamModuleResults</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamLLMModuleResult" title="gen_ai_hub.orchestration_v2.models.response.StreamLLMModuleResult"><span class="pre">StreamLLMModuleResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_failures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIError"><span class="pre">SAPAPIError</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamCompletionPostResponse" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.StreamCompletionPostResponse.request_id">
 <span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.StreamCompletionPostResponse.request_id" title="Link to this definition">¶</a></dt>
@@ -1888,7 +1978,7 @@ applicable.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ErrorResponse">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">ErrorResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIError"><span class="pre">SAPAPIError</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIError"><span class="pre">SAPAPIError</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.ErrorResponse" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ErrorResponse.error">
 <span class="sig-name descname"><span class="pre">error</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIError"><span class="pre">SAPAPIError</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIError"><span class="pre">SAPAPIError</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.ErrorResponse.error" title="Link to this definition">¶</a></dt>
@@ -1905,7 +1995,7 @@ applicable.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ErrorResponseStreaming">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.response.</span></span><span class="sig-name descname"><span class="pre">ErrorResponseStreaming</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming"><span class="pre">SAPAPIErrorStreaming</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming"><span class="pre">SAPAPIErrorStreaming</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.ErrorResponseStreaming" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ResponseBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseBaseModel</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.response.ErrorResponseStreaming.error">
 <span class="sig-name descname"><span class="pre">error</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming"><span class="pre">SAPAPIErrorStreaming</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming" title="gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming"><span class="pre">SAPAPIErrorStreaming</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.response.ErrorResponseStreaming.error" title="Link to this definition">¶</a></dt>
@@ -1937,8 +2027,8 @@ applicable.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id50">
-<span class="sig-name descname"><span class="pre">retries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id50" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id54">
+<span class="sig-name descname"><span class="pre">retries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id54" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -2027,11 +2117,23 @@ applicable.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">gen_ai_hub.orchestration_v2.models.response module</a><ul>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails</span></code></a><ul>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.ephemeral_5m_input_tokens"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.ephemeral_5m_input_tokens</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.ephemeral_1h_input_tokens"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.ephemeral_1h_input_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.ephemeral_5m_input_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.ephemeral_1h_input_tokens</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CacheCreationTokenDetails.model_config"><code class="docutils literal notranslate"><span class="pre">CacheCreationTokenDetails.model_config</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails</span></code></a><ul>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.audio_tokens"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.audio_tokens</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cached_tokens"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cached_tokens</span></code></a></li>
-<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.audio_tokens</span></code></a></li>
-<li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cached_tokens</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cache_creation_tokens"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cache_creation_tokens</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.cache_creation_token_details"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cache_creation_token_details</span></code></a></li>
+<li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.audio_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cached_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cache_creation_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.cache_creation_token_details</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.PromptTokensDetails.model_config"><code class="docutils literal notranslate"><span class="pre">PromptTokensDetails.model_config</span></code></a></li>
 </ul>
 </li>
@@ -2040,10 +2142,10 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails.audio_tokens"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.audio_tokens</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails.reasoning_tokens"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.reasoning_tokens</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails.rejected_prediction_tokens"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.rejected_prediction_tokens</span></code></a></li>
-<li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.accepted_prediction_tokens</span></code></a></li>
-<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.audio_tokens</span></code></a></li>
-<li><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.reasoning_tokens</span></code></a></li>
-<li><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.rejected_prediction_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.accepted_prediction_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.audio_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.reasoning_tokens</span></code></a></li>
+<li><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.rejected_prediction_tokens</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionTokensDetails.model_config"><code class="docutils literal notranslate"><span class="pre">CompletionTokensDetails.model_config</span></code></a></li>
 </ul>
 </li>
@@ -2066,9 +2168,9 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TopLogprob.token"><code class="docutils literal notranslate"><span class="pre">TopLogprob.token</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TopLogprob.logprob"><code class="docutils literal notranslate"><span class="pre">TopLogprob.logprob</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TopLogprob.bytes"><code class="docutils literal notranslate"><span class="pre">TopLogprob.bytes</span></code></a></li>
-<li><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">TopLogprob.token</span></code></a></li>
-<li><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">TopLogprob.logprob</span></code></a></li>
-<li><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">TopLogprob.bytes</span></code></a></li>
+<li><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">TopLogprob.token</span></code></a></li>
+<li><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">TopLogprob.logprob</span></code></a></li>
+<li><a class="reference internal" href="#id12"><code class="docutils literal notranslate"><span class="pre">TopLogprob.bytes</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.TopLogprob.model_config"><code class="docutils literal notranslate"><span class="pre">TopLogprob.model_config</span></code></a></li>
 </ul>
 </li>
@@ -2077,10 +2179,10 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob.logprob"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.logprob</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob.bytes"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.bytes</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob.top_logprobs"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.top_logprobs</span></code></a></li>
-<li><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.token</span></code></a></li>
-<li><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.logprob</span></code></a></li>
-<li><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.bytes</span></code></a></li>
-<li><a class="reference internal" href="#id12"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.top_logprobs</span></code></a></li>
+<li><a class="reference internal" href="#id13"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.token</span></code></a></li>
+<li><a class="reference internal" href="#id14"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.logprob</span></code></a></li>
+<li><a class="reference internal" href="#id15"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.bytes</span></code></a></li>
+<li><a class="reference internal" href="#id16"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.top_logprobs</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ChatCompletionTokenLogprob.model_config"><code class="docutils literal notranslate"><span class="pre">ChatCompletionTokenLogprob.model_config</span></code></a></li>
 </ul>
 </li>
@@ -2102,8 +2204,8 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamFunctionObject.name"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.name</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamFunctionObject.arguments"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.arguments</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamFunctionObject.model_config"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.model_config</span></code></a></li>
-<li><a class="reference internal" href="#id13"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.name</span></code></a></li>
-<li><a class="reference internal" href="#id14"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.arguments</span></code></a></li>
+<li><a class="reference internal" href="#id17"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.name</span></code></a></li>
+<li><a class="reference internal" href="#id18"><code class="docutils literal notranslate"><span class="pre">StreamFunctionObject.arguments</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamToolCall"><code class="docutils literal notranslate"><span class="pre">StreamToolCall</span></code></a><ul>
@@ -2118,6 +2220,8 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.role"><code class="docutils literal notranslate"><span class="pre">StreamDelta.role</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.content"><code class="docutils literal notranslate"><span class="pre">StreamDelta.content</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.tool_calls"><code class="docutils literal notranslate"><span class="pre">StreamDelta.tool_calls</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.refusal"><code class="docutils literal notranslate"><span class="pre">StreamDelta.refusal</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.reasoning_content"><code class="docutils literal notranslate"><span class="pre">StreamDelta.reasoning_content</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.StreamDelta.model_config"><code class="docutils literal notranslate"><span class="pre">StreamDelta.model_config</span></code></a></li>
 </ul>
 </li>
@@ -2135,11 +2239,11 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.Citation.url"><code class="docutils literal notranslate"><span class="pre">Citation.url</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.Citation.start_index"><code class="docutils literal notranslate"><span class="pre">Citation.start_index</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.Citation.end_index"><code class="docutils literal notranslate"><span class="pre">Citation.end_index</span></code></a></li>
-<li><a class="reference internal" href="#id15"><code class="docutils literal notranslate"><span class="pre">Citation.ref_id</span></code></a></li>
-<li><a class="reference internal" href="#id16"><code class="docutils literal notranslate"><span class="pre">Citation.title</span></code></a></li>
-<li><a class="reference internal" href="#id17"><code class="docutils literal notranslate"><span class="pre">Citation.url</span></code></a></li>
-<li><a class="reference internal" href="#id18"><code class="docutils literal notranslate"><span class="pre">Citation.start_index</span></code></a></li>
-<li><a class="reference internal" href="#id19"><code class="docutils literal notranslate"><span class="pre">Citation.end_index</span></code></a></li>
+<li><a class="reference internal" href="#id19"><code class="docutils literal notranslate"><span class="pre">Citation.ref_id</span></code></a></li>
+<li><a class="reference internal" href="#id20"><code class="docutils literal notranslate"><span class="pre">Citation.title</span></code></a></li>
+<li><a class="reference internal" href="#id21"><code class="docutils literal notranslate"><span class="pre">Citation.url</span></code></a></li>
+<li><a class="reference internal" href="#id22"><code class="docutils literal notranslate"><span class="pre">Citation.start_index</span></code></a></li>
+<li><a class="reference internal" href="#id23"><code class="docutils literal notranslate"><span class="pre">Citation.end_index</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.Citation.model_config"><code class="docutils literal notranslate"><span class="pre">Citation.model_config</span></code></a></li>
 </ul>
 </li>
@@ -2152,14 +2256,14 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult.choices"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.choices</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult.usage"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.usage</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult.citations"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.citations</span></code></a></li>
-<li><a class="reference internal" href="#id20"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.id</span></code></a></li>
-<li><a class="reference internal" href="#id21"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.object</span></code></a></li>
-<li><a class="reference internal" href="#id22"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.created</span></code></a></li>
-<li><a class="reference internal" href="#id23"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.model</span></code></a></li>
-<li><a class="reference internal" href="#id24"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.system_fingerprint</span></code></a></li>
-<li><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.choices</span></code></a></li>
-<li><a class="reference internal" href="#id26"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.usage</span></code></a></li>
-<li><a class="reference internal" href="#id27"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.citations</span></code></a></li>
+<li><a class="reference internal" href="#id24"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.id</span></code></a></li>
+<li><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.object</span></code></a></li>
+<li><a class="reference internal" href="#id26"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.created</span></code></a></li>
+<li><a class="reference internal" href="#id27"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.model</span></code></a></li>
+<li><a class="reference internal" href="#id28"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.system_fingerprint</span></code></a></li>
+<li><a class="reference internal" href="#id29"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.choices</span></code></a></li>
+<li><a class="reference internal" href="#id30"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.usage</span></code></a></li>
+<li><a class="reference internal" href="#id31"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.citations</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.LLMModuleResult.model_config"><code class="docutils literal notranslate"><span class="pre">LLMModuleResult.model_config</span></code></a></li>
 </ul>
 </li>
@@ -2185,15 +2289,15 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults.output_translation"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_translation</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults.llm"><code class="docutils literal notranslate"><span class="pre">ModuleResults.llm</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults.output_unmasking"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_unmasking</span></code></a></li>
-<li><a class="reference internal" href="#id28"><code class="docutils literal notranslate"><span class="pre">ModuleResults.grounding</span></code></a></li>
-<li><a class="reference internal" href="#id29"><code class="docutils literal notranslate"><span class="pre">ModuleResults.templating</span></code></a></li>
-<li><a class="reference internal" href="#id30"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_translation</span></code></a></li>
-<li><a class="reference internal" href="#id31"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_masking</span></code></a></li>
-<li><a class="reference internal" href="#id32"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_filtering</span></code></a></li>
-<li><a class="reference internal" href="#id33"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_filtering</span></code></a></li>
-<li><a class="reference internal" href="#id34"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_translation</span></code></a></li>
-<li><a class="reference internal" href="#id35"><code class="docutils literal notranslate"><span class="pre">ModuleResults.llm</span></code></a></li>
-<li><a class="reference internal" href="#id36"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_unmasking</span></code></a></li>
+<li><a class="reference internal" href="#id32"><code class="docutils literal notranslate"><span class="pre">ModuleResults.grounding</span></code></a></li>
+<li><a class="reference internal" href="#id33"><code class="docutils literal notranslate"><span class="pre">ModuleResults.templating</span></code></a></li>
+<li><a class="reference internal" href="#id34"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_translation</span></code></a></li>
+<li><a class="reference internal" href="#id35"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_masking</span></code></a></li>
+<li><a class="reference internal" href="#id36"><code class="docutils literal notranslate"><span class="pre">ModuleResults.input_filtering</span></code></a></li>
+<li><a class="reference internal" href="#id37"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_filtering</span></code></a></li>
+<li><a class="reference internal" href="#id38"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_translation</span></code></a></li>
+<li><a class="reference internal" href="#id39"><code class="docutils literal notranslate"><span class="pre">ModuleResults.llm</span></code></a></li>
+<li><a class="reference internal" href="#id40"><code class="docutils literal notranslate"><span class="pre">ModuleResults.output_unmasking</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.ModuleResults.model_config"><code class="docutils literal notranslate"><span class="pre">ModuleResults.model_config</span></code></a></li>
 </ul>
 </li>
@@ -2216,11 +2320,11 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError.message"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.message</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError.location"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.location</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError.intermediate_results"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.intermediate_results</span></code></a></li>
-<li><a class="reference internal" href="#id37"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.request_id</span></code></a></li>
-<li><a class="reference internal" href="#id38"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.code</span></code></a></li>
-<li><a class="reference internal" href="#id39"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.message</span></code></a></li>
-<li><a class="reference internal" href="#id40"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.location</span></code></a></li>
-<li><a class="reference internal" href="#id41"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.intermediate_results</span></code></a></li>
+<li><a class="reference internal" href="#id41"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.request_id</span></code></a></li>
+<li><a class="reference internal" href="#id42"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.code</span></code></a></li>
+<li><a class="reference internal" href="#id43"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.message</span></code></a></li>
+<li><a class="reference internal" href="#id44"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.location</span></code></a></li>
+<li><a class="reference internal" href="#id45"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.intermediate_results</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError.headers"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.headers</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIError.model_config"><code class="docutils literal notranslate"><span class="pre">SAPAPIError.model_config</span></code></a></li>
 </ul>
@@ -2231,11 +2335,11 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming.message"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.message</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming.location"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.location</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming.intermediate_results"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.intermediate_results</span></code></a></li>
-<li><a class="reference internal" href="#id42"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.request_id</span></code></a></li>
-<li><a class="reference internal" href="#id43"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.code</span></code></a></li>
-<li><a class="reference internal" href="#id44"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.message</span></code></a></li>
-<li><a class="reference internal" href="#id45"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.location</span></code></a></li>
-<li><a class="reference internal" href="#id46"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.intermediate_results</span></code></a></li>
+<li><a class="reference internal" href="#id46"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.request_id</span></code></a></li>
+<li><a class="reference internal" href="#id47"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.code</span></code></a></li>
+<li><a class="reference internal" href="#id48"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.message</span></code></a></li>
+<li><a class="reference internal" href="#id49"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.location</span></code></a></li>
+<li><a class="reference internal" href="#id50"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.intermediate_results</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming.headers"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.headers</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.SAPAPIErrorStreaming.model_config"><code class="docutils literal notranslate"><span class="pre">SAPAPIErrorStreaming.model_config</span></code></a></li>
 </ul>
@@ -2244,9 +2348,9 @@ applicable.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionPostResponse.request_id"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.request_id</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionPostResponse.intermediate_results"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.intermediate_results</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionPostResponse.final_result"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.final_result</span></code></a></li>
-<li><a class="reference internal" href="#id47"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.request_id</span></code></a></li>
-<li><a class="reference internal" href="#id48"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.intermediate_results</span></code></a></li>
-<li><a class="reference internal" href="#id49"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.final_result</span></code></a></li>
+<li><a class="reference internal" href="#id51"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.request_id</span></code></a></li>
+<li><a class="reference internal" href="#id52"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.intermediate_results</span></code></a></li>
+<li><a class="reference internal" href="#id53"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.final_result</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionPostResponse.intermediate_failures"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.intermediate_failures</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.CompletionPostResponse.model_config"><code class="docutils literal notranslate"><span class="pre">CompletionPostResponse.model_config</span></code></a></li>
 </ul>
@@ -2271,7 +2375,7 @@ applicable.</p>
 </li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.OrchestrationResponseWithRetries"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries</span></code></a><ul>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.OrchestrationResponseWithRetries.retries"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.retries</span></code></a></li>
-<li><a class="reference internal" href="#id50"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.retries</span></code></a></li>
+<li><a class="reference internal" href="#id54"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.retries</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.OrchestrationResponseWithRetries.model_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.model_config</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.OrchestrationResponseWithRetries.request_id"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.request_id</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.response.OrchestrationResponseWithRetries.intermediate_results"><code class="docutils literal notranslate"><span class="pre">OrchestrationResponseWithRetries.intermediate_results</span></code></a></li>

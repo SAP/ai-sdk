@@ -381,6 +381,10 @@ export default {
             from: '/docs/js/rpt',
             to: '/docs/js/tabular-ai/rpt'
           },
+          {
+            from: '/docs/js/foundation-models/openai/batch',
+            to: '/docs/js/ai-core/batch'
+          },
           // SEO slug renames
           {
             from: '/docs/overview/overview-cloud-sdk-for-ai',

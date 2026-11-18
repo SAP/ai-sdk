@@ -1,16 +1,5 @@
 import React from 'react';
-import DocsVersionDropdownLink from '@theme-original/NavbarItem/DocsVersionDropdownNavbarItem';
-import {
-  useActiveDocContext,
-  useActiveVersion,
-  useVersions
-} from '@docusaurus/plugin-content-docs/client';
-import {
-  containsCurrentDocsPluginId,
-  hasMoreThanOneVersion
-} from './helper.js';
-import HtmlNavbarItem from '@theme-original/NavbarItem/HtmlNavbarItem';
-import NavbarNavLink from '@theme-original/NavbarItem/NavbarNavLink';
+import { containsCurrentDocsPluginId } from './helper.js';
 import DocsVersionDropdownNavbarItem from '@theme-original/NavbarItem/DocsVersionDropdownNavbarItem';
 
 /**
