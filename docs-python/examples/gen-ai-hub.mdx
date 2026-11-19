@@ -60,27 +60,6 @@ response = chat.completions.create(deployment_id="dcef02e219ae4916", messages=me
 print(response)
 ```
 
-Streaming is also supported:
-
-```python
-from gen_ai_hub.proxy.native.openai import chat
-
-messages = [
-    {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": "Count from 1 to 10, one number per line."},
-]
-
-stream = chat.completions.create(
-    model_name="gpt-5.4-nano",
-    messages=messages,
-    stream=True,
-)
-for chunk in stream:
-    if chunk.choices:
-        content = chunk.choices[0].delta.content
-        print(content)
-```
-
 #### Responses API
 
 `Responses` equivalent to `openai.Responses`. See the [OpenAI migration guide](https://developers.openai.com/api/docs/guides/migrate-to-responses).
@@ -147,22 +126,6 @@ response = client.models.generate_content(model="gemini-3.5-flash",
 print(response)
 ```
 
-Generate Content streaming:
-
-```python
-from gen_ai_hub.proxy.native.google_genai import Client
-from gen_ai_hub.proxy import get_proxy_client
-
-proxy_client = get_proxy_client('gen-ai-hub')
-client = Client(proxy_client=proxy_client)
-
-response_stream = client.models.generate_content_stream(model="gemini-3.5-flash",
-    contents="Explain singularity in short terms.")
-
-for chunk in response_stream:
-    print("Chunk: ", chunk.text)
-```
-
 Function Calling:
 
 ```python
@@ -208,25 +171,6 @@ response = bedrock.converse(
     inferenceConfig={"maxTokens": 512, "temperature": 0.5, "topP": 0.9},
 )
 print(response)
-```
-
-Streaming:
-
-```python
-from gen_ai_hub.proxy.native.amazon import Session
-
-bedrock = Session().client(model_name="anthropic--claude-4.6-sonnet")
-conversation = [
-    {
-        "role": "user",
-        "content": [{"text": "Output each time shown on a digital clock between 9:38 and 10:04."}],
-    }
-]
-response = bedrock.converse_stream(
-    messages=conversation,
-)
-for chunk in response["stream"]:
-    print(chunk)
 ```
 
 ## Embeddings
