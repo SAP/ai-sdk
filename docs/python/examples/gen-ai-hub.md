@@ -186,32 +186,6 @@ response = client.models.generate_content(model="gemini-3.5-flash",
 print(response)
 ```
 
-Generate Content streaming:
-
-```
-from gen_ai_hub.proxy.native.google_genai import Client
-
-from gen_ai_hub.proxy import get_proxy_client
-
-
-
-proxy_client = get_proxy_client('gen-ai-hub')
-
-client = Client(proxy_client=proxy_client)
-
-
-
-response_stream = client.models.generate_content_stream(model="gemini-3.5-flash",
-
-    contents="Explain singularity in short terms.")
-
-
-
-for chunk in response_stream:
-
-    print("Chunk: ", chunk.text)
-```
-
 Function Calling:
 
 ```
@@ -334,6 +308,28 @@ response = embeddings.create(
 print(response.data)
 ```
 
+### Google GenAI[​](#google-genai-1 "Direct link to Google GenAI")
+
+```
+from gen_ai_hub.proxy import get_proxy_client
+
+from gen_ai_hub.proxy.native.google_genai import Client
+
+
+
+proxy_client = get_proxy_client("gen-ai-hub")
+
+client = Client(proxy_client=proxy_client)
+
+response = client.models.embed_content(
+
+    model="gemini-embedding", contents="How many paws are there for a dog?"
+
+)
+
+print(response)
+```
+
 ### Amazon[​](#amazon-1 "Direct link to Amazon")
 
 ```
@@ -354,13 +350,13 @@ response_body = json.loads(response.get("body").read())
 print(response_body)
 ```
 
-# LangChain Integration
+## LangChain Integration[​](#langchain-integration "Direct link to LangChain Integration")
 
 LangChain provides an interface that abstracts provider-specific details into a common interface. Classes like `Chat` and `Embeddings` are interchangeable.
 
 The list of the available models can be found in the [overview](/ai-sdk/docs/python/overview.md#supported-models).
 
-## Harmonized Model Initialization[​](#harmonized-model-initialization "Direct link to Harmonized Model Initialization")
+### Harmonized Model Initialization[​](#harmonized-model-initialization "Direct link to Harmonized Model Initialization")
 
 The `init_llm` and `init_embedding_model` functions allow easy initialization of LangChain model interfaces:
 
@@ -408,7 +404,7 @@ response = embeddings.embed_query(text)
 print(response)
 ```
 
-## LLM[​](#llm "Direct link to LLM")
+### LLM[​](#llm "Direct link to LLM")
 
 ```
 from langchain_core.prompts import PromptTemplate
@@ -444,7 +440,7 @@ question = "What NFL team won the Super Bowl in the year Justin Bieber was born?
 print(llm_chain.invoke({'question': question}))
 ```
 
-## Chat Model[​](#chat-model "Direct link to Chat Model")
+### Chat Model[​](#chat-model "Direct link to Chat Model")
 
 ```
 from langchain_core.prompts import (
@@ -526,7 +522,7 @@ message = HumanMessage(content="Tell me about a person named John who is 30")
 print(chat_model.invoke([message]))
 ```
 
-## Embeddings[​](#embeddings-1 "Direct link to Embeddings")
+### Embeddings[​](#embeddings-1 "Direct link to Embeddings")
 
 ```
 from gen_ai_hub.proxy.langchain import OpenAIEmbeddings
@@ -552,7 +548,91 @@ response = embedding_model.embed_query('Every decoding is another encoding.')
 print(response)
 ```
 
-# SAP RPT Models
+### Google GenAI[​](#google-genai-2 "Direct link to Google GenAI")
+
+```
+from gen_ai_hub.proxy import get_proxy_client
+
+from langchain_classic.prompts import (
+
+    ChatPromptTemplate,
+
+    HumanMessagePromptTemplate,
+
+    SystemMessagePromptTemplate,
+
+)
+
+from gen_ai_hub.proxy.langchain.google_genai import ChatGoogleGenerativeAI
+
+chat_model = ChatGoogleGenerativeAI(
+
+    proxy_model_name="gemini-3.8-flash", proxy_client=get_proxy_client()
+
+)
+
+
+
+system_message_prompt = SystemMessagePromptTemplate.from_template("You are a helpful assistant that transforms English prose to 16th century poems.")
+
+human_message_prompt = HumanMessagePromptTemplate.from_template("{text}")
+
+chat_prompt = ChatPromptTemplate.from_messages(
+
+    [system_message_prompt, human_message_prompt]
+
+)
+
+
+
+chain = chat_model | chat_prompt
+
+response = chain.invoke("I love programming")
+```
+
+### Amazon[​](#amazon-2 "Direct link to Amazon")
+
+```
+from gen_ai_hub.proxy import get_proxy_client
+
+from langchain_classic.prompts import (
+
+    ChatPromptTemplate,
+
+    HumanMessagePromptTemplate,
+
+    SystemMessagePromptTemplate,
+
+)
+
+from gen_ai_hub.proxy.langchain.amazon import ChatBedrockConverse
+
+chat_model = ChatBedrockConverse(
+
+    model_name="anthropic--claude-4.8-opus", proxy_client=get_proxy_client()
+
+)
+
+
+
+system_message_prompt = SystemMessagePromptTemplate.from_template("You are a helpful assistant that translates english to pirate.")
+
+human_message_prompt = HumanMessagePromptTemplate.from_template("{text}")
+
+chat_prompt = ChatPromptTemplate.from_messages(
+
+    [system_message_prompt, human_message_prompt]
+
+)
+
+
+
+chain = chat_prompt | chat_model
+
+response = chain.invoke("I love programming")
+```
+
+## SAP RPT Models[​](#sap-rpt-models "Direct link to SAP RPT Models")
 
 SAP-RPT is a relational pretrained transformer for use on relational and structured data, developed and maintained by SAP. Relational Foundation Models (RFMs) are large-scale machine learning models designed to understand, process, and make predictions on tabular and relational data.
 
