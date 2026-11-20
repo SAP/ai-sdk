@@ -277,7 +277,8 @@ export const features = [
       status: NO
     },
     python: {
-      status: YES
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#amazon-2)`
     }
   },
   {
@@ -289,7 +290,8 @@ export const features = [
       status: NO
     },
     python: {
-      status: YES
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#google-genai-2)`
     }
   },
   {
@@ -359,7 +361,8 @@ export const features = [
       status: NO
     },
     python: {
-      status: YES
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/streaming#anthropic-via-amazon)`
     }
   },
   {
@@ -410,7 +413,8 @@ export const features = [
       status: NO
     },
     python: {
-      status: YES
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#google-genai-1)`
     }
   },
   {
@@ -425,7 +429,7 @@ export const features = [
     },
     python: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub)`
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#sap-rpt-models)`
     }
   }
 ];
