@@ -6,5 +6,6 @@
     "moduleResolution": "NodeNext",
     "strict": true
   },
-  "include": ["**/*.mdx"]
+  "include": ["**/*.mdx"],
+  "exclude": ["ai-core/model-discovery.mdx"]
 }
