@@ -225,7 +225,7 @@ export const features = [
     }
   },
   {
-    name: '[Batch Service API](https://help.sap.com/docs/sap-ai-core/generative-ai/batch-consumption?locale=en-US)',
+    name: '[LLM Batch Service API](https://help.sap.com/docs/sap-ai-core/generative-ai/batch-consumption?locale=en-US)',
     java: {
       status: YES,
       docsLink: `[docs](${baseUrl}/java/ai-core/batch)`
