@@ -431,5 +431,31 @@ export const features = [
       status: YES,
       docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#sap-rpt-models)`
     }
+  },
+  {
+    name: 'Context Registry',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/tabular-ai/context-registry)`
+    },
+    python: {
+      status: NO,
+    }
+  },
+  {
+    name: 'Tabular Orchestration',
+    java: {
+      status: NO,
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/tabular-ai/tabular-orchestration)`
+    },
+    python: {
+      status: NO,
+    }
   }
 ];
