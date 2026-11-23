@@ -232,7 +232,7 @@ export const features = [
     },
     js: {
       status: YES,
-      docsLink: `[docs](${baseUrl}/js/foundation-models/openai/batch)`
+      docsLink: `[docs](${baseUrl}/js/ai-core/batch)`
     },
     python: {
       status: YES,
