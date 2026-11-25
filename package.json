@@ -42,7 +42,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.4.1",
+    "@langchain/core": "1.5.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/core": "canary",
     "@sap-ai-sdk/context-registry": "canary",
@@ -55,9 +55,9 @@
     "@sap-ai-sdk/rpt": "canary",
     "@sap-ai-sdk/tabular-orchestration": "canary",
     "assert": "2.1.0",
-    "langchain": "1.6.6",
-    "openai": "7.57.0",
-    "oxlint": "1.93.0",
+    "langchain": "1.6.7",
+    "openai": "7.62.0",
+    "oxlint": "1.94.0",
     "prettier": "3.10.1",
     "prettier-plugin-java": "2.12.0",
     "process": "0.11.10",
