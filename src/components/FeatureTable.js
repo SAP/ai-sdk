@@ -17,12 +17,6 @@ export default function FeatureTable() {
 
   return (
     <>
-      <b>
-        🚧 Work in Progress: Documentation Portal 🚧
-        <br />
-      </b>
-      <br />
-      <br />
       <ReactMarkdown remarkPlugins={[gfm, emoji]}>
         **Legend:** :white_check_mark: - Generally Available, :x: - Not
         Available, :wrench: - WIP/limited support, :date: - Planned, :warning: -
