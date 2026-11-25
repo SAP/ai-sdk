@@ -40,7 +40,8 @@ In the table below, you can see which models and vendor specific langchain packa
 
 There are different ways to configure the SAP AI Core access (listed in order of precedence):
 
-* environment variables
+* individual environment variables
+* single `AICORE_SERVICE_KEY` environment variable
 * (profile) configuration file
 * from VCAP_SERVICES environment variable, if it exists
 
@@ -63,6 +64,28 @@ For using X.509 credentials, you can set the file paths to certificate and key f
 * `AICORE_KEY_FILE_PATH`: This is the path to the file which holds the X.509 key.
 * `AICORE_CERT_STR`: This is the content of the X.509 certificate as a string.
 * `AICORE_KEY_STR`: This is the content of the X.509 key as a string.
+
+### AICORE_SERVICE_KEY environment variable[​](#aicore_service_key-environment-variable "Direct link to AICORE_SERVICE_KEY environment variable")
+
+If you have an SAP AI Core service key (downloaded from BTP), you can pass it as a single environment variable instead of setting each credential separately. The SDK extracts `clientid`, `clientsecret`, `url`, and `AI_API_URL` from it automatically. You still need to set `AICORE_RESOURCE_GROUP` separately, as the resource group is not part of the service key.
+
+```
+export AICORE_SERVICE_KEY='{
+
+  "serviceurls": {
+
+    "AI_API_URL": "https://api.ai.* * *.cfapps.sap.hana.ondemand.com"
+
+  },
+
+  "clientid": "* * * ",
+
+  "clientsecret": "* * * ",
+
+  "url": "https://* * * .authentication.sap.hana.ondemand.com"
+
+}'
+```
 
 ### Configuration files[​](#configuration-files "Direct link to Configuration files")
 
@@ -99,6 +122,18 @@ The configuration file should be:
 ```
 
 or
+
+```
+{
+
+  "AICORE_SERVICE_KEY": "{\"serviceurls\":{\"AI_API_URL\":\"https://api.ai.***.cfapps.sap.hana.ondemand.com\"},\"clientid\":\"***\",\"clientsecret\":\"***\",\"url\":\"https:/
+
+/***.authentication.sap.hana.ondemand.com\"}",
+
+  "AICORE_RESOURCE_GROUP": "***"
+
+}
+```
 
 ```
 {
