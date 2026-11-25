@@ -418,7 +418,7 @@ export const features = [
     }
   },
   {
-    name: 'SAP RPT',
+    name: '[SAP RPT](https://www.sap.com/products/artificial-intelligence/sap-rpt.html)',
     java: {
       status: YES,
       docsLink: `[docs](${baseUrl}/java/foundation-models/sap-rpt/table-completion)`
@@ -446,7 +446,7 @@ export const features = [
     }
   },
   {
-    name: 'Tabular Orchestration',
+    name: '[Tabular Orchestration](https://help.sap.com/docs/sap-ai-core/generative-ai/consume-tabular-orchestration)',
     java: {
       status: NO
     },
