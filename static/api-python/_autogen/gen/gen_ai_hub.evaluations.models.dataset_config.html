@@ -423,6 +423,7 @@
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.data_masking.html">gen_ai_hub.orchestration_v2.models.data_masking module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.document_grounding.html">gen_ai_hub.orchestration_v2.models.document_grounding module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.embeddings.html">gen_ai_hub.orchestration_v2.models.embeddings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.granite_guardian_filter.html">gen_ai_hub.orchestration_v2.models.granite_guardian_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llama_guard_3_filter.html">gen_ai_hub.orchestration_v2.models.llama_guard_3_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llm_model_details.html">gen_ai_hub.orchestration_v2.models.llm_model_details module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html">gen_ai_hub.orchestration_v2.models.message module</a></li>
@@ -545,23 +546,23 @@ local file paths (as strings or Path objects) or AI Core artifacts.</p>
 </dl>
 <p><strong>Examples</strong>:</p>
 <p>Using a Path object:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data/sample.json&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"data/sample.json"</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Using a string path:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;data/sample.json&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"data/sample.json"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using an ArtifactSource with artifact dictionary:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">ArtifactSource</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">artifact</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;xyfz-rtyu-2456-ojns-yu6s&quot;</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;dataset-artifact&quot;</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;ai://default/eval_dataset&quot;</span>
+<span class="gp">... </span>            <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"xyfz-rtyu-2456-ojns-yu6s"</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"dataset-artifact"</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"ai://default/eval_dataset"</span>
 <span class="gp">... </span>        <span class="p">},</span>
-<span class="gp">... </span>        <span class="n">path</span><span class="o">=</span><span class="s2">&quot;rootfolder/data.csv&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span>
+<span class="gp">... </span>        <span class="n">path</span><span class="o">=</span><span class="s2">"rootfolder/data.csv"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">file_type</span><span class="o">=</span><span class="s2">"csv"</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
@@ -569,9 +570,9 @@ local file paths (as strings or Path objects) or AI Core artifacts.</p>
 <p>Using an ArtifactSource with artifact ID:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">ArtifactSource</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">artifact</span><span class="o">=</span><span class="s2">&quot;xyfz-rtyu-2456-ojns-yu6s&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">path</span><span class="o">=</span><span class="s2">&quot;rootfolder/data.csv&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span>
+<span class="gp">... </span>        <span class="n">artifact</span><span class="o">=</span><span class="s2">"xyfz-rtyu-2456-ojns-yu6s"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">path</span><span class="o">=</span><span class="s2">"rootfolder/data.csv"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">file_type</span><span class="o">=</span><span class="s2">"csv"</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
