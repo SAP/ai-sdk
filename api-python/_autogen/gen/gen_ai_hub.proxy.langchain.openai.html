@@ -423,6 +423,7 @@
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.data_masking.html">gen_ai_hub.orchestration_v2.models.data_masking module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.document_grounding.html">gen_ai_hub.orchestration_v2.models.document_grounding module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.embeddings.html">gen_ai_hub.orchestration_v2.models.embeddings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.granite_guardian_filter.html">gen_ai_hub.orchestration_v2.models.granite_guardian_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llama_guard_3_filter.html">gen_ai_hub.orchestration_v2.models.llama_guard_3_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llm_model_details.html">gen_ai_hub.orchestration_v2.models.llm_model_details module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html">gen_ai_hub.orchestration_v2.models.message module</a></li>
@@ -627,7 +628,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.proxy.langchain.openai.ChatOpenAI.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'allow',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'protected_namespaces':</span> <span class="pre">(),</span> <span class="pre">'validate_by_alias':</span> <span class="pre">True,</span> <span class="pre">'validate_by_name':</span> <span class="pre">True}</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.openai.ChatOpenAI.model_config" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'allow',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'protected_namespaces':</span> <span class="pre">()}</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.openai.ChatOpenAI.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
 
@@ -883,6 +884,26 @@ associated log probability.</p>
 <p>Currently supported values are <cite>‘minimal’</cite>, <cite>‘low’</cite>, <cite>‘medium’</cite>, and
 <cite>‘high’</cite>. Reducing reasoning effort can result in faster responses and fewer
 tokens used on reasoning in a response.</p>
+<p>!!! note “Changing reasoning effort mid-conversation”</p>
+<blockquote>
+<div><p>Changing this value part-way through a conversation changes a request-level
+parameter, which invalidates the cached prompt prefix.</p>
+<p>Models that support it (currently GPT-6) can instead carry the new effort
+in a <cite>configuration_update</cite> item attached to the message that should start
+using it:</p>
+<p><a href="#id33"><span class="problematic" id="id34">``</span></a><a href="#id35"><span class="problematic" id="id36">`</span></a>python
+HumanMessage(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>[</dt><dd><p>{“type”: “configuration_update”, “reasoning”: {“effort”: “high”}},
+{“type”: “text”, “text”: “Analyze the failure modes.”},</p>
+</dd>
+</dl>
+<p>]</p>
+</div></blockquote>
+<p>The new effort applies from that message onward, until another update
+overrides it.</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py attribute">
@@ -890,14 +911,14 @@ tokens used on reasoning in a response.</p>
 <span class="sig-name descname"><span class="pre">reasoning</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.openai.ChatOpenAI.reasoning" title="Link to this definition">¶</a></dt>
 <dd><p>Reasoning parameters for reasoning models. None disables reasoning.</p>
 <p>For use with the Responses API.</p>
-<p><a href="#id33"><span class="problematic" id="id34">``</span></a><a href="#id35"><span class="problematic" id="id36">`</span></a>python
+<p><a href="#id37"><span class="problematic" id="id38">``</span></a><a href="#id39"><span class="problematic" id="id40">`</span></a>python
 reasoning={</p>
 <blockquote>
 <div><p>“effort”: None,  # Default None; can be “low”, “medium”, or “high”
 “summary”: “auto”,  # Can be “auto”, “concise”, or “detailed”</p>
 </div></blockquote>
-<section id="id37">
-<h2>}<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h2>
+<section id="id41">
+<h2>}<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h2>
 <p>!!! version-added “Added in <cite>langchain-openai</cite> 0.3.24”</p>
 </section>
 </dd></dl>
@@ -1180,7 +1201,7 @@ response. Responses API only.</p>
 <p>Input messages up to the most recent response will be dropped from request
 payloads.</p>
 <p>For example, the following two are equivalent:</p>
-<p><a href="#id38"><span class="problematic" id="id39">``</span></a><a href="#id40"><span class="problematic" id="id41">`</span></a>python
+<p><a href="#id42"><span class="problematic" id="id43">``</span></a><a href="#id44"><span class="problematic" id="id45">`</span></a>python
 model = ChatOpenAI(</p>
 <blockquote>
 <div><p>model=”…”,
@@ -1197,8 +1218,8 @@ HumanMessage(“How are you?”),</p>
 </dl>
 <p>]</p>
 </div></blockquote>
-<section id="id42">
-<h2>)<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h2>
+<section id="id46">
+<h2>)<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">`python</span>
 <span class="pre">model</span> <span class="pre">=</span> <span class="pre">ChatOpenAI(model=&quot;...&quot;,</span> <span class="pre">use_responses_api=True)</span>
 <span class="pre">model.invoke([HumanMessage(&quot;How</span> <span class="pre">are</span> <span class="pre">you?&quot;)],</span> <span class="pre">previous_response_id=&quot;resp_123&quot;)</span>
@@ -1211,7 +1232,7 @@ HumanMessage(“How are you?”),</p>
 <dt class="sig sig-object py" id="gen_ai_hub.proxy.langchain.openai.ChatOpenAI.use_responses_api">
 <span class="sig-name descname"><span class="pre">use_responses_api</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.openai.ChatOpenAI.use_responses_api" title="Link to this definition">¶</a></dt>
 <dd><p>Whether to use the Responses API instead of the Chat API.</p>
-<p>If not specified then will be inferred based on invocation params.</p>
+<p>If not specified, set to <cite>True</cite> when instance settings require the Responses API,</p>
 <p>!!! version-added “Added in <cite>langchain-openai</cite> 0.3.9”</p>
 </dd></dl>
 
@@ -1350,7 +1371,7 @@ for tool calling, structured output, and other features.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.proxy.langchain.openai.OpenAI.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'allow',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'protected_namespaces':</span> <span class="pre">(),</span> <span class="pre">'validate_by_alias':</span> <span class="pre">True,</span> <span class="pre">'validate_by_name':</span> <span class="pre">True}</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.openai.OpenAI.model_config" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'allow',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'protected_namespaces':</span> <span class="pre">()}</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.openai.OpenAI.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
 
@@ -1687,7 +1708,7 @@ model name to use here.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_ai_hub.proxy.langchain.openai.OpenAIEmbeddings.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'allow',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'protected_namespaces':</span> <span class="pre">(),</span> <span class="pre">'validate_by_alias':</span> <span class="pre">True,</span> <span class="pre">'validate_by_name':</span> <span class="pre">True}</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.openai.OpenAIEmbeddings.model_config" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'allow',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'protected_namespaces':</span> <span class="pre">()}</span></em><a class="headerlink" href="#gen_ai_hub.proxy.langchain.openai.OpenAIEmbeddings.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
 
