@@ -28,12 +28,19 @@ export default {
     },
     {
       type: 'category',
-      label: 'OpenAI',
-      link: {
-        type: 'doc',
-        id: 'openai/openai'
-      },
-      items: ['openai/realtime']
+      label: 'Provider SDKs',
+      items: [
+        {
+          type: 'category',
+          label: 'OpenAI',
+          link: {
+            type: 'doc',
+            id: 'openai/openai'
+          },
+          items: ['openai/realtime']
+        },
+        'anthropic/anthropic'
+      ]
     },
     {
       type: 'category',
