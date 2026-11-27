@@ -120,6 +120,24 @@ Use the builder to set per-request options such as tool callbacks:
 
 `OrchestrationChatModel` applies registered tool callbacks automatically. Native SDK callers using the helper must pass `options.withCallbacks(template)` to `.promptTemplate(...)` and use `options.getConfig()` for the config. The helper adds tool definitions; it does not execute callbacks.
 
+### Structured output
+
+`TemplateConfig` and `config.withTemplateConfig(...)` were removed in v2. Structured output through the Spring AI integration is now configured with Spring AI's native `useProviderStructuredOutput()`.
+
+```diff
+-var schema = ResponseJsonSchema.fromType(Translation.class);
+-var template = TemplateConfig.create().withJsonSchemaResponse(schema);
+-var opts = new OrchestrationChatOptions(config.withTemplateConfig(template));
+
++var opts = new OrchestrationChatOptions(config);
++var translation =
++    ChatClient.builder(new OrchestrationChatModel())
++        .build()
++        .prompt(new Prompt("...", opts))
++        .call()
++        .entity(Translation.class, spec -> spec.useProviderStructuredOutput());
+```
+
 ## Orchestration
 
 | Previous API                                                                  | Replacement                                                                     |
