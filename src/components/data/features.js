@@ -225,6 +225,21 @@ export const features = [
     }
   },
   {
+    name: '[LLM Batch Service API](https://help.sap.com/docs/sap-ai-core/generative-ai/batch-consumption?locale=en-US)',
+    java: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/java/ai-core/batch)`
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/ai-core/batch)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/batch-service)`
+    }
+  },
+  {
     name: 'Framework Integration: LangChain/Spring AI for Orchestration',
     java: {
       status: YES,
@@ -239,7 +254,7 @@ export const features = [
     }
   },
   {
-    name: 'Framework Integration: LangChain/Spring AI for Foundation Model',
+    name: 'Framework Integration: LangChain/Spring AI for Foundation Model (OpenAI)',
     java: {
       status: YES,
       docsLink: `[docs](${baseUrl}/java/spring-ai/openai)`
@@ -251,6 +266,32 @@ export const features = [
     python: {
       status: YES,
       docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#harmonized-model-initialization)`
+    }
+  },
+  {
+    name: 'Framework Integration: LangChain/Spring AI for Foundation Models (Amazon)',
+    java: {
+      status: NO
+    },
+    js: {
+      status: NO
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#amazon-2)`
+    }
+  },
+  {
+    name: 'Framework Integration: LangChain/Spring AI for Foundation Models (Google GenAI)',
+    java: {
+      status: NO
+    },
+    js: {
+      status: NO
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#google-genai-2)`
     }
   },
   {
@@ -296,6 +337,125 @@ export const features = [
     python: {
       status: YES,
       docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#openai-1)`
+    }
+  },
+  {
+    name: 'Foundation Model: Amazon Chat Completion',
+    java: {
+      status: NO
+    },
+    js: {
+      status: NO
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#amazon)`
+    }
+  },
+  {
+    name: 'Foundation Model: Amazon Streaming',
+    java: {
+      status: NO
+    },
+    js: {
+      status: NO
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/streaming#anthropic-via-amazon)`
+    }
+  },
+  {
+    name: 'Foundation Model: Amazon Embedding',
+    java: {
+      status: NO
+    },
+    js: {
+      status: NO
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#amazon-1)`
+    }
+  },
+  {
+    name: 'Foundation Model: Google GenAI Chat Completion',
+    java: {
+      status: NO
+    },
+    js: {
+      status: NO
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#google-genai)`
+    }
+  },
+  {
+    name: 'Foundation Model: Google GenAI Streaming',
+    java: {
+      status: NO
+    },
+    js: {
+      status: NO
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#google-genai)`
+    }
+  },
+  {
+    name: 'Foundation Model: Google GenAI Embedding',
+    java: {
+      status: NO
+    },
+    js: {
+      status: NO
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#google-genai-1)`
+    }
+  },
+  {
+    name: '[SAP RPT](https://www.sap.com/products/artificial-intelligence/sap-rpt.html)',
+    java: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/java/foundation-models/sap-rpt/table-completion)`
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/tabular-ai/rpt)`
+    },
+    python: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/python/examples/gen-ai-hub#sap-rpt-models)`
+    }
+  },
+  {
+    name: 'Context Registry',
+    java: {
+      status: NO
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/tabular-ai/context-registry)`
+    },
+    python: {
+      status: NO
+    }
+  },
+  {
+    name: '[Tabular Orchestration](https://help.sap.com/docs/sap-ai-core/generative-ai/consume-tabular-orchestration)',
+    java: {
+      status: NO
+    },
+    js: {
+      status: YES,
+      docsLink: `[docs](${baseUrl}/js/tabular-ai/tabular-orchestration)`
+    },
+    python: {
+      status: NO
     }
   }
 ];

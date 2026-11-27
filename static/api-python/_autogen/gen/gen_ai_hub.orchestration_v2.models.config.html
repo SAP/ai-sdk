@@ -423,6 +423,7 @@
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.data_masking.html">gen_ai_hub.orchestration_v2.models.data_masking module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.document_grounding.html">gen_ai_hub.orchestration_v2.models.document_grounding module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.embeddings.html">gen_ai_hub.orchestration_v2.models.embeddings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.granite_guardian_filter.html">gen_ai_hub.orchestration_v2.models.granite_guardian_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llama_guard_3_filter.html">gen_ai_hub.orchestration_v2.models.llama_guard_3_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llm_model_details.html">gen_ai_hub.orchestration_v2.models.llm_model_details module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html">gen_ai_hub.orchestration_v2.models.message module</a></li>
@@ -619,6 +620,122 @@ or filtering.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.config.</span></span><span class="sig-name descname"><span class="pre">PartialPromptTemplatingModuleConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.template.html#gen_ai_hub.orchestration_v2.models.template.Template" title="gen_ai_hub.orchestration_v2.models.template.Template"><span class="pre">Template</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.template_ref.html#gen_ai_hub.orchestration_v2.models.template_ref.TemplateRef" title="gen_ai_hub.orchestration_v2.models.template_ref.TemplateRef"><span class="pre">TemplateRef</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llm_model_details.html#gen_ai_hub.orchestration_v2.models.llm_model_details.LLMModelDetails" title="gen_ai_hub.orchestration_v2.models.llm_model_details.LLMModelDetails"><span class="pre">LLMModelDetails</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ABCBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ABCBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABCBaseModel</span></code></a></p>
+<p>Partial prompt templating configuration for use with config_ref overrides.</p>
+<p>Every field is optional so that only the parts to override need to be provided;
+the referenced configuration supplies the rest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> – Optional prompt template override (inline Template or TemplateRef).</p></li>
+<li><p><strong>model</strong> – Optional model override. Unlike the non-partial config, model is optional
+here so that only the prompt can be overridden without repeating the model config.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.prompt">
+<span class="sig-name descname"><span class="pre">prompt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.template.html#gen_ai_hub.orchestration_v2.models.template.Template" title="gen_ai_hub.orchestration_v2.models.template.Template"><span class="pre">Template</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.template_ref.html#gen_ai_hub.orchestration_v2.models.template_ref.TemplateRef" title="gen_ai_hub.orchestration_v2.models.template_ref.TemplateRef"><span class="pre">TemplateRef</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.prompt" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llm_model_details.html#gen_ai_hub.orchestration_v2.models.llm_model_details.LLMModelDetails" title="gen_ai_hub.orchestration_v2.models.llm_model_details.LLMModelDetails"><span class="pre">LLMModelDetails</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.model" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'forbid',</span> <span class="pre">'frozen':</span> <span class="pre">False}</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.config.</span></span><span class="sig-name descname"><span class="pre">PartialModuleConfigs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_templating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig" title="gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig"><span class="pre">PartialPromptTemplatingModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filtering.html#gen_ai_hub.orchestration_v2.models.content_filtering.FilteringModuleConfig" title="gen_ai_hub.orchestration_v2.models.content_filtering.FilteringModuleConfig"><span class="pre">FilteringModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.data_masking.html#gen_ai_hub.orchestration_v2.models.data_masking.MaskingModuleConfig" title="gen_ai_hub.orchestration_v2.models.data_masking.MaskingModuleConfig"><span class="pre">MaskingModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grounding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.document_grounding.html#gen_ai_hub.orchestration_v2.models.document_grounding.GroundingModuleConfig" title="gen_ai_hub.orchestration_v2.models.document_grounding.GroundingModuleConfig"><span class="pre">GroundingModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.translation.html#gen_ai_hub.orchestration_v2.models.translation.TranslationModuleConfig" title="gen_ai_hub.orchestration_v2.models.translation.TranslationModuleConfig"><span class="pre">TranslationModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ABCBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ABCBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABCBaseModel</span></code></a></p>
+<p>Partial module configuration for use with config_ref overrides.</p>
+<p>Every module is optional; only the modules provided here override the referenced config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt_templating</strong> – Optional partial prompt templating override.</p></li>
+<li><p><strong>filtering</strong> – Optional filtering module override.</p></li>
+<li><p><strong>masking</strong> – Optional masking module override.</p></li>
+<li><p><strong>grounding</strong> – Optional grounding module override.</p></li>
+<li><p><strong>translation</strong> – Optional translation module override.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.prompt_templating">
+<span class="sig-name descname"><span class="pre">prompt_templating</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig" title="gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig"><span class="pre">PartialPromptTemplatingModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.prompt_templating" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.filtering">
+<span class="sig-name descname"><span class="pre">filtering</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.content_filtering.html#gen_ai_hub.orchestration_v2.models.content_filtering.FilteringModuleConfig" title="gen_ai_hub.orchestration_v2.models.content_filtering.FilteringModuleConfig"><span class="pre">FilteringModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.filtering" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.masking">
+<span class="sig-name descname"><span class="pre">masking</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.data_masking.html#gen_ai_hub.orchestration_v2.models.data_masking.MaskingModuleConfig" title="gen_ai_hub.orchestration_v2.models.data_masking.MaskingModuleConfig"><span class="pre">MaskingModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.masking" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.grounding">
+<span class="sig-name descname"><span class="pre">grounding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.document_grounding.html#gen_ai_hub.orchestration_v2.models.document_grounding.GroundingModuleConfig" title="gen_ai_hub.orchestration_v2.models.document_grounding.GroundingModuleConfig"><span class="pre">GroundingModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.grounding" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.translation">
+<span class="sig-name descname"><span class="pre">translation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.translation.html#gen_ai_hub.orchestration_v2.models.translation.TranslationModuleConfig" title="gen_ai_hub.orchestration_v2.models.translation.TranslationModuleConfig"><span class="pre">TranslationModuleConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.translation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'forbid',</span> <span class="pre">'frozen':</span> <span class="pre">False}</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.config.</span></span><span class="sig-name descname"><span class="pre">PartialOrchestrationConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs" title="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs"><span class="pre">PartialModuleConfigs</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.streaming.html#gen_ai_hub.orchestration_v2.models.streaming.GlobalStreamOptions" title="gen_ai_hub.orchestration_v2.models.streaming.GlobalStreamOptions"><span class="pre">GlobalStreamOptions</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ABCBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ABCBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABCBaseModel</span></code></a></p>
+<p>Partial orchestration configuration used to override a referenced config (config_ref).</p>
+<p>The referenced configuration is the base; the fields provided here are merged on top.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modules</strong> – Optional partial module configurations to override.</p></li>
+<li><p><strong>stream</strong> – Optional streaming configuration to override.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.modules">
+<span class="sig-name descname"><span class="pre">modules</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs" title="gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs"><span class="pre">PartialModuleConfigs</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.modules" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.stream">
+<span class="sig-name descname"><span class="pre">stream</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.streaming.html#gen_ai_hub.orchestration_v2.models.streaming.GlobalStreamOptions" title="gen_ai_hub.orchestration_v2.models.streaming.GlobalStreamOptions"><span class="pre">GlobalStreamOptions</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.stream" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'forbid',</span> <span class="pre">'frozen':</span> <span class="pre">False}</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.config.CompletionRequestConfigurationReferenceByIdConfigRef">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.config.</span></span><span class="sig-name descname"><span class="pre">CompletionRequestConfigurationReferenceByIdConfigRef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.config.CompletionRequestConfigurationReferenceByIdConfigRef" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ABCBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ABCBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABCBaseModel</span></code></a></p>
@@ -749,6 +866,27 @@ or filtering.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.OrchestrationConfig.modules"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfig.modules</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.OrchestrationConfig.stream"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfig.stream</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.OrchestrationConfig.model_config"><code class="docutils literal notranslate"><span class="pre">OrchestrationConfig.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig"><code class="docutils literal notranslate"><span class="pre">PartialPromptTemplatingModuleConfig</span></code></a><ul>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.prompt"><code class="docutils literal notranslate"><span class="pre">PartialPromptTemplatingModuleConfig.prompt</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.model"><code class="docutils literal notranslate"><span class="pre">PartialPromptTemplatingModuleConfig.model</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialPromptTemplatingModuleConfig.model_config"><code class="docutils literal notranslate"><span class="pre">PartialPromptTemplatingModuleConfig.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs"><code class="docutils literal notranslate"><span class="pre">PartialModuleConfigs</span></code></a><ul>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.prompt_templating"><code class="docutils literal notranslate"><span class="pre">PartialModuleConfigs.prompt_templating</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.filtering"><code class="docutils literal notranslate"><span class="pre">PartialModuleConfigs.filtering</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.masking"><code class="docutils literal notranslate"><span class="pre">PartialModuleConfigs.masking</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.grounding"><code class="docutils literal notranslate"><span class="pre">PartialModuleConfigs.grounding</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.translation"><code class="docutils literal notranslate"><span class="pre">PartialModuleConfigs.translation</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialModuleConfigs.model_config"><code class="docutils literal notranslate"><span class="pre">PartialModuleConfigs.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig"><code class="docutils literal notranslate"><span class="pre">PartialOrchestrationConfig</span></code></a><ul>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.modules"><code class="docutils literal notranslate"><span class="pre">PartialOrchestrationConfig.modules</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.stream"><code class="docutils literal notranslate"><span class="pre">PartialOrchestrationConfig.stream</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.PartialOrchestrationConfig.model_config"><code class="docutils literal notranslate"><span class="pre">PartialOrchestrationConfig.model_config</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.config.CompletionRequestConfigurationReferenceByIdConfigRef"><code class="docutils literal notranslate"><span class="pre">CompletionRequestConfigurationReferenceByIdConfigRef</span></code></a><ul>
