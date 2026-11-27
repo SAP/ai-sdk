@@ -22,7 +22,7 @@ jobs:
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: SAP
           repositories: ai-sdk
-          permission-contents: write
+          permission-pull-requests: write
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -36,15 +36,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - run: npm run lint:fix
-      - name: Commit changes if needed
-        env:
-          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
-          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
-        run: |
-          git config user.email "$BOT_EMAIL"
-          git config user.name "$BOT_NAME"
-          diff=`git diff`
-          if [ ! -z "$diff" ]; then
-            git commit -m "fix: Changes from lint" -a
-            git push
-          fi
+      - name: Suggest lint fixes if needed
+        uses: reviewdog/action-suggester@fd22a83b1ebc13fd8aee5d57b06793fce6f20fb9 # v1.27.1
+        with:
+          tool_name: lint-fix
+          fail_on_error: "false"
+          github_token: ${{ steps.app-token.outputs.token }}
