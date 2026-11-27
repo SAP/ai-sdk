@@ -423,6 +423,7 @@
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.data_masking.html">gen_ai_hub.orchestration_v2.models.data_masking module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.document_grounding.html">gen_ai_hub.orchestration_v2.models.document_grounding module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.embeddings.html">gen_ai_hub.orchestration_v2.models.embeddings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.granite_guardian_filter.html">gen_ai_hub.orchestration_v2.models.granite_guardian_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llama_guard_3_filter.html">gen_ai_hub.orchestration_v2.models.llama_guard_3_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llm_model_details.html">gen_ai_hub.orchestration_v2.models.llm_model_details module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html">gen_ai_hub.orchestration_v2.models.message module</a></li>
@@ -655,6 +656,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.TargetColumn.name"><code class="docutils literal notranslate"><span class="pre">TargetColumn.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.TargetColumn.prediction_placeholder"><code class="docutils literal notranslate"><span class="pre">TargetColumn.prediction_placeholder</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.TargetColumn.task_type"><code class="docutils literal notranslate"><span class="pre">TargetColumn.task_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.TargetColumn.top_k"><code class="docutils literal notranslate"><span class="pre">TargetColumn.top_k</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.RPTRequest"><code class="docutils literal notranslate"><span class="pre">RPTRequest</span></code></a><ul>
@@ -674,6 +676,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.RPTResponse.id"><code class="docutils literal notranslate"><span class="pre">RPTResponse.id</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.RPTResponse.status"><code class="docutils literal notranslate"><span class="pre">RPTResponse.status</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.RPTResponse.predictions"><code class="docutils literal notranslate"><span class="pre">RPTResponse.predictions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.RPTResponse.explanations"><code class="docutils literal notranslate"><span class="pre">RPTResponse.explanations</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.RPTResponse.metadata"><code class="docutils literal notranslate"><span class="pre">RPTResponse.metadata</span></code></a></li>
 </ul>
 </li>
@@ -693,6 +696,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.ResponseMetadata.num_columns"><code class="docutils literal notranslate"><span class="pre">ResponseMetadata.num_columns</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.ResponseMetadata.num_predictions"><code class="docutils literal notranslate"><span class="pre">ResponseMetadata.num_predictions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.ResponseMetadata.num_query_rows"><code class="docutils literal notranslate"><span class="pre">ResponseMetadata.num_query_rows</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.ResponseMetadata.context_mode"><code class="docutils literal notranslate"><span class="pre">ResponseMetadata.context_mode</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.Prediction"><code class="docutils literal notranslate"><span class="pre">Prediction</span></code></a><ul>
@@ -704,11 +708,14 @@
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionItem.model_config"><code class="docutils literal notranslate"><span class="pre">PredictionItem.model_config</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionItem.prediction"><code class="docutils literal notranslate"><span class="pre">PredictionItem.prediction</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionItem.confidence"><code class="docutils literal notranslate"><span class="pre">PredictionItem.confidence</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionItem.confidence_interval"><code class="docutils literal notranslate"><span class="pre">PredictionItem.confidence_interval</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionConfig"><code class="docutils literal notranslate"><span class="pre">PredictionConfig</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionConfig.model_config"><code class="docutils literal notranslate"><span class="pre">PredictionConfig.model_config</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionConfig.target_columns"><code class="docutils literal notranslate"><span class="pre">PredictionConfig.target_columns</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionConfig.explanations"><code class="docutils literal notranslate"><span class="pre">PredictionConfig.explanations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.PredictionConfig.context_mode"><code class="docutils literal notranslate"><span class="pre">PredictionConfig.context_mode</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.html#gen_ai_hub.proxy.native.sap.ErrorResponseDetails"><code class="docutils literal notranslate"><span class="pre">ErrorResponseDetails</span></code></a><ul>
@@ -730,6 +737,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.models.html">gen_ai_hub.proxy.native.sap.models module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.models.html#gen_ai_hub.proxy.native.sap.models.TargetColumn"><code class="docutils literal notranslate"><span class="pre">TargetColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.models.html#gen_ai_hub.proxy.native.sap.models.ExplanationConfig"><code class="docutils literal notranslate"><span class="pre">ExplanationConfig</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.models.html#gen_ai_hub.proxy.native.sap.models.ExplanationResult"><code class="docutils literal notranslate"><span class="pre">ExplanationResult</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.models.html#gen_ai_hub.proxy.native.sap.models.PredictionConfig"><code class="docutils literal notranslate"><span class="pre">PredictionConfig</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.models.html#gen_ai_hub.proxy.native.sap.models.DataType"><code class="docutils literal notranslate"><span class="pre">DataType</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.proxy.native.sap.models.html#gen_ai_hub.proxy.native.sap.models.RPTRequest"><code class="docutils literal notranslate"><span class="pre">RPTRequest</span></code></a></li>

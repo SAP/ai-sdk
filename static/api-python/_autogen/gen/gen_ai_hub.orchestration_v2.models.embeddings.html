@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="gen_ai_hub.orchestration_v2.models.llama_guard_3_filter module" href="gen_ai_hub.orchestration_v2.models.llama_guard_3_filter.html"><link rel="prev" title="gen_ai_hub.orchestration_v2.models.document_grounding module" href="gen_ai_hub.orchestration_v2.models.document_grounding.html">
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="gen_ai_hub.orchestration_v2.models.granite_guardian_filter module" href="gen_ai_hub.orchestration_v2.models.granite_guardian_filter.html"><link rel="prev" title="gen_ai_hub.orchestration_v2.models.document_grounding module" href="gen_ai_hub.orchestration_v2.models.document_grounding.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
         <title>gen_ai_hub.orchestration_v2.models.embeddings module - SAP AI SDK Python documentation</title>
@@ -423,6 +423,7 @@
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.data_masking.html">gen_ai_hub.orchestration_v2.models.data_masking module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.document_grounding.html">gen_ai_hub.orchestration_v2.models.document_grounding module</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">gen_ai_hub.orchestration_v2.models.embeddings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.granite_guardian_filter.html">gen_ai_hub.orchestration_v2.models.granite_guardian_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llama_guard_3_filter.html">gen_ai_hub.orchestration_v2.models.llama_guard_3_filter module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.llm_model_details.html">gen_ai_hub.orchestration_v2.models.llm_model_details module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gen_ai_hub.orchestration_v2.models.message.html">gen_ai_hub.orchestration_v2.models.message module</a></li>
@@ -538,9 +539,12 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>Encoding format for the embeddings output.</p>
 <dl class="simple">
-<dt>Values:</dt><dd><p>FLOAT: Returns embeddings as an array of floats.
+<dt>Values:</dt><dd><p>FLOAT: Returns embeddings as an array of floating point numbers.
 BASE64: Returns embeddings as a base64 encoded string.
-BINARY: Returns embeddings in binary format.</p>
+BINARY: Returns embeddings in binary format.
+INT8: Returns embeddings as an array of 8-bit integers.
+UINT8: Returns embeddings as an array of unsigned 8-bit integers.
+UBINARY: Returns embeddings in unsigned binary format.</p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -558,6 +562,21 @@ BINARY: Returns embeddings in binary format.</p>
 <span class="sig-name descname"><span class="pre">BINARY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'binary'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.BINARY" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.INT8">
+<span class="sig-name descname"><span class="pre">INT8</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'int8'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.INT8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.UINT8">
+<span class="sig-name descname"><span class="pre">UINT8</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'uint8'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.UINT8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.UBINARY">
+<span class="sig-name descname"><span class="pre">UBINARY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ubinary'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.UBINARY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -569,7 +588,12 @@ BINARY: Returns embeddings in binary format.</p>
 <dl class="simple">
 <dt>Values:</dt><dd><p>TEXT: General purpose text (default).
 DOCUMENT: Content to be searched/retrieved.
-QUERY: Short search queries.</p>
+QUERY: Short search queries.
+SEARCH_DOCUMENT: Content stored in a search index to be retrieved.
+SEARCH_QUERY: Query run against a search index.
+CLASSIFICATION: Text used in a classification task.
+CLUSTERING: Text used in a clustering task.
+IMAGE: Image input.</p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -587,6 +611,31 @@ QUERY: Short search queries.</p>
 <span class="sig-name descname"><span class="pre">QUERY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'query'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.QUERY" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.SEARCH_DOCUMENT">
+<span class="sig-name descname"><span class="pre">SEARCH_DOCUMENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'search_document'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.SEARCH_DOCUMENT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.SEARCH_QUERY">
+<span class="sig-name descname"><span class="pre">SEARCH_QUERY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'search_query'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.SEARCH_QUERY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.CLASSIFICATION">
+<span class="sig-name descname"><span class="pre">CLASSIFICATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'classification'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.CLASSIFICATION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.CLUSTERING">
+<span class="sig-name descname"><span class="pre">CLUSTERING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'clustering'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.CLUSTERING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.IMAGE">
+<span class="sig-name descname"><span class="pre">IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'image'</span></em><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.IMAGE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -598,7 +647,7 @@ QUERY: Short search queries.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dimensions</strong> – The number of dimensions for the output embeddings.</p></li>
-<li><p><strong>encoding_format</strong> – The format for the embeddings output (float, base64, or binary).</p></li>
+<li><p><strong>encoding_format</strong> – The format to return the embeddings in.</p></li>
 <li><p><strong>normalize</strong> – Whether to normalize the embeddings.</p></li>
 </ul>
 </dd>
@@ -628,7 +677,7 @@ QUERY: Short search queries.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsModelDetails">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.embeddings.</span></span><span class="sig-name descname"><span class="pre">EmbeddingsModelDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'latest'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsModelParams" title="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsModelParams"><span class="pre">EmbeddingsModelParams</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">600</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_retries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">5</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsModelDetails" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_ai_hub.orchestration_v2.models.embeddings.</span></span><span class="sig-name descname"><span class="pre">EmbeddingsModelDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'latest'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsModelParams" title="gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsModelParams"><span class="pre">EmbeddingsModelParams</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">1200</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_retries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">5</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsModelDetails" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="gen_ai_hub.orchestration_v2.models.base.html#gen_ai_hub.orchestration_v2.models.base.ABCBaseModel" title="gen_ai_hub.orchestration_v2.models.base.ABCBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABCBaseModel</span></code></a></p>
 <p>The model and parameters to be used for generating embeddings.</p>
 <dl class="field-list simple">
@@ -823,7 +872,7 @@ QUERY: Short search queries.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object</strong> – The object type, always “embedding”.</p></li>
-<li><p><strong>embedding</strong> – The embedding vector (array of floats) or base64 string.</p></li>
+<li><p><strong>embedding</strong> – The embedding vector (array of floats) or a base64 string.</p></li>
 <li><p><strong>index</strong> – The index of this embedding in the list.</p></li>
 </ul>
 </dd>
@@ -969,12 +1018,12 @@ QUERY: Short search queries.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="gen_ai_hub.orchestration_v2.models.llama_guard_3_filter.html">
+          <a class="next-page" href="gen_ai_hub.orchestration_v2.models.granite_guardian_filter.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">gen_ai_hub.orchestration_v2.models.llama_guard_3_filter module</div>
+                <div class="title">gen_ai_hub.orchestration_v2.models.granite_guardian_filter module</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1024,12 +1073,20 @@ QUERY: Short search queries.</p>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.FLOAT"><code class="docutils literal notranslate"><span class="pre">EmbeddingsEncodingFormat.FLOAT</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.BASE64"><code class="docutils literal notranslate"><span class="pre">EmbeddingsEncodingFormat.BASE64</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.BINARY"><code class="docutils literal notranslate"><span class="pre">EmbeddingsEncodingFormat.BINARY</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.INT8"><code class="docutils literal notranslate"><span class="pre">EmbeddingsEncodingFormat.INT8</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.UINT8"><code class="docutils literal notranslate"><span class="pre">EmbeddingsEncodingFormat.UINT8</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsEncodingFormat.UBINARY"><code class="docutils literal notranslate"><span class="pre">EmbeddingsEncodingFormat.UBINARY</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType</span></code></a><ul>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.TEXT"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType.TEXT</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.DOCUMENT"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType.DOCUMENT</span></code></a></li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.QUERY"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType.QUERY</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.SEARCH_DOCUMENT"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType.SEARCH_DOCUMENT</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.SEARCH_QUERY"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType.SEARCH_QUERY</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.CLASSIFICATION"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType.CLASSIFICATION</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.CLUSTERING"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType.CLUSTERING</span></code></a></li>
+<li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsInputType.IMAGE"><code class="docutils literal notranslate"><span class="pre">EmbeddingsInputType.IMAGE</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#gen_ai_hub.orchestration_v2.models.embeddings.EmbeddingsModelParams"><code class="docutils literal notranslate"><span class="pre">EmbeddingsModelParams</span></code></a><ul>
