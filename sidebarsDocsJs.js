@@ -49,6 +49,7 @@ export default {
       label: 'AI Core Services',
       items: [
         'ai-core/ai-api',
+        'ai-core/model-discovery',
         'ai-core/document-grounding',
         'ai-core/prompt-registry',
         'ai-core/batch'
