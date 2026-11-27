@@ -173,6 +173,34 @@ or
 }
 ```
 
+## Custom Headers[​](#custom-headers "Direct link to Custom Headers")
+
+The SDK supports adding custom HTTP headers to your requests.
+
+```
+from gen_ai_hub.proxy import get_proxy_client
+
+
+
+proxy_client = get_proxy_client('gen-ai-hub')
+
+proxy_client.set_headers_addition(headers={
+
+    'X-Custom-Header': 'my-value'
+
+})
+```
+
+```
+from gen_ai_hub.proxy.gen_ai_hub_proxy import temporary_headers_addition
+
+
+
+with temporary_headers_addition(headers={'X-Custom-Header': 'my-value'}):
+
+    result = service.run(placeholder_values={'input': 'Hello!'})
+```
+
 ## Usage[​](#usage "Direct link to Usage")
 
 ### Prerequisite[​](#prerequisite "Direct link to Prerequisite")

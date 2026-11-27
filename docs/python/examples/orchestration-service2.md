@@ -56,6 +56,18 @@ llm = LLMModelDetails(name="gpt-5-nano", params={"max_completion_tokens": 2048})
 
 Initializes the language model to use the `gpt-5-nano` model. It will generate responses up to 2048 tokens in length.
 
+**Dropping Unsupported Parameters:** The `drop_unsupported_params` field controls how the service handles parameters unsupported by the model's backend API (only applies to models that use the Responses API). By default it is `True` — unsupported parameters are silently dropped and reported in the `X-Orchestration-Dropped-Model-Params` response header. Set it to `False` to receive a `400` error instead, which makes the problem explicit.
+
+```
+from gen_ai_hub.orchestration_v2 import LLMModelDetails
+
+
+
+# Raise an error if any unsupported parameter is detected (default: True = silently drop)
+
+llm = LLMModelDetails(name="gpt-5.3-codex", params={"max_completion_tokens": 2048}, drop_unsupported_params=False)
+```
+
 ### Step 3: Create the Configuration[​](#step-3-create-the-configuration "Direct link to Step 3: Create the Configuration")
 
 The `OrchestrationConfig` class defines a configuration for integrating various modules, such as templates and language models, into a cohesive orchestration setup. It specifies how these components interact and are configured to achieve the desired operational scenario.
@@ -71,6 +83,8 @@ module_config = ModuleConfig(prompt_templating=prompt_template)
 
 config = OrchestrationConfig(modules=module_config)
 ```
+
+**Note:** The `prompt` parameter of `PromptTemplatingModuleConfig` is optional. When omitted, all conversation messages must be supplied via the `history` parameter at inference time (e.g. when the template is stored in a prompt registry and no inline template is needed).
 
 ### Step 4: Run the Request[​](#step-4-run-the-request "Direct link to Step 4: Run the Request")
 
@@ -178,6 +192,82 @@ from gen_ai_hub.orchestration_v2 import TemplateRefByID, TemplateRefByScenarioNa
 template_by_id = TemplateRefByID(id="648871d9-b207-441c-8c13-afee71b0dbec") # this is just an example id
 
 template_by_names = TemplateRefByScenarioNameVersion(scenario="translation", name="translate_text", version="0.1.0")
+```
+
+#### Overriding a Referenced Configuration[​](#overriding-a-referenced-configuration "Direct link to Overriding a Referenced Configuration")
+
+When using `config_ref`, you can pass a `PartialOrchestrationConfig` as the `config` parameter to override specific parts of the referenced configuration without repeating the full config inline. This is useful for changing, for example, only the model while keeping all other settings from the stored configuration.
+
+```
+from gen_ai_hub.orchestration_v2 import (
+
+    OrchestrationService, PartialOrchestrationConfig, PartialModuleConfigs,
+
+    PartialPromptTemplatingModuleConfig, CompletionRequestConfigurationReferenceByIdConfigRef,
+
+    LLMModelDetails
+
+)
+
+
+
+config_ref = CompletionRequestConfigurationReferenceByIdConfigRef(id="<ID>")
+
+
+
+# Override only the model; everything else comes from the referenced configuration
+
+partial_config = PartialOrchestrationConfig(
+
+    modules=PartialModuleConfigs(
+
+        prompt_templating=PartialPromptTemplatingModuleConfig(
+
+            model=LLMModelDetails(name="gpt-4o")
+
+        )
+
+    )
+
+)
+
+
+
+service = OrchestrationService()
+
+result = service.run(config=partial_config, config_ref=config_ref, placeholder_values={"user_query": "Hello!"})
+
+print(result.final_result.choices[0].message.content)
+```
+
+You can also override just the template (keeping the stored model) or both at once:
+
+```
+from gen_ai_hub.orchestration_v2 import Template, UserMessage
+
+
+
+# Override only the prompt template, keep the model from the referenced config
+
+partial_config_prompt_only = PartialOrchestrationConfig(
+
+    modules=PartialModuleConfigs(
+
+        prompt_templating=PartialPromptTemplatingModuleConfig(
+
+            prompt=Template(template=[UserMessage(content="What is the capital of France?")])
+
+        )
+
+    )
+
+)
+
+
+
+result = service.run(config=partial_config_prompt_only, config_ref=config_ref)
+
+print(result.final_result.choices[0].message.content)
 ```
 
 #### Response Format Options[​](#response-format-options "Direct link to Response Format Options")
@@ -417,6 +507,76 @@ config = OrchestrationConfig(modules=module_config)
 cv_as_string = load_text_file("data/cv.txt")
 
 result = OrchestrationService().run(config=config, placeholder_values={"text": cv_as_string})
+
+print(result.final_result.choices[0].message.content)
+```
+
+#### Masking File Inputs[​](#masking-file-inputs "Direct link to Masking File Inputs")
+
+When a `UserMessage` includes file content, use the `mask_file_input_method` field on the provider config to control how the masking module handles file inputs. `MaskFileInputMethod.ANONYMIZATION` applies PII masking to the file content; `MaskFileInputMethod.SKIP` leaves file content unmasked.
+
+```
+from gen_ai_hub.orchestration_v2 import (
+
+    SystemMessage, UserMessage, Template, PromptTemplatingModuleConfig,
+
+    LLMModelDetails, ModuleConfig, OrchestrationConfig, OrchestrationService,
+
+    MaskingModuleConfig, MaskingProviderConfig, MaskingMethod, DPIStandardEntity, ProfileEntity,
+
+    MaskFileInputMethod, FileItem
+
+)
+
+
+
+file_item = FileItem.from_file("<PATH_TO_FILE>")
+
+
+
+data_masking_with_file_config = MaskingModuleConfig(
+
+    providers=[MaskingProviderConfig(
+
+        method=MaskingMethod.ANONYMIZATION,
+
+        entities=[
+
+            DPIStandardEntity(type=ProfileEntity.PERSON),
+
+            DPIStandardEntity(type=ProfileEntity.EMAIL),
+
+        ],
+
+        mask_file_input_method=MaskFileInputMethod.ANONYMIZATION,
+
+    )],
+
+)
+
+
+
+template = Template(template=[
+
+    SystemMessage(content="You are a helpful AI assistant."),
+
+    UserMessage(content=[file_item, "Summarize this document."]),
+
+])
+
+llm = LLMModelDetails(name="gemini-3.5-flash")
+
+module_config = ModuleConfig(
+
+    prompt_templating=PromptTemplatingModuleConfig(prompt=template, model=llm),
+
+    masking=data_masking_with_file_config
+
+)
+
+config = OrchestrationConfig(modules=module_config)
+
+result = OrchestrationService().run(config=config)
 
 print(result.final_result.choices[0].message.content)
 ```
@@ -768,6 +928,46 @@ for chunk in stream:
 note
 
 In multi-turn conversations, the full and unmodified list of `reasoning_content` blocks needs to be passed in the message history. In a streaming setting, the chunks have to be accumulated before using them in a follow-up request.
+
+## Provider-Specific Fields[​](#provider-specific-fields "Direct link to Provider-Specific Fields")
+
+The `provider_specific_fields` attribute on `LLMChoice` (non-streaming) and `StreamLLMChoice` (streaming) carries vendor-specific data that does not fit the harmonized OpenAI schema. When the provider's raw `finish_reason` differs from the mapped value, it is included here under the `"finish_reason"` key.
+
+```
+result = service.run(config=config)
+
+choice = result.final_result.choices[0]
+
+if choice.provider_specific_fields:
+
+    # Raw finish reason from the provider (present when it differs from the harmonized value)
+
+    raw_finish_reason = choice.provider_specific_fields.get("finish_reason")
+
+    print(f"Harmonized finish_reason : {choice.finish_reason}")
+
+    print(f"Provider finish_reason   : {raw_finish_reason}")
+
+    # Other provider-specific keys may also appear here
+
+    print(choice.provider_specific_fields)
+```
+
+The same field is available on each `StreamLLMChoice` in a streaming response:
+
+```
+config = OrchestrationConfig(modules=module_config, stream=GlobalStreamOptions(enabled=True))
+
+stream = service.stream(config=config)
+
+for chunk in stream:
+
+    choice = chunk.final_result.choices[0]
+
+    if choice.provider_specific_fields:
+
+        print(choice.provider_specific_fields)
+```
 
 ## Tool Calling (Function Calling)[​](#tool-calling-function-calling "Direct link to Tool Calling (Function Calling)")
 
@@ -1551,6 +1751,90 @@ response = service.run()
 print(response.final_result.choices[0].message.content)
 ```
 
+## Using Files as Input[​](#using-files-as-input "Direct link to Using Files as Input")
+
+In addition to images, the Orchestration Service supports file content (e.g. PDFs, text files) directly in user messages via `FileItem`. This enables document summarisation, extraction, and other document-centric tasks without managing base64 encoding yourself.
+
+### 1. Preparing File Inputs[​](#1-preparing-file-inputs "Direct link to 1. Preparing File Inputs")
+
+#### a) From a Local File[​](#a-from-a-local-file "Direct link to a) From a Local File")
+
+Use `FileItem.from_file()` to load a file from disk. The method reads, MIME-detects, and base64-encodes the file automatically.
+
+```
+from gen_ai_hub.orchestration_v2 import FileItem
+
+
+
+file_item = FileItem.from_file("<Path to your file>")
+```
+
+#### b) From a Data URL[​](#b-from-a-data-url "Direct link to b) From a Data URL")
+
+If you already have the file encoded as a data URL, pass it directly:
+
+```
+file_from_data = FileItem(
+
+    file_data="data:application/pdf;base64,<base64_encoded_content>",
+
+    filename="document.pdf"
+
+)
+```
+
+### 2. Adding Files to a Prompt[​](#2-adding-files-to-a-prompt "Direct link to 2. Adding Files to a Prompt")
+
+Pass a list containing `FileItem` objects and text strings to the `content` parameter of a `UserMessage`, exactly as with images.
+
+```
+from gen_ai_hub.orchestration_v2 import (
+
+    UserMessage, LLMModelDetails, Template, PromptTemplatingModuleConfig,
+
+    ModuleConfig, OrchestrationConfig, OrchestrationService
+
+)
+
+
+
+llm = LLMModelDetails(name="gemini-3.5-flash")
+
+
+
+content = [file_item, "Please summarize the contents of this document."]
+
+user_message = UserMessage(content=content)
+
+file_template = Template(template=[user_message])
+
+
+
+prompt_template = PromptTemplatingModuleConfig(prompt=file_template, model=llm)
+
+module_config = ModuleConfig(prompt_templating=prompt_template)
+
+config = OrchestrationConfig(modules=module_config)
+
+service = OrchestrationService(config=config)
+
+response = service.run()
+
+print(response.final_result.choices[0].message.content)
+```
+
+You can also mix files, images, and plain text in the same message:
+
+```
+from gen_ai_hub.orchestration_v2 import ImageItem
+
+
+
+image_item = ImageItem.from_file("path/to/chart.png")
+
+mixed_message = UserMessage(content=[file_item, image_item, "Describe the chart and relate it to the document."])
+```
+
 ## Translation[​](#translation "Direct link to Translation")
 
 The Translation module can translate text from one language to another. It can translate input text before it is processed by the LLM module, or translate output generated by the LLM module.
@@ -1740,11 +2024,16 @@ for result in response.final_result.data:
 
 Some embedding models support asymmetric search, where queries and documents are embedded differently for better retrieval. Use the `type` parameter to hint the purpose of your text.
 
-| Type       | Use Case                                  |
-| ---------- | ----------------------------------------- |
-| `TEXT`     | General purpose (default)                 |
-| `DOCUMENT` | Content to be indexed and searched        |
-| `QUERY`    | Search queries to find relevant documents |
+| Type              | Use Case                                         |
+| ----------------- | ------------------------------------------------ |
+| `TEXT`            | General purpose (default)                        |
+| `DOCUMENT`        | Content to be indexed and searched               |
+| `QUERY`           | Search queries to find relevant documents        |
+| `SEARCH_DOCUMENT` | Content stored in a search index to be retrieved |
+| `SEARCH_QUERY`    | Query run against a search index                 |
+| `CLASSIFICATION`  | Text used in a text classification task          |
+| `CLUSTERING`      | Text used in a clustering task                   |
+| `IMAGE`           | Image input (for multimodal embedding models)    |
 
 ```
 from gen_ai_hub.orchestration_v2 import EmbeddingsInput, EmbeddingsInputType
