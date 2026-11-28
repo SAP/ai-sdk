@@ -57,7 +57,7 @@
     "assert": "2.1.0",
     "langchain": "1.6.7",
     "openai": "7.63.0",
-    "oxlint": "1.94.0",
+    "oxlint": "1.95.0",
     "prettier": "3.10.1",
     "prettier-plugin-java": "2.12.0",
     "process": "0.11.10",
